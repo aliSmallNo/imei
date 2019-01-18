@@ -1322,7 +1322,6 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, $msg, '');
 				}
-
 			case 'change':
 				$bdID = trim(self::postParam("bd"));
 				CRMStockClient::edit([

@@ -680,6 +680,40 @@ class Log extends ActiveRecord
 		return $cnt;
 	}
 
+	const CAT_CRM_ACTION_ALERT = 'crm_action_alert';
+	const KEY_ALERT_WAIT = 9;
+	const KEY_ALERT_COMPLETE = 1;
+	static $alertDict = [
+		self::KEY_ALERT_COMPLETE => '发送完成',
+		self::KEY_ALERT_WAIT => '等待发送',
+	];
+
+	/*
+	 * oCategory
+	 * oKey     1 弹框完成  9 等待弹框
+	 * oBefore  im_crm_stock_track tId
+	 * oAfter
+	 * oOpenId  bd
+	 * oUId     im_crm_stock_client cId
+	 *
+	 * 记录用户操作后是否有更新跟进状态
+	 */
+	public static function add_action_alert($cid, $tId)
+	{
+		$client = CRMStockClient::findOne(['cId' => $cid]);
+		if (!$client) {
+			return false;
+		}
+		Log::add(['oCategory' => self::CAT_SEND_SMS_LOG,
+			'oKey' => self::KEY_ALERT_WAIT,
+			'oBefore' => $tId,
+			'oOpenId' => $client->cBDAssign,
+			'oUId' => $cid,
+		]);
+		return true;
+	}
+
+
 	const CAT_SEND_SMS_PHONE = 'send_sms_phone';
 	const CAT_SEND_SMS_LOG = 'send_sms_log';
 	const CAT_SEND_SMS = 'send_sms';
@@ -702,7 +736,6 @@ class Log extends ActiveRecord
 	 * oOpenId 记录发送人数
 	 * oUId    记录发送发送的管理员
 	 */
-
 	public static function add_sms_item($filepath, $content)
 	{
 		if (!$filepath || !$content) {

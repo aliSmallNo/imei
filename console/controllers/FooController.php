@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use admin\models\Admin;
 use common\models\ChatMsg;
+use common\models\CRMStockClient;
 use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
@@ -1683,8 +1684,14 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		// AppUtil::pre_send_sms();
-		// AppUtil::getSMSLeft();
+		$sql = "select * from im_stock_action where aType in (1,9) and aPhone not in (
+				select cPhone from im_crm_stock_client where CHAR_LENGTH(cPhone)=11 
+				) group by aPhone ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			CRMStockClient::add_by_stock_action($v['aPhone'], $v['aType']);
+			exit;
+		}
 
 
 	}

@@ -239,6 +239,78 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		return "";
 	}
 
+	/**
+	 * 2018-1-17
+	 * @param $phone
+	 * @param $txt
+	 * 每天对比“用户操作”和CRM里客户线索
+	 * 1.以手机号为准
+	 * 2.已注册，已认证，已操作，如果“CRM”里没有，那么录入进去
+	 * 3.如果有，对比下
+	 *  a)如果“用户操作”状态高于“CRM”，更新CRM
+	 *  b)如果“用户操作”状态高于“CRM”，不更新
+	 *  c)有更新的话，提醒下销售（弹窗方式）
+	 */
+	public static function add_by_stock_action($phone, $txt)
+	{
+		$txt = trim($txt);
+		$subTxt = mb_substr($txt, 0, 3);
+		echo $subTxt . PHP_EOL;
+		switch ($subTxt) {
+			case "已注册":
+				$status = self::STATUS_MEETING;
+				break;
+			case "已认证":
+				$status = self::STATUS_CERTIFICATE;
+				break;
+			case "已操作":
+				$status = self::STATUS_PAID;
+				break;
+			default:
+				$status = self::STATUS_DISLIKE;
+		}
+		$item = self::findOne(['cPhone' => $phone]);
+		if (!in_array($status, [self::STATUS_MEETING, self::STATUS_CERTIFICATE, self::STATUS_PAID])
+		) {
+			return false;
+		}
+		$adminId = Admin::getAdminId();
+		if (!$item) {
+			CRMStockClient::edit([
+				"name" => $phone,
+				"phone" => $phone,
+				"wechat" => '',
+				"note" => '用户操作添加',
+				"prov" => '北京市',
+				"city" => '昌平区',
+				"addr" => '',
+				"age" => self::AGE_20_30,
+				"stock_age" => self::STOCK_AGE_1,
+				"gender" => self::GENDER_MALE,
+				"job" => '',
+				"category" => CRMStockClient::CATEGORY_YANXUAN,
+				"bd" => 0,
+				"src" => CRMStockClient::SRC_WEBSITE,
+			], '', $adminId);
+			$item = self::findOne(['cPhone' => $phone]);
+			CRMStockTrack::add($item->cId, [
+				"status" => $status,
+				"note" => "系统更新：用户操作更新"
+			], $adminId);
+		} else {
+			if ($item->cStatus > $status) {
+				$tId = CRMStockTrack::add($item->cId, [
+					"status" => $status,
+					"note" => "系统更新：用户操作更新"
+				], $adminId);
+				// 有更新的话，提醒下销售（弹窗方式）
+				Log::add_action_alert($item->cId, $tId);
+			}
+		}
+		exit;
+		return true;
+	}
+
 	public static function add_by_excel($filepath)
 	{
 		$error = 0;
