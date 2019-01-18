@@ -1688,9 +1688,11 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 				select cPhone from im_crm_stock_client where CHAR_LENGTH(cPhone)=11 
 				) group by aPhone ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		foreach ($res as $v) {
+		foreach ($res as $k => $v) {
 			CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
-			exit;
+			if ($k > 2) {
+				exit;
+			}
 		}
 
 
