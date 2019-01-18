@@ -296,7 +296,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$item = self::findOne(['cPhone' => $phone]);
 			CRMStockTrack::add($item->cId, [
 				"status" => $status,
-				"note" => "系统更新：用户操作更新"
+				"note" => "系统添加：用户操作更新"
 			], $adminId);
 		} else {
 			if ($item->cStatus > $status) {
