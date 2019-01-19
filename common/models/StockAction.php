@@ -100,7 +100,7 @@ class StockAction extends \yii\db\ActiveRecord
 					'uName' => $phone,
 				]);
 				// 2018-1-17添加到crm客户线索
-				// CRMStockClient::add_by_stock_action($phone, $typeT);
+				 CRMStockClient::add_by_stock_action($phone, $typeT);
 
 			} catch (\Exception $e) {
 //				var_dump($cmd->bindValues($params)->getRawSql());

@@ -274,8 +274,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		) {
 			return false;
 		}
-		//$adminId = Admin::getAdminId() ? Admin::getAdminId() : 1002;
-		$adminId = 1002;
+		$adminId = Admin::getAdminId() ? Admin::getAdminId() : 1002;
+		//$adminId = 1002;
 
 		if (!$item) {
 			$stock_user = StockUser::findOne(['uPhone' => $phone]);
@@ -283,7 +283,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"name" => $stock_user ? $stock_user->uName : $phone,
 				"phone" => $phone,
 				"wechat" => '',
-				"note" => '用户操作添加',
+				"note" => $txt . '添加',
 				"prov" => '北京市',
 				"city" => '昌平区',
 				"addr" => '',
@@ -299,7 +299,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$item = self::findOne(['cPhone' => $phone]);
 			CRMStockTrack::add($item->cId, [
 				"status" => $status,
-				"note" => "系统添加：用户操作更新",
+				"note" => "系统更新：" . $txt,
 				"action" => CRMStockTrack::ACTION_SYS,
 			], $adminId);
 		} else {
