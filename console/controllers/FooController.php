@@ -1684,12 +1684,10 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		$sql = "select * from im_stock_action where aType in (1,9) and aPhone not in (
-				select cPhone from im_crm_stock_client where CHAR_LENGTH(cPhone)=11 
-				) group by aPhone ";
+		$sql = "select * from im_stock_action where aType in (1,9) order by aId asc limit 10";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
-			//CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
+			CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
 
 		}
 

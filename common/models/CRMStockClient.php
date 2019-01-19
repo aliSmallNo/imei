@@ -276,9 +276,11 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		}
 		//$adminId = Admin::getAdminId() ? Admin::getAdminId() : 1002;
 		$adminId = 1002;
+
 		if (!$item) {
+			$stock_user = StockUser::findOne(['uPhone']);
 			CRMStockClient::edit([
-				"name" => $phone,
+				"name" => $stock_user ? $stock_user->uName : $phone,
 				"phone" => $phone,
 				"wechat" => '',
 				"note" => '用户操作添加',
@@ -291,17 +293,20 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"job" => '',
 				"category" => CRMStockClient::CATEGORY_YANXUAN,
 				"bd" => 0,
+				"type" => 'user_action',
 				"src" => CRMStockClient::SRC_WEBSITE,
 			], '', $adminId);
 			$item = self::findOne(['cPhone' => $phone]);
 			CRMStockTrack::add($item->cId, [
 				"status" => $status,
-				"note" => "系统添加：用户操作更新"
+				"note" => "系统添加：用户操作更新",
+				"action" => CRMStockTrack::ACTION_SYS,
 			], $adminId);
 		} else {
-			if ($item->cStatus > $status) {
+			if ($item->cStatus < $status) {
 				$tId = CRMStockTrack::add($item->cId, [
 					"status" => $status,
+					"action" => CRMStockTrack::ACTION_SYS,
 					"note" => "系统更新：用户操作更新"
 				], $adminId);
 				// 有更新的话，提醒下销售（弹窗方式）
@@ -415,6 +420,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			"age" => "cAge",
 			"stock_age" => "cStockAge",
 			"job" => "cJob",
+			"type" => "cTypes",
 		];
 
 		foreach ($params as $key => $val) {

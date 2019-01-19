@@ -25,18 +25,11 @@ use Yii;
 class CRMStockTrack extends \yii\db\ActiveRecord
 {
 
-	//电话/微信 地推 客户到公司接待 客户考察
-
-	const ACTION_LINE = 100;
-	const ACTION_VISIT = 104;
-	const ACTION_RECEPTION = 108;
-	const ACTION_DEMO = 112;
-
+	const ACTION_USER = 100;
+	const ACTION_SYS = 104;
 	static $ActionDict = [
-		self::ACTION_LINE => "电话/微信拜访",
-		self::ACTION_VISIT => "实地拜访",
-		self::ACTION_RECEPTION => "接待客户",
-		self::ACTION_DEMO => "客户考察",
+		self::ACTION_USER => "用户操作",
+		self::ACTION_SYS => "系统添加",
 	];
 
 	public static function tableName()
@@ -108,6 +101,7 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 			"status" => "tStatus",
 			"image" => "tImage",
 			"aId" => "tAddressId",
+			"action" => "tAction",
 		];
 		foreach ($params as $key => $val) {
 			if (isset($fieldMap[$key])) {
