@@ -278,7 +278,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$adminId = 1002;
 
 		if (!$item) {
-			$stock_user = StockUser::findOne(['uPhone']);
+			$stock_user = StockUser::findOne(['uPhone' => $phone]);
 			CRMStockClient::edit([
 				"name" => $stock_user ? $stock_user->uName : $phone,
 				"phone" => $phone,
