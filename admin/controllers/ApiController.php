@@ -1330,7 +1330,7 @@ class ApiController extends Controller
 				$bdInfo = Admin::findOne(['aId' => $bdID]);
 				$note = '';
 				if ($bdInfo) {
-					$note = '转移给' . $bdInfo->aName;
+					$note = $this->admin_name.'转移给' . $bdInfo->aName;
 				} elseif ($bdID < 1) {
 
 					$note = $this->admin_name . '扔到公海里了';
