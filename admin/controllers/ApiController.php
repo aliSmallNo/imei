@@ -1330,7 +1330,7 @@ class ApiController extends Controller
 				$bdInfo = Admin::findOne(['aId' => $bdID]);
 				$note = '';
 				if ($bdInfo) {
-					$note = $this->admin_name.'转移给' . $bdInfo->aName;
+					$note = $this->admin_name . '转移给' . $bdInfo->aName;
 				} elseif ($bdID < 1) {
 
 					$note = $this->admin_name . '扔到公海里了';
@@ -1349,6 +1349,13 @@ class ApiController extends Controller
 			case "del":
 				CRMStockTrack::del($id, $adminId);
 				return self::renderAPI(0, "删除成功！");
+			case "user_alert":
+				list($code, $data) = Log::get_action_alert($this->admin_id);
+				return self::renderAPI($code, "", $data);
+			case "update_user_alert":
+				$oid = self::postParam("oid");
+				list($code, $data) = Log::update_action_alert($oid, $this->admin_id);
+				return self::renderAPI($code, "", $data);
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}

@@ -634,5 +634,38 @@
 	$(document).on('click', '.addClueMore', function () {
 		$('#addClueMoreModal').modal('show');
 	});
+
+	$(function () {
+		if (!$("input[name=phone]").val()) {
+			$.post("/api/stock_client", {
+				tag: 'user_alert'
+			}, function (resp) {
+				if (resp.code == 0) {
+					var temp = "<ol class='users'>{[#data]}<li class=''>{[cName]}: <a href='javascript:;' class='update_alert' alert-phone='{[cPhone]}' alert-oId='{[oId]}'>{[cPhone]}</a></li>{[/data]}</ol>";
+					layer.open({
+						content: Mustache.render(temp, resp),
+						area: ['400px', '500px'],
+						title: "用户更新"
+					});
+				}
+			}, 'json');
+		}
+
+		$(document).on("click", ".update_alert", function () {
+			var self = $(this);
+			var phone = self.attr('alert-phone');
+			layer.load();
+			$.post("/api/stock_client", {
+				tag: 'update_user_alert',
+				oid: self.attr('alert-oId'),
+			}, function (resp) {
+				layer.closeAll();
+				if (resp.code == 0) {
+					location.href = "/stock/clients?phone=" + phone;
+				}
+			}, 'json');
+		})
+
+	})
 </script>
 {{include file="layouts/footer.tpl"}}

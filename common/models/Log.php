@@ -704,13 +704,40 @@ class Log extends ActiveRecord
 		if (!$client) {
 			return false;
 		}
-		Log::add(['oCategory' => self::CAT_SEND_SMS_LOG,
+		Log::add(['oCategory' => self::CAT_CRM_ACTION_ALERT,
 			'oKey' => self::KEY_ALERT_WAIT,
 			'oBefore' => $tId,
 			'oOpenId' => $client->cBDAssign,
 			'oUId' => $cid,
 		]);
 		return true;
+	}
+
+	public static function get_action_alert($adminId)
+	{
+		$cat = self::CAT_CRM_ACTION_ALERT;
+		$key = self::KEY_ALERT_WAIT;
+		$sql = "select c.cName,cPhone,l.* from im_log as l
+				left join `im_crm_stock_client` as c on l.oUId=c.cId
+				where oCategory='$cat' and oKey=$key and oOpenId=$adminId ";
+		$ret = AppUtil::db()->createCommand($sql)->queryAll();
+		if ($ret) {
+			return [0, $ret];
+		} else {
+			return [129, ''];
+		}
+	}
+
+	public static function update_action_alert($oid, $adminId)
+	{
+		$cat = self::CAT_CRM_ACTION_ALERT;
+		$log = self::findOne(['oCategory' => $cat, 'oKey' => self::KEY_ALERT_WAIT, 'oOpenId' => $adminId, 'oId' => $oid]);
+		if (!$log) {
+			return [129, '信息丢失'];
+		}
+		$log->oKey = self::KEY_SEND_COMPLETE;
+		$log->save();
+		return [0, ''];
 	}
 
 
