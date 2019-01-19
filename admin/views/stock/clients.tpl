@@ -645,7 +645,7 @@
 					layer.open({
 						content: Mustache.render(temp, resp),
 						area: ['400px', '500px'],
-						title: "用户更新"
+						title: "用户准点买操作后、系统更新用户的状态"
 					});
 				}
 			}, 'json');
