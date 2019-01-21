@@ -179,12 +179,13 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 		if ($id) {
 			$strCriteria = " AND c.cBDAssign=" . $id;
 		}
+		$action = self::ACTION_USER;
 		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
 		 from im_crm_stock_client as c 
 		 join im_crm_stock_track as t on t.tCId=c.cId AND t.tAddedBy=c.cBDAssign AND t.tDeletedFlag=0
 		 join im_admin as a on a.aId=t.tAddedBy
-		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category AND a.aId not in (1453348809, 1453807803, 1467788165, 1843540)
-		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria 
+		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category AND a.aId not in (1002)
+		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria and t.tAction=$action
 		 GROUP BY t.tAddedBy,a.aName
 		 order by cnt desc";
 		if (!$conn) {
