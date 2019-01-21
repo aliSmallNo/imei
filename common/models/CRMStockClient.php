@@ -950,22 +950,23 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	 * 1.系统自动更新，发短信的方式，不算做跟进。
 	 * 2.放入公海时，保持用户的跟进状态，即不显示0%的状态，显示之前的跟进状态，如60%注册。
 	 * 3.100%买股用户，不参与这种方式
+	 * 4.熟人、熟人介绍不参与这种方式
 	 */
 	public static function auto_client_2_sea()
 	{
 		$conn = AppUtil::db();
-		$st0 = self::STATUS_DISLIKE;
+		$src0 = self::SRC_FRIEND;
+		$src1 = self::SRC_FRIEND_INTROLDUCE;
 
 		$st10 = self::STATUS_PAID;
 		$sql = "select * from im_crm_stock_client 
-				where cStatus not in ($st10) and cDeletedFlag=0 and datediff (cUpdatedDate,now())<-7 and cBDAssign>0 ";
+				where cStatus not in ($st10) and cSource not in ($src0,$src1) and cDeletedFlag=0 and datediff (cUpdatedDate,now())<-7 and cBDAssign>0 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		if (!$ret) {
 			return false;
 		}
 		foreach ($ret as $v) {
 			CRMStockClient::edit(["bd" => 0,], $v['cId']);
-			exit;
 		}
 		return true;
 	}
