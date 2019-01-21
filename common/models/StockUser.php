@@ -77,7 +77,10 @@ class StockUser extends \yii\db\ActiveRecord
 
 	public static function pre_add($phone, $values)
 	{
-		if (self::findOne(['uPhone' => $phone])) {
+		$user = self::findOne(['uPhone' => $phone]);
+		if ($user) {
+
+
 			return false;
 		}
 		if (isset($values['uName']) && isset($values['uPhone']) && AppUtil::checkPhone($values['uPhone'])) {
