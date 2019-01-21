@@ -82,7 +82,7 @@ class StockController extends BaseController
 		if ($src) {
 			$criteria[] = "cSource = :cSource";
 			$params[":cSource"] = $src;
-			$urlParams[] = "phone=" . $src;
+			$urlParams[] = "src=" . $src;
 			$alert[] = "【" . CRMStockClient::$SourceMap[$src] . "】";
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
