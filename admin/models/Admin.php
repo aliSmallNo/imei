@@ -66,6 +66,7 @@ class Admin extends ActiveRecord
 	const GROUP_FINANCE = 160;
 	const GROUP_RUN_MGR = 180; // 运营管理员
 	const GROUP_STOCK_LEADER = 190; // 配资管理员
+	const GROUP_STOCK_EXCEL = 200; // 配资管理员
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
 	private static $SuperPass = 'K4J0!exU@3Np-poQ_wV9';
@@ -394,6 +395,9 @@ class Admin extends ActiveRecord
 				break;
 			case self::GROUP_STOCK_LEADER:
 				$adminIDs = [1002, 1006, 1026]; // zp 于辉 罗文燕
+				break;
+			case self::GROUP_STOCK_EXCEL:
+				$adminIDs = [1002, 1006, 1027];// zp 于辉 小刀
 				break;
 			default: // self::GROUP_DEBUG
 				$adminIDs = [1001, 1002];
