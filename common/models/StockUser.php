@@ -14,6 +14,8 @@ use Yii;
  * @property string $uName
  * @property string $uPtPhone
  * @property string $uPtName
+ * @property string $uRate
+ * @property string $uType
  * @property string $uNote
  * @property integer $uStatus
  * @property string $uAddedOn
@@ -79,8 +81,9 @@ class StockUser extends \yii\db\ActiveRecord
 	{
 		$user = self::findOne(['uPhone' => $phone]);
 		if ($user) {
-
-
+			if (!AppUtil::hasHans($values['uName']) && mb_strlen($values['uName']) == 11) {
+				self::edit_admin($values['uName'], $user->uPhone, $user->uPtPhone, $user->uRate, $user->uType, $user->uNote);
+			}
 			return false;
 		}
 		if (isset($values['uName']) && isset($values['uPhone']) && AppUtil::checkPhone($values['uPhone'])) {
