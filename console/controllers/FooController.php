@@ -1692,7 +1692,9 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		// CRMStockClient::auto_client_2_sea();
 
-		echo mb_strlen('胜多负少');
+		echo mb_strlen('胜多负少') . PHP_EOL;
+		echo mb_strlen('sdfsdf') . PHP_EOL;
+
 	}
 
 
