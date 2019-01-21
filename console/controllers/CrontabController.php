@@ -10,6 +10,7 @@ namespace console\controllers;
  */
 use common\models\ChatMsg;
 use common\models\ChatRoom;
+use common\models\CRMStockClient;
 use common\models\Log;
 use common\models\Stat;
 use common\models\UserMsg;
@@ -75,21 +76,11 @@ class CrontabController extends Controller
 		var_dump(count($ret));
 		// 每天晚上九点【唤醒】当天关注未注册用户
 		if (date("H") == 21) {
-			WechatUtil::summonViewer();
-			AppUtil::logFile("summonViewer", 5);
+			//WechatUtil::summonViewer();
+			//AppUtil::logFile("summonViewer", 5);
 		}
-		if (date("Y-m-d H") == '2018-12-20 21') {
-			AppUtil::pre_send_sms();
-			AppUtil::logFile("pre_send_sms", 5);
-		}
-		// 每天中午12点【推送】最近两天用户的点赞数
-		if (date("H") == 12) {
-			//$cnt = Log::summon_2day_zan();
-			//AppUtil::logFile("summon_2day_zan: $cnt", 5);
-		}
-		// 每天下午7点【推送】一键群聊卡剩余天数，随机发放400张一键群聊卡
-		if (date("H") == 18) {
-			//UserTag::give_group_card_everyday();
+		if (date("H") == '21') {
+			CRMStockClient::auto_client_2_sea();
 		}
 	}
 
