@@ -79,6 +79,7 @@ class CrontabController extends Controller
 			//WechatUtil::summonViewer();
 			//AppUtil::logFile("summonViewer", 5);
 		}
+		// 配资crm客户6工作日无跟进则转移到公海
 		if (date("H") == '21') {
 			CRMStockClient::auto_client_2_sea();
 		}

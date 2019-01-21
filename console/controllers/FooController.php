@@ -1690,7 +1690,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			 CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
 		}*/
 
-		CRMStockClient::auto_client_2_sea();
+		// CRMStockClient::auto_client_2_sea();
 	}
 
 
