@@ -54,10 +54,10 @@
 	.w-progressBar .color {
 		width: 100%;
 		background: #2a8;
-		background: -webkit-gradient(linear, left top, right top, from(#8c5), to(#208850));
-		background: -moz-linear-gradient(left, #8c5, #208850);
-		background: -o-linear-gradient(left, #8c5, #208850);
-		background: -ms-linear-gradient(left, #8c5, #208850);
+		background: -webkit-gradient(linear, left top, right top, from(#fb597a), to(#e2002e));
+		background: -moz-linear-gradient(left, #fb597a, #e2002e);
+		background: -o-linear-gradient(left, #fb597a, #e2002e);
+		background: -ms-linear-gradient(left, #fb597a, #e2002e);
 	}
 
 	th a {
