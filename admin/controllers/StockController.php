@@ -18,6 +18,7 @@ use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\utils\AppUtil;
+use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
 
 class StockController extends BaseController
@@ -371,6 +372,53 @@ class StockController extends BaseController
 
 			]
 		);
+	}
+
+	/**
+	 * 导出自己的客户2018.1.21
+	 */
+	public function actionExport_stock_order()
+	{
+		$manager_aid = Admin::getAdminId();
+		$sdate = self::getParam("sdate");
+		$edate = self::getParam("edate");
+		$condition = '';
+		if (StockOrder::channel_condition()) {
+			$condition .= " and a.aId=$manager_aid ";
+		}
+		if ($sdate && $edate) {
+			$sdate .= " 00:00:00";
+			$edate .= " 23:59:59";
+			$condition .= " and o.oAddedOn between '$sdate' and '$edate' ";
+		}
+
+		$sql = "select 
+				a.aId,a.aName,
+				o.*
+				from im_stock_order as o
+				left join im_stock_user as u on u.uPhone=o.oPhone
+				left join im_admin as a on a.aPhone=u.uPtPhone
+				where u.uPtPhone>0 $condition
+				order by a.aId asc,o.oAddedOn desc ";
+		$conn = AppUtil::db();
+		$res = $conn->createCommand($sql)->queryAll();
+
+		$header = $content = [];
+		$header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '交易日期', 'BD'];
+		foreach ($res as $v) {
+			$content[] = [
+				$v['oName'],
+				$v['oPhone'],
+				$v['oStockId'],
+				$v['oStockAmt'],
+				$v['oLoan'],
+				date('Y-m-d', strtotime($v['oAddedOn'])),
+				$v['aName'],
+			];
+		}
+
+		ExcelUtil::getYZExcel('客户订单' . date("Y-m-d"), $header, $content, [12, 15, 12, 12, 12, 12, 12]);
+		exit;
 	}
 
 	public function actionUpload_excel()

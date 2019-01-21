@@ -1,5 +1,10 @@
 {{include file="layouts/header.tpl"}}
-
+<style>
+	.autoW {
+		width: auto;
+		display: inline-block;
+	}
+</style>
 <div class="row">
 	<div class="col-sm-6">
 		<h4>订单列表
@@ -35,6 +40,11 @@
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
 	</form>
+	<div class="row-divider"></div>
+	<input class="form-control autoW beginDate my-date-input" placeholder="开始时间" name="sdate">
+	至
+	<input class="form-control autoW endDate my-date-input" placeholder="截止时间" name="edate">
+	<button class="btn btn-primary opExcel">导出我的客户</button>
 </div>
 
 <div class="row-divider"></div>
@@ -169,7 +179,15 @@
 			}
 		}, 'json');
 	});
-
+  /******************************************************/
+  $(".opExcel").on("click", function () {
+	  // var admin = $("select[name=admin]").val();
+	  var sdate = $("input[name=sdate]").val();
+	  var edate = $("input[name=edate]").val();
+	  var url = "/stock/export_stock_order?sdate=" + sdate + "&edate=" + edate + "&sign=excel";
+	  location.href = url;
+  });
+  /******************************************************/
 
 </script>
 {{include file="layouts/footer.tpl"}}
