@@ -665,7 +665,6 @@
 				}
 			}, 'json');
 		})
-
 	})
 </script>
 {{include file="layouts/footer.tpl"}}

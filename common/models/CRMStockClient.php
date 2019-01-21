@@ -44,16 +44,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	const CATEGORY_YANXUAN = 100;
 	const CATEGORY_ADVERT = 110;
 
-	const STATUS_DISLIKE = 100;
-	const STATUS_FRESH = 110;
-	const STATUS_CONTACT = 120;
-	const STATUS_ADD_WX = 125;
-	const STATUS_TALKING = 130;
-	const STATUS_MEETING = 160;
-	const STATUS_CERTIFICATE = 170;
-	const STATUS_CONTRACT = 180;
-	const STATUS_PAID = 200;
-
 	const GENDER_FEMALE = 10;
 	const GENDER_MALE = 11;
 	static $genderMap = [
@@ -84,6 +74,17 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::STOCK_AGE_3 => '1-3年',
 		self::STOCK_AGE_5 => '3年以上',
 	];
+
+
+	const STATUS_DISLIKE = 100;
+	const STATUS_FRESH = 110;
+	const STATUS_CONTACT = 120;
+	const STATUS_ADD_WX = 125;
+	const STATUS_TALKING = 130;
+	const STATUS_MEETING = 160;
+	const STATUS_CERTIFICATE = 170;
+	const STATUS_CONTRACT = 180;
+	const STATUS_PAID = 200;
 
 	static $StatusMap = [
 		self::STATUS_DISLIKE => "无兴趣/失败",
@@ -944,26 +945,27 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
 
 	/**
-	 *  配资CRM公海客户规则：
-	 * 1.30天内，转态未成为“80%充值”的用户
-	 * a)客户来源为“熟人”“熟人介绍”的客户除外
-	 * 2. 转态为“0%无兴趣/失败”的客户，自动放入“公海”
+	 * 配资CRM公海客户规则：
+	 * 6个工作日不跟进，放入公海
+	 * 1.系统自动更新，发短信的方式，不算做跟进。
+	 * 2.放入公海时，保持用户的跟进状态，即不显示0%的状态，显示之前的跟进状态，如60%注册。
+	 * 3.100%买股用户，不参与这种方式
 	 */
 	public static function auto_client_2_sea()
 	{
 		$conn = AppUtil::db();
-		$st = self::STATUS_DISLIKE;
-		$src1 = self::SRC_FRIEND;
-		$src2 = self::SRC_FRIEND_INTROLDUCE;
-		$sql = "select * from im_crm_stock_client where cSource not in ($src1,$src2) and DATEDIFF(cAddedDate,NOW())<-29
-				UNION 
-				select * from im_crm_stock_client where cStatus =$st ";
+		$st0 = self::STATUS_DISLIKE;
+
+		$st10 = self::STATUS_PAID;
+		$sql = "select * from im_crm_stock_client 
+				where cStatus not in ($st10) and cDeletedFlag=0 and datediff (cUpdatedDate,now())<-7 and cBDAssign>0 ";
 		$ret = $conn->createCommand($sql)->queryAll();
 		if (!$ret) {
 			return false;
 		}
 		foreach ($ret as $v) {
 			CRMStockClient::edit(["bd" => 0,], $v['cId']);
+			exit;
 		}
 		return true;
 	}

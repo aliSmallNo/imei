@@ -1684,13 +1684,13 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		$sql = "select * from im_stock_action where aType in (1,9) order by aId asc ";
+		/*$sql = "select * from im_stock_action where aType in (1,9) order by aId asc ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
-			// CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
-		}
+			 CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
+		}*/
 
-
+		CRMStockClient::auto_client_2_sea();
 	}
 
 
