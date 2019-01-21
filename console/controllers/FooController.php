@@ -1694,6 +1694,8 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		echo mb_strlen('胜多负少') . PHP_EOL;
 		echo mb_strlen('sdfsdf') . PHP_EOL;
+		echo AppUtil::hasHans('胜多负少sdf') . PHP_EOL;
+		echo AppUtil::hasHans('sdf') . PHP_EOL;
 
 	}
 
