@@ -383,7 +383,7 @@ class StockController extends BaseController
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
 		$condition = '';
-		if (Admin::isGroupUser(Admin::GROUP_STOCK_EXCEL)) {
+		if (!Admin::isGroupUser(Admin::GROUP_STOCK_EXCEL)) {
 			$condition .= " and a.aId=$manager_aid ";
 		}
 		if ($sdate && $edate) {
