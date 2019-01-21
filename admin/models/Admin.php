@@ -393,7 +393,7 @@ class Admin extends ActiveRecord
 				$adminIDs = [1002];//zp
 				break;
 			case self::GROUP_STOCK_LEADER:
-				$adminIDs = [1002, 1006]; // zp 于辉
+				$adminIDs = [1002, 1006, 1026]; // zp 于辉 罗文燕
 				break;
 			default: // self::GROUP_DEBUG
 				$adminIDs = [1001, 1002];
