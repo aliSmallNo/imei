@@ -687,7 +687,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$sql = "SELECT t.* 
 					FROM im_crm_stock_track as t
  					JOIN (select max(tId) as lastId,tCId from im_crm_stock_track 
- 					WHERE tDeletedFlag=0 AND tCId in (" . implode(",", $ids) . ") GROUP BY tCId) as c on c.lastId=t.tId";
+ 					WHERE tDeletedFlag=0 and tAction=100 AND tCId in (" . implode(",", $ids) . ") GROUP BY tCId) as c on c.lastId=t.tId";
 			$ret = $conn->createCommand($sql)->queryAll();
 			foreach ($ret as $row) {
 				$cid = $row["tCId"];
