@@ -453,6 +453,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				CRMStockTrack::add($item->cId, [
 					"status" => self::STATUS_FRESH,
 					"note" => "发送过短信用户: " . $log['oBefore'],
+					"action" => CRMStockTrack::ACTION_SYS,
 				], $adminId);
 			}
 
