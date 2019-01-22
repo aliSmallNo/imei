@@ -1686,16 +1686,15 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		$sql = "select * from im_stock_order order by oId asc ";
+		$sql = "select * from im_stock_order group by oPhone  order by oId asc ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
 			StockUser::pre_add($v['oPhone'], [
 				'uPhone' => $v['oPhone'],
 				'uName' => $v['oName'],
 			]);
-			echo $v['oPhone'] . PHP_EOL;
-			echo $v['oName'] . PHP_EOL;
-			exit;
+			echo $v['oName'] . ' == ' . $v['oPhone'] . PHP_EOL;
+
 		}
 
 		// CRMStockClient::auto_client_2_sea();
