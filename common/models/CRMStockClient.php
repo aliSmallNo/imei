@@ -308,7 +308,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				$tId = CRMStockTrack::add($item->cId, [
 					"status" => $status,
 					"action" => CRMStockTrack::ACTION_SYS,
-					"note" => "系统更新：用户操作更新"
+					"note" => "系统更新：" . $txt
 				], $adminId);
 				// 有更新的话，提醒下销售（弹窗方式）
 				Log::add_action_alert($item->cId, $tId);
