@@ -83,7 +83,9 @@ class StockUser extends \yii\db\ActiveRecord
 		if ($user) {
 			// 2018-1-21
 			if (!AppUtil::hasHans($user->uName) && mb_strlen($user->uName) == 11 && AppUtil::hasHans($values['uName'])) {
-				self::edit_admin($values['uName'], $user->uPhone, $user->uPtPhone, $user->uRate, $user->uType, $user->uNote);
+				self::edit($user->uId, [
+					"uName" => $values['uName'],
+				]);
 			}
 			return false;
 		}
