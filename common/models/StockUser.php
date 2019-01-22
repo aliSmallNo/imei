@@ -150,7 +150,7 @@ class StockUser extends \yii\db\ActiveRecord
 		$sql = "select *
 				from im_stock_user  
 				where uId>0 $strCriteria $cond
-				order by uAddedOn desc 
+				order by uUpdatedOn desc 
 				limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
