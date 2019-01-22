@@ -14,6 +14,7 @@ use common\models\CRMStockClient;
 use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
+use common\models\StockUser;
 use common\models\User;
 use common\models\UserNet;
 use common\models\UserQR;
@@ -42,6 +43,7 @@ use common\utils\WechatUtil;
 use common\utils\YouzanUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 use yii\console\Controller;
 
 class FooController extends Controller
@@ -1684,20 +1686,26 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public function actionTest()
 	{
-		/*$sql = "select * from im_stock_action where aType in (1,9) order by aId asc ";
+		$sql = "select * from im_stock_order order by oId asc ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
-			 CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
-		}*/
+			StockUser::pre_add($v['oPhone'], [
+				'uPhone' => $v['oPhone'],
+				'uName' => $v['oName'],
+			]);
+			echo $v['oPhone'] . PHP_EOL;
+			echo $v['oName'] . PHP_EOL;
+			exit;
+		}
 
 		// CRMStockClient::auto_client_2_sea();
 
-		echo mb_strlen('胜多负少') . PHP_EOL;
-		echo mb_strlen('sdfsdf') . PHP_EOL;
-		echo mb_strlen('17611629667') . PHP_EOL;
-		echo strlen('17611629667') . PHP_EOL;
-		echo AppUtil::hasHans('胜多负少sdf') . PHP_EOL;
-		echo AppUtil::hasHans('sdf') . PHP_EOL;
+//		echo mb_strlen('胜多负少') . PHP_EOL;
+//		echo mb_strlen('sdfsdf') . PHP_EOL;
+//		echo mb_strlen('17611629667') . PHP_EOL;
+//		echo strlen('17611629667') . PHP_EOL;
+//		echo AppUtil::hasHans('胜多负少sdf') . PHP_EOL;
+//		echo AppUtil::hasHans('sdf') . PHP_EOL;
 
 	}
 
