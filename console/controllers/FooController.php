@@ -1692,7 +1692,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			$user = StockUser::findOne(['uPhone' => $v['oPhone']]);
 			$pt_user = StockUser::findOne(['uPhone' => $user->uPtPhone, 'uType' => StockUser::TYPE_PARTNER]);
 			if ($pt_user) {
-				StockUser::edit($user->oId, [
+				StockUser::edit($user->uId, [
 					'uPtName' => $pt_user->uName,
 				]);
 			}
