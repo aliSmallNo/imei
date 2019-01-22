@@ -65,6 +65,13 @@ class StockUser extends \yii\db\ActiveRecord
 		if (!$values) {
 			return false;
 		}
+		$uPtPhone = isset($values['uPtPhone']) && AppUtil::checkPhone($values['uPtPhone']) ? $values['uPtPhone'] : '';
+		if ($uPtPhone) {
+			$pt_user = self::findOne(['uPhone' => $uPtPhone, 'uType' => self::TYPE_PARTNER]);
+			if ($pt_user) {
+				$data['uPtName'] = $pt_user['uName'];
+			}
+		}
 		$entity = self::findOne(['uId' => $id]);
 		if (!$entity) {
 			return false;
@@ -116,12 +123,6 @@ class StockUser extends \yii\db\ActiveRecord
 		}
 		$user = self::findOne(['uPhone' => $uPhone]);
 
-		if ($uPtPhone) {
-			$pt_user = self::findOne(['uPhone' => $uPtPhone]);
-			if ($pt_user) {
-				$data['uPtName'] = $pt_user['uName'];
-			}
-		}
 		if ($user) {
 			$res = self::edit($user->uId, $data);
 			$edit_st = "修改";
