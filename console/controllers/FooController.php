@@ -1690,9 +1690,12 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
 			$user = StockUser::findOne(['uPhone' => $v['oPhone']]);
-			StockUser::edit_admin($v['uName'], $user->uPhone, $user->uPtPhone, $user->uRate, $user->uType, $user->uNote);
-
-			echo $v['oName'] . ' == ' . $v['oPhone'] . PHP_EOL;
+			$pt_user = StockUser::findOne(['uPhone' => $user->uPtPhone, 'uType' => StockUser::TYPE_PARTNER]);
+			if ($pt_user) {
+				StockUser::edit($user->oId, [
+					'uPtName' => $pt_user->uName,
+				]);
+			}
 		}
 
 		// CRMStockClient::auto_client_2_sea();
