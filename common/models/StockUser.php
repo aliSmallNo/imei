@@ -69,7 +69,7 @@ class StockUser extends \yii\db\ActiveRecord
 		if ($uPtPhone) {
 			$pt_user = self::findOne(['uPhone' => $uPtPhone, 'uType' => self::TYPE_PARTNER]);
 			if ($pt_user) {
-				$data['uPtName'] = $pt_user['uName'];
+				$values['uPtName'] = $pt_user['uName'];
 			}
 		}
 		$entity = self::findOne(['uId' => $id]);
