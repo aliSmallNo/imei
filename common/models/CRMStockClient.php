@@ -256,7 +256,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	{
 		$txt = trim($txt);
 		$subTxt = mb_substr($txt, 0, 3);
-		echo '$subTxt==>' . $subTxt . PHP_EOL;
+		//echo '$subTxt==>' . $subTxt . PHP_EOL;
 		switch ($subTxt) {
 			case "已注册":
 				$status = self::STATUS_MEETING;
