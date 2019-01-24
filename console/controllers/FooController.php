@@ -1743,23 +1743,31 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		print_r([count($xiaodao), count($jin), count($cao)]);
 
-		/*CRMStockClient::edit([
-			"name" => $phone,
-			"phone" => $phone,
-			"wechat" => '',
-			"note" => '系统添加',
-			"prov" => '北京市',
-			"city" => '昌平区',
-			"addr" => '',
-			"age" => CRMStockClient::AGE_20_30,
-			"stock_age" => CRMStockClient::STOCK_AGE_1,
-			"gender" => CRMStockClient::GENDER_MALE,
-			"job" => '',
-			"category" => CRMStockClient::CATEGORY_YANXUAN,
-			"bd" => 0,
-			"type" => 'user_action',
-			"src" => CRMStockClient::SRC_WEBSITE,
-		], '', 1002);*/
+		$send = function ($phones) {
+			foreach ($phones as $phone) {
+				CRMStockClient::edit([
+					"name" => $phone,
+					"phone" => $phone,
+					"wechat" => '',
+					"note" => '系统添加',
+					"prov" => '北京市',
+					"city" => '昌平区',
+					"addr" => '',
+					"age" => CRMStockClient::AGE_20_30,
+					"stock_age" => CRMStockClient::STOCK_AGE_1,
+					"gender" => CRMStockClient::GENDER_MALE,
+					"job" => '',
+					"category" => CRMStockClient::CATEGORY_YANXUAN,
+					"bd" => 0,
+					"type" => 'user_zp',
+					"src" => CRMStockClient::SRC_WEBSITE,
+				], '', 1002);
+			}
+		};
+		$send($xiaodao);
+		$send($jin);
+		$send($cao);
+
 	}
 
 	public function actionTest()
