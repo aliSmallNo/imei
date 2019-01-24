@@ -71,6 +71,8 @@ class StockUser extends \yii\db\ActiveRecord
 			if ($pt_user) {
 				$values['uPtName'] = $pt_user['uName'];
 			}
+		} else {
+			$values['uPtName'] = null;
 		}
 		$entity = self::findOne(['uId' => $id]);
 		if (!$entity) {
