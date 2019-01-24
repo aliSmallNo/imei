@@ -77,7 +77,7 @@
 					<td>{{$item.uPtPhone}}</td>
 					<td>{{$item.uNote}}</td>
 				{{/if}}
-				<td>{{$item.uAddedOn}}</td>
+				<td>{{$item.uUpdatedOn}}</td>
 				{{if $is_staff}}
 					<td>
 						{{if $is_run}}<a href="javascript:;" class="edit_user btn btn-outline btn-primary btn-xs">修改用户</a>{{/if}}
