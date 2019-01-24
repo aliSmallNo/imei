@@ -1684,6 +1684,84 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	}
 
+	public function actionAssign()
+	{
+		$phones = [
+			15090721932,
+			18570053541,
+			15166277438,
+			19925111131,
+			15961273550,
+			13402658622,
+			13679271571,
+			18676203788,
+			13860172620,
+			15558177152,
+			13485316600,
+			13428476921,
+			18181115465,
+			15020455278,
+			17614470861,
+			15275240583,
+			18545177496,
+			13810021830,
+			17557263040,
+			13508091928,
+			15311256511,
+			13424259916,
+			15899028285,
+			18524488621,
+			13947282345,
+			13822205211,
+			13133898958,
+			13868539875,
+			18718482581,
+			15707337637,
+			18396608405,
+			15807281325,
+			15328799091,
+			15090350274,
+			13873692520,
+			18357559582,
+			17761092667,
+			17731098798,
+			13980502283,
+			13305818938,
+			15200778729,
+			13107282383,
+			13324858492,
+			18274843767,
+			13699544280,
+			13902271627,
+			15970082226,
+			13333988920,
+		];
+		shuffle($phones);
+		$xiaodao = array_slice($phones, 0, 20);
+		$jin = array_slice($phones, 20, 20);
+		$cao = array_slice($phones, 40, 8);
+
+		print_r([count($xiaodao), count($jin), count($cao)]);
+
+		/*CRMStockClient::edit([
+			"name" => $phone,
+			"phone" => $phone,
+			"wechat" => '',
+			"note" => '系统添加',
+			"prov" => '北京市',
+			"city" => '昌平区',
+			"addr" => '',
+			"age" => CRMStockClient::AGE_20_30,
+			"stock_age" => CRMStockClient::STOCK_AGE_1,
+			"gender" => CRMStockClient::GENDER_MALE,
+			"job" => '',
+			"category" => CRMStockClient::CATEGORY_YANXUAN,
+			"bd" => 0,
+			"type" => 'user_action',
+			"src" => CRMStockClient::SRC_WEBSITE,
+		], '', 1002);*/
+	}
+
 	public function actionTest()
 	{
 		$sql = "select * from im_stock_order group by oPhone  order by oId asc ";
