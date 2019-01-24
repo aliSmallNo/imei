@@ -1743,7 +1743,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		print_r([count($xiaodao), count($jin), count($cao)]);
 
-		$send = function ($phones) {
+		$send = function ($phones, $bd) {
 			foreach ($phones as $phone) {
 				CRMStockClient::edit([
 					"name" => $phone,
@@ -1758,15 +1758,15 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 					"gender" => CRMStockClient::GENDER_MALE,
 					"job" => '',
 					"category" => CRMStockClient::CATEGORY_YANXUAN,
-					"bd" => 0,
+					"bd" => $bd,
 					"type" => 'user_zp',
 					"src" => CRMStockClient::SRC_WEBSITE,
 				], '', 1002);
 			}
 		};
-		$send($xiaodao);
-		$send($jin);
-		$send($cao);
+		$send($xiaodao, 1027);
+		$send($jin, 1047);
+		$send($cao, 1048);
 
 	}
 
