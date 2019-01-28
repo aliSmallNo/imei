@@ -75,6 +75,7 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($ch,CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
 
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
@@ -91,7 +92,7 @@ class TryPhone
 				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 				'Content-Length: ' . strlen($jsonString),
-				"Proxy-Authorization: {$appKey}",      // 设置代理权限
+				"Proxy-Authorization: {$appKey}",
 				"User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.1.0.13",
 				'origin: https://sso.taoguba.com.cn',
 				'Referer: https://sso.taoguba.com.cn/xdomainProxy.html',
@@ -107,7 +108,5 @@ class TryPhone
 			curl_close($ch);//关闭 curl
 			return $response;
 		}
-
-
 	}
 }
