@@ -1799,7 +1799,12 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 	public function actionIps()
 	{
 
-		TryPhone::updateIPs();
+		//TryPhone::updateIPs();
+		$ip_port = "183.165.32.3:20725";
+		$phone = "17611629667";
+		$data = "userName=" + $phone + "&password=123456&save=Y&url=https://www.taoguba.com.cn/index?blockID=1";
+		$ret = TryPhone::taoguba_phone($ip_port, $data);
+		var_dump($ret);
 	}
 
 
