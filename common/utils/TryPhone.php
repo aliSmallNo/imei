@@ -88,7 +88,7 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
-		curl_setopt($ch, CURLOPT_TIMEOUT, 300);//设置超时时间
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
 
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -168,7 +168,7 @@ class TryPhone
 			'url' => "https://www.taoguba.com.cn/index?blockID=1",
 		];
 		$ret = TryPhone::taoguba_phone($data);
-		echo $phone . ' ===== ' . $ret . PHP_EOL;
+		// echo $phone . ' ===== ' . $ret . PHP_EOL;
 		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
 		if ($ret) {
 			$ret = json_decode($ret, 1);
