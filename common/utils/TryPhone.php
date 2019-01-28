@@ -43,6 +43,7 @@ class TryPhone
 	{
 		$ret = RedisUtil::init(RedisUtil::KEY_PROXY_IPS, self::LOCAL_IP)->getCache();
 		$ret = json_decode($ret, 1);
+		var_dump($ret);
 		if (is_array($ret)) {
 			shuffle($ret);
 			return $ret[0];
@@ -59,6 +60,7 @@ class TryPhone
 			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
 		}
 		$ip_port = self::get_proxy();
+		echo '$ip_port=>' . $ip_port . PHP_EOL;
 		if (!$ip_port) {
 			return false;
 		}
