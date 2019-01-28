@@ -56,7 +56,6 @@ class TryPhone
 	 */
 	public static function taoguba_phone($jsonString)
 	{
-
 		$ip_port = self::get_proxy();
 		echo '$ip_port=>' . $ip_port . PHP_EOL;
 		if (!$ip_port) {
@@ -71,11 +70,12 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_URL, $link);//设置链接
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
-		curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
-		curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
+		//curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
+		//curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
+		//curl_setopt($ch,CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($ch,CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
+
 
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
