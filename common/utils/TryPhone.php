@@ -17,6 +17,8 @@ class TryPhone
 
 	const URL_TAOGUBA_LOGIN = 'https://sso.taoguba.com.cn/web/login/submit';
 
+	const LOCAL_IP = '139.199.31.56';
+
 	/**
 	 * 原文：https://blog.csdn.net/u013091013/article/details/81312559
 	 */
@@ -26,15 +28,39 @@ class TryPhone
 		$ret = AppUtil::httpGet($link);
 		$ret = json_decode($ret, 1);
 		print_r($ret);
+		$ip_port = [];
+		if (is_array($ret) && $ret['code'] == 0) {
+			foreach ($ret['msg'] as $v) {
+				$ip_port[] = $v['ip'] . ":" . $v['port'];
+			}
+		}
+
+		RedisUtil::init(RedisUtil::KEY_PROXY_IPS, self::LOCAL_IP)->setCache($ip_port);
+
+	}
+
+	public static function get_proxy()
+	{
+		$ret = RedisUtil::init(RedisUtil::KEY_PROXY_IPS, self::LOCAL_IP)->getCache();
+		$ret = json_decode($ret, 1);
+		if (is_array($ret)) {
+			shuffle($ret);
+			return $ret[0];
+		}
+		return "";
 	}
 
 	/**
 	 * @return bool
 	 */
-	public static function taoguba_phone($ip_port, $jsonString)
+	public static function taoguba_phone($jsonString)
 	{
 		if (is_array($jsonString)) {
 			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
+		}
+		$ip_port = self::get_proxy();
+		if (!$ip_port) {
+			return false;
 		}
 
 		$appKey = self::APP_KEY;
