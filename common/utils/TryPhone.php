@@ -88,7 +88,7 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
-		curl_setopt($ch, CURLOPT_TIMEOUT, 3000);//设置超时时间
+		curl_setopt($ch, CURLOPT_TIMEOUT, 300);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
 
 		curl_setopt($ch, CURLOPT_POST, 1);
