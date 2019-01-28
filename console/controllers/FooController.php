@@ -1799,7 +1799,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 	public function actionIps()
 	{
 
-		//TryPhone::updateIPs();
+		TryPhone::updateIPs();
 
 		$phone = "17611629667";
 		$data = [

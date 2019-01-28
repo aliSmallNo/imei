@@ -12,8 +12,8 @@ namespace common\utils;
 class TryPhone
 {
 
-	const APP_KEY = '93d70b47bf86442cada3d9616b43b825';
-	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=93d70b47bf86442cada3d9616b43b825&count=10&expiryDate=0&format=1&newLine=2';
+	const APP_KEY = '405b848e01284a42a1b2152b48973894';
+	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=405b848e01284a42a1b2152b48973894&count=10&expiryDate=0&format=1&newLine=2';
 
 	const URL_TAOGUBA_LOGIN = 'https://sso.taoguba.com.cn/web/login/submit';
 
