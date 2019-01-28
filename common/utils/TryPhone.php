@@ -77,6 +77,8 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);//允许30*跳转
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 
+		$cookie = 'Hm_lvt_cc6a63a887a7d811c92b7cc41c441837=1548320523; UM_distinctid=1687f18470f485-00955950e23854-10346656-fa000-1687f184711b32; CNZZDATA1574657=cnzz_eid%3D2073132248-1548319611-https%253A%252F%252Fwww.taoguba.com.cn%252F%26ntime%3D1548319611; JSESSIONID=d82ef175-fd60-46a4-9c4d-494d410475ef; Hm_lpvt_cc6a63a887a7d811c92b7cc41c441837=1548320768';
+		curl_setopt($ch, CURLOPT_COOKIE, $cookie);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonString);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 			[
