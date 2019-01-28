@@ -39,6 +39,7 @@ use common\utils\Pinyin;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
 use common\utils\TencentAI;
+use common\utils\TryPhone;
 use common\utils\WechatUtil;
 use common\utils\YouzanUtil;
 use console\utils\QueueUtil;
@@ -1793,6 +1794,12 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 //		echo AppUtil::hasHans('胜多负少sdf') . PHP_EOL;
 //		echo AppUtil::hasHans('sdf') . PHP_EOL;
 
+	}
+
+	public function ips()
+	{
+
+		TryPhone::updateIPs();
 	}
 
 
