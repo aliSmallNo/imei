@@ -77,14 +77,18 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
 
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
+		curl_setopt($ch, CURLOPT_TIMEOUT, 3000);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
 
 		curl_setopt($ch, CURLOPT_POST, 1);
-		if (is_array($jsonString)) {
-			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
+//		if (is_array($jsonString)) {
+//			$jsonString = json_encode($jsonString, JSON_UNESCAPED_UNICODE);
+//		}
+		$postdata = "";
+		foreach ($jsonString as $key => $value) {
+			$postdata .= ($key . '=' . $value . '&');
 		}
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonString);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 			[
 				'Accept:*/*',
