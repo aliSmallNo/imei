@@ -1796,7 +1796,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	}
 
-	public function ips()
+	public function actionIps()
 	{
 
 		TryPhone::updateIPs();
