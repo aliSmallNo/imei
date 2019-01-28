@@ -62,7 +62,7 @@ class TryPhone
 			$msg = 'message: ' . $msg;
 		}
 		$fileName = AppUtil::logDir() . 'phone_' . $filename . date('Ymd') . '.log';
-		@file_put_contents($fileName, PHP_EOL . date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
+		@file_put_contents($fileName, date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
 
