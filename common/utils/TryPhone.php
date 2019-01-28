@@ -168,6 +168,7 @@ class TryPhone
 			'url' => "https://www.taoguba.com.cn/index?blockID=1",
 		];
 		$ret = TryPhone::taoguba_phone($data);
+		echo $phone . ' ===== ' . $ret . PHP_EOL;
 		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
 		if ($ret) {
 			$ret = json_decode($ret, 1);
