@@ -56,14 +56,14 @@ class TryPhone
 	 */
 	public static function taoguba_phone($jsonString)
 	{
-		$ip_port = self::get_proxy();
-		echo '$ip_port=>' . $ip_port . PHP_EOL;
-		if (!$ip_port) {
-			return false;
-		}
-		$arrip = explode(":", $ip_port);
+//		$ip_port = self::get_proxy();
+//		echo '$ip_port=>' . $ip_port . PHP_EOL;
+//		if (!$ip_port) {
+//			return false;
+//		}
+//		$arrip = explode(":", $ip_port);
+//		$appKey = "Basic" . self::APP_KEY;
 
-		$appKey = "Basic" . self::APP_KEY;
 		$link = self::URL_TAOGUBA_LOGIN;
 
 		$ch = curl_init();
@@ -92,7 +92,7 @@ class TryPhone
 				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 				'Content-Length: ' . strlen($jsonString),
-				"Proxy-Authorization: {$appKey}",
+				//"Proxy-Authorization: {$appKey}",
 				"User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.1.0.13",
 				'origin: https://sso.taoguba.com.cn',
 				'Referer: https://sso.taoguba.com.cn/xdomainProxy.html',
