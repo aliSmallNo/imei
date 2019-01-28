@@ -1803,5 +1803,12 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	}
 
+	public function actionIps2()
+	{
+
+		TryPhone::req("17611629667");
+
+	}
+
 
 }
