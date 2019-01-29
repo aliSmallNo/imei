@@ -1822,6 +1822,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			$item = StockOrder::findOne(['oId' => $v['oId']]);
 
 			$ret = StockOrder::getStockPrice($stockId);
+
 			$item->oPriceRaw = AppUtil::json_encode($ret);
 			$item->save();
 		}

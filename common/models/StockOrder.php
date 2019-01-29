@@ -153,6 +153,7 @@ class StockOrder extends ActiveRecord
 
 		$pos = strpos($ret, "=");
 		$ret = substr($ret, $pos + 2, -2);
+		echo $ret . PHP_EOL;
 		$ret = explode(",", $ret);
 		return $ret;
 	}
