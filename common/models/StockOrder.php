@@ -22,6 +22,13 @@ use Yii;
 class StockOrder extends ActiveRecord
 {
 
+	const ST_HOLD = 1;
+	const ST_SOLD = 9;
+	static $stDict = [
+		self::ST_HOLD => '持有',
+		self::ST_SOLD => '卖出',
+	];
+
 	public static function tableName()
 	{
 		return '{{%stock_order}}';
@@ -158,7 +165,20 @@ class StockOrder extends ActiveRecord
 				$diff[] = $v2;
 			}
 		}
-		print_r($diff);
+
+		if ($diff) {
+			foreach ($diff as $v3) {
+				self::add([
+					"oPhone" => $v3['oPhone'],
+					"oName" => $v3['oName'],
+					"oStockId" => $v3['oStockId'],
+					"oStockAmt" => $v3['oStockAmt'],
+					"oLoan" => $v3['oLoan'],
+					"oStatus" => self::ST_SOLD,
+					"oAddedOn" => date('Y-m-d')
+				]);
+			}
+		}
 
 	}
 
@@ -267,6 +287,7 @@ class StockOrder extends ActiveRecord
 		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
 			$res[$k]['dt'] = date('Y-m-d', strtotime($v['oAddedOn']));
+			$res[$k]['st_t'] = self::$stDict[$v['oStatus']];
 		}
 
 		$sql = "select count(1) as co
@@ -312,7 +333,9 @@ class StockOrder extends ActiveRecord
 			$res[$k]['user_loan_amt'] = sprintf('%.0f', $v['user_loan_amt']);
 			$income = sprintf('%.2f', ($v['user_loan_amt'] * $rate / 250));
 			$res[$k]['income'] = $income;
-			$sum_income += $income;
+			if ($v['oStatus'] == self::ST_HOLD) {
+				$sum_income += $income;
+			}
 		}
 
 		return [$res, $sum_income];

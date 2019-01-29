@@ -60,6 +60,7 @@
 			<th>股票代码</th>
 			<th>股数|初期借款</th>
 			{{if $is_staff}}
+			<th>状态</th>
 			<th>今日价格</th>
 			<th>收益</th>
 			{{/if}}
@@ -81,6 +82,7 @@
 					成本：{{$item.oCostPrice}}
 				</td>
 				{{if $is_staff}}
+				<td>{{$item.st_t}}</td>
 				<td>
 					开盘：{{$item.oOpenPrice}}<br>
 					收盘：{{$item.oClosePrice}}<br>
