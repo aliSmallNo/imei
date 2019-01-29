@@ -153,7 +153,8 @@ class StockOrder extends ActiveRecord
 
 		$pos = strpos($ret, "=");
 		$ret = substr($ret, $pos + 2, -2);
-		echo $ret;
+		$ret = explode(",", $ret);
+		print_r($ret);
 	}
 
 	// 渠道限制条件
