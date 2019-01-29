@@ -180,11 +180,19 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 			$strCriteria = " AND c.cBDAssign=" . $id;
 		}
 		$action = self::ACTION_USER;
-		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
+		/*$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
 		 from im_crm_stock_client as c 
 		 join im_crm_stock_track as t on t.tCId=c.cId AND t.tAddedBy=c.cBDAssign AND t.tDeletedFlag=0
 		 join im_admin as a on a.aId=t.tAddedBy
 		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category AND a.aId not in (1002)
+		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria and t.tAction=$action
+		 GROUP BY t.tAddedBy,a.aName
+		 order by cnt desc";*/
+
+		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
+		 from im_crm_stock_track as t 
+		 join im_admin as a on a.aId=t.tAddedBy
+		 WHERE t.tDeletedFlag=0 AND a.aId not in (1002)
 		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria and t.tAction=$action
 		 GROUP BY t.tAddedBy,a.aName
 		 order by cnt desc";
@@ -203,13 +211,20 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 	{
 		$strCriteria = "";
 		if ($id) {
-			$strCriteria = " AND c.cBDAssign=" . $id;
+			$strCriteria = " AND t.tAddedBy=" . $id;
 		}
-		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as name, DATE_FORMAT(t.tAddedDate,'%m-%d') as title
+		/*$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as name, DATE_FORMAT(t.tAddedDate,'%m-%d') as title
 		 from im_crm_stock_client as c 
 		 join im_crm_stock_track as t on t.tCId=c.cId AND t.tAddedBy=c.cBDAssign AND t.tDeletedFlag=0
 		 join im_admin as a on a.aId=t.tAddedBy
-		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category AND a.aId not in (1453348809, 1453807803, 1467788165, 1843540)
+		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category
+		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria 
+		 GROUP BY t.tAddedBy, title
+		 order by title";*/
+		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as name, DATE_FORMAT(t.tAddedDate,'%m-%d') as title
+		 from im_crm_stock_track as t
+		 join im_admin as a on a.aId=t.tAddedBy
+		 WHERE t.tDeletedFlag=0
 		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria 
 		 GROUP BY t.tAddedBy, title
 		 order by title";
