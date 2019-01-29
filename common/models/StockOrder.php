@@ -143,14 +143,20 @@ class StockOrder extends ActiveRecord
 			$stockId = $v['oStockId'];
 			$ret = StockOrder::getStockPrice($stockId);
 
-			$openPrice = $ret[1];
-			$closePrice = $ret[6];
+			$openPrice = $ret[1];   // 今日开盘价
+			$closePrice = $ret[6];  // 今日收盘价
 			$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
+			$oCostPrice = sprintf("%.2f", $v['oLoan'] / $v['oStockAmt']);// 成本价格
+			$oIncome = $avgPrice * $avgPrice - $v['oLoan'];// 盈利
+			$oRate = sprintf("%.2f", $oIncome / $v['oLoan']);// 盈利比例
 			StockOrder::edit($v['oId'], [
 				"oPriceRaw" => AppUtil::json_encode($ret),
 				"oAvgPrice" => $avgPrice,
 				"oOpenPrice" => $openPrice,
 				"oClosePrice" => $closePrice,
+				"oCostPrice" => $oCostPrice,
+				"oIncome" => $oIncome,
+				"oRate" => $oRate,
 			]);
 		}
 	}
