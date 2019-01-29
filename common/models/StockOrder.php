@@ -129,10 +129,37 @@ class StockOrder extends ActiveRecord
 			$transaction->rollBack();
 		} else {
 			$transaction->commit();
+
 			self::update_price();
 		}
 
 		return [$insertCount, $error];
+	}
+
+	public static function sold_stock()
+	{
+		$conn = AppUtil::db();
+		$sql = "select *,concat(oPhone,oStockId) as id from im_stock_order where datediff(oAddedOn,now())=-1";
+		$yestoday = $conn->createCommand($sql)->queryAll();
+		$_yestoday = [];
+		foreach ($yestoday as $k => $v) {
+			$_yestoday[$v['id']] = $v;
+		}
+		$sql = "select *,concat(oPhone,oStockId) as id from im_stock_order where datediff(oAddedOn,now())=0";
+		$today = $conn->createCommand($sql)->queryAll();
+		$_today = [];
+		foreach ($today as $k1 => $v1) {
+			$_today[$v1['id']] = $v1;
+		}
+
+		$diff = [];
+		foreach ($_yestoday as $k2 => $v2) {
+			if (!isset($_today[$k2])) {
+				$diff[] = $v2;
+			}
+		}
+		print_r($diff);
+
 	}
 
 	public static function update_price()
