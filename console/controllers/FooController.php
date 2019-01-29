@@ -1819,14 +1819,11 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			$stockId = $v['oStockId'];
-			$item = StockOrder::findOne(['oId' => $v['oId']]);
-
 			$ret = StockOrder::getStockPrice($stockId);
 
-			$item->oPriceRaw = AppUtil::json_encode($ret);
-			$item->save();
-		}
+			StockOrder::edit($v['oId'], ["oPriceRaw" => AppUtil::json_encode($ret)]);
 
+		}
 
 	}
 

@@ -53,12 +53,12 @@ class StockOrder extends ActiveRecord
 		return $entity->oId;
 	}
 
-	public static function edit($phone, $values = [])
+	public static function edit($oid, $values = [])
 	{
 		if (!$values) {
 			return false;
 		}
-		$entity = self::findOne(['oPhone' => $phone]);
+		$entity = self::findOne(['oId' => $oid]);
 		if (!$entity) {
 			return false;
 		}
