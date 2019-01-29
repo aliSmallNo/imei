@@ -58,8 +58,10 @@
 			<th>用户名|手机</th>
 			<th>股票代码</th>
 			<th>股数|初期借款</th>
+			{{if $is_staff}}
 			<th>今日价格</th>
 			<th>收益</th>
+			{{/if}}
 			<th>时间</th>
 		</tr>
 		</thead>
@@ -75,6 +77,7 @@
 					{{$item.oLoan}}<br>
 					成本：{{$item.oCostPrice}}
 				</td>
+				{{if $is_staff}}
 				<td>
 					开盘：{{$item.oOpenPrice}}<br>
 					收盘：{{$item.oClosePrice}}<br>
@@ -84,6 +87,7 @@
 					收益：{{$item.oIncome}}<br>
 					收益率：{{$item.oRate}}
 				</td>
+				{{/if}}
 				<td>{{$item.dt}}</td>
 			</tr>
 		{{/foreach}}
