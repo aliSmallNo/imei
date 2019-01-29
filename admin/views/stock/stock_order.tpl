@@ -54,6 +54,7 @@
 		<tr>
 			{{if $is_staff}}
 				<th>ID</th>
+				<th>BD</th>
 			{{/if}}
 			<th>用户名|手机</th>
 			<th>股票代码</th>
@@ -69,7 +70,9 @@
 		{{foreach from=$list item=item}}
 			<tr>
 				{{if $is_staff}}
-					<td>{{$item.oId}}</td>{{/if}}
+					<td>{{$item.oId}}</td>
+					<td>{{$item.uPtName}}</td>
+				{{/if}}
 				<td>{{$item.oName}}({{$item.oPhone}})</td>
 				<td>{{$item.oStockId}}</td>
 				<td>
