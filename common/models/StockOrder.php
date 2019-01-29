@@ -149,7 +149,7 @@ class StockOrder extends ActiveRecord
 				$city = "";
 		}
 		$base_url = "http://hq.sinajs.cn/list=" . $city . $stockId;
-		$ret = AppUtil::httpGet($base_url);
+		$ret = AppUtil::httpGet($base_url, ['Content-Type: application/x-www-form-urlencoded; charset=UTF-8']);
 
 		$pos = strpos($ret, "=");
 		$ret = substr($ret, $pos + 2, -2);
