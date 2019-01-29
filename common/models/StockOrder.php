@@ -136,7 +136,9 @@ class StockOrder extends ActiveRecord
 			$transaction->rollBack();
 		} else {
 			$transaction->commit();
-
+			// 加入今天卖出的股票
+			self::sold_stock();
+			// 更新价格
 			self::update_price();
 		}
 
