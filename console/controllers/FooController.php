@@ -1815,15 +1815,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 	{
 
 		// StockOrder::getStockPrice(600078);
-		$sql = " select * from im_stock_order where datediff(oAddedOn,now())=0 ";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		foreach ($res as $v) {
-			$stockId = $v['oStockId'];
-			$ret = StockOrder::getStockPrice($stockId);
-
-			StockOrder::edit($v['oId'], ["oPriceRaw" => AppUtil::json_encode($ret)]);
-
-		}
+		StockOrder::update_price();
 
 	}
 

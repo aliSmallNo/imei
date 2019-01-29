@@ -129,9 +129,30 @@ class StockOrder extends ActiveRecord
 			$transaction->rollBack();
 		} else {
 			$transaction->commit();
+			self::update_price();
 		}
 
 		return [$insertCount, $error];
+	}
+
+	public static function update_price()
+	{
+		$sql = " select * from im_stock_order where datediff(oAddedOn,now())=0 ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			$stockId = $v['oStockId'];
+			$ret = StockOrder::getStockPrice($stockId);
+
+			$openPrice = $ret[1];
+			$closePrice = $ret[6];
+			$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
+			StockOrder::edit($v['oId'], [
+				"oPriceRaw" => AppUtil::json_encode($ret),
+				"oAvgPrice" => $avgPrice,
+				"oOpenPrice" => $openPrice,
+				"oClosePrice" => $closePrice,
+			]);
+		}
 	}
 
 	public static function getStockPrice($stockId)
@@ -153,9 +174,9 @@ class StockOrder extends ActiveRecord
 
 		$pos = strpos($ret, "=");
 		$ret = substr($ret, $pos + 2, -2);
-		echo $ret . PHP_EOL;
-//		$ret = explode(",", $ret);
-//		unset($ret[0]);
+		// echo $ret . PHP_EOL;
+		$ret = explode(",", $ret);
+		unset($ret[0]);
 		return $ret;
 	}
 
