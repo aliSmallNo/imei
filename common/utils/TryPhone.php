@@ -11,9 +11,9 @@ namespace common\utils;
 
 class TryPhone
 {
-
-	const APP_KEY = '405b848e01284a42a1b2152b48973894';
-	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=405b848e01284a42a1b2152b48973894&count=10&expiryDate=0&format=1&newLine=2';
+	const APP_KEY = 'af295cc800a749b5bc66ddd07952cfee';
+//	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=405b848e01284a42a1b2152b48973894&count=10&expiryDate=0&format=1&newLine=2';
+	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=af295cc800a749b5bc66ddd07952cfee&count=10&expiryDate=0&format=1&newLine=2';
 
 	const URL_TAOGUBA_LOGIN = 'https://sso.taoguba.com.cn/web/login/submit';
 
@@ -123,28 +123,45 @@ class TryPhone
 		}
 	}
 
-	public static function phone_section()
+	// bj
+	public static function phone_section_1()
 	{
-
 		$phone_section = [
-			1390009,
-			1390010,
-			1390011,
-			1390012,
-			1390028,
-			1390085,
-			1390097,
-			1390099,
-			1390100,
-			1390101,
-			1390102,
-			1390103,
-			1390104,
-			1390105,
-			1390106,
-			1390107,
-			1390108,
-			1390109,
+			1391083,
+			1371648,
+			1819342,
+			1827717,
+			1571282,
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone($p);
+		}
+	}
+
+	// tianjin
+	public static function phone_section_2()
+	{
+		$phone_section = [
+			1351200,
+			1350218,
+			1350214,
+			1350212,
+			1862211,
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone($p);
+		}
+	}
+
+	// shanghai
+	public static function phone_section_3()
+	{
+		$phone_section = [
+			1364174,
+			1378898,
+			1831708,
+			1381622,
+			1502116,
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone($p);
