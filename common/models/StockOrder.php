@@ -152,7 +152,7 @@ class StockOrder extends ActiveRecord
 		$ret = AppUtil::httpGet($base_url);
 
 		$pos = strpos($ret, "=");
-		$ret = trim(trim(substr($ret , $pos+ 1), '"'), ";");
+		$ret = substr($ret, $pos + 2, -2);
 		echo $ret;
 	}
 
