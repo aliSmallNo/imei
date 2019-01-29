@@ -14,6 +14,7 @@ use common\models\CRMStockClient;
 use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
+use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\User;
 use common\models\UserNet;
@@ -1799,7 +1800,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 	public function actionIps()
 	{
 
-		TryPhone::phone_section();
+//		TryPhone::phone_section_1();
 
 	}
 
@@ -1807,6 +1808,13 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 	{
 
 		TryPhone::req("17611629667");
+
+	}
+
+	public function actionStockp()
+	{
+
+		StockOrder::getStockPrice(600078);
 
 	}
 

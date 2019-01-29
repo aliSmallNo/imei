@@ -107,7 +107,7 @@ class StockOrder extends ActiveRecord
 				':oName' => $value[1],
 				':oStockId' => sprintf("%06d", $value[2]),
 				':oStockAmt' => $value[3],
-				':oLoan' => sprintf('%.2f',$value[4]),
+				':oLoan' => sprintf('%.2f', $value[4]),
 				':oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
 			];
 			try {
@@ -132,6 +132,27 @@ class StockOrder extends ActiveRecord
 		}
 
 		return [$insertCount, $error];
+	}
+
+	public static function getStockPrice($stockId)
+	{
+		$preFix = substr($stockId, 0, 1);
+		switch ($preFix) {
+			case "6":
+				$city = "sh";
+				break;
+			case "0":
+			case "3":
+				$city = "sz";
+				break;
+			default:
+				$city = "";
+		}
+		$base_url = "http://hq.sinajs.cn/list=" . $city . $stockId;
+		$ret = AppUtil::httpGet($base_url);
+		$pos = strpos($ret, "=");
+		$ret = trim(substr($ret, $pos));
+		echo $ret;
 	}
 
 	// 渠道限制条件
