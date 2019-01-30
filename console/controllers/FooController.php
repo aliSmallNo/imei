@@ -1822,7 +1822,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public static function actionAddp()
 	{
-		$sql = "select * from `im_crm_stock_client` where cProvince like '%上海%' and CHAR_LENGTH(cPhone)=11";
+		/*$sql = "select * from `im_crm_stock_client` where cProvince like '%上海%' and CHAR_LENGTH(cPhone)=11";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		$res = array_column($res, "cPhone");
 		$res = array_map(function ($v) {
@@ -1831,7 +1831,9 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		print_r(array_unique($res));
 		foreach ($res as $phone) {
 			Log::add_phone_section($phone, 'shanghai');
-		}
+		}*/
+
+		TryPhone::phone_section_4();
 	}
 
 

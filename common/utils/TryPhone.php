@@ -9,6 +9,8 @@
 namespace common\utils;
 
 
+use common\models\Log;
+
 class TryPhone
 {
 	const APP_KEY = 'af295cc800a749b5bc66ddd07952cfee';
@@ -166,6 +168,26 @@ class TryPhone
 		foreach ($phone_section as $p) {
 			self::combind_phone($p);
 		}
+	}
+
+	public static function phone_section_4()
+	{
+
+		while (1) {
+			$log = Log::findOne(['oCategory' => Log::CAT_PHONE_SECTION, 'oKey' => Log::KEY_WAIT]);
+			if ($log) {
+				$p = $log->oOpenId;
+				echo $p . PHP_EOL;
+				$log->oKey = Log::KEY_USED;
+				$log->oAfter = 1;
+				$log->save();
+//				 self::combind_phone($p);
+			} else {
+				break;
+			}
+		}
+		echo 'end ' . __FUNCTION__ . PHP_EOL;
+
 	}
 
 	public static function combind_phone($p)
