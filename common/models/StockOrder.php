@@ -139,7 +139,7 @@ class StockOrder extends ActiveRecord
 			// 加入今天卖出的股票
 			self::sold_stock();
 			// 更新价格
-			self::update_price();
+			//self::update_price();
 		}
 
 		return [$insertCount, $error];
