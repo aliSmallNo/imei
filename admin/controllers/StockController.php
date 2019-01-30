@@ -374,6 +374,73 @@ class StockController extends BaseController
 		);
 	}
 
+	public function actionExport_today_income()
+	{
+		$conn = AppUtil::db();
+		$sql = "select a.aId,a.aName,
+				o.*
+				from im_stock_order as o
+				left join im_stock_user as u on u.uPhone=o.oPhone
+				left join im_admin as a on a.aPhone=u.uPtPhone
+				where o.oPhone>0 and datediff(oAddedOn,now())=0 ";
+		$res1 = $conn->createCommand($sql)->queryAll();
+
+		$res2 = [];
+		foreach ($res1 as $k => $v) {
+			$key = $v['oPhone'];
+			$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
+			$load = $v['oLoan'];
+			$stockId = $v['oStockId'];
+			if (!isset($res2[$key])) {
+				$res2[$key] = [
+					"oName" => $v['oName'],
+					"income_sum" => $income,
+					"load_sum" => $load,
+					"stock_co" => 1,
+					"stock_ids" => [$stockId],
+					"bd" => $v['aName'],
+				];
+			} else {
+				$res2[$key]['income_sum'] += $income;
+				$res2[$key]['load_sum'] += $load;
+				if (!in_array($stockId, $res2[$key]['stock_ids'])) {
+					$res2[$key]['stock_co'] += 1;
+					$res2[$key]['stock_ids'][] = $stockId;
+				}
+			}
+		}
+
+		$res3 = [];
+		foreach ($res1 as $k => $v) {
+			$key = $v['aId'];
+			$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
+			$load = $v['oLoan'];
+			$phone = $v['oPhone'];
+			if (!isset($res3[$key])) {
+				$res3[$key] = [
+					"bd" => $v['aName'],
+					"income_sum" => $income,
+					"load_sum" => $load,
+					"user_co" => 1,
+					"users" => [$phone],
+
+				];
+			} else {
+				$res3[$key]['income_sum'] += $income;
+				$res3[$key]['load_sum'] += $load;
+				if (!in_array($phone, $res3[$key]['users'])) {
+					$res3[$key]['user_co'] += 1;
+					$res3[$key]['users'][] = $phone;
+				}
+			}
+		}
+
+		print_r($res2);
+		print_r($res3);
+		// ExcelUtil::getYZExcel2('客户订单' . date("Y-m-d"), $data);
+
+	}
+
 	/**
 	 * 导出自己的客户2018.1.21
 	 */

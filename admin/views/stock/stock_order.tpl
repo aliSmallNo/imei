@@ -11,6 +11,7 @@
 			{{if $is_stock_leader}}
 				<a href="javascript:;" class="opImport btn btn-outline btn-primary btn-xs">导入</a>
 				<a href="javascript:;" class="opDelete btn btn-outline btn-danger btn-xs">删除</a>
+				<a href="javascript:;" class="opIncome btn btn-outline btn-warning btn-xs">导出今日盈亏</a>
 			{{/if}}
 		</h4>
 	</div>
@@ -60,9 +61,9 @@
 			<th>股票代码</th>
 			<th>股数|初期借款</th>
 			{{if $is_staff}}
-			<th>状态</th>
-			<th>今日价格</th>
-			<th>收益</th>
+				<th>状态</th>
+				<th>今日价格</th>
+				<th>收益</th>
 			{{/if}}
 			<th>时间</th>
 		</tr>
@@ -82,16 +83,16 @@
 					成本：{{$item.oCostPrice}}
 				</td>
 				{{if $is_staff}}
-				<td>{{$item.st_t}}</td>
-				<td>
-					开盘：{{$item.oOpenPrice}}<br>
-					收盘：{{$item.oClosePrice}}<br>
-					均价：{{$item.oAvgPrice}}
-				</td>
-				<td>
-					收益：{{$item.oIncome}}<br>
-					收益率：{{$item.oRate}}
-				</td>
+					<td>{{$item.st_t}}</td>
+					<td>
+						开盘：{{$item.oOpenPrice}}<br>
+						收盘：{{$item.oClosePrice}}<br>
+						均价：{{$item.oAvgPrice}}
+					</td>
+					<td>
+						收益：{{$item.oIncome}}<br>
+						收益率：{{$item.oRate}}
+					</td>
 				{{/if}}
 				<td>{{$item.dt}}</td>
 			</tr>
@@ -199,15 +200,21 @@
 			}
 		}, 'json');
 	});
-  /******************************************************/
-  $(".opExcel").on("click", function () {
-	  // var admin = $("select[name=admin]").val();
-	  var sdate = $("input[name=sdate]").val();
-	  var edate = $("input[name=edate]").val();
-	  var url = "/stock/export_stock_order?sdate=" + sdate + "&edate=" + edate + "&sign=excel";
-	  location.href = url;
-  });
-  /******************************************************/
+	/********************* 导出我的客户 start *********************************/
+	$(".opExcel").on("click", function () {
+		// var admin = $("select[name=admin]").val();
+		var sdate = $("input[name=sdate]").val();
+		var edate = $("input[name=edate]").val();
+		var url = "/stock/export_stock_order?sdate=" + sdate + "&edate=" + edate + "&sign=excel";
+		location.href = url;
+	});
+	/********************* 导出我的客户 end ******************************/
+
+	/********************* 导出今日盈亏 start ******************************/
+	$(".opIncome").on("click", function () {
+		location.href = "/stock/export_today_income";
+	});
+	/********************* 导出今日盈亏 end ********************************/
 
 </script>
 {{include file="layouts/footer.tpl"}}
