@@ -388,26 +388,47 @@ class StockController extends BaseController
 		$res1 = $conn->createCommand($sql)->queryAll();
 
 		$res2 = [];
+		$res4 = [];
 		foreach ($res1 as $k => $v) {
 			$key = $v['oPhone'];
 			$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
 			$load = $v['oLoan'];
 			$stockId = $v['oStockId'];
-			if (!isset($res2[$key])) {
-				$res2[$key] = [
-					"oName" => $v['oName'],
-					"income_sum" => $income,
-					"load_sum" => $load,
-					"stock_co" => 1,
-					"stock_ids" => [$stockId],
-					"bd" => $v['aName'],
-				];
+			if ($v['st'] == "持有") {
+				if (!isset($res2[$key])) {
+					$res2[$key] = [
+						"oName" => $v['oName'],
+						"income_sum" => $income,
+						"load_sum" => $load,
+						"stock_co" => 1,
+						"stock_ids" => [$stockId],
+						"bd" => $v['aName'],
+					];
+				} else {
+					$res2[$key]['income_sum'] += $income;
+					$res2[$key]['load_sum'] += $load;
+					if (!in_array($stockId, $res2[$key]['stock_ids'])) {
+						$res2[$key]['stock_co'] += 1;
+						$res2[$key]['stock_ids'][] = $stockId;
+					}
+				}
 			} else {
-				$res2[$key]['income_sum'] += $income;
-				$res2[$key]['load_sum'] += $load;
-				if (!in_array($stockId, $res2[$key]['stock_ids'])) {
-					$res2[$key]['stock_co'] += 1;
-					$res2[$key]['stock_ids'][] = $stockId;
+				if (!isset($res4[$key])) {
+					$res4[$key] = [
+						"oName" => $v['oName'],
+						"income_sum" => $income,
+						"load_sum" => $load,
+						"stock_co" => 1,
+						"stock_ids" => [$stockId],
+						"bd" => $v['aName'],
+					];
+				} else {
+					$res4[$key]['income_sum'] += $income;
+					$res4[$key]['load_sum'] += $load;
+					if (!in_array($stockId, $res4[$key]['stock_ids'])) {
+						$res4[$key]['stock_co'] += 1;
+						$res4[$key]['stock_ids'][] = $stockId;
+					}
 				}
 			}
 		}
@@ -418,21 +439,23 @@ class StockController extends BaseController
 			$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
 			$load = $v['oLoan'];
 			$phone = $v['oPhone'];
-			if (!isset($res3[$key])) {
-				$res3[$key] = [
-					"bd" => $v['aName'],
-					"income_sum" => $income,
-					"load_sum" => $load,
-					"user_co" => 1,
-					"users" => [$phone],
+			if ($v['st'] == "持有") {
+				if (!isset($res3[$key])) {
+					$res3[$key] = [
+						"bd" => $v['aName'],
+						"income_sum" => $income,
+						"load_sum" => $load,
+						"user_co" => 1,
+						"users" => [$phone],
 
-				];
-			} else {
-				$res3[$key]['income_sum'] += $income;
-				$res3[$key]['load_sum'] += $load;
-				if (!in_array($phone, $res3[$key]['users'])) {
-					$res3[$key]['user_co'] += 1;
-					$res3[$key]['users'][] = $phone;
+					];
+				} else {
+					$res3[$key]['income_sum'] += $income;
+					$res3[$key]['load_sum'] += $load;
+					if (!in_array($phone, $res3[$key]['users'])) {
+						$res3[$key]['user_co'] += 1;
+						$res3[$key]['users'][] = $phone;
+					}
 				}
 			}
 		}
@@ -450,7 +473,7 @@ class StockController extends BaseController
 			return $arr;
 		};
 
-		ExcelUtil::getYZExcel2('盈亏' . date("Y-m-d"), [$trans($res1), $trans($res2), $trans($res3)]);
+		ExcelUtil::getYZExcel2('盈亏' . date("Y-m-d"), [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]);
 
 	}
 

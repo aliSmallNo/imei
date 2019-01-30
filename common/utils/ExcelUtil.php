@@ -596,11 +596,10 @@ class ExcelUtil
 		}
 
 		$rowIndex += 2;
-		//表格的具体数据
 		$data2 = $data[1];
-		array_unshift($data2, ['用户', '盈亏情况', '借款额', '买股数', '负责人']);
+		array_unshift($data2, ['持有用户', '盈亏情况', '借款额', '买股数', '负责人']);
 		foreach ($data2 as $key => $rows) {
-			$span = ord("");
+			$span = ord("A");
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
 				$activeSheet->setCellValue($col . $rowIndex, $value);
@@ -620,8 +619,30 @@ class ExcelUtil
 		}
 
 		$rowIndex += 2;
-		//表格的具体数据
-		$data3 = $data[2];
+		$data4 = $data[2];
+		array_unshift($data4, ['卖出用户', '盈亏情况', '借款额', '买股数', '负责人']);
+		foreach ($data4 as $key => $rows) {
+			$span = ord("A");
+			foreach ($rows as $keyName => $value) {
+				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
+				$activeSheet->setCellValue($col . $rowIndex, $value);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
+
+				if ($keyName == (count($rows) - 1)) {
+					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				}
+				$span++;
+			}
+			$rowIndex++;
+		}
+
+		$rowIndex += 2;
+		$data3 = $data[3];
 		array_unshift($data3, ['BD', '总盈亏', '借款总额', '人数']);
 		foreach ($data3 as $key => $rows) {
 			$span = ord("A");
@@ -643,20 +664,6 @@ class ExcelUtil
 			$rowIndex++;
 		}
 
-
-//		if ($widths) {
-//			foreach ($headArr as $k => $v) {
-//				if (isset($widths[$k])) {
-//					$col = \PHPExcel_Cell::stringFromColumnIndex($k);
-//					$activeSheet->getColumnDimension($col)->setWidth($widths[$k]);
-//					$activeSheet->getStyle($col . '1')->getFont()->setBold(true);//加粗
-//					$activeSheet->getStyle($col . '1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-//					$activeSheet->getStyle($col . '1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-//				} else {
-//					break;
-//				}
-//			}
-//		}
 		self::exportExcel($fileName, $objPHPExcel);
 	}
 }
