@@ -1822,7 +1822,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	public static function actionAddp()
 	{
-		$sql = "select * from im_yz_addr where a_delivery_province like '%天津%'";
+		$sql = "select * from im_yz_addr where a_delivery_province like '%上海%'";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		$res = array_column($res, "a_receiver_tel");
 		$res = array_map(function ($v) {
@@ -1830,7 +1830,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		}, $res);
 		print_r(array_unique($res));
 		foreach ($res as $phone) {
-			Log::add_phone_section($phone, 'tianjin');
+			Log::add_phone_section($phone, 'shanghai');
 		}
 	}
 
