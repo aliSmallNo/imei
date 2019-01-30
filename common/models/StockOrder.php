@@ -216,7 +216,7 @@ class StockOrder extends ActiveRecord
 		$base_url = "http://hq.sinajs.cn/list=" . $city . $stockId;
 		echo $base_url . PHP_EOL;
 		$ret = AppUtil::httpGet($base_url, ['Content-Type: application/javascript; charset=gbk']);
-
+		echo '$ret==' . $ret . PHP_EOL;
 		$pos = strpos($ret, "=");
 		$ret = substr($ret, $pos + 2, -2);
 		// echo $ret . PHP_EOL;
