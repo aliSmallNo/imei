@@ -196,6 +196,16 @@ class TryPhone
 		self::phone_section_base(5);
 	}
 
+	public static function phone_section_6()
+	{
+		self::phone_section_base(6);
+	}
+
+	public static function phone_section_7()
+	{
+		self::phone_section_base(7);
+	}
+
 
 	public static function combind_phone($p)
 	{
