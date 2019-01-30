@@ -100,6 +100,7 @@ class StockOrder extends ActiveRecord
 				values (:oPhone,:oName,:oStockId,:oStockAmt,:oLoan,:oAddedOn)";
 		$cmd = $conn->createCommand($sql);
 
+		$data_date = "";
 		foreach ($result as $key => $value) {
 			$res = 0;
 			if (!$key) {
@@ -109,14 +110,16 @@ class StockOrder extends ActiveRecord
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
 			}
+			$data_date = date('Y-m-d H:i:s', strtotime($value[5]));
 			$params = [
 				':oPhone' => $phone,
 				':oName' => $value[1],
 				':oStockId' => sprintf("%06d", $value[2]),
 				':oStockAmt' => $value[3],
 				':oLoan' => sprintf('%.2f', $value[4]),
-				':oAddedOn' => date('Y-m-d H:i:s', strtotime($value[5])),
+				':oAddedOn' => $data_date,
 			];
+
 			try {
 				$res = $cmd->bindValues($params)->execute();
 				StockUser::pre_add($phone, [
@@ -136,10 +139,13 @@ class StockOrder extends ActiveRecord
 			$transaction->rollBack();
 		} else {
 			$transaction->commit();
-			// 加入今天卖出的股票
-			self::sold_stock();
-			// 更新价格
-			//self::update_price();
+			if (date("d") == date("d", strtotime($data_date))) {
+				// 加入今天卖出的股票
+				self::sold_stock();
+				// 更新价格
+				self::update_price();
+			}
+
 		}
 
 		return [$insertCount, $error];
@@ -148,17 +154,17 @@ class StockOrder extends ActiveRecord
 	public static function sold_stock()
 	{
 		$conn = AppUtil::db();
-		$sql = "select *,concat(oPhone,oStockId) as id from im_stock_order where datediff(oAddedOn,now())=-1";
+		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=-1";
 		$yestoday = $conn->createCommand($sql)->queryAll();
 		$_yestoday = [];
 		foreach ($yestoday as $k => $v) {
-			$_yestoday[$v['id']] = $v;
+			$_yestoday[$v['oId']] = $v;
 		}
-		$sql = "select *,concat(oPhone,oStockId) as id from im_stock_order where datediff(oAddedOn,now())=0";
+		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0";
 		$today = $conn->createCommand($sql)->queryAll();
 		$_today = [];
 		foreach ($today as $k1 => $v1) {
-			$_today[$v1['id']] = $v1;
+			$_today[$v1['oId']] = $v1;
 		}
 
 		$diff = [];
@@ -196,7 +202,7 @@ class StockOrder extends ActiveRecord
 			$closePrice = $ret[6];  // 今日收盘价
 			$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
 			$oCostPrice = sprintf("%.2f", $v['oLoan'] / $v['oStockAmt']);// 成本价格
-			$oIncome = $avgPrice * $v['oStockAmt'] - $v['oLoan'];// 盈利
+			$oIncome = sprintf("%.2f", $avgPrice * $v['oStockAmt'] - $v['oLoan']);// 盈利
 			$oRate = sprintf("%.2f", $oIncome / $v['oLoan']);// 盈利比例
 			StockOrder::edit($v['oId'], [
 				"oPriceRaw" => AppUtil::json_encode($ret),
