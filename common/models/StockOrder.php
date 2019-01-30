@@ -230,7 +230,7 @@ class StockOrder extends ActiveRecord
 		$v = self::find()->where(['oId' => $oId])->asArray()->one();
 
 		$openPrice = $ret[1];   // 今日开盘价
-		$closePrice = $ret[6];  // 今日收盘价
+		$closePrice = $ret[3];  // 今日收盘价
 		$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
 		$oCostPrice = sprintf("%.2f", $v['oLoan'] / $v['oStockAmt']);// 成本价格
 		$oIncome = sprintf("%.2f", $avgPrice * $v['oStockAmt'] - $v['oLoan']);// 盈利
