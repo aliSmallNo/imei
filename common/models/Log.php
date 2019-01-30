@@ -851,5 +851,25 @@ class Log extends ActiveRecord
 		return [$res, $count];
 	}
 
+	/*
+	 * oCategory
+	 * oKey    toguba
+	 * oBefore 记录待发送的表格路径
+	 * oAfter  记录发送内容
+	 * oOpenId 记录发送人数
+	 * oUId    记录发送发送的管理员
+	 */
+	const CAT_PHONE_SECTION = 'phone_section';
+	const KEY_WAIT = 1;
+	const KEY_USED = 9;
 
+	public static function add_phone_section($pre_phone)
+	{
+		$data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];
+		if (self::findOne($data)) {
+			return false;
+		}
+		self::add(array_merge($data, ['oKey' => self::KEY_USED]));
+		return true;
+	}
 }

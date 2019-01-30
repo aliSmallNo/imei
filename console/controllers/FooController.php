@@ -1820,5 +1820,29 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 	}
 
+	public static function actionAddp()
+	{
+		$phones = [
+			1364174,
+			1378898,
+			1831708,
+			1381622,
+			1502116,
+			1351200,
+			1350218,
+			1350214,
+			1350212,
+			1862211,
+			1391083,
+			1371648,
+			1819342,
+			1827717,
+			1571282,
+		];
+		foreach ($phones as $phone) {
+			Log::add_phone_section($phone);
+		}
+	}
+
 
 }
