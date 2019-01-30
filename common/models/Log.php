@@ -866,7 +866,7 @@ class Log extends ActiveRecord
 	public static function add_phone_section($pre_phone, $area)
 	{
 		$data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];
-		if (self::findOne($data)) {
+		if (self::findOne($data) || strlen($pre_phone) != 7) {
 			return false;
 		}
 		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area]));

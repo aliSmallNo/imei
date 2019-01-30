@@ -1830,7 +1830,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		}, $res);
 		print_r(array_unique($res));
 		foreach ($res as $phone) {
-			//Log::add_phone_section($phone, 'beijing');
+			Log::add_phone_section($phone, 'beijing');
 		}
 	}
 
