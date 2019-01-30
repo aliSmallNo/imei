@@ -325,7 +325,7 @@ class StockOrder extends ActiveRecord
 		$sql = "select 
 				Date_format(o.oAddedOn, '%Y%m%d') as ym,
 				count(DISTINCT oPhone) as user_amt,
-				sum(oLoan) as user_loan_amt
+				sum(case oStatus=1 then oLoan else 0 end) as user_loan_amt
 				from im_stock_order as o
 				left join im_stock_user u on u.uPhone=o.oPhone
 				where oId>0 $strCriteria $cond
