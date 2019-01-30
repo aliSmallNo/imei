@@ -435,7 +435,15 @@ class StockController extends BaseController
 			}
 		}
 
-		ExcelUtil::getYZExcel2('盈亏' . date("Y-m-d"), [$res1, array_values($res2), array_values($res3)]);
+		$trans = function ($array) {
+			$arr = [];
+			foreach ($array as $v) {
+				$arr[] = array_values($v);
+			}
+			return $arr;
+		};
+
+		ExcelUtil::getYZExcel2('盈亏' . date("Y-m-d"), [$trans($res1), $trans($res2), $trans($res3)]);
 
 	}
 
