@@ -196,27 +196,11 @@ class StockOrder extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			$stockId = $v['oStockId'];
-			$ret = StockOrder::getStockPrice($stockId);
-
-			$openPrice = $ret[1];   // 今日开盘价
-			$closePrice = $ret[6];  // 今日收盘价
-			$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
-			$oCostPrice = sprintf("%.2f", $v['oLoan'] / $v['oStockAmt']);// 成本价格
-			$oIncome = sprintf("%.2f", $avgPrice * $v['oStockAmt'] - $v['oLoan']);// 盈利
-			$oRate = sprintf("%.2f", $oIncome / $v['oLoan']);// 盈利比例
-			StockOrder::edit($v['oId'], [
-				"oPriceRaw" => AppUtil::json_encode($ret),
-				"oAvgPrice" => $avgPrice,
-				"oOpenPrice" => $openPrice,
-				"oClosePrice" => $closePrice,
-				"oCostPrice" => $oCostPrice,
-				"oIncome" => $oIncome,
-				"oRate" => $oRate,
-			]);
+			StockOrder::getStockPrice($stockId, $v['oId']);
 		}
 	}
 
-	public static function getStockPrice($stockId)
+	public static function getStockPrice($stockId, $oId)
 	{
 		$preFix = substr($stockId, 0, 1);
 		switch ($preFix) {
@@ -238,8 +222,30 @@ class StockOrder extends ActiveRecord
 		// echo $ret . PHP_EOL;
 		$ret = explode(",", $ret);
 		unset($ret[0]);
-		return $ret;
+		self::update_price_des($ret, $oId);
 	}
+
+	public static function update_price_des($ret, $oId)
+	{
+		$v = self::find()->where(['oId' => $oId])->asArray()->one();
+
+		$openPrice = $ret[1];   // 今日开盘价
+		$closePrice = $ret[6];  // 今日收盘价
+		$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
+		$oCostPrice = sprintf("%.2f", $v['oLoan'] / $v['oStockAmt']);// 成本价格
+		$oIncome = sprintf("%.2f", $avgPrice * $v['oStockAmt'] - $v['oLoan']);// 盈利
+		$oRate = sprintf("%.2f", $oIncome / $v['oLoan']);// 盈利比例
+		StockOrder::edit($v['oId'], [
+			"oPriceRaw" => AppUtil::json_encode($ret),
+			"oAvgPrice" => $avgPrice,
+			"oOpenPrice" => $openPrice,
+			"oClosePrice" => $closePrice,
+			"oCostPrice" => $oCostPrice,
+			"oIncome" => $oIncome,
+			"oRate" => $oRate,
+		]);
+	}
+
 
 	// 渠道限制条件
 	public static function channel_condition()
