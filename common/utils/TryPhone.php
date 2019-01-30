@@ -210,6 +210,7 @@ class TryPhone
 			$ret = json_decode($ret, 1);
 			if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
 				self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, 'yes');
+				Log::add_phone_section_yes($phone, "taoguba");
 			}
 		}
 
