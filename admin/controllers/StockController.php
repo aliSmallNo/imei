@@ -435,9 +435,7 @@ class StockController extends BaseController
 			}
 		}
 
-		print_r($res2);
-		print_r($res3);
-		// ExcelUtil::getYZExcel2('客户订单' . date("Y-m-d"), $data);
+		ExcelUtil::getYZExcel2('盈亏' . date("Y-m-d"), [$res1, array_values($res2), array_values($res3)]);
 
 	}
 

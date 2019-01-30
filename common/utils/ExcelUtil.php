@@ -290,7 +290,7 @@ class ExcelUtil
 			//循环读取数据，默认编码是utf8，这里转换成gbk输出
 			for ($currentRow = 1; $currentRow <= $allRow; $currentRow++) {
 				$ret[$currentRow] = [];
-				for ($currentColumn = 0; $currentColumn <=$allColumn; $currentColumn++) {
+				for ($currentColumn = 0; $currentColumn <= $allColumn; $currentColumn++) {
 					$address = \PHPExcel_Cell::stringFromColumnIndex($currentColumn) . $currentRow;
 					$ret[$currentRow][] = trim($currentSheet->getCell($address)->getFormattedValue());
 				}
@@ -547,7 +547,7 @@ class ExcelUtil
 		self::exportExcel($fileName, $objPHPExcel);
 	}
 
-	public static function getYZExcel2($fileName, $headArr, $data, $widths = [])
+	public static function getYZExcel2($fileName, $data, $widths = [])
 	{
 		if (empty($data) || !is_array($data)) {
 			die("data must be a array");
@@ -570,22 +570,10 @@ class ExcelUtil
 			$objProps->setCompany('北京奔跑吧货滴科技有限公司');
 		}
 		$activeSheet = $objPHPExcel->getActiveSheet();
-		//设置表头
-		$key = ord("A");//65
-		$tmpIndex = 0;
-		//$headArr表头数据
-		foreach ($headArr as $k => $v) {
-			$col = \PHPExcel_Cell::stringFromColumnIndex($k);
-			$tmpWidth = 20;
-			$activeSheet->getColumnDimension($col)->setWidth($tmpWidth);
-			$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);//自动换行
-			$activeSheet->setCellValue($col . '1', $v);
-			$tmpIndex++;
-			$key += 1;
-		}
-		$rowIndex = 2;
-		// $data --> 表格的具体数据
-		foreach ($data as $key => $rows) {
+
+		$rowIndex = 1;
+		//表格的具体数据
+		foreach ($data[0] as $key => $rows) {
 			$span = ord("A");
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
@@ -605,19 +593,64 @@ class ExcelUtil
 			$rowIndex++;
 		}
 
-		if ($widths) {
-			foreach ($headArr as $k => $v) {
-				if (isset($widths[$k])) {
-					$col = \PHPExcel_Cell::stringFromColumnIndex($k);
-					$activeSheet->getColumnDimension($col)->setWidth($widths[$k]);
-					$activeSheet->getStyle($col . '1')->getFont()->setBold(true);//加粗
-					$activeSheet->getStyle($col . '1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-					$activeSheet->getStyle($col . '1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-				} else {
-					break;
+		$rowIndex += 2;
+		//表格的具体数据
+		foreach ($data[1] as $key => $rows) {
+			$span = ord("A");
+			foreach ($rows as $keyName => $value) {
+				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
+				$activeSheet->setCellValue($col . $rowIndex, $value);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
+
+				if ($keyName == (count($rows) - 1)) {
+					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				}
+				$span++;
 			}
+			$rowIndex++;
 		}
+
+		$rowIndex += 2;
+		//表格的具体数据
+		foreach ($data[2] as $key => $rows) {
+			$span = ord("A");
+			foreach ($rows as $keyName => $value) {
+				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
+				$activeSheet->setCellValue($col . $rowIndex, $value);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
+
+				if ($keyName == (count($rows) - 1)) {
+					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				}
+				$span++;
+			}
+			$rowIndex++;
+		}
+
+
+//		if ($widths) {
+//			foreach ($headArr as $k => $v) {
+//				if (isset($widths[$k])) {
+//					$col = \PHPExcel_Cell::stringFromColumnIndex($k);
+//					$activeSheet->getColumnDimension($col)->setWidth($widths[$k]);
+//					$activeSheet->getStyle($col . '1')->getFont()->setBold(true);//加粗
+//					$activeSheet->getStyle($col . '1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+//					$activeSheet->getStyle($col . '1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+//				} else {
+//					break;
+//				}
+//			}
+//		}
 		self::exportExcel($fileName, $objPHPExcel);
 	}
 }
