@@ -575,62 +575,56 @@ class ExcelUtil
 		//表格的具体数据
 		$data1 = $data[0];
 		array_unshift($data1, ['电话', '用户名', '股票代码', '股数', '初期借款', '买入价', '今日收盘', '盈亏金额', '盈亏比例', 'BD', 'BDID']);
-		print_r($data1);
-//
-//		foreach ($data1 as $key => $rows) {
-//			$span = ord("A");
-//			foreach ($rows as $keyName => $value) {
-//				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
-//				$activeSheet->setCellValue($col . $rowIndex, $value);
-//				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
-//				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-//				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-//
-//				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
-//				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
-//
-//				if ($keyName == (count($rows) - 1)) {
-//					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-//				}
-//				$span++;
-//			}
-//			$rowIndex++;
-//		}
+		foreach ($data1 as $key => $rows) {
+			$span = ord("A");
+			foreach ($rows as $keyName => $value) {
+				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
+				$activeSheet->setCellValue($col . $rowIndex, $value);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-		$rowIndex = 1;
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
+
+				if ($keyName == (count($rows) - 1)) {
+					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				}
+				$span++;
+			}
+			$rowIndex++;
+		}
+
+		$rowIndex += 2;
 		//表格的具体数据
 		$data2 = $data[1];
 		array_unshift($data2, ['用户', '盈亏情况', '借款额', '买股数', '负责人']);
-		print_r($data2);
+		foreach ($data2 as $key => $rows) {
+			$span = ord("");
+			foreach ($rows as $keyName => $value) {
+				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
+				$activeSheet->setCellValue($col . $rowIndex, $value);
+				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
-//		foreach ($data2 as $key => $rows) {
-//			$span = ord("T");
-//			foreach ($rows as $keyName => $value) {
-//				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
-//				$activeSheet->setCellValue($col . $rowIndex, $value);
-//				$activeSheet->getStyle($col)->getAlignment()->setWrapText(false);
-//				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-//				$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-//
-//				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
-//				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
-//
-//				if ($keyName == (count($rows) - 1)) {
-//					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-//				}
-//				$span++;
-//			}
-//			$rowIndex++;
-//		}
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setName(self::FONT_NAME_BLACK);
+				$activeSheet->getStyle($col . $rowIndex)->getFont()->setSize(self::FONT_SIZE);
 
-		$rowIndex = 1;
+				if ($keyName == (count($rows) - 1)) {
+					$activeSheet->getStyle($col . $rowIndex)->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+				}
+				$span++;
+			}
+			$rowIndex++;
+		}
+
+		$rowIndex += 2;
 		//表格的具体数据
 		$data3 = $data[2];
 		array_unshift($data3, ['BD', '总盈亏', '借款总额', '人数']);
-		print_r($data3);
-		exit;
 		foreach ($data3 as $key => $rows) {
-			$span = ord("AA");
+			$span = ord("A");
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
 				$activeSheet->setCellValue($col . $rowIndex, $value);
