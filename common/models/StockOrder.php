@@ -187,7 +187,6 @@ class StockOrder extends ActiveRecord
 				]);
 			}
 		}
-
 	}
 
 	public static function update_price()
