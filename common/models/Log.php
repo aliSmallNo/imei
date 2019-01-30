@@ -863,13 +863,13 @@ class Log extends ActiveRecord
 	const KEY_WAIT = 1;
 	const KEY_USED = 9;
 
-	public static function add_phone_section($pre_phone)
+	public static function add_phone_section($pre_phone, $area)
 	{
 		$data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];
 		if (self::findOne($data)) {
 			return false;
 		}
-		self::add(array_merge($data, ['oKey' => self::KEY_USED]));
+		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area]));
 		return true;
 	}
 }
