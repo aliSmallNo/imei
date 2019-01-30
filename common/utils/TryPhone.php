@@ -114,7 +114,6 @@ class TryPhone
 			]);
 
 		$response = curl_exec($ch);
-		self::logFile($response, __FUNCTION__, __LINE__);
 		if ($response === false) {
 			$error_info = curl_error($ch);
 			curl_close($ch);// 关闭curl
@@ -170,7 +169,7 @@ class TryPhone
 		}
 	}
 
-	public static function phone_section_base()
+	public static function phone_section_base($index = 1)
 	{
 		while (1) {
 			$log = Log::findOne(['oCategory' => Log::CAT_PHONE_SECTION, 'oKey' => Log::KEY_WAIT]);
@@ -178,7 +177,7 @@ class TryPhone
 				$p = $log->oOpenId;
 				echo $p . PHP_EOL;
 				$log->oKey = Log::KEY_USED;
-				$log->oAfter = 1;
+				$log->oAfter = $index;
 				$log->save();
 				self::combind_phone($p);
 			} else {
