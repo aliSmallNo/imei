@@ -1817,7 +1817,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		// StockOrder::getStockPrice(600078);
 //		StockOrder::sold_stock();
 //		StockOrder::update_price();
-		StockOrder::getStockPrice(8293, '601086');
+		StockOrder::getStockPrice(8394, '601086');
 
 	}
 
