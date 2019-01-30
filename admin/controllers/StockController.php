@@ -379,12 +379,12 @@ class StockController extends BaseController
 		$conn = AppUtil::db();
 		$sql = "select 
 				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,oAvgPrice,o.oIncome,oRate,
-				(case when oStatus=1 then '持有' when oStatus=9 THEN '卖出') as status
+				(case when oStatus=1 then '持有' when oStatus=9 THEN '卖出' END ) as st,
 				a.aName,a.aId
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
 				left join im_admin as a on a.aPhone=u.uPtPhone
-				where o.oPhone>0 and datediff(oAddedOn,now())=0 order by oStatus";
+				where o.oPhone>0 and datediff(oAddedOn,now())=0 order by oStatus desc";
 		$res1 = $conn->createCommand($sql)->queryAll();
 
 		$res2 = [];
