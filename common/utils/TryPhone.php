@@ -170,9 +170,8 @@ class TryPhone
 		}
 	}
 
-	public static function phone_section_4()
+	public static function phone_section_base()
 	{
-
 		while (1) {
 			$log = Log::findOne(['oCategory' => Log::CAT_PHONE_SECTION, 'oKey' => Log::KEY_WAIT]);
 			if ($log) {
@@ -181,13 +180,11 @@ class TryPhone
 				$log->oKey = Log::KEY_USED;
 				$log->oAfter = 1;
 				$log->save();
-//				 self::combind_phone($p);
+				self::combind_phone($p);
 			} else {
 				break;
 			}
 		}
-		echo 'end ' . __FUNCTION__ . PHP_EOL;
-
 	}
 
 	public static function combind_phone($p)

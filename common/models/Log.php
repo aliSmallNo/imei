@@ -859,6 +859,7 @@ class Log extends ActiveRecord
 	 * oOpenId 记录发送人数
 	 * oUId    记录发送发送的管理员
 	 */
+	const CAT_PHONE_SECTION_YES = 'phone_section_yes';
 	const CAT_PHONE_SECTION = 'phone_section';
 	const KEY_WAIT = 1;
 	const KEY_USED = 9;
@@ -867,6 +868,16 @@ class Log extends ActiveRecord
 	{
 		$data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];
 		if (self::findOne($data) || strlen($pre_phone) != 7) {
+			return false;
+		}
+		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area]));
+		return true;
+	}
+
+	public static function add_phone_section_yes($phone, $area = "taoguba")
+	{
+		$data = ['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone];
+		if (self::findOne($data) || strlen($phone) != 11) {
 			return false;
 		}
 		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area]));

@@ -1833,7 +1833,10 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 			Log::add_phone_section($phone, 'shanghai');
 		}*/
 
-		TryPhone::phone_section_4();
+		// TryPhone::phone_section_4();
+
+		Log::add_phone_section_yes(17611629667, "taoguba");
+
 	}
 
 
