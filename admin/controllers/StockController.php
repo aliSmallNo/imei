@@ -378,7 +378,7 @@ class StockController extends BaseController
 	{
 		$conn = AppUtil::db();
 		$sql = "select 
-				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,o.oIncome,oRate,
+				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,oAvgPrice,o.oIncome,oRate,
 				a.aName,a.aId
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
