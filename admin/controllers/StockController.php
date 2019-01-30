@@ -377,8 +377,9 @@ class StockController extends BaseController
 	public function actionExport_today_income()
 	{
 		$conn = AppUtil::db();
-		$sql = "select a.aId,a.aName,
-				o.*
+		$sql = "select 
+				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,o.oIncome,oRate,
+				a.aName,a.aId
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
 				left join im_admin as a on a.aPhone=u.uPtPhone

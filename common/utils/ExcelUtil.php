@@ -573,7 +573,9 @@ class ExcelUtil
 
 		$rowIndex = 1;
 		//表格的具体数据
-		foreach ($data[0] as $key => $rows) {
+		$data1 = $data[0];
+		array_unshift($data1, ['电话	', '用户名', '股票代码', '股数', '初期借款', '买入价', '今日收盘', '盈亏金额', '盈亏比例', 'BD', 'BDID']);
+		foreach ($data1 as $key => $rows) {
 			$span = ord("A");
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
@@ -593,10 +595,12 @@ class ExcelUtil
 			$rowIndex++;
 		}
 
-		$rowIndex += 2;
+		$rowIndex = 1;
 		//表格的具体数据
-		foreach ($data[1] as $key => $rows) {
-			$span = ord("A");
+		$data2 = $data[1];
+		array_unshift($data2, ['用户', '盈亏情况', '借款额', '买股数', '负责人']);
+		foreach ($data2 as $key => $rows) {
+			$span = ord("T");
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
 				$activeSheet->setCellValue($col . $rowIndex, $value);
@@ -615,10 +619,12 @@ class ExcelUtil
 			$rowIndex++;
 		}
 
-		$rowIndex += 2;
+		$rowIndex = 1;
 		//表格的具体数据
-		foreach ($data[2] as $key => $rows) {
-			$span = ord("A");
+		$data3 = $data[2];
+		array_unshift($data3, ['BD', '总盈亏', '借款总额', '人数']);
+		foreach ($data3 as $key => $rows) {
+			$span = ord("AA");
 			foreach ($rows as $keyName => $value) {
 				$col = \PHPExcel_Cell::stringFromColumnIndex($keyName);
 				$activeSheet->setCellValue($col . $rowIndex, $value);
