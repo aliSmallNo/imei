@@ -437,7 +437,12 @@ class StockController extends BaseController
 
 		$trans = function ($array) {
 			$arr = [];
-			foreach ($array as $v) {
+			foreach ($array as $k => $v) {
+				foreach ($v as $k1 => $v1) {
+					if (is_array($v1)) {
+						unset($v[$k1]);
+					}
+				}
 				$arr[] = array_values($v);
 			}
 			return $arr;
