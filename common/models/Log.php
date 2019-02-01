@@ -859,6 +859,7 @@ class Log extends ActiveRecord
 	 * oOpenId 记录发送人数
 	 * oUId    记录发送发送的管理员
 	 */
+	const CAT_PHONE_SECTION_TEST = 'phone_section_test';
 	const CAT_PHONE_SECTION_YES = 'phone_section_yes';
 	const CAT_PHONE_SECTION = 'phone_section';
 	const KEY_WAIT = 1;

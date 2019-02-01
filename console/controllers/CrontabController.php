@@ -120,10 +120,17 @@ class CrontabController extends Controller
 		}
 
 		try {
+			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
+				"oBefore" => 'updateIPs'
+			]);
 			TryPhone::updateIPs();
 		} catch (\Exception $e) {
 
 		}
+		Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
+			"oBefore" => 'next'
+		]);
+
 
 //		if (date('Y-m-d H:i') == '2019-02-01 20:00') {
 //			TryPhone::phone_section_1();
