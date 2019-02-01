@@ -1835,6 +1835,9 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 
 		// TryPhone::phone_section_4();
 
+		$sql = "select * from im_log where oCategory='phone_section' and oAfter>0 ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		print_r($res);
 
 	}
 
