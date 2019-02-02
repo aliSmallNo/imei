@@ -71,7 +71,7 @@ class TryPhone
 	public static function taoguba_phone($data)
 	{
 		$ip_port = self::get_proxy_ip();
-		self::logFile('$ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
+		// self::logFile('$ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
 		if (!$ip_port) {
 			return false;
 		}
@@ -199,7 +199,9 @@ class TryPhone
 
 	public static function combind_phone($p)
 	{
+
 		return false;
+
 		for ($i = 0; $i < 9999; $i++) {
 			$phone = $p * 10000 + $i;
 			self::req($phone);
@@ -216,7 +218,7 @@ class TryPhone
 		];
 		$ret = TryPhone::taoguba_phone($data);
 		// echo $phone . ' ===== ' . $ret . PHP_EOL;
-		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
+		// self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
 		if ($ret) {
 			$ret = json_decode($ret, 1);
 			if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
