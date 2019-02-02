@@ -1836,6 +1836,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		// TryPhone::phone_section_4();
 
 		// TryPhone::updateIPs();
+		echo TryPhone::get_proxy_ip() . PHP_EOL;
 
 		// TryPhone::phone_section_4();
 
