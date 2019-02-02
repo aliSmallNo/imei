@@ -15,7 +15,7 @@ class TryPhone
 {
 	const APP_KEY = 'af295cc800a749b5bc66ddd07952cfee';
 //	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=405b848e01284a42a1b2152b48973894&count=10&expiryDate=0&format=1&newLine=2';
-	const URL_GET_IPS = 'http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=af295cc800a749b5bc66ddd07952cfee&count=10&expiryDate=0&format=1&newLine=2';
+	const URL_GET_IPS = 'http://mvip.piping.mogumiao.com/proxy/api/get_ip_bs?appKey=af295cc800a749b5bc66ddd07952cfee&count=7&expiryDate=0&format=1&newLine=2';
 
 	const URL_TAOGUBA_LOGIN = 'https://sso.taoguba.com.cn/web/login/submit';
 
@@ -42,7 +42,7 @@ class TryPhone
 
 	}
 
-	public static function get_proxy()
+	public static function get_proxy_ip()
 	{
 		$ret = RedisUtil::init(RedisUtil::KEY_PROXY_IPS, self::LOCAL_IP)->getCache();
 		$ret = json_decode($ret, 1);
@@ -70,7 +70,7 @@ class TryPhone
 
 	public static function taoguba_phone($data)
 	{
-		$ip_port = self::get_proxy();
+		$ip_port = self::get_proxy_ip();
 		self::logFile('$ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
 		if (!$ip_port) {
 			return false;
