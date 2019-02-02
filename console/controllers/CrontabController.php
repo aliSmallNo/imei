@@ -119,14 +119,15 @@ class CrontabController extends Controller
 
 		}
 
-//		try {
-			// Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
-//				"oBefore" => 'updateIPs'
-//			]);
-//			TryPhone::updateIPs();
-//		} catch (\Exception $e) {
+		try {
+			 Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
+				"oBefore" => 'updateIPs'
+			]);
+			TryPhone::updateIPs();
+		} catch (\Exception $e) {
 
-//		}
+		}
+
 //		Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
 //			"oBefore" => 'next'
 //		]);
