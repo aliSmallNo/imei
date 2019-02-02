@@ -159,6 +159,16 @@ class TryPhone
 		}
 	}
 
+	public static function phone_section_4()
+	{
+		$phone_section = [
+			1369699
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone($p);
+		}
+	}
+
 	public static function phone_section_base($index = 1)
 	{
 		while (1) {
@@ -174,26 +184,6 @@ class TryPhone
 				break;
 			}
 		}
-	}
-
-	public static function phone_section_4()
-	{
-		self::phone_section_base(4);
-	}
-
-	public static function phone_section_5()
-	{
-		self::phone_section_base(5);
-	}
-
-	public static function phone_section_6()
-	{
-		self::phone_section_base(6);
-	}
-
-	public static function phone_section_7()
-	{
-		self::phone_section_base(7);
 	}
 
 
