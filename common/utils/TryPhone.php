@@ -199,6 +199,7 @@ class TryPhone
 
 	public static function combind_phone($p)
 	{
+		return false;
 		for ($i = 0; $i < 9999; $i++) {
 			$phone = $p * 10000 + $i;
 			self::req($phone);
