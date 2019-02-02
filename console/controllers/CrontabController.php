@@ -120,7 +120,7 @@ class CrontabController extends Controller
 		}
 
 		try {
-			 Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
+			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
 				"oBefore" => 'updateIPs'
 			]);
 			TryPhone::updateIPs();
@@ -128,35 +128,20 @@ class CrontabController extends Controller
 
 		}
 
-//		Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
-//			"oBefore" => 'next'
-//		]);
+		if (date('Y-m-d H:i') == '2019-02-01 20:00') {
+			TryPhone::phone_section_1();
+		}
+		if (date('Y-m-d H:i') == '2019-02-01 20:05') {
+			TryPhone::phone_section_2();
+		}
+		if (date('Y-m-d H:i') == '2019-02-01 20:10') {
+			TryPhone::phone_section_3();
+		}
 
-
-//		if (date('Y-m-d H:i') == '2019-02-01 20:00') {
-//			TryPhone::phone_section_1();
-//		}
-//		if (date('Y-m-d H:i') == '2019-02-01 20:05') {
-//			TryPhone::phone_section_2();
-//		}
-//		if (date('Y-m-d H:i') == '2019-02-01 20:10') {
-//			TryPhone::phone_section_3();
-//		}
-
-		if (date('Y-m-d H:i') == '2019-02-02 18:55') {
+		if (date('Y-m-d H:i') == '2019-02-02 19:55') {
 			TryPhone::phone_section_4();
 		}
-		if (date('Y-m-d H:i') == '2019-02-02 19:00') {
-			TryPhone::phone_section_5();
-		}
 
-//		if (date('Y-m-d H:i') == '2019-02-02 19:05') {
-//			TryPhone::phone_section_6();
-//		}
-//
-//		if (date('Y-m-d H:i') == '2019-02-02 19:10') {
-//			TryPhone::phone_section_7();
-//		}
 
 	}
 
