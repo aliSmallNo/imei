@@ -128,13 +128,13 @@ class CrontabController extends Controller
 
 		}
 
-		if (date('Y-m-d H:i') == '2019-02-05 23:35') {
+		if (date('Y-m-d H:i') == '2019-02-06 00:15') {
 			TryPhone::phone_section_1();
 		}
-		if (date('Y-m-d H:i') == '2019-02-05 23:40') {
+		if (date('Y-m-d H:i') == '2019-02-06 00:20') {
 			TryPhone::phone_section_2();
 		}
-		if (date('Y-m-d H:i') == '2019-02-05 23:45') {
+		if (date('Y-m-d H:i') == '2019-02-06 00:25') {
 			TryPhone::phone_section_3();
 		}
 
