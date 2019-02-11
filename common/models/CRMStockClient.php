@@ -341,7 +341,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				continue;
 			}
 
-			list($code) = CRMStockClient::edit([
+			list($code, $msg) = CRMStockClient::edit([
 				"name" => $name ? $name : $time,
 				"phone" => $phone,
 				"wechat" => '',
@@ -360,6 +360,10 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
 			if ($code) {
 				$insertCount++;
+			} else {
+				if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+					echo $code . '==' . $msg . '<br>';
+				}
 			}
 		}
 
