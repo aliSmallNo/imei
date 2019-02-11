@@ -328,7 +328,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$insertCount = 0;
 
 		foreach ($result as $key => $value) {
-			$res = 0;
 			if (!$key) {
 				continue;
 			}
@@ -358,13 +357,16 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"src" => CRMStockClient::SRC_SHORT_TERM_WANG,
 			], '', Admin::getAdminId());
 
+			echo $code . '==' . $msg . '==' . $phone . '<br>';
 			if ($code) {
+
 				$insertCount++;
 			} else {
-				if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-					echo $code . '==' . $msg . '<br>';
-				}
+//				if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//					echo $code . '==' . $msg . '==' . $phone . '<br>';
+//				}
 			}
+
 		}
 
 		return [$insertCount, $error];
