@@ -336,9 +336,9 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$time = $value[2];
 			$name = $value[3];
 
-			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-				echo $phone . '<br>';
-			}
+//			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//				echo $phone . '<br>';
+//			}
 
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
@@ -365,9 +365,9 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				continue;
 			}
 			$insertCount++;
-			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-				echo $insertCount . '==' . $code . '==' . $msg . '==' . $phone . '<br>';
-			}
+//			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//				echo $insertCount . '==' . $code . '==' . $msg . '==' . $phone . '<br>';
+//			}
 
 		}
 
