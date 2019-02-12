@@ -659,10 +659,11 @@ class StockController extends BaseController
 
 		$date = self::getParam('dt', date('Y-m-d'));
 		$reset = self::getParam('reset', 0);
-//		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
-//			 $reset = 1;
-//		}
+		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
+			 $reset = 1;
+		}
 		$trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+//		print_r($trends);exit;
 		return $this->renderPage('trend.tpl',
 			[
 				'today' => date('Y年n月j日', time()),

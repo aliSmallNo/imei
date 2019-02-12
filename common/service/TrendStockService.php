@@ -3,8 +3,11 @@
 
 namespace common\service;
 
+use common\models\CRMStockTrack;
+use common\models\StockOrder;
 use common\models\StockUser;
 use common\utils\AppUtil;
+use common\utils\Pinyin;
 use common\utils\RedisUtil;
 
 class TrendStockService
@@ -120,9 +123,10 @@ class TrendStockService
 			$queryTime = strtotime($queryDate);
 		}
 		$trends = [];
-		$counters = [30, 12, 12];
+		$counters = [10, 12, 12];
 		$steps = ['day', 'week', 'month'];
-		$service = TrendService::init(self::CAT_TREND);
+		$steps = ['day'];
+		$service = TrendStockService::init(self::CAT_TREND);
 		foreach ($steps as $idx => $step) {
 			$cnt = $counters[$idx];
 			for ($k = $cnt; $k > -1; $k--) {
@@ -171,144 +175,81 @@ class TrendStockService
 		}
 		$beginDate = $this->beginDate . ' 00:00';
 		$endDate = $this->endDate . ' 23:59:59';
-		$sql = "SELECT 
-				COUNT(1) as total,
-				COUNT(CASE WHEN w.wSubscribe=1 THEN 1 END) as subscribe,
-				COUNT(CASE WHEN uStatus=0 THEN 1 END) as viewer,
-				COUNT(CASE WHEN (u.uRole=20 or (u.uRole=10 AND u.uGender>9)) AND u.uPhone!='' THEN 1 END) as member,
-				COUNT(CASE WHEN w.wAddedOn BETWEEN :beginDT AND :endDT AND wSubscribe =0 THEN 1 END ) as unsubscribe,
-				COUNT(CASE WHEN u.uRole=10 AND u.uGender=11 AND u.uPhone!='' THEN  1 END ) as male,
-				COUNT(CASE WHEN u.uRole=10 AND u.uGender=10 AND u.uPhone!='' THEN  1 END ) as female,
-				COUNT(CASE WHEN u.uRole=20 AND u.uPhone!='' THEN  1 END) as meipo
-				FROM im_user as u 
-				JOIN im_user_wechat as w on w.wUId=u.uId
-				where u.uStatus<8 AND u.uOpenId LIKE 'oYDJew%' AND u.uAddedOn BETWEEN :beginDT and :endDT ";
-
 
 		$type = StockUser::TYPE_PARTNER;
 		$sql = "select uName,uPhone from im_stock_user where uType=$type";
 		$salers = $this->conn->createCommand($sql)->queryAll();
 		$sum_loan_select = "";
 		foreach ($salers as $v) {
-			$sum_loan_select .= "sum(case when u2.uPhone='" . $v['uPhone'] . "' then oLoan else 0 end) as sum_loan_" . $v['uPhone'] . ',';
+			$name = Pinyin::encode($v['uName'], 'all');
+			$name = str_replace(" ", '', ucwords($name));
+			$sum_loan_select .= "sum(case when u2.uPhone='" . $v['uPhone'] . "' then oLoan else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
 		}
 		$sum_loan_select = trim($sum_loan_select, ',');
 
+		$st = StockOrder::ST_HOLD;
 		$sql = "select 
 				$sum_loan_select
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
 				left join im_stock_user as u2 on u2.uPhone=u.uPtPhone
-				where oStatus=1 and oAddedOn BETWEEN :beginDT and :endDT ";
+				where oStatus=$st and oAddedOn BETWEEN :beginDT and :endDT ";
 		$res = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res) {
 			foreach ($res as $field => $num) {
-				$trend['added_' . $field] = intval($num);
-			}
-			$trend['added_subscribe_ratio'] = ($trend["added_total"] > 0) ? intval(round($trend["added_subscribe"] * 100.0 / $trend["added_total"])) : 0;
-		}
-
-		$sql = "SELECT 
-				COUNT(1) as total,
-				COUNT(CASE WHEN u.uStatus=0 THEN 1 END) as viewer,
-				COUNT(CASE WHEN uPhone!='' AND (uRole=20 or (uRole=10 AND uGender>9)) THEN 1 END) as member,
-				COUNT(CASE WHEN w.wSubscribe=1 THEN 1 END) as subscribe,
-				COUNT(CASE WHEN u.uRole=20 AND uPhone!='' THEN 1 END) as meipo,
-				COUNT(CASE WHEN u.uRole=10 AND u.uGender=10 AND uPhone!='' THEN 1 END) as female,
-				COUNT(CASE WHEN u.uRole=10 AND u.uGender=11 AND uPhone!='' THEN 1 END) as male
-				FROM im_user as u
-				JOIN im_user_wechat as w on w.wUId=u.uId
-				WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND uAddedOn < :endDT ";
-		$res2 = $this->conn->createCommand($sql)->bindValues([
-			':endDT' => $endDate,
-		])->queryOne();
-		if ($res2) {
-			foreach ($res2 as $field => $num) {
-				$trend['accum_' . $field] = intval($num);
+				$trend['sum_loan_' . $field] = intval($num);
 			}
 		}
 
-		$sql = "SELECT COUNT(DISTINCT uId) as total,
-			COUNT(DISTINCT(case when u.uRole=10 AND u.uGender=11 then u.uId end)) as male,
-			COUNT(DISTINCT(case when u.uRole=10 AND u.uGender=10 then u.uId end)) as female,
-			COUNT(DISTINCT(case when u.uRole=20 then u.uId end)) as meipo
-			FROM im_user as u 
-			JOIN im_log_action as a on u.uId=a.aUId 
-			WHERE uStatus<8 AND uOpenId LIKE 'oYDJew%' AND a.aCategory in (1000,1002,1004) and u.uPhone!=''
-				AND a.aDate BETWEEN :beginDT AND :endDT ";
-		$res3 = $this->conn->createCommand($sql)->bindValues([
+		$sum_loan_user_select = "";
+		foreach ($salers as $v) {
+			$name = Pinyin::encode($v['uName'], 'all');
+			$name = str_replace(" ", '', ucwords($name));
+			$sum_loan_user_select .= "count(DISTINCT case when u2.uPhone='" . $v['uPhone'] . "' then oPhone end) as " . $name . '_' . $v['uPhone'] . ',';
+		}
+		$sum_loan_user_select = trim($sum_loan_user_select, ',');
+		$sql = "select 
+				$sum_loan_user_select
+				from im_stock_order as o
+				left join im_stock_user as u on u.uPhone=o.oPhone
+				left join im_stock_user as u2 on u2.uPhone=u.uPtPhone
+				where oStatus=$st and oAddedOn BETWEEN :beginDT and :endDT  ";
+		$res = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
-		if ($res3) {
-			foreach ($res3 as $field => $num) {
-				$trend['active_' . $field] = intval($num);
+		if ($res) {
+			foreach ($res as $field => $num) {
+				$trend['sum_loan_users_' . $field] = intval($num);
 			}
-			$trend['active_ratio'] = ($trend["accum_member"] > 0) ? intval(round($trend["active_total"] * 100.0 / $trend["accum_member"])) : 0; // 活跃度
 		}
 
-		$sql = "SELECT 
-				COUNT(CASE WHEN  nRelation=150 THEN  1 END ) as favor,
-				COUNT(CASE WHEN  nRelation=140 THEN  1 END ) as getwxno,
-				COUNT(CASE WHEN  nRelation=140 AND nStatus=2 THEN  1 END) as pass,
-				COUNT(CASE WHEN  nRelation=180 THEN  1 END) as gift
-				FROM im_user_net
-				WHERE nAddedOn BETWEEN :beginDT and :endDT AND nDeletedFlag=0 ";
-		$res4 = $this->conn->createCommand($sql)->bindValues([
+		$action = CRMStockTrack::ACTION_USER;
+		$sql = "select 
+				count(DISTINCT case when tAddedBy='1047' then tCId end) as jinzhixin,
+				count(DISTINCT case when tAddedBy='1027' then tCId end) as xiaodao,
+				count(DISTINCT case when tAddedBy='1048' then tCId end) as caojiayi,
+				count(DISTINCT case when tAddedBy='1017' then tCId end) as qiujuxing,
+				count(DISTINCT case when tAddedBy='1006' then tCId end) as yuhui,
+				count(DISTINCT case when tAddedBy='1014' then tCId end) as zhangmengying,
+				count(DISTINCT case when tAddedBy='1050' then tCId end) as xufang
+				from im_crm_stock_track as t 
+				join im_admin as a on a.aId=t.tAddedBy
+				WHERE t.tDeletedFlag=0 AND a.aId not in (1002)
+				and t.tAction=$action and t.tAddedDate BETWEEN :beginDT and :endDT ";
+		$res = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
-		if ($res4) {
-			foreach ($res4 as $field => $num) {
-				$trend['act_' . $field] = intval($num);
+		if ($res) {
+			foreach ($res as $field => $num) {
+				$trend['follow_' . $field] = intval($num);
 			}
 		}
 
-
-		/*$sql = "select Round(SUM(p.pTransAmt/100.0),1) as amt
-			from im_user_trans as t 
-			join im_pay as p on p.pId=t.tPId
-			where p.pStatus=100 and t.tDeletedFlag=0 
-			and tAddedOn BETWEEN :beginDT and :endDT  ";
-		$ret = $this->conn->createCommand($sql)->bindValues([
-			':beginDT' => $beginDate,
-			':endDT' => $endDate,
-		])->queryScalar();
-		$ret = $ret ? $ret : 0;
-		$trend['act_pay'] = intval($ret); // 新增充值*/
-
-		$sql = "select Round(SUM(pTransAmt/100.0),1) as amt
-			from im_pay where pStatus=100 and pTransDate BETWEEN :beginDT and :endDT ";
-		$ret = $this->conn->createCommand($sql)->bindValues([
-			':beginDT' => $beginDate,
-			':endDT' => $endDate,
-		])->queryScalar();
-		$ret = $ret ? $ret : 0;
-		$trend['act_pay'] = intval($ret); // 新增充值
-
-		$sql = "SELECT SUM(pTransAmt/100) as trans
-				FROM im_pay 
-				WHERE pStatus=100 and pTransDate BETWEEN :beginDT AND :endDT  ";
-		$res5 = $this->conn->createCommand($sql)->bindValues([
-			':beginDT' => $beginDate,
-			':endDT' => $endDate,
-		])->queryScalar();
-		$res5 = $res5 ? $res5 : 0;
-		$trend['act_trans'] = intval($res5);
-
-		$sql = " select count(distinct m.cGId) 
-			 from im_chat_msg as m
-			 join im_chat_group as g on g.gId=m.cGId 
-			  WHERE m.cAddedOn between :beginDT and :endDT and m.cDeletedFlag=0 ";
-		$res6 = $this->conn->createCommand($sql)->bindValues([
-			':beginDT' => $beginDate,
-			':endDT' => $endDate,
-		])->queryScalar();
-		$res6 = $res6 ? $res6 : 0;
-		$trend['act_chat'] = intval($res6);
 		foreach ($trend as $field => $val) {
 			$this->add($step, $this->dateName, $this->beginDate, $this->endDate, $field, $val);
 		}

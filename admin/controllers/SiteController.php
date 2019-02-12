@@ -1031,6 +1031,7 @@ class SiteController extends BaseController
 //			 $reset = 1;
 //		}
 		$trends = TrendService::init(TrendService::CAT_TREND)->chartTrend($date, $reset);
+
 		return $this->renderPage('trend.tpl',
 			[
 				'today' => date('Y年n月j日', time()),
