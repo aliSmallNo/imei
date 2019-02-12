@@ -180,9 +180,6 @@ class StockOrder extends ActiveRecord
 				$diff[] = $v2;
 			}
 		}
-
-		print_r($diff);
-		exit;
 		if ($diff) {
 			foreach ($diff as $v3) {
 				self::add([
