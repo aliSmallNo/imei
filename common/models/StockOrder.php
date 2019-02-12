@@ -155,7 +155,7 @@ class StockOrder extends ActiveRecord
 	{
 		$conn = AppUtil::db();
 		if (!$last_dt) {
-			$last_dt = date('Y-m-d', strtotime(time() - 86400));
+			$last_dt = date('Y-m-d', time() - 86400);
 		} else {
 			$last_dt = date('Y-m-d', strtotime($last_dt));
 		}
