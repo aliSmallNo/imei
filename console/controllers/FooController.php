@@ -1484,7 +1484,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$res = StockOrder::sold_stock();
+
 		exit;
 
 
