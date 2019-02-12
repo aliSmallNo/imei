@@ -11,6 +11,7 @@
 			{{if $is_stock_leader}}
 				<a href="javascript:;" class="opImport btn btn-outline btn-primary btn-xs">导入</a>
 				<a href="javascript:;" class="opDelete btn btn-outline btn-danger btn-xs">删除</a>
+				<a href="javascript:;" class="opCalSold btn btn-outline btn-primary btn-xs">计算今日卖出</a>
 				<a href="javascript:;" class="opIncome btn btn-outline btn-warning btn-xs">导出今日盈亏</a>
 			{{/if}}
 		</h4>
@@ -163,9 +164,37 @@
 	</div>
 </div>
 
+<div class="modal fade" id="modModal_c" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">计算今日卖出的订单</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">上个交易日日期</label>
+						<div class="col-sm-8">
+							<input type="text" data-field="cdt" class="form-control my-date-input"/>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnComfirm_c">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$sls = {
 		dt: $("[data-field=dt]"),
+		cdt: $("[data-field=cdt]"),
 
 	};
 	$('.opImport').on('click', function () {
@@ -175,6 +204,7 @@
 		$sls.dt.val('');
 		$('#modModal_d').modal('show');
 	});
+
 	$('#btnComfirm').on('click', function () {
 		var dt = $sls.dt.val();
 		if (!dt) {
@@ -209,6 +239,38 @@
 		location.href = url;
 	});
 	/********************* 导出我的客户 end ******************************/
+
+	/********************* 计算今日卖出 start ******************************/
+	$('.opCalSold').on('click', function () {
+		$sls.cdt.val('');
+		$('#modModal_c').modal('show');
+	});
+	$('#btnComfirm_c').on('click', function () {
+		var dt = $sls.cdt.val();
+		if (!dt) {
+			layer.msg('还没填写日期哦');
+			return;
+		}
+		if ($sls.load_flag) {
+			return;
+		}
+		layer.load();
+		$sls.load_flag = 1;
+		$.post("/api/stock", {
+			tag: 'cal_sold_order',
+			dt: dt,
+		}, function (resp) {
+			layer.closeAll();
+			$sls.load_flag = 0;
+			layer.msg(resp.msg);
+			if (resp.code == 0) {
+				setTimeout(function () {
+					location.reload();
+				}, 2000);
+			}
+		}, 'json');
+	});
+	/********************* 计算今日卖出 end ******************************/
 
 	/********************* 导出今日盈亏 start ******************************/
 	$(".opIncome").on("click", function () {

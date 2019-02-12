@@ -374,6 +374,9 @@ class StockController extends BaseController
 		);
 	}
 
+	/**
+	 * 导出今日盈亏
+	 */
 	public function actionExport_today_income()
 	{
 		$conn = AppUtil::db();

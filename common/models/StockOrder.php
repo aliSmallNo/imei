@@ -151,10 +151,16 @@ class StockOrder extends ActiveRecord
 		return [$insertCount, $error];
 	}
 
-	public static function sold_stock()
+	public static function sold_stock($last_dt = '')
 	{
 		$conn = AppUtil::db();
-		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=-1";
+		if (!$last_dt) {
+			$last_dt = date('Y-m-d', strtotime(time() - 86400));
+		} else {
+			$last_dt = date('Y-m-d', strtotime($last_dt));
+		}
+
+		$sql = "select * from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') ='$last_dt' ";
 		$yestoday = $conn->createCommand($sql)->queryAll();
 		$_yestoday = [];
 		foreach ($yestoday as $k => $v) {
@@ -267,14 +273,19 @@ class StockOrder extends ActiveRecord
 		return array_column(AppUtil::db()->createCommand($sql)->queryAll(), 'dt');
 	}
 
-	public static function delete_by_dt($dt)
+	public static function delete_by_dt($dt, $st = '')
 	{
 		if (date('Y', strtotime($dt)) < 2018) {
 			return [129, '日期格式不正确'];
 		}
 		$dt = date('Y-m-d', strtotime($dt));
 
-		$sql = "delete from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') in ('$dt') ";
+		$cond = "";
+		if ($st && $st == self::ST_SOLD) {
+			$cond = " and oStatus=9 ";
+		}
+
+		$sql = "delete from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') in ('$dt') $cond ";
 		$res = AppUtil::db()->createCommand($sql)->execute();
 		return [0, '删除' . $res . '行数据'];
 	}
