@@ -1484,9 +1484,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		$res = Pinyin::encode('周攀', 'all');
-		$res = str_replace(" ", '', ucwords($res));
-		echo $res;
+		$res = StockOrder::sold_stock();
 		exit;
 
 
