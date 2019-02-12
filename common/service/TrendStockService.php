@@ -123,9 +123,8 @@ class TrendStockService
 			$queryTime = strtotime($queryDate);
 		}
 		$trends = [];
-		$counters = [10, 12, 12];
+		$counters = [30, 12, 12];
 		$steps = ['day', 'week', 'month'];
-		$steps = ['day'];
 		$service = TrendStockService::init(self::CAT_TREND);
 		foreach ($steps as $idx => $step) {
 			$cnt = $counters[$idx];
