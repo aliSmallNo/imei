@@ -161,6 +161,7 @@ class StockOrder extends ActiveRecord
 		}
 
 		$sql = "select * from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') ='$last_dt' ";
+		echo $sql . PHP_EOL;
 		$yestoday = $conn->createCommand($sql)->queryAll();
 		$_yestoday = [];
 		foreach ($yestoday as $k => $v) {
