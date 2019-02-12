@@ -17,6 +17,7 @@ use common\models\Log;
 use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
+use common\service\TrendStockService;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
@@ -651,6 +652,23 @@ class StockController extends BaseController
 				'pagination' => $pagination,
 			]
 		);
+	}
+
+	public function actionTrend()
+	{
+
+		$date = self::getParam('dt', date('Y-m-d'));
+		$reset = self::getParam('reset', 0);
+//		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
+//			 $reset = 1;
+//		}
+		$trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+		return $this->renderPage('trend.tpl',
+			[
+				'today' => date('Y年n月j日', time()),
+				'trends' => json_encode($trends),
+				'date' => $date
+			]);
 	}
 
 }

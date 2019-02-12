@@ -1484,116 +1484,8 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		echo md5('123456');
+		var_dump(Pinyin::encode('周攀'));
 		exit;
-		// TencentAI::word_to_voild();
-
-		// 分析每天被群聊用户
-		/*$sql = "select uName,uGender,o.* from im_log as o
-				left join im_user as u on u.uId =o.oUId
-				where oCategory='8008' and DATEDIFF(oDate,now())=-1";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		$uids = [];
-		foreach ($res as $v) {
-			$uids = array_merge($uids, AppUtil::json_decode($v['oBefore']));
-		}
-		$uids = array_count_values($uids);
-		asort($uids);
-		foreach ($uids as $uid => $num) {
-			$uids[$uid] = $num . "--" . User::findOne(['uId' => $uid])->uGender;
-		}
-		print_r([$uids, count($uids)]);*/
-
-		//AppUtil::new_fun();
-		/*$msglist = [
-			"你喜欢的另一半是什么类型?",
-			"HI!最近有没有去旅游呀?",
-			"在干嘛呢？有没有想过什么时候结婚?",
-			"你好？你喜欢吃完饭后运动吗?",
-			"在交往前期，大家同意AA吗?",
-			"你觉得在网上能找到真爱吗?",
-			"你老婆和你妈妈吵架了，你帮谁?",
-		];
-		$index = array_rand($msglist, 1);
-		echo $msglist[$index];
-		exit;*/
-
-		/*
-		$sql = 'INSERT INTO im_chat_group(gUId1,gUId2,gRound,gAddedBy)
-			SELECT :id1,:id2,9999,:uid FROM dual
-			WHERE NOT EXISTS(SELECT 1 FROM im_chat_group as g WHERE g.gUId1=:id1 AND g.gUId2=:id2)';
-		*/
-		// var_dump(WechatUtil::createWechatMenus());
-
-		// 添加月度畅聊卡
-		// UserTag::add(UserTag::CAT_CHAT_MONTH,120003);
-		//UserTrans::add(UserTag::CAT_CHAT_MONTH,120003);
-
-		// UserWechat::refreshWXInfo('oYDJewwqr9m_nHTtJrv0Ifxg9CWg', 1);
-
-		//WechatUtil::toAllUserTempMsg();
-		/*WechatUtil::templateMsg(
-			WechatUtil::NOTICE_CUT_PRICE,
-			120003
-		);*/
-		/*NoticeUtil::init2(WechatUtil::NOTICE_CHAT, 120003, 143807)
-			->send([
-				'密聊消息',
-				'有人密聊你了' . '3次',
-				date("Y年n月j日 H:i")
-			]);*/
-
-		/*$has_card = UserTag::find()
-			->where('tCategory=' . UserTag::CAT_CHAT_MONTH . ' and tUId=174878' . ' and tExpiredOn>now() and tDeletedFlag=0 ')
-			->asArray()->one();
-		print_r($has_card);*/
-
-		// Log::cut_one(120003, 174889);
-
-		//Log::cut_one_dao('oYDJewwqr9m_nHTtJrv0Ifxg9CWg','oYDJew5MfQtAT12g3Ocso0OKLMyA');
-		// echo Log::edit_cut_price(143807);
-
-//		 ChatMsg::addChat(174891, 129104,'啥~~');
-
-		/*QueueUtil::loadJob('templateMsg',
-			[
-				'tag' => WechatUtil::NOTICE_SUMMON,
-				'receiver_uid' => 120003,
-				'title' => '有人对你怦然心动啦',
-				'sub_title' => '有一位你的微信好友对你怦然心动啦，快去看看吧~' . date('Y-m-d H:i:s'),
-				'sender_uid' => 120000,
-				'gid' => 0
-			],
-			QueueUtil::QUEUE_TUBE_SMS);*/
-
-//		$sql = "select * from im_user as u
-//				left join im_user_wechat as w on `wUId`=uId
-// 				where uPhone!='' and uGender=10 and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3)
-// 				order by uId asc";
-
-		/*$sql = "select uId,uName,wSubscribe,tCategory,tTitle,tExpiredOn,tDeletedOn from im_user as u
-left join im_user_tag as t on `tUId`=uId
-left join im_user_wechat as w on `wUId`=uId
-where uPhone!=''  and uRole in (10,20) and wSubscribe=1 and uStatus in (1,3) and uNote!='dummy' 
-and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
-
-		/*$res = AppUtil::db()->createCommand($sql)->queryAll();
-		$cnt = 0;
-		$amt = count($res);
-		foreach ($res as $v) {
-			$uid = $v['uId'];
-			//$res = UserTag::add(UserTag::CAT_CHAT_GROUP, $uid);
-			// 推送信息
-			WechatUtil::templateMsg(
-				WechatUtil::NOTICE_CUT_PRICE,
-				$uid,
-				//"恭喜您！免费获得一键群聊卡一张，即日生效！快去愉快和美女/帅哥密聊吧！"
-				//"尊敬的VIP会员！免费赠送您一张一键群聊卡，即日生效！快去愉快的和美女/帅哥密聊吧！"
-				"尊敬的千寻会员！您有一张一键群聊卡还没使用，快去使用吧~！"
-			);
-			$cnt++;
-			echo $cnt . '/' . $amt . ' uid:' . $uid . PHP_EOL;
-		}*/
 
 
 	}
@@ -1838,7 +1730,7 @@ and `tDeletedFlag`=0 and DATEDIFF(`tExpiredOn`,now())>0 and tCategory=300";*/
 		// TryPhone::updateIPs();
 		// echo TryPhone::get_proxy_ip() . PHP_EOL;
 
-		 //TryPhone::phone_section_4();
+		//TryPhone::phone_section_4();
 		Log::add_phone_section_yes('13012833901', "taoguba");
 
 	}
