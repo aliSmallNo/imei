@@ -1453,7 +1453,7 @@ class ApiController extends Controller
 				return self::renderAPI($code, $msg);
 			case "cal_sold_order":
 				$dt = self::postParam("dt");
-				StockOrder::delete_by_dt($dt, StockOrder::ST_SOLD);
+				StockOrder::delete_by_dt(date('Y-m-d'), StockOrder::ST_SOLD);
 				StockOrder::sold_stock($dt);
 				StockOrder::update_price();
 				return self::renderAPI(0, '操作成功');

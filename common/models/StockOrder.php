@@ -160,14 +160,15 @@ class StockOrder extends ActiveRecord
 			$last_dt = date('Y-m-d', strtotime($last_dt));
 		}
 
-		$sql = "select * from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') ='$last_dt' ";
+		$st = self::ST_HOLD;
+		$sql = "select * from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') ='$last_dt' and oStatus=1 ";
 
 		$yestoday = $conn->createCommand($sql)->queryAll();
 		$_yestoday = [];
 		foreach ($yestoday as $k => $v) {
 			$_yestoday[$v['oId']] = $v;
 		}
-		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0";
+		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0 and oStatus=1";
 		$today = $conn->createCommand($sql)->queryAll();
 		$_today = [];
 		foreach ($today as $k1 => $v1) {
