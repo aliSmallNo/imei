@@ -1484,7 +1484,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		var_dump(Pinyin::encode('周攀'));
+		var_dump(Pinyin::encode('周攀', 'all'));
 		exit;
 
 
