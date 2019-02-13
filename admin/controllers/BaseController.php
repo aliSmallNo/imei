@@ -52,7 +52,6 @@ class BaseController extends Controller
 		$pjax = self::getHeader('X-PJAX');
 		$params['pjax'] = $pjax;
 
-		$params["debug"] = Admin::isDebugUser() ? 1 : 0;
 		if ($pjax) {
 			$this->layout = false;
 			return self::render($view, $params);
@@ -66,7 +65,6 @@ class BaseController extends Controller
 			exit;
 		}
 		$adminInfo = Admin::userInfo($adminId);
-		//print_r($adminInfo);exit;
 		if (!$adminInfo) {
 			header("location:/site/login");
 			exit;
@@ -114,6 +112,7 @@ class BaseController extends Controller
 			}
 			$params["adminInfo"]["menus"] = $menus;
 		}
+		$params["debug"] = Admin::isDebugUser() ? 1 : 0;
 		$params['is_run'] = Admin::isGroupUser(Admin::GROUP_RUN_MGR);
 		$params['is_staff'] = Admin::get_level() >= Admin::LEVEL_STAFF;
 		$params['is_stock_leader'] = Admin::isGroupUser(Admin::GROUP_STOCK_LEADER);

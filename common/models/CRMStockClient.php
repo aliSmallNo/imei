@@ -111,7 +111,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	];
 	//'#88AACC', '#337ab7'
 
-//['#88AACC', '#8A89A6', '#7B6888', '#6B486B', '#A05D56', '#D0743C', '#FF8800']
+	//['#88AACC', '#8A89A6', '#7B6888', '#6B486B', '#A05D56', '#D0743C', '#FF8800']
 	const SRC_WEBSITE = "website";
 	const SRC_FRIEND = "friend";
 	const SRC_FRIEND_INTROLDUCE = "friend_introduce";
@@ -178,7 +178,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$newItem->cUpdatedBy = $values["cBDAssign"];
 		}
 		$newItem->cUpdatedDate = date("Y-m-d H:i:s");
-
 
 		$newItem->save();
 		return $newItem->cId;
