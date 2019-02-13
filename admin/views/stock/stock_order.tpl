@@ -59,7 +59,7 @@
 				<th>BD</th>
 			{{/if}}
 			<th>用户名|手机</th>
-			<th>股票代码</th>
+			<th>股票名称|股票代码</th>
 			<th>股数|初期借款</th>
 			{{if $is_staff}}
 				<th>状态</th>
@@ -77,7 +77,10 @@
 					<td>{{$item.uPtName}}</td>
 				{{/if}}
 				<td>{{$item.oName}}({{$item.oPhone}})</td>
-				<td>{{$item.oStockId}}</td>
+				<td>
+					{{$item.oStockName}}<br>
+					{{$item.oStockId}}
+				</td>
 				<td>
 					{{$item.oStockAmt}}<br>
 					{{$item.oLoan}}<br>
