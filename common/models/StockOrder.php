@@ -228,11 +228,9 @@ class StockOrder extends ActiveRecord
 		if (!mb_check_encoding($ret, 'utf-8')) {
 			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'UTF-8', 'GB2312', 'GBK']);
 		}
-		echo $ret . PHP_EOL;
+		//echo $ret . PHP_EOL;
 		$ret = explode(",", $ret);
-		print_r($ret);
-		exit;
-		unset($ret[0]);
+		// unset($ret[0]);
 		self::update_price_des($ret, $oId);
 	}
 
@@ -240,6 +238,7 @@ class StockOrder extends ActiveRecord
 	{
 		$v = self::find()->where(['oId' => $oId])->asArray()->one();
 
+		$stockName = $ret[0];   // 股票名称
 		$openPrice = $ret[1];   // 今日开盘价
 		$closePrice = $ret[3];  // 今日收盘价
 		$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
@@ -260,6 +259,7 @@ class StockOrder extends ActiveRecord
 			"oClosePrice" => $closePrice,
 			"oCostPrice" => $oCostPrice,
 			"oIncome" => $oIncome,
+			"oStockName" => $stockName,
 			"oRate" => $oRate,
 		]);
 	}
