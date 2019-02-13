@@ -328,7 +328,6 @@ class StockController extends BaseController
 				'list' => $list,
 				'sum_income' => $sum_income,
 				'mouths' => StockOrder::order_year_mouth(),
-
 			]
 		);
 	}

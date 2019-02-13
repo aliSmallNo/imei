@@ -1484,7 +1484,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-
+		StockOrder::getStockPrice(601006, 1);
 		exit;
 
 
