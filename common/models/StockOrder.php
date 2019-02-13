@@ -238,13 +238,14 @@ class StockOrder extends ActiveRecord
 		$closePrice = $ret[3];  // 今日收盘价
 		$avgPrice = sprintf("%.2f", ($openPrice + $closePrice) / 2);
 		$oCostPrice = sprintf("%.2f", $v['oLoan'] / $v['oStockAmt']);// 成本价格
-		$oIncome = 0;
+
 		if ($v['oStatus'] == self::ST_SOLD) {
 			$oIncome = sprintf("%.2f", $avgPrice * $v['oStockAmt'] - $v['oLoan']);// 盈利
-		} else if ($v['oStatus'] == self::ST_HOLD) {
+		} elseif ($v['oStatus'] == self::ST_HOLD) {
 			$oIncome = sprintf("%.2f", $closePrice * $v['oStockAmt'] - $v['oLoan']);// 盈利
+		} else {
+			$oIncome = 0;
 		}
-
 		$oRate = sprintf("%.2f", $oIncome / $v['oLoan']);// 盈利比例
 		StockOrder::edit($v['oId'], [
 			"oPriceRaw" => AppUtil::json_encode($ret),

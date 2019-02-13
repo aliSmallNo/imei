@@ -395,7 +395,8 @@ class StockController extends BaseController
 		$res4 = [];
 		foreach ($res1 as $k => $v) {
 			$key = $v['oPhone'];
-			$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
+			//$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
+			$income = $v['oIncome'];
 			$load = $v['oLoan'];
 			$stockId = $v['oStockId'];
 			if ($v['st'] == "持有") {
@@ -440,7 +441,8 @@ class StockController extends BaseController
 		$res3 = [];
 		foreach ($res1 as $k => $v) {
 			$key = $v['aId'];
-			$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
+			//$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
+			$income = $income = $v['oIncome'];;
 			$load = $v['oLoan'];
 			$phone = $v['oPhone'];
 			if ($v['st'] == "持有") {
