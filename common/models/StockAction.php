@@ -94,11 +94,11 @@ class StockAction extends \yii\db\ActiveRecord
 
 			try {
 				$res = $cmd->bindValues($params)->execute();
-				// 2018-1-17
-				StockUser::pre_add($phone, [
-					'uPhone' => $phone,
-					'uName' => $phone,
-				]);
+				// 2018-1-17 2018-2-14
+//				StockUser::pre_add($phone, [
+//					'uPhone' => $phone,
+//					'uName' => $phone,
+//				]);
 				// 2018-1-17添加到crm客户线索
 				CRMStockClient::add_by_stock_action($phone, $typeT);
 
