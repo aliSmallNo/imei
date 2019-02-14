@@ -138,7 +138,7 @@ class TryPhone
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 				'Content-Length: ' . strlen($postdata),
 				//"Proxy-Authorization: {$appKey}",
-				"User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.1.0.13",
+				"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
 				'origin: https://www.yhpz.com',
 				'Referer: https://www.yhpz.com/home/Member/login',
 				'X-Requested-With: XMLHttpRequest',
