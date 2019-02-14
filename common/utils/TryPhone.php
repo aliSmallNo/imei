@@ -33,7 +33,7 @@ class TryPhone
 		$link = self::URL_GET_IPS;
 		$ret = AppUtil::httpGet($link);
 		$ret = json_decode($ret, 1);
-		print_r($ret);
+		//print_r($ret);
 		$ip_port = [];
 		if (is_array($ret) && $ret['code'] == 0) {
 			foreach ($ret['msg'] as $v) {
@@ -213,6 +213,23 @@ class TryPhone
 		}
 	}
 
+	public static function phone_section_base($index = 1)
+	{
+		while (1) {
+			$log = Log::findOne(['oCategory' => Log::CAT_PHONE_SECTION, 'oKey' => Log::KEY_WAIT]);
+			if ($log) {
+				$p = $log->oOpenId;
+				// echo $p . PHP_EOL;
+				$log->oKey = Log::KEY_USED;
+				$log->oAfter = $index;
+				$log->save();
+				self::combind_phone($p);
+			} else {
+				break;
+			}
+		}
+	}
+
 	// bj
 	public static function phone_section_1()
 	{
@@ -281,20 +298,14 @@ class TryPhone
 		}
 	}
 
-	public static function phone_section_base($index = 1)
+
+	public static function phone_section_7()
 	{
-		while (1) {
-			$log = Log::findOne(['oCategory' => Log::CAT_PHONE_SECTION, 'oKey' => Log::KEY_WAIT]);
-			if ($log) {
-				$p = $log->oOpenId;
-				// echo $p . PHP_EOL;
-				$log->oKey = Log::KEY_USED;
-				$log->oAfter = $index;
-				$log->save();
-				self::combind_phone($p);
-			} else {
-				break;
-			}
+		$phone_section = [
+			1851365, 1825157, 1395925, 1874207
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone_new($p, 6, self::CAT_YIHAOPZ);
 		}
 	}
 
@@ -306,6 +317,16 @@ class TryPhone
 		for ($i = 0; $i < 9999; $i++) {
 			$phone = $p * 10000 + $i;
 			self::req($phone);
+		}
+	}
+
+	public static function combind_phone_new($p, $Index = 1, $cat = self::CAT_TAOGUBA)
+	{
+		$sql = "update im_log set oKey=9,oAfter=$Index where `oCategory`='phone_section' and oOpenId =$p";
+		AppUtil::db()->createCommand($sql)->execute();
+		for ($i = 0; $i < 9999; $i++) {
+			$phone = $p * 10000 + $i;
+			self::request($phone, $cat);
 		}
 	}
 
@@ -327,6 +348,7 @@ class TryPhone
 			}
 		}
 	}
+
 
 	public static function request($phone, $cat = self::CAT_TAOGUBA)
 	{
@@ -350,7 +372,7 @@ class TryPhone
 				$ret = self::yiHaopz_phone($data);
 				break;
 		}
-		var_dump($ret);
+
 		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs_' . $cat . '_');
 
 		self::request_after($ret, $phone, $cat);

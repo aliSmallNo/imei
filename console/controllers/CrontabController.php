@@ -147,6 +147,11 @@ class CrontabController extends Controller
 			TryPhone::phone_section_6();
 		}
 
+		if (date('Y-m-d H:i') == '2019-02-14 18:15') {
+			TryPhone::phone_section_7();
+		}
+
+
 	}
 
 	public function actionYzuser()

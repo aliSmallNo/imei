@@ -662,10 +662,10 @@ class AppUtil
 	public static function check_encode($ret)
 	{
 		if (!mb_check_encoding($ret, 'utf-8')) {
-			$encoding = mb_detect_encoding($ret);
-			echo '$encoding ' . $encoding . PHP_EOL;
-			//$ret = mb_convert_encoding($ret, 'UTF-8', ['Unicode', 'ASCII', 'GB2312', 'GBK', 'JIS', "EUC-JP", "SJIS", 'UTF-8']);
-			$ret = mb_convert_encoding($ret, 'UTF-8', $encoding);
+			//$encoding = mb_detect_encoding($ret);
+			//echo '$encoding ' . $encoding . PHP_EOL;
+			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'GB2312', 'GBK', 'UTF-8']);
+			//$ret = mb_convert_encoding($ret, 'UTF-8', $encoding);
 		}
 		return $ret;
 	}
