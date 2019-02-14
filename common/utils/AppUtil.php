@@ -661,9 +661,12 @@ class AppUtil
 
 	public static function check_encode($ret)
 	{
-		if (!mb_check_encoding($ret, 'utf-8')) {
-			$ret = mb_convert_encoding($ret, 'UTF-8', ['Unicode', 'ASCII', 'GB2312', 'GBK', 'JIS', "EUC-JP", "SJIS", 'UTF-8']);
-		}
+//		if (!mb_check_encoding($ret, 'utf-8')) {
+//			$ret = mb_convert_encoding($ret, 'UTF-8', ['Unicode', 'ASCII', 'GB2312', 'GBK', 'JIS', "EUC-JP", "SJIS", 'UTF-8']);
+//		}
+		$encoding = mb_detect_encoding($ret, "auto");
+		mb_substitute_character("none");
+		$ret = mb_convert_encoding($ret, 'UTF-8', $encoding);
 		return $ret;
 	}
 
