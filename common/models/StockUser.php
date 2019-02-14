@@ -91,11 +91,11 @@ class StockUser extends \yii\db\ActiveRecord
 		$user = self::findOne(['uPhone' => $phone]);
 		if ($user) {
 			// 2018-1-21
-			if (!AppUtil::hasHans($user->uName) && mb_strlen($user->uName) == 11 && AppUtil::hasHans($values['uName'])) {
-				self::edit($user->uId, [
-					"uName" => $values['uName'],
-				]);
-			}
+//			if (!AppUtil::hasHans($user->uName) && mb_strlen($user->uName) == 11 && AppUtil::hasHans($values['uName'])) {
+//				self::edit($user->uId, [
+//					"uName" => $values['uName'],
+//				]);
+//			}
 			return false;
 		}
 		if (isset($values['uName']) && isset($values['uPhone']) && AppUtil::checkPhone($values['uPhone'])) {

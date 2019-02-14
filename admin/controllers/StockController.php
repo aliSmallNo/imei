@@ -369,7 +369,6 @@ class StockController extends BaseController
 				'list' => $list,
 				'success' => $success,
 				'error' => $error,
-
 			]
 		);
 	}
