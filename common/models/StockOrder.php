@@ -165,14 +165,17 @@ class StockOrder extends ActiveRecord
 
 		$yestoday = $conn->createCommand($sql)->queryAll();
 		$_yestoday = [];
+
 		foreach ($yestoday as $k => $v) {
-			$_yestoday[$v['oId']] = $v;
+			$key = $v['oPhone'] . '_' . $v['oStockId'] . '_' . $v['oStockAmt'] . '_' . $v['oLoan'];
+			$_yestoday[$key] = $v;
 		}
 		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0 and oStatus=1";
 		$today = $conn->createCommand($sql)->queryAll();
 		$_today = [];
 		foreach ($today as $k1 => $v1) {
-			$_today[$v1['oId']] = $v1;
+			$key = $v['oPhone'] . '_' . $v['oStockId'] . '_' . $v['oStockAmt'] . '_' . $v['oLoan'];
+			$_today[$key] = $v1;
 		}
 
 		$diff = [];
