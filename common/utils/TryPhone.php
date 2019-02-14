@@ -119,7 +119,9 @@ class TryPhone
 		//curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Encoding: gzip, deflate'));
+		//curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept-Encoding: gzip, deflate'));
+		curl_setopt($ch, CURLOPT_ENCODING, "");
+
 
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::get_cookie($cat));
