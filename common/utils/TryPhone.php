@@ -345,7 +345,7 @@ class TryPhone
 				$data = [
 					'mobile' => $phone,
 					'password' => "123456",
-					'verifycode' => "1234",
+					'verifycode' => "5853",
 				];
 				$ret = self::yiHaopz_phone($data);
 				break;
