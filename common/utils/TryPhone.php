@@ -113,10 +113,10 @@ class TryPhone
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $link);//设置链接
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
-		curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
-		curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
-		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+		//curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
+		//curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
+		//curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
+		//curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 
@@ -136,7 +136,7 @@ class TryPhone
 				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 				'Content-Length: ' . strlen($postdata),
-				"Proxy-Authorization: {$appKey}",
+				//"Proxy-Authorization: {$appKey}",
 				"User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.1.0.13",
 				'origin: https://www.yhpz.com',
 				'Referer: https://www.yhpz.com/home/Member/login',
