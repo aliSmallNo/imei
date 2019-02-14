@@ -1490,11 +1490,13 @@ class FooController extends Controller
 		$sql = "select * from im_stock_order";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $k => $v) {
-			StockUser::pre_add($v['oPhone'], [
+			$ret = StockUser::pre_add($v['oPhone'], [
 				'uName' => $v['oName'],
 				'uPhone' => $v['oPhone'],
 			]);
-			exit;
+			if($ret){
+				exit;
+			}
 		}
 		exit;
 	}
