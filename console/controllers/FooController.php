@@ -1494,9 +1494,7 @@ class FooController extends Controller
 				'uName' => $v['oName'],
 				'uPhone' => $v['oPhone'],
 			]);
-			if($ret){
-				exit;
-			}
+
 		}
 		exit;
 	}
