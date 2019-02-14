@@ -1485,7 +1485,8 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		//TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
-		TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
+		//TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
+		TryPhone::phone_section_7();
 
 		/*$sql = "select * from im_stock_order";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
