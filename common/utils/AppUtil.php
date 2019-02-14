@@ -661,11 +661,12 @@ class AppUtil
 
 	public static function check_encode($ret)
 	{
+		echo "---" . PHP_EOL;
 		echo mb_detect_encoding($ret, array('ASCII', 'GB2312', 'GBK', 'UTF-8')) . PHP_EOL;
+		echo "---" . PHP_EOL;
 
 		if (!mb_check_encoding($ret, 'utf-8')) {
-			//$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5']);
-			$ret = mb_convert_encoding($ret, 'UTF-8', 'ASCII,UTF-8,GB2312,GBK,BIG5');
+			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'UTF-8', 'GB2312', 'GBK', 'BIG5']);
 		}
 		return $ret;
 	}
