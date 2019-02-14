@@ -134,7 +134,7 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_HTTPHEADER,
 			[
 				'Accept:application/json, text/javascript, */*; q=0.01',
-				//'accept-encoding: gzip, deflate, br',
+				'accept-encoding: gzip, deflate, br',
 				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 				'Content-Length: 46',
