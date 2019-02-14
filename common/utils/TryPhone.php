@@ -137,7 +137,7 @@ class TryPhone
 				'accept-encoding: gzip, deflate, br',
 				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
-				'Content-Length: ' . strlen($postdata),
+				'Content-Length: 46',
 				//"Proxy-Authorization: {$appKey}",
 				"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
 				'origin: https://www.yhpz.com',
