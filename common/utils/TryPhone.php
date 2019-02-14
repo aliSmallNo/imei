@@ -150,6 +150,7 @@ class TryPhone
 			return false;
 		} else {
 			curl_close($ch);//关闭 curl
+			$response = AppUtil::check_encode($response);
 			return $response;
 		}
 	}
