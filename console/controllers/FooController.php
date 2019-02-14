@@ -1484,7 +1484,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
+		//TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
 		TryPhone::request(17611629667, TryPhone::CAT_YIHAOPZ);
 		exit;
 

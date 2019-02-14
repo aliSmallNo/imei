@@ -347,6 +347,7 @@ class TryPhone
 				$ret = self::yiHaopz_phone($data);
 				break;
 		}
+		var_dump($ret);
 		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs_' . $cat . '_');
 
 		self::request_after($ret, $phone, $cat);
