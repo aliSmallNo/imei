@@ -174,7 +174,7 @@ class StockOrder extends ActiveRecord
 		$today = $conn->createCommand($sql)->queryAll();
 		$_today = [];
 		foreach ($today as $k1 => $v1) {
-			$key = $v['oPhone'] . '_' . $v['oStockId'] . '_' . $v['oStockAmt'] . '_' . $v['oLoan'];
+			$key = $v1['oPhone'] . '_' . $v1['oStockId'] . '_' . $v1['oStockAmt'] . '_' . $v1['oLoan'];
 			$_today[$key] = $v1;
 		}
 
