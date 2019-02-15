@@ -24,6 +24,12 @@ class TryPhone
 
 	const CAT_TAOGUBA = "taoguba";
 	const CAT_YIHAOPZ = "yiHaoPZ";
+	const CAT_WOLUNCL = "woLunCL";
+	static $catDict = [
+		self::CAT_TAOGUBA => '淘股吧',
+		self::CAT_YIHAOPZ => '一号配资',
+		self::CAT_WOLUNCL => '沃伦策略',
+	];
 
 	/**
 	 * 原文：https://blog.csdn.net/u013091013/article/details/81312559
@@ -93,6 +99,11 @@ class TryPhone
 			$cookie = '';
 		}
 		return $cookie;
+
+	}
+
+	public static function woLunCL_phone($data)
+	{
 
 	}
 
@@ -337,6 +348,13 @@ class TryPhone
 					'verifycode' => "5853",
 				];
 				$ret = self::yiHaopz_phone($data);
+				break;
+			case self::CAT_WOLUNCL:
+				$data = [
+					'mobile' => $phone,
+					'password' => "123456",
+				];
+				$ret = self::woLunCL_phone($data);
 				break;
 		}
 

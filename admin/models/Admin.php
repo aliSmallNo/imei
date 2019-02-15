@@ -419,7 +419,7 @@ class Admin extends ActiveRecord
 		if (!$adminId) {
 			$adminId = self::getAdminId();
 		}
-		return in_array($adminId, [1001, 1002, 1006, 1017, 1026, 1027]);
+		return in_array($adminId, [1001, 1002, 1006, 1017, 1026, 1027, 1014]);
 	}
 
 	public static function staffOnly()
