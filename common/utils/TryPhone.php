@@ -195,6 +195,7 @@ class TryPhone
 				$ret = self::reqData($data, $cat, $header);
 				$ret = AppUtil::json_decode($ret);
 				$ret['msg'] = self::unicodeDecode($ret['msg']);
+				$ret = AppUtil::json_encode($ret);
 				break;
 		}
 
