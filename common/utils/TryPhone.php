@@ -389,6 +389,7 @@ class TryPhone
 		}
 	}
 
+	// 一号配资
 	public static function phone_section_7()
 	{
 		$phone_section = [
@@ -396,6 +397,17 @@ class TryPhone
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new($p, 6, self::CAT_YIHAOPZ);
+		}
+	}
+
+	// 沃伦策略
+	public static function phone_section_8()
+	{
+		$phone_section = [
+			1825157, 1395925, 1874207
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone_new2($p, 8, self::CAT_WOLUNCL);
 		}
 	}
 
@@ -417,6 +429,14 @@ class TryPhone
 		for ($i = 0; $i < 9999; $i++) {
 			$phone = $p * 10000 + $i;
 			self::request($phone, $cat);
+		}
+	}
+
+	public static function combind_phone_new2($p, $Index = 1, $cat = self::CAT_TAOGUBA)
+	{
+		for ($i = 0; $i < 9999; $i++) {
+			$phone = $p * 10000 + $i;
+			self::pre_reqData($phone, $cat);
 		}
 	}
 
