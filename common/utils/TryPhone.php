@@ -26,11 +26,13 @@ class TryPhone
 	const CAT_YIHAOPZ = "yiHaoPZ";
 	const CAT_WOLUNCL = "woLunCL";
 	const CAT_QIANCHENGCL = "qianChengCL";
+	const CAT_HONGDASP = "hongDaSP";
 	static $catDict = [
 		self::CAT_TAOGUBA => '淘股吧',
 		self::CAT_YIHAOPZ => '一号配资',
 		self::CAT_WOLUNCL => '沃伦策略',
 		self::CAT_QIANCHENGCL => '钱程策略',
+		self::CAT_HONGDASP => '弘大速配',
 	];
 
 	/**
@@ -89,6 +91,8 @@ class TryPhone
 			$link = 'https://www.iwolun.com/loginI';
 		} elseif ($cat == self::CAT_QIANCHENGCL) {
 			$link = 'https://www.58moneys.com/home/index/login';
+		} elseif ($cat == self::CAT_HONGDASP) {
+			$link = 'http://www.stianran.com/index.php?ctl=user&act=dologin&ajax=1';
 		} else {
 			$link = '';
 		}
@@ -105,6 +109,8 @@ class TryPhone
 			$cookie = 'SESSION=6c6408a8-a14e-4b3d-9cb2-222557f00d16; Hm_lvt_d052aa2efa971ba1bdb0ea7178efe2a6=1550199764; Hm_lpvt_d052aa2efa971ba1bdb0ea7178efe2a6=1550199764; __root_domain_v=.iwolun.com; _qddaz=QD.rqpe7s.mfcqef.js5gwxhm; _qdda=3-1.32tw1c; _qddab=3-h3iuru.js5gwxk2; _qddamta_2852159076=3-0';
 		} elseif ($cat == self::CAT_QIANCHENGCL) {
 			$cookie = 'PHPSESSID=iq7sju7a0p3s51stkp39lo9783; __utma=156655551.450832559.1550200096.1550200096.1550200096.1; __utmc=156655551; __utmz=156655551.1550200096.1.1.utmcsr=mail.hichina.com|utmccn=(referral)|utmcmd=referral|utmcct=/static/blank.html';
+		} elseif ($cat == self::CAT_HONGDASP) {
+			$cookie = 'security_session_verify=e43a676ed6712bf46bf830173e93f710; ZDEDebuggerPresent=php,phtml,php3; PHPSESSID=ku08r19baqa7ohja5gupuielq7; cck_lasttime=1550200521916; cck_count=0; __51cke__=; firstEnterUrlInSession=http%3A//www.stianran.com/; ktime_vip/535c3814-de54-5901-8b23-da745236f387/1b93f3fd-d178-4bb3-b425-181c7567d49e=-3; k_vip/535c3814-de54-5901-8b23-da745236f387/1b93f3fd-d178-4bb3-b425-181c7567d49e=y; VisitorCapacity=1; __tins__19684689=%7B%22sid%22%3A%201550219128389%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201550220928389%7D; __51laig__=3';
 		} else {
 			$cookie = '';
 		}
@@ -196,6 +202,25 @@ class TryPhone
 				$ret = AppUtil::json_decode($ret);
 				$ret['msg'] = self::unicodeDecode($ret['msg']);
 				$ret = AppUtil::json_encode($ret);
+				break;
+			case self::CAT_HONGDASP:
+				$data = [
+					'email' => $phone,
+					'user_pwd' => "123456",
+				];
+				$header = [
+					'Accept: */*',
+					'accept-encoding: gzip, deflate',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Content-Length: 33',
+					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+					'host: www.stianran.com',
+					'origin: http://www.stianran.com',
+					'Referer: http://www.stianran.com/',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header);
 				break;
 		}
 
