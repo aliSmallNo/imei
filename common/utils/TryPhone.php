@@ -83,7 +83,7 @@ class TryPhone
 			$link = 'https://sso.taoguba.com.cn/web/login/submit';
 		} elseif ($cat == self::CAT_YIHAOPZ) {
 			$link = 'https://www.yhpz.com/common/Pub/dologin';
-		} elseif ($cat == self::CAT_YIHAOPZ) {
+		} elseif ($cat == self::CAT_WOLUNCL) {
 			$link = 'https://www.iwolun.com/loginI';
 		} else {
 			$link = '';
