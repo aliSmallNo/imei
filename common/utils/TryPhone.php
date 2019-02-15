@@ -120,7 +120,21 @@ class TryPhone
 			$cookie = '';
 		}
 		return $cookie;
+	}
 
+	public static function process_ret($ret, $field)
+	{
+		$ret = AppUtil::json_decode($ret);
+		$ret[$field] = self::unicodeDecode($ret[$field]);
+		return AppUtil::json_encode($ret);
+	}
+
+	public static function unicodeDecode($unicode_str)
+	{
+		$json = '{"str":"' . $unicode_str . '"}';
+		$arr = json_decode($json, true);
+		if (empty($arr)) return '';
+		return $arr['str'];
 	}
 
 	public static function pre_reqData($phone, $cat)
@@ -255,23 +269,6 @@ class TryPhone
 		self::request_after($ret, $phone, $cat);
 	}
 
-
-	public static function process_ret($ret, $field)
-	{
-		$ret = AppUtil::json_decode($ret);
-		$ret[$field] = self::unicodeDecode($ret[$field]);
-		return AppUtil::json_encode($ret);
-	}
-
-	public static function unicodeDecode($unicode_str)
-	{
-		$json = '{"str":"' . $unicode_str . '"}';
-		$arr = json_decode($json, true);
-		if (empty($arr)) return '';
-		return $arr['str'];
-	}
-
-
 	public static function reqData($data, $cat, $header = [], $proxy = 0, $encoding = 0)
 	{
 
@@ -313,53 +310,6 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-
-		$response = curl_exec($ch);
-		if ($response === false) {
-			$error_info = curl_error($ch);
-			curl_close($ch);// 关闭curl
-			return false;
-		} else {
-			curl_close($ch);//关闭 curl
-			$response = AppUtil::check_encode($response);
-			return $response;
-		}
-	}
-
-	public static function yiHaopz_phone($data)
-	{
-		$cat = self::CAT_YIHAOPZ;
-
-		$link = self::get_link($cat);
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $link);//设置链接
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($ch, CURLOPT_ENCODING, "gzip");// 对返回数据进行解压
-
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
-		curl_setopt($ch, CURLOPT_COOKIE, self::get_cookie($cat));
-
-		curl_setopt($ch, CURLOPT_POST, 1);
-		$postdata = "";
-		foreach ($data as $key => $value) {
-			$postdata .= ($key . '=' . $value . '&');
-		}
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-		curl_setopt($ch, CURLOPT_HTTPHEADER,
-			[
-				'Accept:application/json, text/javascript, */*; q=0.01',
-				'accept-encoding: gzip, deflate, br',
-				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
-				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
-				'Content-Length: 50',
-				"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
-				'origin: https://www.yhpz.com',
-				'Referer: https://www.yhpz.com/home/Member/login',
-				'X-Requested-With: XMLHttpRequest',
-			]);
 
 		$response = curl_exec($ch);
 		if ($response === false) {
