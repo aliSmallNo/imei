@@ -190,6 +190,7 @@ class TryPhone
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				$ret = self::process_ret($ret, 'msg');
 				break;
 			case self::CAT_WOLUNCL:
 				$data = [
