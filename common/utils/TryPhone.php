@@ -556,6 +556,11 @@ class TryPhone
 					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
 				}
 				break;
+			case self::CAT_HONGDASP:
+				if (isset($ret['info']) && $ret['info'] == "密码错误") {
+					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
+				}
+				break;
 		}
 
 	}
