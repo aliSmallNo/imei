@@ -24,20 +24,17 @@ class TryPhone
 
 	const CAT_TAOGUBA = "taoguba";
 	const CAT_YIHAOPZ = "yiHaoPZ";
-	const CAT_SHUNFAPZ = "shunFaPZ";
 	const CAT_WOLUNCL = "woLunCL";
 	const CAT_QIANCHENGCL = "qianChengCL";
 	const CAT_HONGDASP = "hongDaSP";
-
+	const CAT_SHUNFAPZ = "shunFaPZ";
 	static $catDict = [
 		self::CAT_TAOGUBA => '淘股吧',
 		self::CAT_YIHAOPZ => '一号配资',
-		self::CAT_SHUNFAPZ => '顺发配资',
-
 		self::CAT_WOLUNCL => '沃伦策略',
 		self::CAT_QIANCHENGCL => '钱程策略',
 		self::CAT_HONGDASP => '弘大速配',
-
+		self::CAT_SHUNFAPZ => '顺发配资',
 	];
 
 	/**
@@ -527,6 +524,17 @@ class TryPhone
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new2($p, 9, self::CAT_HONGDASP);
+		}
+	}
+
+	// 顺发配资
+	public static function phone_section_11()
+	{
+		$phone_section = [
+			1395925, 1874207, 1825157
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone_new2($p, 9, self::CAT_SHUNFAPZ);
 		}
 	}
 

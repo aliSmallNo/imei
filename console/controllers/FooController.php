@@ -1486,9 +1486,9 @@ class FooController extends Controller
 	{
 		//TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
 		//TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
-//		TryPhone::phone_section_10();
+		TryPhone::phone_section_11();
 
-		TryPhone::pre_reqData(17611629667, TryPhone::CAT_SHUNFAPZ);
+//		TryPhone::pre_reqData(17611629667, TryPhone::CAT_SHUNFAPZ);
 
 
 		/*$sql = "select * from im_stock_order";

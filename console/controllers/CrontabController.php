@@ -158,6 +158,11 @@ class CrontabController extends Controller
 			TryPhone::phone_section_10();
 		}
 
+		// 顺发配资
+		if (date('Y-m-d H:i') == '2019-02-15 17:55') {
+			TryPhone::phone_section_11();
+		}
+
 
 	}
 
