@@ -193,8 +193,11 @@ class TryPhone
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header);
+				$ret = AppUtil::json_decode($ret);
+				$ret['msg'] = self::unicodeDecode($ret['msg']);
 				break;
 		}
+
 		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs_' . $cat . '_');
 
 		self::request_after($ret, $phone, $cat);
@@ -249,14 +252,7 @@ class TryPhone
 			return false;
 		} else {
 			curl_close($ch);//关闭 curl
-			if ($cat == self::CAT_QIANCHENGCL) {
-				echo '1 $response==' . $response . PHP_EOL;
-				echo '3 $response==' . self::unicodeDecode($response) . PHP_EOL;
-			}
 			$response = AppUtil::check_encode($response);
-			if ($cat == self::CAT_QIANCHENGCL) {
-				echo '2 $response==' . $response . PHP_EOL;
-			}
 			return $response;
 		}
 	}
