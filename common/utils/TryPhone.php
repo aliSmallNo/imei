@@ -447,6 +447,17 @@ class TryPhone
 		}
 	}
 
+	// 钱程策略
+	public static function phone_section_9()
+	{
+		$phone_section = [
+			1825157, 1395925, 1874207
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone_new2($p, 9, self::CAT_QIANCHENGCL);
+		}
+	}
+
 
 	public static function combind_phone($p, $Index = 1)
 	{
