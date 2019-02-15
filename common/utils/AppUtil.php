@@ -664,7 +664,7 @@ class AppUtil
 		if (!mb_check_encoding($ret, 'utf-8')) {
 			//$encoding = mb_detect_encoding($ret);
 			//echo '$encoding ' . $encoding . PHP_EOL;
-			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'GB2312', 'GBK', 'UTF-8']);
+			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'GB2312', 'GBK', 'UTF-8', 'unicode']);
 			//$ret = mb_convert_encoding($ret, 'UTF-8', $encoding);
 		}
 		return $ret;
