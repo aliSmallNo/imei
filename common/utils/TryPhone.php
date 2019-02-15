@@ -83,6 +83,8 @@ class TryPhone
 			$link = 'https://sso.taoguba.com.cn/web/login/submit';
 		} elseif ($cat == self::CAT_YIHAOPZ) {
 			$link = 'https://www.yhpz.com/common/Pub/dologin';
+		} elseif ($cat == self::CAT_YIHAOPZ) {
+			$link = 'https://www.iwolun.com/loginI';
 		} else {
 			$link = '';
 		}
@@ -95,6 +97,8 @@ class TryPhone
 			$cookie = 'Hm_lvt_cc6a63a887a7d811c92b7cc41c441837=1548320523; UM_distinctid=1687f18470f485-00955950e23854-10346656-fa000-1687f184711b32; CNZZDATA1574657=cnzz_eid%3D2073132248-1548319611-https%253A%252F%252Fwww.taoguba.com.cn%252F%26ntime%3D1548319611; JSESSIONID=d82ef175-fd60-46a4-9c4d-494d410475ef; Hm_lpvt_cc6a63a887a7d811c92b7cc41c441837=1548320768';
 		} elseif ($cat == self::CAT_YIHAOPZ) {
 			$cookie = "__cfduid=d8b65d9189e6a534c59b8d957e7be305d1550109951; PHPSESSID=o1tkeqpc5f0s6jio5flkma5vf7; LiveWSPGT34891992=d5727885b97e419fb7213b56f3d658a2; LiveWSPGT34891992sessionid=d5727885b97e419fb7213b56f3d658a2; NPGT34891992fistvisitetime=1550109953524; NPGT34891992visitecounts=1; NPGT34891992lastvisitetime=1550110152141; NPGT34891992visitepages=6";
+		} elseif ($cat == self::CAT_WOLUNCL) {
+			$cookie = 'SESSION=6c6408a8-a14e-4b3d-9cb2-222557f00d16; Hm_lvt_d052aa2efa971ba1bdb0ea7178efe2a6=1550199764; Hm_lpvt_d052aa2efa971ba1bdb0ea7178efe2a6=1550199764; __root_domain_v=.iwolun.com; _qddaz=QD.rqpe7s.mfcqef.js5gwxhm; _qdda=3-1.32tw1c; _qddab=3-h3iuru.js5gwxk2; _qddamta_2852159076=3-0';
 		} else {
 			$cookie = '';
 		}
@@ -107,30 +111,139 @@ class TryPhone
 
 	}
 
-	public static function yiHaopz_phone($data)
+	public static function pre_reqData($phone, $cat)
 	{
-		$cat = self::CAT_YIHAOPZ;
-
-		$ip_port = self::get_proxy_ip();
-		self::logFile(__FUNCTION__ . ' $ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
-		if (!$ip_port) {
-			return false;
+		$ret = "";
+		switch ($cat) {
+			case self::CAT_TAOGUBA:
+				$data = [
+					'userName' => $phone,
+					'password' => "123456",
+					'save' => "Y",
+					'url' => "https://www.taoguba.com.cn/index?blockID=1",
+				];
+				$header = [
+					'Accept:*/*',
+					'accept-encoding: gzip, deflate, br',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Content-Length: 100',
+					//"Proxy-Authorization: {$appKey}",
+					"User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.1.0.13",
+					'origin: https://sso.taoguba.com.cn',
+					'Referer: https://sso.taoguba.com.cn/xdomainProxy.html',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header, 1);
+				break;
+			case self::CAT_YIHAOPZ:
+				$data = [
+					'mobile' => $phone,
+					'password' => "123456",
+					'verifycode' => "5853",
+				];
+				$header = [
+					'Accept:application/json, text/javascript, */*; q=0.01',
+					'accept-encoding: gzip, deflate, br',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Content-Length: 50',
+					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+					'origin: https://www.yhpz.com',
+					'Referer: https://www.yhpz.com/home/Member/login',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				break;
+			case self::CAT_WOLUNCL:
+				$data = [
+					'mobile' => $phone,
+					'password' => "123456",
+				];
+				$header = [
+					'Accept: */*',
+					'accept-encoding: gzip, deflate, br',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Content-Length: 33',
+					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+					'origin: https://www.iwolun.com',
+					'Referer: https://www.iwolun.com/',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				break;
 		}
-		$arrip = explode(":", $ip_port);
-		$appKey = "Basic" . self::APP_KEY;
+		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs_' . $cat . '_');
+
+		self::request_after($ret, $phone, $cat);
+	}
+
+	public static function reqData($data, $cat, $header = [], $proxy = 0, $encoding = 0)
+	{
 
 		$link = self::get_link($cat);
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $link);//设置链接
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		//curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
-		//curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
-		//curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
-		//curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+
+		if ($proxy) {
+			$ip_port = self::get_proxy_ip();
+			self::logFile(__FUNCTION__ . ' $ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
+			if (!$ip_port) {
+				return false;
+			}
+			$arrip = explode(":", $ip_port);
+			$appKey = "Basic" . self::APP_KEY;
+
+			curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC); //代理认证模式
+			curl_setopt($ch, CURLOPT_PROXY, $arrip[0]); //代理服务器地址
+			curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
+			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+			$header[] = "Proxy-Authorization: {$appKey}";
+		}
+		if ($encoding) {
+			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
+		}
+
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		//curl_setopt($ch, CURLOPT_ENCODING, "gzip,identity,deflate");
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
+		curl_setopt($ch, CURLOPT_COOKIE, self::get_cookie($cat));
+
+		curl_setopt($ch, CURLOPT_POST, 1);
+		$postdata = "";
+		foreach ($data as $key => $value) {
+			$postdata .= ($key . '=' . $value . '&');
+		}
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+		$response = curl_exec($ch);
+		if ($response === false) {
+			$error_info = curl_error($ch);
+			curl_close($ch);// 关闭curl
+			return false;
+		} else {
+			curl_close($ch);//关闭 curl
+			$response = AppUtil::check_encode($response);
+			return $response;
+		}
+	}
+
+	public static function yiHaopz_phone($data)
+	{
+		$cat = self::CAT_YIHAOPZ;
+
+		$link = self::get_link($cat);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $link);//设置链接
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 		curl_setopt($ch, CURLOPT_ENCODING, "gzip");// 对返回数据进行解压
 
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
@@ -149,7 +262,6 @@ class TryPhone
 				'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 				'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
 				'Content-Length: 50',
-				//"Proxy-Authorization: {$appKey}",
 				"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
 				'origin: https://www.yhpz.com',
 				'Referer: https://www.yhpz.com/home/Member/login',
@@ -348,13 +460,6 @@ class TryPhone
 					'verifycode' => "5853",
 				];
 				$ret = self::yiHaopz_phone($data);
-				break;
-			case self::CAT_WOLUNCL:
-				$data = [
-					'mobile' => $phone,
-					'password' => "123456",
-				];
-				$ret = self::woLunCL_phone($data);
 				break;
 		}
 
