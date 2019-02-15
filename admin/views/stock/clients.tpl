@@ -88,7 +88,9 @@
 	<div class="col-sm-6">
 		<h4>客户线索
 			<a class="addClue btn btn-xs btn-primary">添加线索</a>
+			{{if $isAssigner}}
 			<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
+			{{/if}}
 		</h4>
 	</div>
 	<div class="col-sm-6">
@@ -114,12 +116,14 @@
 		<input class="form-control" name="prov" placeholder="客户省市" type="text" value="{{$prov}}">
 		<input class="form-control" name="name" placeholder="客户姓名" type="text" value="{{$name}}">
 		<input class="form-control" name="phone" placeholder="客户手机号" type="text" value="{{$phone}}">
+		{{if $isAssigner}}
 		<select class="form-control" name="bdassign">
 			<option value="">请选择BD</option>
 			{{foreach from=$bds item=bd}}
 				<option value="{{$bd.id}}" {{if $bd.id==$bdassign}}selected{{/if}}>{{$bd.name}}</option>
 			{{/foreach}}
 		</select>
+		{{/if}}
 		<select class="form-control" name="src">
 			<option value="">请选择来源</option>
 			{{foreach from=$SourceMap item=source key=key}}
