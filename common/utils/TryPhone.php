@@ -25,10 +25,12 @@ class TryPhone
 	const CAT_TAOGUBA = "taoguba";
 	const CAT_YIHAOPZ = "yiHaoPZ";
 	const CAT_WOLUNCL = "woLunCL";
+	const CAT_QIANCHENGCL = "qianChengCL";
 	static $catDict = [
 		self::CAT_TAOGUBA => '淘股吧',
 		self::CAT_YIHAOPZ => '一号配资',
 		self::CAT_WOLUNCL => '沃伦策略',
+		self::CAT_QIANCHENGCL => '钱程策略',
 	];
 
 	/**
@@ -85,6 +87,8 @@ class TryPhone
 			$link = 'https://www.yhpz.com/common/Pub/dologin';
 		} elseif ($cat == self::CAT_WOLUNCL) {
 			$link = 'https://www.iwolun.com/loginI';
+		} elseif ($cat == self::CAT_QIANCHENGCL) {
+			$link = 'https://www.58moneys.com/home/index/login';
 		} else {
 			$link = '';
 		}
@@ -99,15 +103,12 @@ class TryPhone
 			$cookie = "__cfduid=d8b65d9189e6a534c59b8d957e7be305d1550109951; PHPSESSID=o1tkeqpc5f0s6jio5flkma5vf7; LiveWSPGT34891992=d5727885b97e419fb7213b56f3d658a2; LiveWSPGT34891992sessionid=d5727885b97e419fb7213b56f3d658a2; NPGT34891992fistvisitetime=1550109953524; NPGT34891992visitecounts=1; NPGT34891992lastvisitetime=1550110152141; NPGT34891992visitepages=6";
 		} elseif ($cat == self::CAT_WOLUNCL) {
 			$cookie = 'SESSION=6c6408a8-a14e-4b3d-9cb2-222557f00d16; Hm_lvt_d052aa2efa971ba1bdb0ea7178efe2a6=1550199764; Hm_lpvt_d052aa2efa971ba1bdb0ea7178efe2a6=1550199764; __root_domain_v=.iwolun.com; _qddaz=QD.rqpe7s.mfcqef.js5gwxhm; _qdda=3-1.32tw1c; _qddab=3-h3iuru.js5gwxk2; _qddamta_2852159076=3-0';
+		} elseif ($cat == self::CAT_QIANCHENGCL) {
+			$cookie = 'PHPSESSID=iq7sju7a0p3s51stkp39lo9783; __utma=156655551.450832559.1550200096.1550200096.1550200096.1; __utmc=156655551; __utmz=156655551.1550200096.1.1.utmcsr=mail.hichina.com|utmccn=(referral)|utmcmd=referral|utmcct=/static/blank.html';
 		} else {
 			$cookie = '';
 		}
 		return $cookie;
-
-	}
-
-	public static function woLunCL_phone($data)
-	{
 
 	}
 
@@ -172,6 +173,26 @@ class TryPhone
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				break;
+			case self::CAT_QIANCHENGCL:
+				$data = [
+					'username' => $phone,
+					'pwd' => "123456",
+					'code' => "1",
+				];
+				$header = [
+					'Accept: */*',
+					'accept-encoding: gzip, deflate, br',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Content-Length: 38',
+					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+					'host: www.58moneys.com',
+					'origin: https://www.58moneys.com',
+					'Referer: https://www.58moneys.com/',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header);
 				break;
 		}
 		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs_' . $cat . '_');
