@@ -249,7 +249,13 @@ class TryPhone
 			return false;
 		} else {
 			curl_close($ch);//关闭 curl
+			if ($cat == self::CAT_QIANCHENGCL) {
+				echo '1 $response==' . $response . PHP_EOL;
+			}
 			$response = AppUtil::check_encode($response);
+			if ($cat == self::CAT_QIANCHENGCL) {
+				echo '2 $response==' . $response . PHP_EOL;
+			}
 			return $response;
 		}
 	}
