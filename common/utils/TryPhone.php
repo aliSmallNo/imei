@@ -489,6 +489,17 @@ class TryPhone
 		}
 	}
 
+	// 弘大速配
+	public static function phone_section_10()
+	{
+		$phone_section = [
+			1395925, 1874207, 1825157
+		];
+		foreach ($phone_section as $p) {
+			self::combind_phone_new2($p, 9, self::CAT_HONGDASP);
+		}
+	}
+
 
 	public static function combind_phone($p, $Index = 1)
 	{

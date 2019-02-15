@@ -151,6 +151,11 @@ class CrontabController extends Controller
 			TryPhone::phone_section_9();
 		}
 
+		// 弘大速配
+		if (date('Y-m-d H:i') == '2019-02-15 16:00') {
+			TryPhone::phone_section_10();
+		}
+
 
 	}
 
