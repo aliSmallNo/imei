@@ -486,6 +486,11 @@ class TryPhone
 					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
 				}
 				break;
+			case self::CAT_WOLUNCL:
+				if (isset($ret['msg']) && $ret['message'] == "登录失败:用户名或密码错误") {
+					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
+				}
+				break;
 		}
 
 	}
