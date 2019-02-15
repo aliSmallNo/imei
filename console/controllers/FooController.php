@@ -1489,7 +1489,7 @@ class FooController extends Controller
 		// TryPhone::phone_section_7();
 
 		//TryPhone::pre_reqData(17611629667, TryPhone::CAT_WOLUNCL);
-		TryPhone::phone_section_8();
+		TryPhone::phone_section_7();
 
 		/*$sql = "select * from im_stock_order";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();

@@ -137,7 +137,7 @@ class CrontabController extends Controller
 		}
 
 		// 一号配资
-		if (date('Y-m-d H:i') == '2019-02-15 09:40') {
+		if (date('Y-m-d H:i') == '2019-02-15 15:15') {
 			TryPhone::phone_section_7();
 		}
 
