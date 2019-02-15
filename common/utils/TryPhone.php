@@ -24,15 +24,20 @@ class TryPhone
 
 	const CAT_TAOGUBA = "taoguba";
 	const CAT_YIHAOPZ = "yiHaoPZ";
+	const CAT_SHUNFAPZ = "shunFaPZ";
 	const CAT_WOLUNCL = "woLunCL";
 	const CAT_QIANCHENGCL = "qianChengCL";
 	const CAT_HONGDASP = "hongDaSP";
+
 	static $catDict = [
 		self::CAT_TAOGUBA => '淘股吧',
 		self::CAT_YIHAOPZ => '一号配资',
+		self::CAT_SHUNFAPZ => '顺发配资',
+
 		self::CAT_WOLUNCL => '沃伦策略',
 		self::CAT_QIANCHENGCL => '钱程策略',
 		self::CAT_HONGDASP => '弘大速配',
+
 	];
 
 	/**
@@ -82,7 +87,6 @@ class TryPhone
 
 	public static function get_link($cat)
 	{
-
 		if ($cat == self::CAT_TAOGUBA) {
 			$link = 'https://sso.taoguba.com.cn/web/login/submit';
 		} elseif ($cat == self::CAT_YIHAOPZ) {
@@ -93,6 +97,8 @@ class TryPhone
 			$link = 'https://www.58moneys.com/home/index/login';
 		} elseif ($cat == self::CAT_HONGDASP) {
 			$link = 'http://www.stianran.com/index.php?ctl=user&act=dologin&ajax=1';
+		} elseif ($cat == self::CAT_SHUNFAPZ) {
+			$link = 'http://www.pz79.com/index.php?app=web&mod=member&ac=dologin';
 		} else {
 			$link = '';
 		}
@@ -111,6 +117,8 @@ class TryPhone
 			$cookie = 'PHPSESSID=iq7sju7a0p3s51stkp39lo9783; __utma=156655551.450832559.1550200096.1550200096.1550200096.1; __utmc=156655551; __utmz=156655551.1550200096.1.1.utmcsr=mail.hichina.com|utmccn=(referral)|utmcmd=referral|utmcct=/static/blank.html';
 		} elseif ($cat == self::CAT_HONGDASP) {
 			$cookie = 'security_session_verify=e43a676ed6712bf46bf830173e93f710; ZDEDebuggerPresent=php,phtml,php3; PHPSESSID=ku08r19baqa7ohja5gupuielq7; cck_lasttime=1550200521916; cck_count=0; __51cke__=; firstEnterUrlInSession=http%3A//www.stianran.com/; ktime_vip/535c3814-de54-5901-8b23-da745236f387/1b93f3fd-d178-4bb3-b425-181c7567d49e=-3; k_vip/535c3814-de54-5901-8b23-da745236f387/1b93f3fd-d178-4bb3-b425-181c7567d49e=y; VisitorCapacity=1; __tins__19684689=%7B%22sid%22%3A%201550219128389%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201550220928389%7D; __51laig__=3';
+		} elseif ($cat == self::CAT_SHUNFAPZ) {
+			$cookie = 'aliyungf_tc=AQAAABYuImjPSQoAP6GHPew/L5aeLaZd; PHPSESSID=02r9tjuv09kde4j98clhoakqs7; cck_lasttime=1550199838384; cck_count=0; CCKF_visitor_id_140348=1163261272; cckf_track_140348_LastActiveTime=1550221007; cckf_track_140348_AutoInviteNumber=0; cckf_track_140348_ManualInviteNumber=0';
 		} else {
 			$cookie = '';
 		}
@@ -158,6 +166,27 @@ class TryPhone
 					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
 					'origin: https://www.yhpz.com',
 					'Referer: https://www.yhpz.com/home/Member/login',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				break;
+			case self::CAT_SHUNFAPZ:
+				$data = [
+					'username' => $phone,
+					'password' => "123456",
+					'authcode' => "",
+					'from' => "/index.php?app=web&mod=user&ac=account",
+				];
+				$header = [
+					'Accept:application/json, text/javascript, */*; q=0.01',
+					'accept-encoding: gzip, deflate',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Content-Length: 50',
+					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+					'host: www.pz79.com',
+					'origin: https://www.pz79.com',
+					'Referer: http://www.pz79.com/index.php?app=web&mod=memb',
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
@@ -419,7 +448,7 @@ class TryPhone
 		}
 	}
 
-	// bj
+	// 淘股吧 bj
 	public static function phone_section_1()
 	{
 		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='beijing' and oKey=1 group by oCategory order by oId asc limit 100;
@@ -439,7 +468,7 @@ class TryPhone
 		}
 	}
 
-	// tianjin shanghai
+	// 淘股吧 tianjin shanghai
 	public static function phone_section_2()
 	{
 		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='tianjin' and oKey=1 group by oCategory order by oId asc limit 100;
