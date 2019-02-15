@@ -509,6 +509,11 @@ class TryPhone
 					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
 				}
 				break;
+			case self::CAT_QIANCHENGCL:
+				if (isset($ret['msg']) && $ret['msg'] == "帐号或者密码错误") {
+					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
+				}
+				break;
 		}
 
 	}
