@@ -199,9 +199,7 @@ class TryPhone
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header);
-				$ret = AppUtil::json_decode($ret);
-				$ret['msg'] = self::unicodeDecode($ret['msg']);
-				$ret = AppUtil::json_encode($ret);
+				$ret = self::process_ret($ret, 'msg');
 				break;
 			case self::CAT_HONGDASP:
 				$data = [
@@ -221,6 +219,7 @@ class TryPhone
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header);
+				$ret = self::process_ret($ret, 'info');
 				break;
 		}
 
@@ -228,6 +227,23 @@ class TryPhone
 
 		self::request_after($ret, $phone, $cat);
 	}
+
+
+	public static function process_ret($ret, $field)
+	{
+		$ret = AppUtil::json_decode($ret);
+		$ret[$field] = self::unicodeDecode($ret[$field]);
+		return AppUtil::json_encode($ret);
+	}
+
+	public static function unicodeDecode($unicode_str)
+	{
+		$json = '{"str":"' . $unicode_str . '"}';
+		$arr = json_decode($json, true);
+		if (empty($arr)) return '';
+		return $arr['str'];
+	}
+
 
 	public static function reqData($data, $cat, $header = [], $proxy = 0, $encoding = 0)
 	{
@@ -282,16 +298,6 @@ class TryPhone
 			return $response;
 		}
 	}
-
-
-	public static function unicodeDecode($unicode_str)
-	{
-		$json = '{"str":"' . $unicode_str . '"}';
-		$arr = json_decode($json, true);
-		if (empty($arr)) return '';
-		return $arr['str'];
-	}
-
 
 	public static function yiHaopz_phone($data)
 	{
