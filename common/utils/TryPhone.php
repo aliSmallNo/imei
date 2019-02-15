@@ -251,6 +251,7 @@ class TryPhone
 			curl_close($ch);//关闭 curl
 			if ($cat == self::CAT_QIANCHENGCL) {
 				echo '1 $response==' . $response . PHP_EOL;
+				echo '3 $response==' . self::unicodeDecode($response) . PHP_EOL;
 			}
 			$response = AppUtil::check_encode($response);
 			if ($cat == self::CAT_QIANCHENGCL) {
@@ -259,6 +260,16 @@ class TryPhone
 			return $response;
 		}
 	}
+
+
+	public static function unicodeDecode($unicode_str)
+	{
+		$json = '{"str":"' . $unicode_str . '"}';
+		$arr = json_decode($json, true);
+		if (empty($arr)) return '';
+		return $arr['str'];
+	}
+
 
 	public static function yiHaopz_phone($data)
 	{
