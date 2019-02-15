@@ -583,38 +583,34 @@ class TryPhone
 			return;
 		}
 		$yes_filename = 'yes' . $cat . '_';
+		$field = $tip = '';
 		$ret = json_decode($ret, 1);
 		switch ($cat) {
 			case self::CAT_TAOGUBA:
-				if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
-					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
-				}
+				$field = "errorMessage";
+				$tip = "密码错误";
 				break;
 			case self::CAT_YIHAOPZ:
-				if (isset($ret['msg']) && $ret['msg'] == "密码错误") {
-					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
-				}
+			case self::CAT_SHUNFAPZ:
+				$field = "msg";
+				$tip = "密码错误";
 				break;
 			case self::CAT_WOLUNCL:
-				if (isset($ret['message']) && $ret['message'] == "登录失败:用户名或密码错误") {
-					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
-				}
+				$field = "message";
+				$tip = "登录失败:用户名或密码错误";
 				break;
 			case self::CAT_QIANCHENGCL:
-				if (isset($ret['msg']) && $ret['msg'] == "帐号或者密码错误") {
-					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
-				}
+				$field = "msg";
+				$tip = "帐号或者密码错误";
 				break;
 			case self::CAT_HONGDASP:
-				if (isset($ret['info']) && $ret['info'] == "密码错误") {
-					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
-				}
+				$field = "info";
+				$tip = "密码错误";
 				break;
-			case self::CAT_SHUNFAPZ:
-				if (isset($ret['msg']) && $ret['msg'] == "密码错误") {
-					self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
-				}
-				break;
+		}
+
+		if ($field && isset($ret[$field]) && $ret[$field] == $tip) {
+			self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
 		}
 
 	}
