@@ -1485,8 +1485,8 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		// QueueUtil::loadJob('phone_section_1', [], QueueUtil::QUEUE_TUBE_SMS);
-		QueueUtil::loadJob('phone_section_2', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_7', [], QueueUtil::QUEUE_TUBE_SMS);
+//		QueueUtil::loadJob('phone_section_2', [], QueueUtil::QUEUE_TUBE_SMS);
+		QueueUtil::loadJob('phone_section_7', [], QueueUtil::QUEUE_TUBE_SMS);
 //		QueueUtil::loadJob('phone_section_8', [], QueueUtil::QUEUE_TUBE_SMS);
 //		QueueUtil::loadJob('phone_section_9', [], QueueUtil::QUEUE_TUBE_SMS);
 //		QueueUtil::loadJob('phone_section_10', [], QueueUtil::QUEUE_TUBE_SMS);
