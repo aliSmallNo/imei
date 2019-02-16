@@ -153,15 +153,15 @@ class TryPhone
 					'accept-encoding: gzip, deflate, br',
 					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
 					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
-					'Content-Length: 100',
+					//'Content-Length: 100',
 					//"Proxy-Authorization: {$appKey}",
 					"User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.1.0.13",
 					'origin: https://sso.taoguba.com.cn',
 					'Referer: https://sso.taoguba.com.cn/xdomainProxy.html',
 					'X-Requested-With: XMLHttpRequest',
 				];
-				//$ret = self::reqData($data, $cat, $header, 1);
-				$ret = self::taoguba_phone($data);
+				$ret = self::reqData($data, $cat, $header, 1);
+//				$ret = self::taoguba_phone($data);
 				break;
 			case self::CAT_YIHAOPZ:
 				$data = [
@@ -278,11 +278,11 @@ class TryPhone
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $link);//设置链接
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
 		if ($proxy) {
 			$ip_port = self::get_proxy_ip();
 			self::logFile(__FUNCTION__ . ' $ip_port=>' . $ip_port, __FUNCTION__, __LINE__);
 			if (!$ip_port) {
+				curl_close($ch);
 				return false;
 			}
 			$arrip = explode(":", $ip_port);
@@ -293,11 +293,9 @@ class TryPhone
 			curl_setopt($ch, CURLOPT_PROXYPORT, $arrip[1]); //代理服务器端口
 			curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
 			$header[] = "Proxy-Authorization: {$appKey}";
+			//$header[] = 'Content-Length: ' . strlen($postdata);
+			$header[] = 'Content-Length: 100';
 		}
-		if ($encoding) {
-			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
-		}
-
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
@@ -311,6 +309,11 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+		if ($encoding) {
+			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
+		}
+
 
 		$response = curl_exec($ch);
 		if ($response === false) {
@@ -345,7 +348,6 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::COOKIE);
 
