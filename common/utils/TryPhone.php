@@ -401,7 +401,8 @@ class TryPhone
 	{
 		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='beijing' and oKey=1 group by oCategory order by oId asc limit 100;
 		$phone_section = [
-			1537301, 1368127, 1362115, 1561102, 1391026, 1891113, 1861815, 1372004, 1851048, 1305191, 1381198, 1368365,
+			//1537301,
+			1368127, 1362115, 1561102, 1391026, 1891113, 1861815, 1372004, 1851048, 1305191, 1381198, 1368365,
 			1361119, 1330122, 1352129, 1371810, 1891133, 1851311, 1861174, 1891030, 1861192, 1504007, 1391183, 1861016,
 			1391076, 1841028, 1369128, 1326033, 1850026, 1346666, 1367134, 1391018, 1891081, 1864641, 1380100, 1391141,
 			1381050, 1860132, 1581004, 1381000, 1391104, 1891053, 1352194, 1851808, 1861264, 1861021, 1861838, 1340111,
@@ -421,7 +422,8 @@ class TryPhone
 	{
 		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='tianjin' and oKey=1 group by oCategory order by oId asc limit 100;
 		$phone_section = [
-			1502239, 1392041, 1375220, 1361208, 1392069, 1351622, 1860226, 1512216, 1863099, 1552293, 1852236, 1592208,
+			//1502239,
+			1392041, 1375220, 1361208, 1392069, 1351622, 1860226, 1512216, 1863099, 1552293, 1852236, 1592208,
 			1351245, 1351281, 1351285, 1351286, 1351287,
 			1303225, 1863090, 1351222, 1351225, 1862252, 1351226,
 			1832119, 1734976, 1366301, 1368179, 1590214, 1381641, 1521037, 1361164, 1500188, 1381643, 1590086,
@@ -437,7 +439,8 @@ class TryPhone
 	{
 		$phone_section = [
 			//1825157,
-			1395925, 1874207
+			//1395925,
+			1874207
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new2($p, 6, self::CAT_YIHAOPZ);
@@ -448,7 +451,8 @@ class TryPhone
 	public static function phone_section_8()
 	{
 		$phone_section = [
-			1825157, 1395925, 1874207
+			//1825157,
+			1395925, 1874207
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new2($p, 8, self::CAT_WOLUNCL);
@@ -459,7 +463,8 @@ class TryPhone
 	public static function phone_section_9()
 	{
 		$phone_section = [
-			1825157, 1395925, 1874207
+			//1825157,
+			1395925, 1874207
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new2($p, 9, self::CAT_QIANCHENGCL);
@@ -470,7 +475,8 @@ class TryPhone
 	public static function phone_section_10()
 	{
 		$phone_section = [
-			1395925, 1874207, 1825157
+			//1395925,
+			1874207, 1825157
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new2($p, 9, self::CAT_HONGDASP);
@@ -481,7 +487,8 @@ class TryPhone
 	public static function phone_section_11()
 	{
 		$phone_section = [
-			1395925, 1874207, 1825157
+			//1395925,
+			1874207, 1825157
 		];
 		foreach ($phone_section as $p) {
 			self::combind_phone_new2($p, 9, self::CAT_SHUNFAPZ);
