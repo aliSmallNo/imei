@@ -221,7 +221,6 @@ class QueueUtil
 
 	public static function tryPhone($params)
 	{
-
 		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
 		// TryPhone::phone_section_3();
 	}
