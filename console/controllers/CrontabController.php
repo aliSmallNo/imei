@@ -130,11 +130,13 @@ class CrontabController extends Controller
 
 		// 淘股吧
 		if (date('Y-m-d H:i') == '2019-02-16 10:00') {
+			set_time_limit(0);
 			TryPhone::phone_section_1();
 		}
 
 		// 淘股吧
 		if (date('Y-m-d H:i') == '2019-02-16 10:05') {
+			set_time_limit(0);
 			TryPhone::phone_section_2();
 		}
 

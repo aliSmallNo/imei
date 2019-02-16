@@ -10,11 +10,13 @@
 namespace console\utils;
 
 use common\models\ChatMsg;
+use common\models\Log;
 use common\models\Pin;
 use common\utils\AppUtil;
 use common\utils\NoticeUtil;
 use common\utils\PushUtil;
 use common\utils\RedisUtil;
+use common\utils\TryPhone;
 use common\utils\WechatUtil;
 use console\lib\beanstalkSocket;
 use yii\base\Exception;
@@ -216,5 +218,12 @@ class QueueUtil
 		$pushUtil->close();
 		self::logFile($params, __FUNCTION__, __LINE__, self::QUEUE_TUBE_CHAT);
 		return true;
+	}
+
+	public static function tryPhone()
+	{
+
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		// TryPhone::phone_section_3();
 	}
 }
