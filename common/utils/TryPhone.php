@@ -161,6 +161,7 @@ class TryPhone
 					'X-Requested-With: XMLHttpRequest',
 				];
 				$ret = self::reqData($data, $cat, $header, 1);
+				echo '$ret' . $ret . PHP_EOL;
 				break;
 			case self::CAT_YIHAOPZ:
 				$data = [
