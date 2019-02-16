@@ -1486,7 +1486,7 @@ class FooController extends Controller
 	{
 		//TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
 		//TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
-		TryPhone::phone_section_11();
+//		TryPhone::phone_section_11();
 
 //		TryPhone::pre_reqData(17611629667, TryPhone::CAT_SHUNFAPZ);
 
@@ -1499,6 +1499,13 @@ class FooController extends Controller
 				'uPhone' => $v['oPhone'],
 			]);
 		}*/
+
+		$command = "ps aux | grep crontab/alert";
+		$retval = array();
+		exec($command, $retval, $status);
+		if ($status == 0) {
+			print_r($retval);
+		}
 		exit;
 	}
 
