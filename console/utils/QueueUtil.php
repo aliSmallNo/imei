@@ -219,9 +219,45 @@ class QueueUtil
 		return true;
 	}
 
-	public static function tryPhone($params)
+	public static function phone_section_1($params)
 	{
 		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
-		// TryPhone::phone_section_3();
+		TryPhone::phone_section_1();
+	}
+
+	public static function phone_section_2($params)
+	{
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		TryPhone::phone_section_2();
+	}
+
+	public static function phone_section_7($params)
+	{
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		TryPhone::phone_section_7();
+	}
+
+	public static function phone_section_8($params)
+	{
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		TryPhone::phone_section_8();
+	}
+
+	public static function phone_section_9($params)
+	{
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		TryPhone::phone_section_9();
+	}
+
+	public static function phone_section_10($params)
+	{
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		TryPhone::phone_section_10();
+	}
+
+	public static function phone_section_11($params)
+	{
+		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
+		TryPhone::phone_section_11();
 	}
 }
