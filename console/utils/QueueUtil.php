@@ -103,7 +103,6 @@ class QueueUtil
 		return true;
 	}
 
-
 	/**
 	 * 发送短信信息
 	 * @param array $params
@@ -220,7 +219,7 @@ class QueueUtil
 		return true;
 	}
 
-	public static function tryPhone()
+	public static function tryPhone($params)
 	{
 
 		Log::add(['oCategory' => 'try_phone_test', 'oBefore' => __CLASS__ . '_' . __FUNCTION__ . '_' . __LINE__]);
