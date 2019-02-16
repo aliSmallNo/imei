@@ -160,8 +160,8 @@ class TryPhone
 					'Referer: https://sso.taoguba.com.cn/xdomainProxy.html',
 					'X-Requested-With: XMLHttpRequest',
 				];
-				$ret = self::reqData($data, $cat, $header, 1);
-				echo '$ret' . $ret . PHP_EOL;
+				//$ret = self::reqData($data, $cat, $header, 1);
+				$ret = self::taoguba_phone($data);
 				break;
 			case self::CAT_YIHAOPZ:
 				$data = [
@@ -440,8 +440,7 @@ class TryPhone
 	{
 		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='beijing' and oKey=1 group by oCategory order by oId asc limit 100;
 		$phone_section = [
-			//1537301,
-			//1368127,
+			//1537301,1368127,
 			1362115, 1561102, 1391026, 1891113, 1861815, 1372004, 1851048, 1305191, 1381198, 1368365,
 			1361119, 1330122, 1352129, 1371810, 1891133, 1851311, 1861174, 1891030, 1861192, 1504007, 1391183, 1861016,
 			1391076, 1841028, 1369128, 1326033, 1850026, 1346666, 1367134, 1391018, 1891081, 1864641, 1380100, 1391141,
