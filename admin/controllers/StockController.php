@@ -89,7 +89,7 @@ class StockController extends BaseController
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
-		$sub_staff = in_array($this->admin_id, [1052, 1053]);// 冯林 陈明
+		$sub_staff = in_array($this->admin_id, [1052, 1053, 1054]);// 冯林 陈明 季志昂
 		$tabs = [
 			"my" => [
 				"title" => "我的客户",
