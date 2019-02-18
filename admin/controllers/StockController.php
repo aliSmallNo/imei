@@ -89,6 +89,7 @@ class StockController extends BaseController
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
+		$sub_staff = in_array($this->admin_id, [1052, 1053]);// 冯林 陈明
 		$tabs = [
 			"my" => [
 				"title" => "我的客户",
@@ -99,6 +100,14 @@ class StockController extends BaseController
 				"count" => $counters["sea"]
 			]
 		];
+		if ($sub_staff) {
+			$tabs = [
+				"my" => [
+					"title" => "我的客户",
+					"count" => $counters["mine"]
+				]
+			];
+		}
 		if ($isAssigner) {
 			$tabs = [
 				"my" => [
@@ -166,6 +175,13 @@ class StockController extends BaseController
 			list($sNext, $sIcon) = isset($sorts[$sort]) ? $sorts[$sort] : $sorts["sd"];
 		}
 
+
+		if ($sub_staff) {
+			$userInfo = Admin::userInfo();
+			$staff[] = ['id' => Admin::getAdminId(), 'name' => $userInfo['aName']];
+		} else {
+			$staff = Admin::getStaffs();
+		}
 		return $this->renderPage('clients.tpl',
 			[
 				'detailcategory' => self::getRequestUri(),
@@ -182,7 +198,7 @@ class StockController extends BaseController
 				"dt2" => $dt2,
 				"cat" => $cat,
 				"tabs" => $tabs,
-				"staff" => Admin::getStaffs(),
+				"staff" => $staff,
 				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
 				"bdassign" => $bdassign,
 				"src" => $src,
