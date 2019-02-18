@@ -37,9 +37,10 @@ class TryPhone
 		self::CAT_SHUNFAPZ => '顺发配资',
 	];
 
+	// 把每天抓取到的手机号存入数据库
 	public static function put_logs_to_db($dt)
 	{
-		// phone_yes20190217.log
+		// $dt => phone_yes20190217.log
 		$filepath = "/data/logs/imei/phone_yes" . $dt . ".log";
 		if (!file_exists($filepath)) {
 			return false;

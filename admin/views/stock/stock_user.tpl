@@ -35,6 +35,12 @@
 					<option value="{{$key}}">{{$item}}</option>
 				{{/foreach}}
 			</select>
+			<select class="form-control" name="bdphone">
+				<option value="">-=渠道=-</option>
+				{{foreach from=$bds key=key item=item}}
+					<option value="{{$key}}">{{$item}}</option>
+				{{/foreach}}
+			</select>
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>

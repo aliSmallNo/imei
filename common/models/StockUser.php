@@ -139,6 +139,12 @@ class StockUser extends \yii\db\ActiveRecord
 
 	}
 
+	public static function bds()
+	{
+		$res = self::find()->where(['uType' => self::TYPE_PARTNER])->asArray()->all();
+		return array_combine(array_column($res, 'uPhone'), array_column($res, 'uName'));
+	}
+
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
 		$offset = ($page - 1) * $pageSize;

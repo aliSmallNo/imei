@@ -275,6 +275,7 @@ class StockController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$type = self::getParam("type");
+		$bdphone = self::getParam("bdphone");
 
 		$criteria = [];
 		$params = [];
@@ -291,6 +292,10 @@ class StockController extends BaseController
 			$criteria[] = "  uType = :type ";
 			$params[':type'] = $type;
 		}
+		if ($bdphone) {
+			$criteria[] = "  uPtPhone = :bdphone ";
+			$params[':bdphone'] = $bdphone;
+		}
 
 		list($list, $count) = StockUser::items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count, 20);
@@ -300,6 +305,7 @@ class StockController extends BaseController
 				'pagination' => $pagination,
 				'list' => $list,
 				'types' => StockUser::$types,
+				'bds' => StockUser::bds(),
 			]
 		);
 	}
