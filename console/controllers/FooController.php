@@ -1484,7 +1484,7 @@ class FooController extends Controller
 
 	public function actionP_logs()
 	{
-		$logs = file_get_contents("/data/logs/imei/phone_yes20190215.log");
+		$logs = file_get_contents("/data/logs/imei/phone_yes20190216.log");
 		$logs = explode("\n", $logs);
 
 		$phones = [];
