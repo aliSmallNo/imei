@@ -1490,7 +1490,7 @@ class FooController extends Controller
 		$phones = [];
 		foreach ($logs as $log) {
 			if ($log) {
-				$phones[] = substr($log, 0, 19) . " " . substr($log, -12, 11);
+				$phones[] = substr($log, 0, 19) . "\t" . substr($log, -12, 11);
 			}
 		}
 		print_r($phones);
