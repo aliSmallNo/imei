@@ -875,13 +875,17 @@ class Log extends ActiveRecord
 		return true;
 	}
 
-	public static function add_phone_section_yes($phone, $area = "taoguba")
+	public static function add_phone_section_yes($phone, $dt, $area = "taoguba")
 	{
 		$data = ['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone];
 		if (self::findOne($data) || strlen($phone) != 11) {
 			return false;
 		}
-		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area]));
+		$item = self::findOne(['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone]);
+		if ($item) {
+			return false;
+		}
+		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area, 'oAfter' => $dt]));
 		return true;
 	}
 }

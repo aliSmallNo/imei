@@ -37,6 +37,31 @@ class TryPhone
 		self::CAT_SHUNFAPZ => '顺发配资',
 	];
 
+	public static function put_logs_to_db($dt)
+	{
+		// phone_yes20190217.log
+		$filepath = "/data/logs/imei/phone_yes" . $dt . ".log";
+		if (!file_exists($filepath)) {
+			return false;
+		}
+		$logs = @file_get_contents($filepath);
+		if (!$logs) {
+			return false;
+		}
+		$logs = explode("\n", $logs);
+		if (!$logs) {
+			return false;
+		}
+		foreach ($logs as $log) {
+			if ($log) {
+				$date = substr($log, 0, 19);
+				$phone = substr($log, -12, 11);
+				Log::add_phone_section_yes($phone, $date);
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * 原文：https://blog.csdn.net/u013091013/article/details/81312559
 	 */
