@@ -145,7 +145,6 @@ class StockOrder extends ActiveRecord
 				// 更新价格
 				self::update_price();
 			}
-
 		}
 
 		return [$insertCount, $error];
