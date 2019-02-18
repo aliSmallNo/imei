@@ -229,7 +229,7 @@
 					{{if $isAssigner}}{{/if}}
 					<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
 
-					{{if $cat=="my"}}
+					{{if $cat=="my" && !$sub_staff}}
 						<a href="javascript:;" class="btnChange btn btn-outline btn-info btn-xs">转给他人</a>
 					{{/if}}
 				</td>

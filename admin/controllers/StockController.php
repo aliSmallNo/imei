@@ -199,6 +199,7 @@ class StockController extends BaseController
 				"cat" => $cat,
 				"tabs" => $tabs,
 				"staff" => $staff,
+				"sub_staff" => $sub_staff,
 				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
 				"bdassign" => $bdassign,
 				"src" => $src,
