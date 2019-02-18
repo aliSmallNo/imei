@@ -98,32 +98,19 @@ class StockController extends BaseController
 			"sea" => [
 				"title" => "公海客户",
 				"count" => $counters["sea"]
-			]
+			],
+			"all" => [
+				"title" => "全部客户",
+				"count" => $counters["cnt"]
+			],
 		];
+		if (!$isAssigner) {
+			unset($tabs['all']);
+		}
 		if ($sub_staff) {
-			$tabs = [
-				"my" => [
-					"title" => "我的客户",
-					"count" => $counters["mine"]
-				]
-			];
+			unset($tabs['sea']);
 		}
-		if ($isAssigner) {
-			$tabs = [
-				"my" => [
-					"title" => "我的客户",
-					"count" => $counters["mine"]
-				],
-				"sea" => [
-					"title" => "公海客户",
-					"count" => $counters["sea"]
-				],
-				"all" => [
-					"title" => "全部客户",
-					"count" => $counters["cnt"]
-				],
-			];
-		}
+
 		if (!isset($tabs[$cat])) {
 			$cat = "my";
 		}
