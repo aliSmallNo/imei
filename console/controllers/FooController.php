@@ -1486,7 +1486,14 @@ class FooController extends Controller
 	{
 		$logs = file_get_contents("/data/logs/imei/phone_yes20190215.log");
 		$logs = explode("\n", $logs);
-		print_r($logs);
+
+		$phones = [];
+		foreach ($logs as $log) {
+			if ($log) {
+				$phones[] = substr($log, 0, 10) . ' ' . substr($log, -13, 11);
+			}
+		}
+		print_r($phones);
 	}
 
 	public function actionZp()
