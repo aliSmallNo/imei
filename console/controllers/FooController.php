@@ -1494,6 +1494,9 @@ class FooController extends Controller
 			}
 		}
 		print_r($phones);
+		foreach ($phones as $phone) {
+			file_put_contents("/data/logs/imei/tryphone_yes.txt", $phone . PHP_EOL, FILE_APPEND);
+		}
 	}
 
 	public function actionZp()
