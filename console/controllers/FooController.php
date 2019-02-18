@@ -1501,23 +1501,23 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		TryPhone::put_logs_to_db('20190128');
-//		TryPhone::put_logs_to_db('20190129');
-//		TryPhone::put_logs_to_db('20190130');
-//		TryPhone::put_logs_to_db('20190131');
-//		TryPhone::put_logs_to_db('20190202');
-//		TryPhone::put_logs_to_db('20190203');
-//		TryPhone::put_logs_to_db('20190204');
-//		TryPhone::put_logs_to_db('20190206');
-//		TryPhone::put_logs_to_db('20190207');
-//		TryPhone::put_logs_to_db('20190208');
-//		TryPhone::put_logs_to_db('20190211');
-//		TryPhone::put_logs_to_db('20190212');
-//		TryPhone::put_logs_to_db('20190213');
-//		TryPhone::put_logs_to_db('20190214');
-//		TryPhone::put_logs_to_db('20190215');
-//		TryPhone::put_logs_to_db('20190216');
-//		TryPhone::put_logs_to_db('20190217');
+		//TryPhone::put_logs_to_db('20190128');
+		TryPhone::put_logs_to_db('20190129');
+		TryPhone::put_logs_to_db('20190130');
+		TryPhone::put_logs_to_db('20190131');
+		TryPhone::put_logs_to_db('20190202');
+		TryPhone::put_logs_to_db('20190203');
+		TryPhone::put_logs_to_db('20190204');
+		TryPhone::put_logs_to_db('20190206');
+		TryPhone::put_logs_to_db('20190207');
+		TryPhone::put_logs_to_db('20190208');
+		TryPhone::put_logs_to_db('20190211');
+		TryPhone::put_logs_to_db('20190212');
+		TryPhone::put_logs_to_db('20190213');
+		TryPhone::put_logs_to_db('20190214');
+		TryPhone::put_logs_to_db('20190215');
+		TryPhone::put_logs_to_db('20190216');
+		TryPhone::put_logs_to_db('20190217');
 //		TryPhone::put_logs_to_db('20190218');
 
 		// QueueUtil::loadJob('phone_section_1', [], QueueUtil::QUEUE_TUBE_SMS);
