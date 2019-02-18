@@ -141,27 +141,32 @@ class CrontabController extends Controller
 		}
 
 		// 一号配资
-		if (date('Y-m-d H:i') == '2019-02-16 09:35') {
+		if (date('Y-m-d H:i') == '2019-02-18 14:50') {
+			set_time_limit(0);
 			TryPhone::phone_section_7();
 		}
 
 		// 沃伦策略
-		if (date('Y-m-d H:i') == '2019-02-16 09:40') {
+		if (date('Y-m-d H:i') == '2019-02-18 14:55') {
+			set_time_limit(0);
 			TryPhone::phone_section_8();
 		}
 
 		// 钱程策略
-		if (date('Y-m-d H:i') == '2019-02-16 09:45') {
+		if (date('Y-m-d H:i') == '2019-02-18 15:00') {
+			set_time_limit(0);
 			TryPhone::phone_section_9();
 		}
 
 		// 弘大速配
-		if (date('Y-m-d H:i') == '2019-02-16 09:50') {
+		if (date('Y-m-d H:i') == '2019-02-18 15:05') {
+			set_time_limit(0);
 			TryPhone::phone_section_10();
 		}
 
 		// 顺发配资
-		if (date('Y-m-d H:i') == '2019-02-16 09:55') {
+		if (date('Y-m-d H:i') == '2019-02-18 15:10') {
+			set_time_limit(0);
 			TryPhone::phone_section_11();
 		}
 
