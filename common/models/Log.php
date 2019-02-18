@@ -878,7 +878,7 @@ class Log extends ActiveRecord
 	public static function add_phone_section_yes($phone, $dt, $area = "taoguba")
 	{
 		$data = ['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone];
-		if (self::findOne($data) || strlen($phone) != 11 || AppUtil::checkPhone($phone)) {
+		if (self::findOne($data) || strlen($phone) != 11 || !AppUtil::checkPhone($phone)) {
 			return false;
 		}
 		$item = self::findOne(['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone]);
