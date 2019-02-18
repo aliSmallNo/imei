@@ -1482,13 +1482,19 @@ class FooController extends Controller
 			], QueueUtil::QUEUE_TUBE_CHAT, 30);
 	}
 
+	public function actionP_logs()
+	{
+		$logs = file_get_contents("/data/logs/imei/phone_yes20190215.log");
+		$logs = explode("\n", $logs);
+		print_r($logs);
+	}
+
 	public function actionZp()
 	{
 		// QueueUtil::loadJob('phone_section_1', [], QueueUtil::QUEUE_TUBE_SMS);
 		// QueueUtil::loadJob('phone_section_7', [], QueueUtil::QUEUE_TUBE_SMS);
 
 		QueueUtil::loadJob('phone_section_2', [], QueueUtil::QUEUE_TUBE_SMS);
-
 		QueueUtil::loadJob('phone_section_8', [], QueueUtil::QUEUE_TUBE_SMS);
 		QueueUtil::loadJob('phone_section_9', [], QueueUtil::QUEUE_TUBE_SMS);
 		QueueUtil::loadJob('phone_section_10', [], QueueUtil::QUEUE_TUBE_SMS);
@@ -1701,14 +1707,7 @@ class FooController extends Controller
 			}
 		}
 
-		// CRMStockClient::auto_client_2_sea();
-
-//		echo mb_strlen('胜多负少') . PHP_EOL;
-//		echo mb_strlen('sdfsdf') . PHP_EOL;
-//		echo mb_strlen('17611629667') . PHP_EOL;
-//		echo strlen('17611629667') . PHP_EOL;
-//		echo AppUtil::hasHans('胜多负少sdf') . PHP_EOL;
-//		echo AppUtil::hasHans('sdf') . PHP_EOL;
+		exit;
 
 	}
 
