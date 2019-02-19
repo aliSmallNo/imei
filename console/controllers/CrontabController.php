@@ -142,13 +142,13 @@ class CrontabController extends Controller
 		}
 
 		// 淘股吧
-		if (date('Y-m-d H:i') == '2019-02-18 12:00') {
+		if (date('Y-m-d H:i') == '2019-02-19 18:10') {
 			set_time_limit(0);
 			TryPhone::phone_section_1();
 		}
 
 		// 淘股吧
-		if (date('Y-m-d H:i') == '2019-02-18 12:05') {
+		if (date('Y-m-d H:i') == '2019-02-19 18:15') {
 			set_time_limit(0);
 			TryPhone::phone_section_2();
 		}
