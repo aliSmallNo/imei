@@ -166,7 +166,7 @@ class CrontabController extends Controller
 		}
 
 		// 钱程策略
-		if (date('Y-m-d H:i') == '2019-02-18 15:00') {
+		if (date('Y-m-d H:i') == '2019-02-19 18:20') {
 			set_time_limit(0);
 			TryPhone::phone_section_9();
 		}
