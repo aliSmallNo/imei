@@ -96,7 +96,7 @@ class CrontabController extends Controller
 	public function actionRank()
 	{
 		try {
-			TryPhone::put_logs_to_db(date('y-m-d', time() - 86400));
+			TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
 		} catch (\Exception $e) {
 			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_YES, 'oUId' => '1000', 'oAfter' => AppUtil::json_decode($e)]);
 		}
