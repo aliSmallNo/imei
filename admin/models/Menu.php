@@ -144,7 +144,7 @@ class Menu
 						"level" => 827
 					],
 					[
-						"name" => "抓取手机",
+						"name" => "抓取手机号",
 						"url" => "/stock/phones",
 						"revise" => 1,
 						"level" => 827
