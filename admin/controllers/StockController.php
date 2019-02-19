@@ -516,7 +516,7 @@ class StockController extends BaseController
 				left join im_stock_user as u on u.uPhone=o.oPhone
 				left join im_admin as a on a.aPhone=u.uPtPhone
 				where u.uPtPhone>0 $condition
-				order by a.aId asc,o.oAddedOn desc ";
+				order by a.aId asc,o.oAddedOn desc limit 2000";
 		$conn = AppUtil::db();
 		$res = $conn->createCommand($sql)->queryAll();
 
