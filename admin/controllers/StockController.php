@@ -682,4 +682,33 @@ class StockController extends BaseController
 			]);
 	}
 
+	public function actionPhones()
+	{
+		$page = self::getParam("page", 1);
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($name) {
+			$name = str_replace("'", "", $name);
+			$criteria[] = "  u.uName like :name ";
+			$params[':name'] = "%$name%";
+		}
+		if ($phone) {
+			$criteria[] = "  a.aPhone like :phone ";
+			$params[':phone'] = $phone;
+		}
+
+		list($list, $count) = Log::section_items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+
+		return $this->renderPage('phones.tpl',
+			[
+				'pagination' => $pagination,
+				'list' => $list,
+				'count' => $count,
+			]);
+	}
+
 }

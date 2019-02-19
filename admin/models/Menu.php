@@ -143,6 +143,12 @@ class Menu
 						"revise" => 1,
 						"level" => 827
 					],
+					[
+						"name" => "抓取手机",
+						"url" => "/stock/phones",
+						"revise" => 1,
+						"level" => 827
+					],
 				]
 			],
 			[

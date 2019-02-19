@@ -13,6 +13,7 @@ use admin\models\Admin;
 use common\utils\AppUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
+use common\utils\TryPhone;
 use common\utils\WechatUtil;
 use yii\db\ActiveRecord;
 
@@ -888,4 +889,31 @@ class Log extends ActiveRecord
 		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area, 'oAfter' => $dt]));
 		return true;
 	}
+
+	public static function section_items($criteria, $params, $page, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+
+		$cat = self::CAT_PHONE_SECTION_YES;
+		$sql = "select *
+				from im_log 
+				where oCategory='$cat' and oUId=0 $strCriteria
+				order by oAfter desc 
+				limit $offset,$pageSize";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+			$res[$k]['st_txt'] = TryPhone::$catDict[$v['oBefore']] ?? '';
+		}
+		$sql = "select count(1) as co
+				from im_log 
+				where oCategory='$cat' and oUId=0 $strCriteria  ";
+		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
+	}
+
 }
