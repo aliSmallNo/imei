@@ -122,6 +122,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	const SRC_HIRE = "hire";
 	const SRC_SHORT_TERM_WANG = "short_term_wang";
 	const SRC_WECHAT = "wechat";
+	const SRC_PEIZI = "peizi";
 	const SRC_OTHER = "other";
 	const SRC_GROUND = "ground";
 	static $SourceMap = [
@@ -135,6 +136,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_HIRE => "招聘",
 		self::SRC_SHORT_TERM_WANG => "自己注册",
 		self::SRC_WECHAT => "公众号",
+		self::SRC_PEIZI => "配资网站",
 		self::SRC_OTHER => "其他",
 		self::SRC_GROUND => "地推",
 	];
