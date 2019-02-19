@@ -1501,7 +1501,9 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
+		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
+		TryPhone::put_logs_to_db("qianChengCL_" . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
+
 //		QueueUtil::loadJob('phone_section_1', [], QueueUtil::QUEUE_TUBE_SMS);
 //		QueueUtil::loadJob('phone_section_7', [], QueueUtil::QUEUE_TUBE_SMS);
 //		QueueUtil::loadJob('phone_section_2', [], QueueUtil::QUEUE_TUBE_SMS);

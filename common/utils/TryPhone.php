@@ -38,9 +38,10 @@ class TryPhone
 	];
 
 	// 把每天抓取到的手机号存入数据库
-	public static function put_logs_to_db($dt)
+	public static function put_logs_to_db($dt, $area = self::CAT_TAOGUBA)
 	{
 		// $dt => phone_yes20190217.log
+		// $dt => phone_yesqianChengCL_20190219.log
 		$filepath = "/data/logs/imei/phone_yes" . $dt . ".log";
 		if (!file_exists($filepath)) {
 			return false;
@@ -57,7 +58,7 @@ class TryPhone
 			if ($log) {
 				$date = substr($log, 0, 19);
 				$phone = substr($log, -12, 11);
-				Log::add_phone_section_yes($phone, $date);
+				Log::add_phone_section_yes($phone, $date, $area);
 			}
 		}
 		return true;
