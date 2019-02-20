@@ -150,7 +150,8 @@ class CrontabController extends Controller
 		}
 
 		// 淘股吧
-		if (date('Y-m-d H:i') == '2019-02-20 14:05') {
+		if (date('Y-m-d H:i') == '2019-02-20 18:05') {
+			set_time_limit(0);
 			TryPhone::phone_section_1();
 		}
 
