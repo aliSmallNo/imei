@@ -3,6 +3,7 @@
 
 namespace common\service;
 
+use admin\models\Admin;
 use common\models\CRMStockTrack;
 use common\models\StockOrder;
 use common\models\StockUser;
@@ -220,6 +221,13 @@ class TrendStockService
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
+		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//			echo AppUtil::db()->createCommand($sql)->bindValues([
+//				':beginDT' => $beginDate,
+//				':endDT' => $endDate,
+//			])->getRawSql();
+//			exit;
+		}
 		if ($res) {
 			foreach ($res as $field => $num) {
 				$trend['sum_loan_users_' . $field] = intval($num);
