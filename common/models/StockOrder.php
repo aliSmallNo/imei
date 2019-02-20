@@ -352,7 +352,7 @@ class StockOrder extends ActiveRecord
 		$cond = StockOrder::channel_condition();
 
 		$user = StockUser::findOne(['uPhone' => $phone]);
-		$rate = $user ? $user->uRate : 0;
+		$rate = $user ? $user->uRate : 0.001;
 
 		$sql = "select 
 				Date_format(o.oAddedOn, '%Y%m%d') as ym,
