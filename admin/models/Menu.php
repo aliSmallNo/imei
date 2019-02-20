@@ -149,6 +149,12 @@ class Menu
 						"revise" => 1,
 						"level" => 827
 					],
+					[
+						"name" => "客户来源",
+						"url" => "/stock/source",
+						"revise" => 1,
+						"level" => 830
+					],
 				]
 			],
 			[
