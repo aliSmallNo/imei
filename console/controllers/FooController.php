@@ -1501,10 +1501,16 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
+		foreach (CRMStockClient::$SourceMap as $k => $v) {
+			CRMStockClient::add([
+				'sName' => $k,
+				'sTxt' => $v,
+			]);
+		}
 		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
 		//TryPhone::put_logs_to_db("qianChengCL_" . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
-		TryPhone::put_logs_to_db("qianChengCL_20190216", TryPhone::CAT_QIANCHENGCL);
-		TryPhone::put_logs_to_db("qianChengCL_20190219", TryPhone::CAT_QIANCHENGCL);
+		//TryPhone::put_logs_to_db("qianChengCL_20190216", TryPhone::CAT_QIANCHENGCL);
+		//TryPhone::put_logs_to_db("qianChengCL_20190219", TryPhone::CAT_QIANCHENGCL);
 
 //		QueueUtil::loadJob('phone_section_1', [], QueueUtil::QUEUE_TUBE_SMS);
 //		QueueUtil::loadJob('phone_section_7', [], QueueUtil::QUEUE_TUBE_SMS);
