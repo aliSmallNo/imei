@@ -119,9 +119,8 @@ class CrontabController extends Controller
 
 	public function actionTry_phone()
 	{
-		if (date('H') % 6 == 0) {
+		if (date('H') % 4 == 0) {
 			TryPhone::phone_section_1();
-			TryPhone::phone_section_2();
 		}
 
 	}
