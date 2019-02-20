@@ -42,7 +42,7 @@
 				<td>{{$item.st_txt}}</td>
 				<td>{{$item.sUpdatedOn}}</td>
 				<td>
-					<a href="javascript:;" class="edit_user btn btn-outline btn-primary btn-xs">修改用户</a>
+					<a href="javascript:;" class="edit_user btn btn-outline btn-primary btn-xs">修改来源</a>
 				</td>
 			</tr>
 		{{/foreach}}
