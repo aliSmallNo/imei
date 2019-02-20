@@ -432,7 +432,7 @@ class TryPhone
 	}
 
 	// 淘股吧 bj
-	public static function phone_section_1()
+	public static function phone_section_1($flag = 0)
 	{
 		$phone_section = [
 			//1561102,
@@ -447,6 +447,9 @@ class TryPhone
 			1761167, 1891094, 1391096, 1352423, 1851032, 1362138, 1312149, 1891102, 1381171,
 		];
 		$phone_section = self::phone_section();
+		if ($flag) {
+			echo $phone_section . PHP_EOL;
+		}
 		foreach ($phone_section as $p) {
 			self::combind_phone($p, 1);
 		}
