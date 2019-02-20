@@ -21,6 +21,7 @@ use common\service\TrendStockService;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
+use common\utils\TryPhone;
 
 class StockController extends BaseController
 {
@@ -685,19 +686,20 @@ class StockController extends BaseController
 	public function actionPhones()
 	{
 		$page = self::getParam("page", 1);
-		$name = self::getParam("name");
-		$phone = self::getParam("phone");
+		$cat = self::getParam("cat");
+		$st = self::getParam("sdate");
+		$et = self::getParam("edate");
 
 		$criteria = [];
 		$params = [];
-		if ($name) {
-			$name = str_replace("'", "", $name);
-			$criteria[] = "  u.uName like :name ";
-			$params[':name'] = "%$name%";
+		if ($cat) {
+			$criteria[] = "  oBefore = :cat ";
+			$params[':cat'] = $cat;
 		}
-		if ($phone) {
-			$criteria[] = "  a.aPhone like :phone ";
-			$params[':phone'] = $phone;
+		if ($st && $et) {
+			$criteria[] = "  oAfter between :st and :et ";
+			$params[':st'] = $st . ' 00:00';
+			$params[':et'] = $et . ' 23:59';
 		}
 
 		list($list, $count) = Log::section_items($criteria, $params, $page);
@@ -708,6 +710,10 @@ class StockController extends BaseController
 				'pagination' => $pagination,
 				'list' => $list,
 				'count' => $count,
+				'cat' => $cat,
+				'st' => $st,
+				'et' => $et,
+				'cats' => TryPhone::$catDict,
 			]);
 	}
 
