@@ -357,7 +357,7 @@ class StockOrder extends ActiveRecord
 		$sql = "select 
 				Date_format(o.oAddedOn, '%Y%m%d') as ym,
 				count(DISTINCT case when o.oStatus=1 then oPhone end) as user_amt,
-				sum(case when o.oStatus=1 then oLoan else 0 end) as user_loan_amt
+				sum(case when o.oStatus=1 then ROUND(oLoan) else 0 end) as user_loan_amt
 				from im_stock_order as o
 				left join im_stock_user u on u.uPhone=o.oPhone
 				where oId>0 $strCriteria $cond
@@ -365,8 +365,8 @@ class StockOrder extends ActiveRecord
 				order by ym desc ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-			echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();
-			exit;
+//			echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();
+//			exit;
 		}
 		$sum_income = 0;
 		foreach ($res as $k => $v) {
