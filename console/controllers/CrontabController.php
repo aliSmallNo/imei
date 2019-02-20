@@ -117,6 +117,18 @@ class CrontabController extends Controller
 		UserTag::calcExp();
 	}
 
+	public function actionTry_phone()
+	{
+		if (date('H') % 6 == 0) {
+			TryPhone::phone_section_1();
+			TryPhone::phone_section_2();
+		}
+		if (date('Y-m-d H:i') == '2019-02-20 15') {
+			TryPhone::phone_section_1();
+		}
+
+	}
+
 	public function actionAlert()
 	{
 		try {
