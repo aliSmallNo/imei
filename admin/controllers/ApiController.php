@@ -16,6 +16,7 @@ use common\models\ChatRoomFella;
 use common\models\City;
 use common\models\CRMClient;
 use common\models\CRMStockClient;
+use common\models\CRMStockSource;
 use common\models\CRMStockTrack;
 use common\models\CRMTrack;
 use common\models\Date;
@@ -1457,6 +1458,14 @@ class ApiController extends Controller
 				StockOrder::sold_stock($dt);
 				StockOrder::update_price();
 				return self::renderAPI(0, '操作成功');
+			case "edit_source":
+				$sName = self::postParam("sName");
+				$sTxt = self::postParam("sTxt");
+				$sId = self::postParam("sId");
+				$sStatus = self::postParam("sStatus");
+				list($code, $msg) = CRMStockSource::pre_edit_admin($sId, $sName, $sTxt, $sStatus);
+				return self::renderAPI($code, $msg);
+				break;
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}

@@ -141,6 +141,13 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_GROUND => "地推",
 	];
 
+	public static function SourceMap()
+	{
+		$Sources = CRMStockSource::find()->where(['sStatus' => CRMStockSource::ST_ACTIVE])->asArray()->all();
+		$Sources = array_combine(array_column($Sources, 'sName'), array_column($Sources, 'sTxt'));
+		return $Sources;
+	}
+
 	/**
 	 * @inheritdoc
 	 */
@@ -682,7 +689,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$row["percent"] = $row["status"] - 100;
 			//$row["addedDate"] = Utils::prettyDateTime($row["cAddedDate"]);
 			$row["addedDate"] = AppUtil::prettyDateTime($row["cAddedDate"]);
-			$row["src"] = isset(self::$SourceMap[$row["cSource"]]) ? self::$SourceMap[$row["cSource"]] : "";
+			$row["src"] = isset(self::SourceMap()[$row["cSource"]]) ? self::SourceMap()[$row["cSource"]] : "";
 			$row["bdAbbr"] = $row["bdName"];
 			if (mb_strlen($row["bdAbbr"]) > 2) {
 				$row["bdAbbr"] = mb_substr($row["bdAbbr"], mb_strlen($row["bdAbbr"]) - 2, 2);
@@ -759,7 +766,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		foreach ($ret as $key => $row) {
 			$src = $row["cSource"];
 			$items[] = [
-				"name" => isset(self::$SourceMap[$src]) ? self::$SourceMap[$src] : self::$SourceMap[self::SRC_OTHER],
+				"name" => isset(self::SourceMap()[$src]) ? self::SourceMap()[$src] : self::SourceMap()[self::SRC_OTHER],
 				"y" => intval($row["cnt"])
 			];
 		}
@@ -788,7 +795,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$amount = 0;
 		foreach ($ret as $key => $row) {
 			$src = $row["cSource"];
-			$source = isset(self::$SourceMap[$src]) ? self::$SourceMap[$src] : self::$SourceMap[self::SRC_OTHER];
+			$source = isset(self::SourceMap()[$src]) ? self::SourceMap()[$src] : self::SourceMap()[self::SRC_OTHER];
 			$st = $row["cStatus"];
 			$status = isset(self::$StatusMap[$st]) ? self::$StatusMap[$st] : self::$StatusMap[self::STATUS_DISLIKE];
 			$color = isset(self::$StatusColors[$st]) ? self::$StatusColors[$st] : self::$StatusColors[self::STATUS_DISLIKE];

@@ -12,6 +12,7 @@ namespace admin\controllers;
 use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\CRMStockClient;
+use common\models\CRMStockSource;
 use common\models\CRMStockTrack;
 use common\models\Log;
 use common\models\StockAction;
@@ -86,7 +87,7 @@ class StockController extends BaseController
 			$criteria[] = "cSource = :cSource";
 			$params[":cSource"] = $src;
 			$urlParams[] = "src=" . $src;
-			$alert[] = "【" . CRMStockClient::$SourceMap[$src] . "】";
+			$alert[] = "【" . CRMStockClient::SourceMap()[$src] . "】";
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
@@ -129,7 +130,7 @@ class StockController extends BaseController
 			$alertMsg = "搜索" . implode("，", $alert) . "，结果如下";
 		}
 		$pagination = self::pagination($page, $count);
-		$sources = CRMStockClient::$SourceMap;
+		$sources = CRMStockClient::SourceMap();
 
 		$bdDefault = $isAssigner ? "" : $this->admin_id;
 
@@ -200,7 +201,7 @@ class StockController extends BaseController
 				"dNext" => $dNext,
 				"dIcon" => $dIcon,
 				"ageMap" => CRMStockClient::$ageMap,
-				"SourceMap" => CRMStockClient::$SourceMap,
+				"SourceMap" => CRMStockClient::SourceMap(),
 				"stock_age_map" => CRMStockClient::$stock_age_map,
 				'success' => $success,
 				'error' => $error,
@@ -714,6 +715,37 @@ class StockController extends BaseController
 				'st' => $st,
 				'et' => $et,
 				'cats' => TryPhone::$catDict,
+			]);
+	}
+
+	public function actionSource()
+	{
+		$page = self::getParam("page", 1);
+		$cat = self::getParam("cat");
+		$st = self::getParam("sdate");
+		$et = self::getParam("edate");
+
+		$criteria = [];
+		$params = [];
+		if ($cat) {
+			$criteria[] = "  oBefore = :cat ";
+			$params[':cat'] = $cat;
+		}
+		if ($st && $et) {
+			$criteria[] = "  oAfter between :st and :et ";
+			$params[':st'] = $st . ' 00:00';
+			$params[':et'] = $et . ' 23:59';
+		}
+
+		list($list, $count) = CRMStockSource::items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+
+		return $this->renderPage('stock_source.tpl',
+			[
+				'pagination' => $pagination,
+				'list' => $list,
+				'count' => $count,
+				'sts' => CRMStockSource::$stDict,
 			]);
 	}
 
