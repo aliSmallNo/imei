@@ -365,8 +365,8 @@ class StockOrder extends ActiveRecord
 				order by ym desc ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-//			echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();
-//			exit;
+			echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();
+			exit;
 		}
 		$sum_income = 0;
 		foreach ($res as $k => $v) {
