@@ -123,9 +123,6 @@ class CrontabController extends Controller
 			TryPhone::phone_section_1();
 			TryPhone::phone_section_2();
 		}
-		if (date('Y-m-d H:i') == '2019-02-20 15') {
-			TryPhone::phone_section_1();
-		}
 
 	}
 
@@ -154,8 +151,7 @@ class CrontabController extends Controller
 		}
 
 		// 淘股吧
-		if (date('Y-m-d H:i') == '2019-02-19 18:10') {
-			set_time_limit(0);
+		if (date('Y-m-d H:i') == '2019-02-20 14:05') {
 			TryPhone::phone_section_1();
 		}
 
