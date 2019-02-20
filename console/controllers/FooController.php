@@ -11,6 +11,7 @@ namespace console\controllers;
 use admin\models\Admin;
 use common\models\ChatMsg;
 use common\models\CRMStockClient;
+use common\models\CRMStockSource;
 use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
@@ -1502,7 +1503,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 		foreach (CRMStockClient::$SourceMap as $k => $v) {
-			CRMStockClient::add([
+			CRMStockSource::add([
 				'sName' => $k,
 				'sTxt' => $v,
 			]);

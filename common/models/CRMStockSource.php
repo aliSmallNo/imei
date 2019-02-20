@@ -24,7 +24,7 @@ class CRMStockSource extends ActiveRecord
 
 	public static function tableName()
 	{
-		return '{{%crm_stock_source}}';
+		return '{{%crm_source}}';
 	}
 
 	public static function add($values = [])
