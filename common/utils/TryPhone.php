@@ -426,10 +426,14 @@ class TryPhone
 		}
 	}
 
+	public static function phone_section()
+	{
+		return AppUtil::db()->createCommand("select oOpenId from im_log where oCategory='phone_section' and oKey=1 order by oId asc limit 1 ")->queryOne();
+	}
+
 	// 淘股吧 bj
 	public static function phone_section_1()
 	{
-		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='beijing' and oKey=1 group by oCategory order by oId asc limit 100;
 		$phone_section = [
 			//1561102,
 			1391026, 1891113, 1861815, 1372004, 1851048, 1305191, 1381198, 1368365,

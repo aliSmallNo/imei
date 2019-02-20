@@ -1502,30 +1502,17 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		foreach (CRMStockClient::$SourceMap as $k => $v) {
-			CRMStockSource::add([
-				'sName' => $k,
-				'sTxt' => $v,
-			]);
-		}
+
 		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
 		//TryPhone::put_logs_to_db("qianChengCL_" . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
 		//TryPhone::put_logs_to_db("qianChengCL_20190216", TryPhone::CAT_QIANCHENGCL);
 		//TryPhone::put_logs_to_db("qianChengCL_20190219", TryPhone::CAT_QIANCHENGCL);
 
-//		QueueUtil::loadJob('phone_section_1', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_7', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_2', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_8', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_9', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_10', [], QueueUtil::QUEUE_TUBE_SMS);
-//		QueueUtil::loadJob('phone_section_11', [], QueueUtil::QUEUE_TUBE_SMS);
-
 		//TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
 		//TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
 //		TryPhone::phone_section_3();
 
-//		TryPhone::pre_reqData(17611629667, TryPhone::CAT_SHUNFAPZ);
+		print_r(TryPhone::phone_section());
 
 
 		/*$sql = "select * from im_stock_order";
