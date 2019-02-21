@@ -157,7 +157,7 @@ class StockAction extends \yii\db\ActiveRecord
 	public static function update_stock_clients()
 	{
 		$conn = AppUtil::db();
-		$sql = "select * from im_stock_action where datediff(aAddedOn,now())=-1 order by aId asc";
+		$sql = "select * from im_stock_action where datediff(aAddedOn,now())=0 order by aId asc";
 		$active = CRMStockClient::ACTION_YES;
 		$res = $conn->createCommand($sql)->queryAll();
 		$sql = "update im_crm_stock_client set cStockAction=$active,cStockActionDate=:dt where cPhone=:phone";
