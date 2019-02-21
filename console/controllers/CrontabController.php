@@ -97,10 +97,10 @@ class CrontabController extends Controller
 	{
 		try {
 			TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
-			TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
-			TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
-			TryPhone::put_logs_to_db(TryPhone::CAT_WOLUNCL . date('Ymd', time() - 86400), TryPhone::CAT_WOLUNCL);
-			TryPhone::put_logs_to_db(TryPhone::CAT_YIHAOPZ . date('Ymd', time() - 86400), TryPhone::CAT_YIHAOPZ);
+			TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
+			TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
+			TryPhone::put_logs_to_db(TryPhone::CAT_WOLUNCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_WOLUNCL);
+			TryPhone::put_logs_to_db(TryPhone::CAT_YIHAOPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_YIHAOPZ);
 
 
 		} catch (\Exception $e) {
