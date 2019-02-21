@@ -119,6 +119,8 @@ class StockAction extends \yii\db\ActiveRecord
 			$transaction->commit();
 		}
 
+		self::update_stock_clients();
+
 		return [$insertCount, $error];
 	}
 
@@ -150,5 +152,25 @@ class StockAction extends \yii\db\ActiveRecord
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
+	}
+
+	public static function update_stock_clients()
+	{
+		$conn = AppUtil::db();
+		$sql = "select * from im_stock_action and datediff(aAddedOn,now())=0 order by aId asc";
+		$active = CRMStockClient::ACTION_YES;
+		$res = $conn->createCommand($sql)->queryAll();
+		$sql = "update im_crm_stock_client set cStockAction=$active,cStockActionDate=:dt where cPhone=:phone";
+		$cmd = $conn->createCommand($sql);
+		foreach ($res as $k => $v) {
+			$phone = $v['aPhone'];
+			if (!AppUtil::checkPhone($phone)) {
+				continue;
+			}
+			$cmd->bindValues([
+				":phone" => $phone,
+				":dt" => $v['aAddedOn'],
+			])->execute();
+		}
 	}
 }

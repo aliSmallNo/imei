@@ -15,6 +15,7 @@ use common\models\CRMStockSource;
 use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
+use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\User;
@@ -1516,23 +1517,7 @@ class FooController extends Controller
 		//TryPhone::phone_section_1(1);
 
 
-		$conn = AppUtil::db();
-		$sql = "select * from im_stock_action order by aId asc";
-		$active = CRMStockClient::ACTION_YES;
-		$res = $conn->createCommand($sql)->queryAll();
-		$sql = "update im_crm_stock_client set cStockAction=$active,cStockActionDate=:dt where cPhone=:phone";
-		$cmd = $conn->createCommand($sql);
-		foreach ($res as $k => $v) {
-			$phone = $v['aPhone'];
-			if (!AppUtil::checkPhone($phone)) {
-				continue;
-			}
-			echo $v['aId'] . '__' . $phone . PHP_EOL;
-			$cmd->bindValues([
-				":phone" => $phone,
-				":dt" => $v['aAddedOn'],
-			])->execute();
-		}
+		StockAction::update_stock_clients();
 
 		exit;
 	}
