@@ -1502,6 +1502,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
+		TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
 
 		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
 		//TryPhone::put_logs_to_db("qianChengCL_" . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
@@ -1512,7 +1513,7 @@ class FooController extends Controller
 		//TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
 //		TryPhone::phone_section_3();
 
-		TryPhone::phone_section_1();
+		//TryPhone::phone_section_1(1);
 
 
 		/*$sql = "select * from im_stock_order";
