@@ -1502,7 +1502,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
+		//TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
 
 		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
 		//TryPhone::put_logs_to_db("qianChengCL_" . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
@@ -1516,14 +1516,23 @@ class FooController extends Controller
 		//TryPhone::phone_section_1(1);
 
 
-		/*$sql = "select * from im_stock_order";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		$conn = AppUtil::db();
+		$sql = "select * from im_stock_action order by aId asc";
+		$active = CRMStockClient::ACTION_YES;
+		$res = $conn->createCommand($sql)->queryAll();
+		$sql = "update im_crm_stock_client set cStockAction=$active,cStockActionDate=:dt where cPhone=:phone";
+		$cmd = $conn->createCommand($sql);
 		foreach ($res as $k => $v) {
-			StockUser::pre_add($v['oPhone'], [
-				'uName' => $v['oName'],
-				'uPhone' => $v['oPhone'],
-			]);
-		}*/
+			$phone = $v['aPhone'];
+			if (!AppUtil::checkPhone($phone)) {
+				continue;
+			}
+			echo $v['aId'] . '__' . $phone . PHP_EOL;
+			$cmd->bindValues([
+				":phone" => $phone,
+				":dt" => $v['aAddedOn'],
+			])->execute();
+		}
 
 		exit;
 	}

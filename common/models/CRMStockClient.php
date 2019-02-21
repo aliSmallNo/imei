@@ -141,6 +141,9 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		self::SRC_GROUND => "地推",
 	];
 
+	const ACTION_YES = 1;
+	const ACTION_NO = 9;
+
 	public static function SourceMap()
 	{
 		$Sources = CRMStockSource::find()->where(['sStatus' => CRMStockSource::ST_ACTIVE])->asArray()->all();
