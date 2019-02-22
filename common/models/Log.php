@@ -866,6 +866,23 @@ class Log extends ActiveRecord
 	const KEY_WAIT = 1;
 	const KEY_USED = 9;
 
+	public static function add_phone_section_admin($phone_sections)
+	{
+		$phone_sections = explode(PHP_EOL, $phone_sections);
+
+		$count = 0;
+		foreach ($phone_sections as $phone_section) {
+			if (strlen($phone_section) >= 7) {
+				$section = substr($phone_section, 0, 7);
+				$res = self::add_phone_section($section, 'admin');
+				if ($res) {
+					$count++;
+				}
+			}
+		}
+		return [0, '添加成功' . $count . '个手机号段'];
+	}
+
 	public static function add_phone_section($pre_phone, $area)
 	{
 		$data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];

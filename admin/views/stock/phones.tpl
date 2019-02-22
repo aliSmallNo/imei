@@ -10,6 +10,7 @@
 <div class="row">
 	<div class="col-sm-6">
 		<h4>手机号列表
+			<a href="javascript:;" class="add_phone_section btn btn-outline btn-primary btn-xs">添加手机号段</a>
 		</h4>
 	</div>
 </div>
@@ -50,7 +51,76 @@
 	</table>
 	{{$pagination}}
 </div>
-
 <div class="row-divider"></div>
+<div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel"></h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">手机号段</label>
+						<div class="col-sm-8">
+							<textarea data-field="section_phones" class="form-control" rows="10" placeholder="一行一个手机号段"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnSave">确定保存</button>
+			</div>
 
+		</div>
+	</div>
+</div>
+<script>
+	$sls = {
+		loadflag: 0,
+		tag: '',
+		modal: $("#modModal"),
+		title: $("#modModal").find(".modal-header h4"),
+	};
+	$(document).on("click", ".add_phone_section", function () {
+		$sls.tag = 'add_phone_section';
+		$sls.sId = '';
+		$sls.title.html("添加手机号段");
+		$("[data-field=section_phones]").val("");
+		$sls.modal.modal('show');
+	});
+	$(document).on('click', '#btnSave', function () {
+		var section_phones = $("[data-field=section_phones]").val();
+		if (!section_phones) {
+			layer.msg('号段不能为空');
+			return;
+		}
+		var postData = {
+			section_phones: section_phones,
+			tag: $sls.tag,
+		};
+		console.log(postData);
+
+		if ($sls.loadflag) {
+			return;
+		}
+		$sls.loadflag = 1;
+		layer.load();
+		$.post("/api/stock", postData, function (resp) {
+			$sls.loadflag = 0;
+			layer.closeAll();
+			if (resp.code == 0) {
+				layer.msg(resp.msg);
+				setTimeout(function () {
+					location.reload();
+				}, 5000)
+			} else {
+				layer.msg(resp.msg);
+			}
+		}, "json");
+	})
+</script>
 {{include file="layouts/footer.tpl"}}

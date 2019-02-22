@@ -1466,6 +1466,11 @@ class ApiController extends Controller
 				list($code, $msg) = CRMStockSource::pre_edit_admin($sId, $sName, $sTxt, $sStatus);
 				return self::renderAPI($code, $msg);
 				break;
+			case "add_phone_section":
+				$phone_sections = self::postParam("section_phones");
+				list($code, $msg) = Log::add_phone_section_admin($phone_sections);
+				return self::renderAPI($code, $msg);
+				break;
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}

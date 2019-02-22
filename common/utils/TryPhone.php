@@ -166,6 +166,9 @@ class TryPhone
 
 	public static function pre_reqData($phone, $cat)
 	{
+		if (!AppUtil::checkPhone($phone)) {
+			return false;
+		}
 		$ret = "";
 		switch ($cat) {
 			case self::CAT_TAOGUBA:
@@ -1400,6 +1403,9 @@ class TryPhone
 
 	public static function req($phone)
 	{
+		if (!AppUtil::checkPhone($phone)) {
+			return false;
+		}
 		$data = [
 			'userName' => $phone,
 			'password' => "123456",
