@@ -83,13 +83,22 @@
 	input.form-control[type=text] {
 		width: 10em;
 	}
+
+	.action_1, .action_9 {
+		font-size: 12px;
+		color: #f0ad4e;
+	}
+
+	.action_1 {
+		color: red;
+	}
 </style>
 <div class="row">
 	<div class="col-sm-6">
 		<h4>客户线索
 			<a class="addClue btn btn-xs btn-primary">添加线索</a>
 			{{if $isAssigner}}
-			<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
+				<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
 			{{/if}}
 		</h4>
 	</div>
@@ -117,12 +126,18 @@
 		<input class="form-control" name="name" placeholder="客户姓名" type="text" value="{{$name}}">
 		<input class="form-control" name="phone" placeholder="客户手机号" type="text" value="{{$phone}}">
 		{{if $isAssigner}}
-		<select class="form-control" name="bdassign">
-			<option value="">请选择BD</option>
-			{{foreach from=$bds item=bd}}
-				<option value="{{$bd.id}}" {{if $bd.id==$bdassign}}selected{{/if}}>{{$bd.name}}</option>
-			{{/foreach}}
-		</select>
+			<select class="form-control" name="bdassign">
+				<option value="">请选择BD</option>
+				{{foreach from=$bds item=bd}}
+					<option value="{{$bd.id}}" {{if $bd.id==$bdassign}}selected{{/if}}>{{$bd.name}}</option>
+				{{/foreach}}
+			</select>
+			<select class="form-control" name="action">
+				<option value="">请选择操作</option>
+				{{foreach from=$actionDict item=act key=key}}
+					<option value="{{$key}}" {{if $key==$action}}selected{{/if}}>{{$act}}</option>
+				{{/foreach}}
+			</select>
 		{{/if}}
 		<select class="form-control" name="src">
 			<option value="">请选择来源</option>
@@ -199,6 +214,8 @@
 				<td>
 					{{if $prod.cIntro}}{{$prod.cIntro}}{{else}}<span class="text-muted">（无）</span>{{/if}}
 					<div class="text-muted">{{$prod.addedDate}}<br>来源：{{$prod.src}}</div>
+					<div class="action_{{$prod.cStockAction}}">{{$prod.action_t}}</div>
+
 				</td>
 
 				<td>

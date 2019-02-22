@@ -143,6 +143,10 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
 	const ACTION_YES = 1;
 	const ACTION_NO = 9;
+	static $actionDict = [
+		self::ACTION_YES => '有操作记录',
+		self::ACTION_NO => 'CRM客户线索中',
+	];
 
 	public static function SourceMap()
 	{
@@ -670,7 +674,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				c.cAddedDate,
 				c.cUpdatedDate,
 				c.cAddedBy,
-				c.cUpdatedBy
+				c.cUpdatedBy,
+				c.cStockAction
  				FROM im_crm_stock_client as c 
 				LEFT JOIN im_admin AS a ON c.cBDAssign = a.aId
  				WHERE cCategory=$category AND cDeletedFlag=0 $strCriteria 
@@ -689,8 +694,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$row["statusText"] = self::$StatusMap[$row["status"]];
 			$row["genderText"] = self::$genderMap[$row["cGender"]] ?? '';
 			$row["ageText"] = self::$ageMap[$row["cAge"]] ?? '';
+			$row["action_t"] = self::$actionDict[$row["cStockAction"]] ?? '';
 			$row["percent"] = $row["status"] - 100;
-			//$row["addedDate"] = Utils::prettyDateTime($row["cAddedDate"]);
 			$row["addedDate"] = AppUtil::prettyDateTime($row["cAddedDate"]);
 			$row["src"] = isset(self::SourceMap()[$row["cSource"]]) ? self::SourceMap()[$row["cSource"]] : "";
 			$row["bdAbbr"] = $row["bdName"];

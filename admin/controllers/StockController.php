@@ -41,6 +41,7 @@ class StockController extends BaseController
 		$sort = self::getParam("sort", "dd");
 		$src = self::getParam("src");
 		$bdassign = self::getParam("bdassign");
+		$action = self::getParam("action");
 		$perSize = 20;
 
 		$criteria = [" cCategory=" . CRMStockClient::CATEGORY_YANXUAN];
@@ -76,6 +77,12 @@ class StockController extends BaseController
 			$params[":phone"] = $phone . "%";
 			$urlParams[] = "phone=" . $phone;
 			$alert[] = "【" . $phone . "】";
+		}
+		if ($action) {
+			$criteria[] = "cStockAction = :action";
+			$params[":action"] = $action;
+			$urlParams[] = "action=" . $action;
+			$alert[] = "【" . CRMStockClient::$actionDict[$action] . "】";
 		}
 		if ($bdassign) {
 			$criteria[] = " cBDAssign=" . $bdassign;
@@ -192,6 +199,7 @@ class StockController extends BaseController
 				"bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
 				"bdassign" => $bdassign,
 				"src" => $src,
+				"action" => $action,
 				"sources" => $sources,
 				"bdDefault" => $bdDefault,
 				'isAssigner' => $isAssigner,
@@ -203,6 +211,7 @@ class StockController extends BaseController
 				"ageMap" => CRMStockClient::$ageMap,
 				"SourceMap" => CRMStockClient::SourceMap(),
 				"stock_age_map" => CRMStockClient::$stock_age_map,
+				"actionDict" => CRMStockClient::$actionDict,
 				'success' => $success,
 				'error' => $error,
 			]);
