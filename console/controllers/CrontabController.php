@@ -135,7 +135,7 @@ class CrontabController extends Controller
 		}
 
 		try {
-			//Log::send_sms_cycle();
+			Log::send_sms_cycle();
 		} catch (\Exception $e) {
 
 		}

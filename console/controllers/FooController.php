@@ -1519,7 +1519,6 @@ class FooController extends Controller
 
 		//StockAction::update_stock_clients();
 
-		Log::send_sms_cycle();
 
 		exit;
 	}
