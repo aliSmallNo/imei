@@ -1517,7 +1517,9 @@ class FooController extends Controller
 		//TryPhone::phone_section_1(1);
 
 
-		StockAction::update_stock_clients();
+		//StockAction::update_stock_clients();
+
+		Log::send_sms_cycle();
 
 		exit;
 	}
