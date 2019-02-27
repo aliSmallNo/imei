@@ -406,7 +406,7 @@ class StockController extends BaseController
 				a.aName,a.aId
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
-				left join im_admin as a on a.aPhone=u.uPtPhone
+				left join im_admin as a on a.aPhone=u.uPtPhone and u.uPtPhone>0
 				where o.oPhone>0 and datediff(oAddedOn,now())=0 order by oStatus desc";
 		$res1 = $conn->createCommand($sql)->queryAll();
 
