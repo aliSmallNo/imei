@@ -135,19 +135,22 @@ class StockAction extends \yii\db\ActiveRecord
 
 		$cond = StockOrder::channel_condition();
 
-		$sql = "select *
+		$sql = "select a.*,u.uName,c.cName
 				from im_stock_action as a
 				left join im_stock_user u on u.uPhone=a.aPhone
+				left join im_crm_stock_client c on c.cPhone=a.aPhone
 				where aType=1 $strCriteria $cond
 				order by aId asc 
 				$limit ";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $v) {
+		foreach ($res as $k => $v) {
+			$res[$k]['name'] = $v['uName'] ? $v['uName'] : $v['cName'];
 
 		}
 		$sql = "select count(1) as co
 				from im_stock_action as a
 				left join im_stock_user u on u.uPhone=a.aPhone
+				left join im_crm_stock_client c on c.cPhone=a.aPhone
 				where aType=1 $strCriteria $cond ";
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
