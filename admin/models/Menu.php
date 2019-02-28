@@ -191,7 +191,7 @@ class Menu
 						"name" => "多点统计",
 						"url" => "/stock/trend",
 						"revise" => 1,
-						"level" => 830
+						"level" => 827
 					],
 				]
 			],
