@@ -633,8 +633,7 @@ class StockController extends BaseController
 		}
 
 		list($list, $count) = StockAction::items($criteria, $params, $page);
-		//$pagination = self::pagination($page, $count, 20);
-		$pagination = "";
+		$pagination = self::pagination($page, $count, 20);
 		return $this->renderPage("stock_action.tpl",
 			[
 				'getInfo' => $getInfo,

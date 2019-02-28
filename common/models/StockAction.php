@@ -127,7 +127,6 @@ class StockAction extends \yii\db\ActiveRecord
 	public static function items($criteria, $params, $page, $pageSize = 20)
 	{
 		$limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$limit = "";
 		$strCriteria = '';
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
