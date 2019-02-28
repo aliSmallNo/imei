@@ -97,29 +97,31 @@
 		var items = [], names = [], fields = [];
 		switch (cat) {
 			case 'load':
-				names = ["小刀", "谢硕硕", "生佳豪", "周攀", "于辉", "金志新", "罗文燕", "曹嘉义", "徐方", "王毅龙", '冯林'];
+				names = ["小刀", "于辉", "金志新", "徐方", "王毅龙", '冯林', '陈明', '宋富城'];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义",
 				fields = [
-					"sum_loan_ZuoDanLei_18513655687", "sum_loan_XieShuoShuo_18101390540", "sum_loan_ShengJiaHao_17777857755",
-					"sum_loan_ZhouPan_17611629667", "sum_loan_YuHui_13910838033", "sum_loan_JinZhiXin_18600649492",
-					"sum_loan_LuoWenYan_18801235947", "sum_loan_CaoJiaYi_13520364895", "sum_loan_XuFang_13910838055",
-					"sum_loan_WangYiLong_18622112893", "sum_loan_FengLin_18131243333"
+					"sum_loan_ZuoDanLei_18513655687", "sum_loan_YuHui_13910838033", "sum_loan_JinZhiXin_18600649492",
+					"sum_loan_XuFang_13910838055", "sum_loan_WangYiLong_18622112893", "sum_loan_FengLin_18131243333", "sum_loan_ChenMing_18931357765"
+					, "sum_loan_SongFuCheng_18611794484"
+					//"sum_loan_XieShuoShuo_18101390540", "sum_loan_ShengJiaHao_17777857755", "sum_loan_ZhouPan_17611629667",
+					//"sum_loan_LuoWenYan_18801235947", "sum_loan_CaoJiaYi_13520364895",
 				];
 				break;
 			case "users":
-				names = ["小刀", "谢硕硕", "生佳豪", "周攀", "于辉", "金志新", "罗文燕", "曹嘉义", "徐方", "王毅龙", '冯林'];
+				names = ["小刀", "于辉", "金志新", "徐方", "王毅龙", '冯林', '陈明', '宋富城'];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义",
 				fields = [
-					"sum_loan_users_ZuoDanLei_18513655687", "sum_loan_users_XieShuoShuo_18101390540", "sum_loan_users_ShengJiaHao_17777857755",
-					"sum_loan_users_ZhouPan_17611629667", "sum_loan_users_YuHui_13910838033", "sum_loan_users_JinZhiXin_18600649492",
-					"sum_loan_users_LuoWenYan_18801235947", "sum_loan_users_CaoJiaYi_13520364895", "sum_loan_users_XuFang_13910838055",
-					"sum_loan_users_WangYiLong_18622112893", "sum_loan_users_FengLin_18131243333"
+					"sum_loan_users_ZuoDanLei_18513655687", "sum_loan_users_YuHui_13910838033", "sum_loan_users_JinZhiXin_18600649492",
+					"sum_loan_users_XuFang_13910838055", "sum_loan_users_WangYiLong_18622112893", "sum_loan_users_FengLin_18131243333",
+					"sum_loan_users_ChenMing_18931357765", "sum_loan_users_SongFuCheng_18611794484"
+					//  "sum_loan_users_XieShuoShuo_18101390540", "sum_loan_users_ShengJiaHao_17777857755","sum_loan_users_ZhouPan_17611629667",
+					// "sum_loan_users_LuoWenYan_18801235947", "sum_loan_users_CaoJiaYi_13520364895",
 				];
 				break;
 			case "follow":
-				names = ["小刀", "金志新", "曹嘉义", "邱聚兴", "于辉", "张梦莹", "徐方"];
+				names = ["小刀", "金志新", "邱聚兴", "于辉", "张梦莹", "徐方", '陈明', '宋富城'];
 				fields = [
-					"follow_xiaodao", "follow_jinzhixin", "follow_caojiayi",
+					"follow_xiaodao", "follow_jinzhixin",
 					"follow_qiujuxing", "follow_yuhui", "follow_zhangmengying",
-					"follow_xufang"
+					"follow_xufang", 'chenming', 'songfucheng'
 				];
 				break;
 		}
