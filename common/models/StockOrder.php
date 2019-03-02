@@ -110,6 +110,9 @@ class StockOrder extends ActiveRecord
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
 			}
+			if (date('Y', strtotime($value[5])) == '1970') {
+				continue;
+			}
 			$data_date = date('Y-m-d H:i:s', strtotime($value[5]));
 			$params = [
 				':oPhone' => $phone,
@@ -351,7 +354,7 @@ class StockOrder extends ActiveRecord
 		$phone = Admin::get_phone();
 		$cond = StockOrder::channel_condition();
 
-		$user = StockUser::findOne(['uPhone' => $phone,'uType'=>StockUser::TYPE_PARTNER]);
+		$user = StockUser::findOne(['uPhone' => $phone, 'uType' => StockUser::TYPE_PARTNER]);
 		$rate = $user ? $user->uRate : 0;
 
 		$sql = "select 
