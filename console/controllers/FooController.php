@@ -1720,6 +1720,7 @@ class FooController extends Controller
 
 //		TryPhone::phone_section_1();
 
+
 	}
 
 	public function actionIps2()
@@ -1729,13 +1730,40 @@ class FooController extends Controller
 
 	}
 
-	public function actionStockp()
+	/**
+	 * 分析客户来源，来源的客户转化数
+	 */
+	public function actionSrc()
 	{
+		$st = '2019-02-01 00:00:00';
+		$et = '2019-02-28 23:59:58';
 
-		// StockOrder::getStockPrice(600078);
-//		StockOrder::sold_stock();
-//		StockOrder::update_price();
+		$src_arr = [];
+		$srcs = CRMStockClient::SourceMap();
 
+		$conn = AppUtil::db();
+		$sql = "select count(DISTINCT cPhone) as co from im_crm_stock_client where cAddedDate BETWEEN :st and :et and cSource=:src and cDeletedFlag=0";
+		$src_CMD = $conn->createCommand($sql);
+		$sql = "select count(DISTINCT oPhone) as co from im_stock_order where oPhone in (
+select DISTINCT cPhone as co from im_crm_stock_client where cAddedDate BETWEEN :st and :et and cSource=:src and cDeletedFlag=0)";
+		$order_user_CMD = $conn->createCommand($sql);
+
+		foreach ($srcs as $src => $src_t) {
+			$src_co = $src_CMD->bindValues([
+				':st' => $st,
+				':et' => $et,
+				':src' => $src,
+			])->execute();
+			$order_user_co = $order_user_CMD->bindValues([
+				':st' => $st,
+				':et' => $et,
+				':src' => $src,
+			])->execute();
+			$src_arr[] = $src_t . ' ' . $src_co . ' ' . $order_user_co;
+		}
+
+		print_r($src_arr);
+		exit;
 	}
 
 	public static function actionAddp()
