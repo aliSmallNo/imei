@@ -1753,12 +1753,12 @@ select DISTINCT cPhone as co from im_crm_stock_client where cAddedDate BETWEEN :
 				':st' => $st,
 				':et' => $et,
 				':src' => $src,
-			])->execute();
+			])->queryScalar();
 			$order_user_co = $order_user_CMD->bindValues([
 				':st' => $st,
 				':et' => $et,
 				':src' => $src,
-			])->execute();
+			])->queryScalar();
 			$src_arr[] = $src_t . ' ' . $src_co . ' ' . $order_user_co;
 		}
 
