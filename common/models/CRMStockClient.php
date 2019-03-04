@@ -611,7 +611,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$sql = "select 
 		count(case when cBDAssign=:aid then 1 else null end) as mine,
 		count(case when cBDAssign=0 then 1 else null end) as sea,
-		count(1) as cnt
+		count(1) as cnt ,
+		count(case when cBDAssign in (1053,1056) then 1 else null end) as cnt_jinzx 
  		from im_crm_stock_client where cDeletedFlag=0 $strCriteria";
 		$conn = AppUtil::db();
 		$params[":aid"] = $aid;
@@ -619,7 +620,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		if ($ret) {
 			return $ret;
 		}
-		return ["mine" => 0, "sea" => 0, "cnt" => 0];
+		return ["mine" => 0, "sea" => 0, "cnt" => 0, 'cnt_jinzx' => 0];
 	}
 
 	public static function clients($criteria, $params = [], $sort = "dd", $page = 1, $pageSize = 20, $cFlag = false)

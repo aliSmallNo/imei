@@ -98,7 +98,8 @@ class StockController extends BaseController
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
 		$isAssigner = Admin::isAssigner();
-		$sub_staff = in_array($this->admin_id, [1052, 1053, 1054]);// 冯林 陈明 季志昂
+		$sub_staff = in_array($this->admin_id, [1052, 1054]);// 冯林 季志昂
+		$is_jinzx = Admin::getAdminId() == 1047;
 		$tabs = [
 			"my" => [
 				"title" => "我的客户",
@@ -110,7 +111,7 @@ class StockController extends BaseController
 			],
 			"all" => [
 				"title" => "全部客户",
-				"count" => $counters["cnt"]
+				"count" => !$is_jinzx ? $counters["cnt"] : $counters['cnt_jinzx']
 			],
 		];
 		if (!$isAssigner) {
@@ -130,7 +131,7 @@ class StockController extends BaseController
 			$criteria[] = " cBDAssign=0 ";
 		} elseif ($cat == 'all') {
 			// 金志新
-			if (Admin::getAdminId() == 1047) {
+			if ($is_jinzx) {
 				$criteria[] = " cBDAssign in (1053,1056) ";
 			}
 
