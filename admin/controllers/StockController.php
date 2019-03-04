@@ -508,16 +508,17 @@ class StockController extends BaseController
 		}
 		$filename_time = date("Y-m-d");
 		if ($sdate && $edate) {
+			$filename_time = $sdate . "_" . $edate;
 			$sdate .= " 00:00:00";
 			$edate .= " 23:59:59";
 			$condition .= " and o.oAddedOn between '$sdate' and '$edate' ";
-			//$filename_time = AppUtil::check_encode($sdate . "_" . $edate);
 		}
 		$filename_satus = '';
 		if (in_array($st, array_keys(StockOrder::$stDict))) {
 			$condition .= " and o.oStatus=$st ";
-			$filename_satus = AppUtil::check_encode("【" . StockOrder::$stDict[$st] . "】");
+			$filename_satus = "【" . StockOrder::$stDict[$st] . "】";
 		}
+
 
 		$sql = "select 
 				a.aId,a.aName,
@@ -546,6 +547,7 @@ class StockController extends BaseController
 		}
 
 		$filename = "客户订单" . $filename_satus . $filename_time;
+
 		ExcelUtil::getYZExcel($filename, $header, $content, [12, 15, 12, 12, 12, 12, 12]);
 		exit;
 	}
