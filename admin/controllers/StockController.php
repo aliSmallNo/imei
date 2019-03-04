@@ -511,7 +511,7 @@ class StockController extends BaseController
 			$sdate .= " 00:00:00";
 			$edate .= " 23:59:59";
 			$condition .= " and o.oAddedOn between '$sdate' and '$edate' ";
-			$filename_time = AppUtil::check_encode($sdate . "_" . $edate);
+			//$filename_time = AppUtil::check_encode($sdate . "_" . $edate);
 		}
 		$filename_satus = '';
 		if (in_array($st, array_keys(StockOrder::$stDict))) {
