@@ -1732,6 +1732,7 @@ class FooController extends Controller
 
 	/**
 	 * 分析客户来源，来源的客户转化数
+	 * 渠道  渠道线索 渠道转化
 	 */
 	public function actionSrc()
 	{
