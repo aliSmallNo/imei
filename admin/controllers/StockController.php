@@ -501,14 +501,22 @@ class StockController extends BaseController
 		$manager_aid = Admin::getAdminId();
 		$sdate = self::getParam("sdate");
 		$edate = self::getParam("edate");
+		$st = self::getParam("st");
 		$condition = '';
 		if (!Admin::isGroupUser(Admin::GROUP_STOCK_EXCEL)) {
 			$condition .= " and a.aId=$manager_aid ";
 		}
+		$filename_time = date("Y-m-d");
 		if ($sdate && $edate) {
 			$sdate .= " 00:00:00";
 			$edate .= " 23:59:59";
 			$condition .= " and o.oAddedOn between '$sdate' and '$edate' ";
+			$filename_time = AppUtil::check_encode($sdate . "_" . $edate);
+		}
+		$filename_satus = '';
+		if (in_array($st, array_keys(StockOrder::$stDict))) {
+			$condition .= " and o.oStatus=$st ";
+			$filename_satus = AppUtil::check_encode("【" . StockOrder::$stDict[$st] . "】");
 		}
 
 		$sql = "select 
@@ -523,7 +531,7 @@ class StockController extends BaseController
 		$res = $conn->createCommand($sql)->queryAll();
 
 		$header = $content = [];
-		$header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '交易日期', 'BD'];
+		$header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '状态', '交易日期', 'BD'];
 		foreach ($res as $v) {
 			$content[] = [
 				$v['oName'],
@@ -531,12 +539,14 @@ class StockController extends BaseController
 				$v['oStockId'],
 				$v['oStockAmt'],
 				$v['oLoan'],
+				StockOrder::$stDict[$v['oStatus']],
 				date('Y-m-d', strtotime($v['oAddedOn'])),
 				$v['aName'],
 			];
 		}
 
-		ExcelUtil::getYZExcel('客户订单' . date("Y-m-d"), $header, $content, [12, 15, 12, 12, 12, 12, 12]);
+		$filename = "客户订单" . $filename_satus . $filename_time;
+		ExcelUtil::getYZExcel($filename, $header, $content, [12, 15, 12, 12, 12, 12, 12]);
 		exit;
 	}
 

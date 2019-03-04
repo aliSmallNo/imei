@@ -46,6 +46,11 @@
 	<input class="form-control autoW beginDate my-date-input" placeholder="开始时间" name="sdate">
 	至
 	<input class="form-control autoW endDate my-date-input" placeholder="截止时间" name="edate">
+	<select class="form-control autoW" name="st" >
+		<option value="">-=状态=-</option>
+		<option value="1">持有</option>
+		<option value="9">卖出</option>
+	</select>
 	<button class="btn btn-primary opExcel">导出我的客户</button>
 </div>
 
@@ -238,7 +243,8 @@
 		// var admin = $("select[name=admin]").val();
 		var sdate = $("input[name=sdate]").val();
 		var edate = $("input[name=edate]").val();
-		var url = "/stock/export_stock_order?sdate=" + sdate + "&edate=" + edate + "&sign=excel";
+		var st = $("select[name=st]").val();
+		var url = "/stock/export_stock_order?sdate=" + sdate + "&edate=" + edate + "&sign=excel&st=" + st;
 		location.href = url;
 	});
 	/********************* 导出我的客户 end ******************************/
