@@ -718,6 +718,18 @@ class ApiController extends Controller
 				} else {
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
 				}
+			case 'reg':
+				$phone = self::postParam('phone');
+				$code = self::postParam('code');
+				if (!AppUtil::checkPhone($phone)) {
+					return self::renderAPI(129, '手机号格式不正确~');
+				}
+				if (User::verifySMSCode($phone, $code)) {
+					Log::pre_reg_zdm_add($phone,$wx_uid);
+					return self::renderAPI(0, '成功注册');
+				} else {
+					return self::renderAPI(129, '输入的验证码不正确或者已经失效');
+				}
 			case "lot2":
 				if (!$wx_uid) {
 					return self::renderAPI(129, '用户不存在啊~');

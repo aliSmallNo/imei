@@ -933,4 +933,40 @@ class Log extends ActiveRecord
 		return [$res, $count];
 	}
 
+
+	const CAT_REG_ZHUN_DIAN_MAI = 'reg_zhun_dian_mai';
+
+	/*
+	 * oCategory
+	 * oKey    toguba
+	 * oBefore 手机号
+	 * oAfter
+	 * oOpenId
+	 * oUId
+	 */
+
+	public static function pre_reg_zdm_add($phone, $uid)
+	{
+		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oBefore' => $phone];
+		if (self::findOne($data)) {
+			return false;
+		}
+		self::add(array_merge($data, [
+			'oUId' => $uid,
+		]));
+		return true;
+	}
+
+	public static function reg_zdm($uid)
+	{
+		if (!$uid) {
+			return false;
+		}
+		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oUId' => $uid];
+		if (self::findOne($data)) {
+			return true;
+		}
+		return false;
+	}
+
 }

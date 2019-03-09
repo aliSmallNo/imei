@@ -21,6 +21,7 @@ class LogAction extends ActiveRecord
 	const ACTION_HI = 1005;
 	const ACTION_REG0 = 1006;
 	const ACTION_REG1 = 1007;
+	const ACTION_REG_ZDM = 1008;
 	const ACTION_SINGLE_LIST = 1010;
 	const ACTION_MATCH_LIST = 1012;
 	const ACTION_SIGN = 1014;
@@ -36,6 +37,7 @@ class LogAction extends ActiveRecord
 	const ACTION_OFFLINE = 1093;
 	const ACTION_ZONE_ADD_MSG = 1100;
 
+
 	static $actionDict = [
 		self::ACTION_LOGIN => "登录",
 		self::ACTION_SINGLE => "To单身页",
@@ -43,6 +45,7 @@ class LogAction extends ActiveRecord
 		self::ACTION_SIGN => "签到",
 		self::ACTION_FAVOR => "心动",
 		self::ACTION_UNFAVOR => "取消心动",
+		self::ACTION_REG_ZDM => "准点买注册页",
 		self::ACTION_SINGLE_LIST => "刷新单身列表",
 		self::ACTION_MATCH_LIST => "刷新媒婆列表",
 		self::ACTION_ALBUM_DEL => "删除照片",

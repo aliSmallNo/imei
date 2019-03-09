@@ -2474,4 +2474,24 @@ class WxController extends BaseController
 		exit;
 	}
 
+	/**
+	 * 准点买用户注册
+	 * @return string
+	 */
+	public function actionReg()
+	{
+		$openId = self::$WX_OpenId;
+		LogAction::add($this->user_id, $openId, LogAction::ACTION_REG_ZDM);
+
+		return self::renderPage('reg.tpl',
+			[
+				'reg_flag' => Log::reg_zdm($this->user_id)
+			],
+			'terse',
+			'',
+			'');
+	}
+
+
+
 }
