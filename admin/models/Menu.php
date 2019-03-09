@@ -150,6 +150,12 @@ class Menu
 						"level" => 827
 					],
 					[
+						"name" => "首次注册",
+						"url" => "/stock/zdm_reg",
+						"revise" => 1,
+						"level" => 827
+					],
+					[
 						"name" => "客户来源",
 						"url" => "/stock/source",
 						"revise" => 1,

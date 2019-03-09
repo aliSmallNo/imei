@@ -729,6 +729,40 @@ class StockController extends BaseController
 			]);
 	}
 
+	public function actionZdm_reg()
+	{
+		$page = self::getParam("page", 1);
+		$phone = self::getParam("phone");
+		$st = self::getParam("sdate");
+		$et = self::getParam("edate");
+
+		$criteria = [];
+		$params = [];
+		if ($phone) {
+			$criteria[] = "  oBefore = :phone ";
+			$params[':phone'] = $phone;
+		}
+		if ($st && $et) {
+			$criteria[] = "  oAfter between :st and :et ";
+			$params[':st'] = $st . ' 00:00';
+			$params[':et'] = $et . ' 23:59';
+		}
+
+		list($list, $count) = Log::zdm_items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+
+		return $this->renderPage('zdm_reg.tpl',
+			[
+				'pagination' => $pagination,
+				'list' => $list,
+				'count' => $count,
+				'phone' => $phone,
+				'st' => $st,
+				'et' => $et,
+
+			]);
+	}
+
 	public function actionSource()
 	{
 		$page = self::getParam("page", 1);

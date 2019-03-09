@@ -162,7 +162,8 @@ require(["layer"],
 		$(function () {
 			var wxInfo = JSON.parse($sls.wxString);
 			wxInfo.debug = false;
-			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'getLocation'];
+			//wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'getLocation'];
+			wxInfo.jsApiList = ['hideOptionMenu', 'getLocation'];
 			wx.config(wxInfo);
 			wx.ready(function () {
 				wx.hideOptionMenu();
