@@ -2488,7 +2488,7 @@ class WxController extends BaseController
 				'reg_flag' => Log::reg_zdm($this->user_id)
 			],
 			'terse',
-			'',
+			'准点买-注册',
 			'');
 	}
 
