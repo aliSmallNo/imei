@@ -1,10 +1,14 @@
 <style>
+	.sms-form {
+		padding-top: 8rem;
+	}
 
 	.sms-form::before {
 		background: url(/images/i_zdm_brand.png) no-repeat center center;
 		background-size: 100% 100%;
 		width: 5rem;
 		left: 73%;
+		top: 2rem;
 	}
 
 	.sms-form label .btn-code {
