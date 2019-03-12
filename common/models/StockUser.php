@@ -194,7 +194,7 @@ class StockUser extends \yii\db\ActiveRecord
 	public static function update_last_opt()
 	{
 		$conn = AppUtil::db();
-		$sql = "select * from im_stock_order order by uId desc";
+		$sql = "select * from im_stock_user order by uId desc";
 		$users = $conn->createCommand($sql)->queryAll();
 
 		foreach ($users as $user) {
