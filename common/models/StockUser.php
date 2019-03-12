@@ -161,7 +161,7 @@ class StockUser extends \yii\db\ActiveRecord
 		return array_combine(array_column($res, 'uPhone'), array_column($res, 'uName'));
 	}
 
-	public static function items($criteria, $params, $page, $pageSize = 20)
+	public static function items($criteria, $params, $page, $order_f = '', $pageSize = 20)
 	{
 		$offset = ($page - 1) * $pageSize;
 		$strCriteria = '';
@@ -169,16 +169,25 @@ class StockUser extends \yii\db\ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
+		if ($order_f == 'last_opt_asc') {
+			$order_str = " uLastOptOn asc";
+		}elseif ($order_f == 'last_opt_desc'){
+			$order_str = " uLastOptOn desc";
+		}else{
+			$order_str = " uUpdatedOn desc";
+		}
+
 		$cond = StockOrder::channel_condition();
 
 		$sql = "select *
 				from im_stock_user  
 				where uId>0 $strCriteria $cond
-				order by uUpdatedOn desc 
+				order by  $order_str
 				limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
 			$res[$k]['type_t'] = self::$types[$v['uType']];
+			$res[$k]['opt_dt'] = date('Y-m-d', strtotime($v['uLastOptOn']));
 		}
 		$sql = "select count(1) as co
 				from im_stock_user  

@@ -282,6 +282,7 @@ class StockController extends BaseController
 		$phone = self::getParam("phone");
 		$type = self::getParam("type");
 		$bdphone = self::getParam("bdphone");
+		$order = self::getParam("order");
 
 		$criteria = [];
 		$params = [];
@@ -303,8 +304,14 @@ class StockController extends BaseController
 			$params[':bdphone'] = $bdphone;
 		}
 
-		list($list, $count) = StockUser::items($criteria, $params, $page);
+		list($list, $count) = StockUser::items($criteria, $params, $page, $order);
 		$pagination = self::pagination($page, $count, 20);
+
+		$orders = [
+			'update' => '正常排序',
+			'last_opt_asc' => '最近更新时间正序',
+			'last_opt_desc' => '最近更新时间倒序',
+		];
 		return $this->renderPage("stock_user.tpl",
 			[
 				'getInfo' => $getInfo,
@@ -312,6 +319,7 @@ class StockController extends BaseController
 				'list' => $list,
 				'types' => StockUser::$types,
 				'bds' => StockUser::bds(),
+				'orders' => $orders,
 			]
 		);
 	}

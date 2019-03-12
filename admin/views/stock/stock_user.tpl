@@ -41,6 +41,12 @@
 					<option value="{{$key}}">{{$item}}</option>
 				{{/foreach}}
 			</select>
+			<select class="form-control" name="order">
+				<option value="">-=排序=-</option>
+				{{foreach from=$orders key=key item=item}}
+					<option value="{{$key}}">{{$item}}</option>
+				{{/foreach}}
+			</select>
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
@@ -63,6 +69,7 @@
 			<th>时间</th>
 			{{if $is_stock_leader}}
 				<th>操作</th>
+				<th>最后操作订单时间</th>
 			{{/if}}
 		</tr>
 		</thead>
@@ -87,6 +94,9 @@
 				{{if $is_staff}}
 					<td>
 						{{if $is_run}}<a href="javascript:;" class="edit_user btn btn-outline btn-primary btn-xs">修改用户</a>{{/if}}
+					</td>
+					<td>
+						{{$item.opt_dt}}
 					</td>
 				{{/if}}
 			</tr>
