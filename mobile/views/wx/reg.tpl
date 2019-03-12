@@ -8,7 +8,7 @@
 		background-size: 100% 100%;
 		width: 5rem;
 		left: 73%;
-		top: 2rem;
+		top: 1.2rem;
 	}
 
 	.sms-form label .btn-code {
