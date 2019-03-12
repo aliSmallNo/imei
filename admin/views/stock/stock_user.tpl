@@ -41,12 +41,14 @@
 					<option value="{{$key}}">{{$item}}</option>
 				{{/foreach}}
 			</select>
+			{{if $is_stock_leader}}
 			<select class="form-control" name="ord">
 				<option value="">-=排序=-</option>
 				{{foreach from=$orders key=key item=item}}
 					<option value="{{$key}}">{{$item}}</option>
 				{{/foreach}}
 			</select>
+			{{/if}}
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
