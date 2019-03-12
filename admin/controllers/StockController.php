@@ -282,7 +282,7 @@ class StockController extends BaseController
 		$phone = self::getParam("phone");
 		$type = self::getParam("type");
 		$bdphone = self::getParam("bdphone");
-		$order = self::getParam("order");
+		$order = self::getParam("ord");
 
 		$criteria = [];
 		$params = [];

@@ -41,7 +41,7 @@
 					<option value="{{$key}}">{{$item}}</option>
 				{{/foreach}}
 			</select>
-			<select class="form-control" name="order">
+			<select class="form-control" name="ord">
 				<option value="">-=排序=-</option>
 				{{foreach from=$orders key=key item=item}}
 					<option value="{{$key}}">{{$item}}</option>
