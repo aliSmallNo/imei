@@ -1,7 +1,8 @@
 <style>
-	body{
-		padding-bottom: 2rem;
+	body {
+		padding-bottom: 2rem !important;
 	}
+
 	.sms-form {
 		padding-top: 8rem;
 	}
