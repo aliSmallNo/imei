@@ -1,4 +1,7 @@
 <style>
+	body{
+		padding-bottom: 2rem;
+	}
 	.sms-form {
 		padding-top: 8rem;
 	}

@@ -2493,5 +2493,4 @@ class WxController extends BaseController
 	}
 
 
-
 }
