@@ -309,8 +309,8 @@ class StockController extends BaseController
 
 		$orders = [
 			'update' => '正常排序',
-			'last_opt_asc' => '最近更新时间正序',
-			'last_opt_desc' => '最近更新时间倒序',
+			'last_opt_asc' => '最近更新订单时间正序',
+			'last_opt_desc' => '最近更新订单时间倒序',
 		];
 		return $this->renderPage("stock_user.tpl",
 			[
