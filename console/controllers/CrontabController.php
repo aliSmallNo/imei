@@ -13,6 +13,7 @@ use common\models\ChatRoom;
 use common\models\CRMStockClient;
 use common\models\Log;
 use common\models\Stat;
+use common\models\StockUser;
 use common\models\UserMsg;
 use common\models\UserNet;
 use common\models\UserTag;
@@ -95,6 +96,15 @@ class CrontabController extends Controller
 
 	public function actionRank()
 	{
+		try {
+			if (date('H' == "04")) {
+
+			}
+			StockUser::update_last_opt();
+		} catch (\Exception $e) {
+			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST, 'oUId' => '0', 'oAfter' => 'StockUser::update_last_opt() exec fail']);
+		}
+
 		try {
 			TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
 			TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);

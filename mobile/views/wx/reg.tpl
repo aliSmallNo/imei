@@ -49,7 +49,26 @@
 		color: #fff;
 		display: inline-block;
 	}
+
+	.zdm_top {
+		background: #d7052f;
+		padding: 4rem 2rem 3rem 2rem;
+	}
+
+	.zdm_top .title {
+		color: #fff;
+		font-size: 3.6rem;
+	}
+
+	.zdm_top .des {
+		color: #eabcbb;
+		font-size: 2rem;
+	}
 </style>
+<div class="zdm_top">
+	<div class="title">策略点买</div>
+	<div class="des">您提供交易策略,别人提供8倍杠杆,实盘交易<br>如连续跌停爆仓,不用赔偿</div>
+</div>
 <div class="sms-form">
 	{{if $reg_flag}}
 		<div class="item">
