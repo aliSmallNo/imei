@@ -36,7 +36,6 @@
 		<tbody>
 		{{foreach from=$list item=item}}
 			<tr>
-
 				<td>{{$item.name}}</td>
 				<td>{{$item.oBefore}}</td>
 				<td>{{$item.oDate}}</td>

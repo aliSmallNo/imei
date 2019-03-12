@@ -86,6 +86,22 @@ class StockUser extends \yii\db\ActiveRecord
 		return $entity->uId;
 	}
 
+	public static function edit_by_phone($phone, $values = [])
+	{
+		if (!$values) {
+			return false;
+		}
+		$entity = self::findOne(['uPhone' => $phone]);
+		if (!$entity) {
+			return false;
+		}
+		foreach ($values as $key => $val) {
+			$entity->$key = $val;
+		}
+		$entity->save();
+		return $entity->uId;
+	}
+
 	public static function pre_add($phone, $values)
 	{
 		$user = self::findOne(['uPhone' => $phone]);
@@ -170,6 +186,35 @@ class StockUser extends \yii\db\ActiveRecord
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
+	}
+
+	/*
+	 * 更新最近一次的订单操作
+	 */
+	public static function update_last_opt()
+	{
+		$conn = AppUtil::db();
+		$sql = "select * from im_stock_order order uId desc";
+		$users = $conn->createCommand($sql)->queryAll();
+
+		foreach ($users as $user) {
+			self::update_last_opt_one($user, $conn);
+		}
+	}
+
+	public static function update_last_opt_one($user, $conn)
+	{
+		$phone = $user['uPhone'];
+		$sql = "select * from im_stock_order where oPhone=:phone order by oId desc limit 1";
+		$order = $conn->createCommand($sql)->bindValues([':phone' => $phone])->queryOne();
+		if ($order) {
+			$oid = $order['oId'];
+			$add = $order['oAddedOn'];
+			self::edit_by_phone($phone, [
+				"uLastOptOn" => $add,
+				"uLastOptOId" => $oid,
+			]);
+		}
 	}
 
 }
