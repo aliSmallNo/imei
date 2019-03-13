@@ -38,6 +38,12 @@
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+			<select class="form-control" name="status">
+				<option value="">-=状态=-</option>
+				{{foreach from=$stDict key=key item=item}}
+					<option value="{{$key}}" {{if $key==$status}}selected{{/if}}>{{$item}}</option>
+				{{/foreach}}
+			</select>
 		</div>
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
@@ -46,10 +52,12 @@
 	<input class="form-control autoW beginDate my-date-input" placeholder="开始时间" name="sdate">
 	至
 	<input class="form-control autoW endDate my-date-input" placeholder="截止时间" name="edate">
-	<select class="form-control autoW" name="st" >
+
+	<select class="form-control autoW" name="st">
 		<option value="">-=状态=-</option>
-		<option value="1">持有</option>
-		<option value="9">卖出</option>
+		{{foreach from=$stDict key=key item=item}}
+			<option value="{{$key}}">{{$item}}</option>
+		{{/foreach}}
 	</select>
 	<button class="btn btn-primary opExcel">导出我的客户</button>
 </div>

@@ -361,6 +361,7 @@ class StockController extends BaseController
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
 		$dt = self::getParam("dt");
+		$status = self::getParam("status");
 
 		$criteria = [];
 		$params = [];
@@ -379,6 +380,10 @@ class StockController extends BaseController
 			$params[':st'] = $dt . ' 00:00:00';
 			$params[':et'] = $dt . ' 23:59:59';
 		}
+		if($status){
+			$criteria[] = "  o.oStatus = :status ";
+			$params[':status'] = $status;
+		}
 
 		list($list, $count) = StockOrder::items($criteria, $params, $page);
 		$pagination = self::pagination($page, $count, 20);
@@ -387,6 +392,8 @@ class StockController extends BaseController
 				'getInfo' => $getInfo,
 				'pagination' => $pagination,
 				'list' => $list,
+				'status' => $status,
+				'stDict' => StockOrder::$stDict,
 				'success' => $success,
 				'error' => $error,
 			]
