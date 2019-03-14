@@ -380,7 +380,7 @@ class StockController extends BaseController
 			$params[':st'] = $dt . ' 00:00:00';
 			$params[':et'] = $dt . ' 23:59:59';
 		}
-		if($status){
+		if ($status) {
 			$criteria[] = "  o.oStatus = :status ";
 			$params[':status'] = $status;
 		}
@@ -546,10 +546,18 @@ class StockController extends BaseController
 		$conn = AppUtil::db();
 		$res = $conn->createCommand($sql)->queryAll();
 
+		$high_level = Admin::get_level() == Admin::LEVEL_HIGH;
+
 		$header = $content = [];
 		$header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '状态', '交易日期', 'BD'];
+		$cloum_w = [12, 15, 12, 12, 12, 12, 12];
+		// 级别不够不让看手机号
+		if (!$high_level) {
+			unset($header[1]);
+			unset($cloum_w[1]);
+		}
 		foreach ($res as $v) {
-			$content[] = [
+			$row = [
 				$v['oName'],
 				$v['oPhone'],
 				$v['oStockId'],
@@ -559,11 +567,15 @@ class StockController extends BaseController
 				date('Y-m-d', strtotime($v['oAddedOn'])),
 				$v['aName'],
 			];
+			if (!$high_level) {
+				unset($row[1]);
+			}
+			$content[] = $row;
 		}
 
 		$filename = "客户订单" . $filename_satus . $filename_time;
 
-		ExcelUtil::getYZExcel($filename, $header, $content, [12, 15, 12, 12, 12, 12, 12]);
+		ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
 		exit;
 	}
 
