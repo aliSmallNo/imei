@@ -344,7 +344,6 @@ class StockOrder extends ActiveRecord
 
 	public static function stat_items($criteria, $params)
 	{
-
 		$strCriteria = '';
 		if ($criteria) {
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
@@ -382,4 +381,29 @@ class StockOrder extends ActiveRecord
 		return [$res, $sum_income];
 	}
 
+	/**
+	 * 计算减持用户
+	 * 平均借款10万以上，最近3天比再之前3天，借款金额下跌超过50%。
+	 */
+	public static function cla_reduce_stock_users()
+	{
+		$conn = AppUtil::db();
+		$sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') as dt from im_stock_order group by dt desc limit 6";
+		$dts = $conn->createCommand($sql)->queryAll();
+		$dts = array_column($dts, 'dt');
+		$dt1_max = $dts[0] . '23:59:00';
+		$dt1_min = $dts[2] . '00:00:00';
+		$dt2_max = $dts[3] . '23:59:00';
+		$dt2_min = $dts[5] . '00:00:00';
+
+		$sql = "select oName,oPhone,round(sum(oLoan),1) from im_stock_order where oAddedOn between :st and :et and oStatus=1 group by oPhone";
+		$cmd = $conn->createCommand($sql);
+		// 最近3天
+		$loan_13 = $cmd->bindValues([':st' => $dt1_min, ':et' => $dt1_max])->queryAll();
+		echo $cmd->bindValues([':st' => $dt1_min, ':et' => $dt1_max])->getRawSql() . PHP_EOL;
+		// 再之前3天
+		$loan_46 = $cmd->bindValues([':st' => $dt2_min, ':et' => $dt2_max])->queryAll();
+		echo $cmd->bindValues([':st' => $dt2_min, ':et' => $dt2_max])->getRawSql() . PHP_EOL;
+
+	}
 }

@@ -1503,7 +1503,7 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		StockUser::update_last_opt();
+		StockOrder::cla_reduce_stock_users();
 		//TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
 
 		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
