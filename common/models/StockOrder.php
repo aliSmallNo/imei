@@ -391,10 +391,10 @@ class StockOrder extends ActiveRecord
 		$sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') as dt from im_stock_order group by dt desc limit 6";
 		$dts = $conn->createCommand($sql)->queryAll();
 		$dts = array_column($dts, 'dt');
-		$dt1_max = $dts[0] . '23:59:00';
-		$dt1_min = $dts[2] . '00:00:00';
-		$dt2_max = $dts[3] . '23:59:00';
-		$dt2_min = $dts[5] . '00:00:00';
+		$dt1_max = $dts[0] . ' 23:59:00';
+		$dt1_min = $dts[2] . ' 00:00:00';
+		$dt2_max = $dts[3] . ' 23:59:00';
+		$dt2_min = $dts[5] . ' 00:00:00';
 
 		$sql = "select oName,oPhone,round(sum(oLoan),1) from im_stock_order where oAddedOn between :st and :et and oStatus=1 group by oPhone";
 		$cmd = $conn->createCommand($sql);
