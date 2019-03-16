@@ -396,14 +396,34 @@ class StockOrder extends ActiveRecord
 		$dt2_max = $dts[3] . ' 23:59:00';
 		$dt2_min = $dts[5] . ' 00:00:00';
 
-		$sql = "select oName,oPhone,round(sum(oLoan),1) from im_stock_order where oAddedOn between :st and :et and oStatus=1 group by oPhone";
+		$sql = "select oName,oPhone,round(sum(oLoan),1) as loan_amt from im_stock_order where oAddedOn between :st and :et and oStatus=1 group by oPhone";
 		$cmd = $conn->createCommand($sql);
 		// 最近3天
 		$loan_13 = $cmd->bindValues([':st' => $dt1_min, ':et' => $dt1_max])->queryAll();
-		echo $cmd->bindValues([':st' => $dt1_min, ':et' => $dt1_max])->getRawSql() . PHP_EOL;
+		$loan_13_arr = array_combine(array_column($loan_13, 'oPhone'), array_column($loan_13, 'loan_amt'));
+
 		// 再之前3天
 		$loan_46 = $cmd->bindValues([':st' => $dt2_min, ':et' => $dt2_max])->queryAll();
-		echo $cmd->bindValues([':st' => $dt2_min, ':et' => $dt2_max])->getRawSql() . PHP_EOL;
 
+		$reduce_users = [];
+		foreach ($loan_46 as $k => $v) {
+			$phone = $v['oPhone'];
+			if (!isset($loan_13_arr[$phone])) {
+				$v['left_amt'] = 0;
+				$v['text'] = "减持";
+				$v['diff_loan'] = -$v['loan_amt'];
+				$v['percent'] = '100%';
+				$reduce_users[] = $v;
+			} else {
+				$diff = $loan_13_arr[$phone] - $v['loan_amt'];
+				$v['left_amt'] = $loan_13_arr[$phone];
+				$v['text'] = $diff > 0 ? '增持' : "减持";
+				$v['diff_loan'] = $diff;
+				$v['percent'] = sprintf('%.2f', abs($diff) / $v['loan_amt']) * 100 . '%';
+				$reduce_users[] = $v;
+			}
+		}
+		array_multisort(array_column($reduce_users, 'diff_loan'), SORT_ASC, $reduce_users);
+		return $reduce_users;
 	}
 }
