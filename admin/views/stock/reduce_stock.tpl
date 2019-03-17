@@ -4,11 +4,19 @@
 		width: auto;
 		display: inline-block;
 	}
+
+	.dt {
+		font-size: 12px;
+		color: #888;
+		font-weight: 400;
+		padding: 10px 0;
+	}
 </style>
 <div class="row">
 	<div class="col-sm-6">
 		<h4>
 			"再之前3天"与"最近3天"对比
+			<p class="dt">{{$dts[0]}}与{{$dts[1]}}对比</p>
 		</h4>
 	</div>
 

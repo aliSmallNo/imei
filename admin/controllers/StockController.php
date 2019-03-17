@@ -823,9 +823,10 @@ class StockController extends BaseController
 
 	public function actionReduce_stock()
 	{
-		$list = StockOrder::cla_reduce_stock_users();
+		list($list, $dts) = StockOrder::cla_reduce_stock_users();
 		return $this->renderPage('reduce_stock.tpl',
 			[
+				'dts' => $dts,
 				'list' => $list,
 			]);
 	}

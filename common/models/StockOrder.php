@@ -391,10 +391,12 @@ class StockOrder extends ActiveRecord
 		$sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') as dt from im_stock_order group by dt desc limit 6";
 		$dts = $conn->createCommand($sql)->queryAll();
 		$dts = array_column($dts, 'dt');
+		$dt_return = [$dts[5] . '_' . $dts[3], $dts[2] . '_' . $dts[0]];
 		$dt1_max = $dts[0] . ' 23:59:00';
 		$dt1_min = $dts[2] . ' 00:00:00';
 		$dt2_max = $dts[3] . ' 23:59:00';
 		$dt2_min = $dts[5] . ' 00:00:00';
+
 
 		$sql = "select oName,oPhone,round(sum(oLoan),1) as loan_amt, uPtName
 				from im_stock_order as o 
@@ -427,6 +429,6 @@ class StockOrder extends ActiveRecord
 			}
 		}
 		array_multisort(array_column($reduce_users, 'diff_loan'), SORT_ASC, $reduce_users);
-		return $reduce_users;
+		return [$reduce_users, $dt_return];
 	}
 }
