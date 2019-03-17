@@ -829,4 +829,5 @@ class StockController extends BaseController
 				'list' => $list,
 			]);
 	}
+
 }

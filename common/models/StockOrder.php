@@ -396,7 +396,10 @@ class StockOrder extends ActiveRecord
 		$dt2_max = $dts[3] . ' 23:59:00';
 		$dt2_min = $dts[5] . ' 00:00:00';
 
-		$sql = "select oName,oPhone,round(sum(oLoan),1) as loan_amt from im_stock_order where oAddedOn between :st and :et and oStatus=1 group by oPhone";
+		$sql = "select oName,oPhone,round(sum(oLoan),1) as loan_amt, uPtName
+				from im_stock_order as o 
+				left join im_stock_user as u on u.uPhone=o.oPhone
+				where oAddedOn between :st and :et and oStatus=1 group by oPhone";
 		$cmd = $conn->createCommand($sql);
 		// 最近3天
 		$loan_13 = $cmd->bindValues([':st' => $dt1_min, ':et' => $dt1_max])->queryAll();
