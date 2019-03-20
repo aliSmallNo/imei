@@ -203,7 +203,7 @@ class Menu
 						"name" => "减持用户",
 						"url" => "/stock/reduce_stock",
 						"revise" => 1,
-						"level" => 830
+						"level" => 827
 					],
 
 				]
