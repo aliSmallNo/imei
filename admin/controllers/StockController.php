@@ -542,15 +542,17 @@ class StockController extends BaseController
 				left join im_stock_user as u on u.uPhone=o.oPhone
 				left join im_admin as a on a.aPhone=u.uPtPhone
 				where u.uPtPhone>0 $condition
-				order by a.aId asc,o.oAddedOn desc limit 2000";
+				order by a.aId asc,o.oAddedOn desc limit 3000";
 		$conn = AppUtil::db();
 		$res = $conn->createCommand($sql)->queryAll();
 
 		$high_level = Admin::get_level() == Admin::LEVEL_HIGH;
 
 		$header = $content = [];
-		$header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '状态', '交易日期', 'BD'];
-		$cloum_w = [12, 15, 12, 12, 12, 12, 12];
+		$header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '状态', '交易日期', 'BD'
+			, '成本价', '开盘价', '收盘价', '均价', '收益', '收益率'];
+		$cloum_w = [12, 15, 12, 12, 12, 12, 12, 12
+			, 12, 12, 12, 12, 12, 12];
 		// 级别不够不让看手机号
 		if (!$high_level) {
 			unset($header[1]);
@@ -566,6 +568,12 @@ class StockController extends BaseController
 				StockOrder::$stDict[$v['oStatus']],
 				date('Y-m-d', strtotime($v['oAddedOn'])),
 				$v['aName'],
+				$v['oCostPrice'],
+				$v['oOpenPrice'],
+				$v['oClosePrice'],
+				$v['oAvgPrice'],
+				$v['oIncome'],
+				$v['oRate'],
 			];
 			if (!$high_level) {
 				unset($row[1]);

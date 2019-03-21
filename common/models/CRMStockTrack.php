@@ -189,11 +189,15 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 		 GROUP BY t.tAddedBy,a.aName
 		 order by cnt desc";*/
 
+		// 有照片跟进的算跟进记录
+		$pic_where=" and CHAR_LENGTH(t.tImage)>5 ";
+
 		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
 		 from im_crm_stock_track as t 
 		 join im_admin as a on a.aId=t.tAddedBy
 		 WHERE t.tDeletedFlag=0 AND a.aId not in (1002)
 		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria and t.tAction=$action
+		 $pic_where
 		 GROUP BY t.tAddedBy,a.aName
 		 order by cnt desc";
 		if (!$conn) {
@@ -221,10 +225,12 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria 
 		 GROUP BY t.tAddedBy, title
 		 order by title";*/
-		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as name, DATE_FORMAT(t.tAddedDate,'%m-%d') as title
+
+		$sql = "select 
+		 COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as name, DATE_FORMAT(t.tAddedDate,'%m-%d') as title
 		 from im_crm_stock_track as t
 		 join im_admin as a on a.aId=t.tAddedBy
-		 WHERE t.tDeletedFlag=0
+		 WHERE t.tDeletedFlag=0 
 		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria 
 		 GROUP BY t.tAddedBy, title
 		 order by title";

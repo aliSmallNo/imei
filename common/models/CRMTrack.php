@@ -139,11 +139,12 @@ class CRMTrack extends ActiveRecord
 		if ($id) {
 			$strCriteria = " AND c.cBDAssign=" . $id;
 		}
+
 		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
 		 from im_crm_client as c 
-		 join im_crm_track as t on t.tCId=c.cId AND t.tAddedBy=c.cBDAssign AND t.tDeletedFlag=0
-		 join im_admin as a on a.aId=t.tAddedBy
-		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category AND a.aId not in (1453348809, 1453807803, 1467788165, 1843540)
+		 join im_crm_track as t on t.tCId=c.cId AND t.tAddedBy=c.cBDAssign AND t.tDeletedFlag=0 
+		 join im_admin as a on a.aId=t.tAddedBy 
+		 WHERE c.cDeletedFlag=0 AND c.cCategory=$category 
 		 and t.tAddedDate BETWEEN '$beginDate' and '$endDate 23:59' $strCriteria 
 		 GROUP BY t.tAddedBy,a.aName
 		 order by cnt desc";
