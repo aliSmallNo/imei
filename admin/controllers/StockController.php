@@ -23,9 +23,16 @@ use common\utils\AppUtil;
 use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
 use common\utils\TryPhone;
+use Yii;
 
 class StockController extends BaseController
 {
+
+	public function actionCache()
+	{
+		Yii::$app->cache->set('firstCache', "hello word!");
+		return 0;
+	}
 
 	public function actionClients()
 	{
@@ -405,6 +412,10 @@ class StockController extends BaseController
 	 */
 	public function actionExport_today_income()
 	{
+		$dt = self::getParam('dt');
+		if (!$dt) {
+			$dt = date('Y-m-d');
+		}
 		$conn = AppUtil::db();
 		$sql = "select 
 				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,oAvgPrice,o.oIncome,oRate,
@@ -413,7 +424,7 @@ class StockController extends BaseController
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
 				left join im_admin as a on a.aPhone=u.uPtPhone and u.uPtPhone>0
-				where o.oPhone>0 and datediff(oAddedOn,now())=0 order by oStatus desc";
+				where o.oPhone>0 and datediff(oAddedOn,'$dt')=0 order by oStatus desc";
 		$res1 = $conn->createCommand($sql)->queryAll();
 
 		$res2 = [];
@@ -504,7 +515,7 @@ class StockController extends BaseController
 			return $arr;
 		};
 
-		ExcelUtil::getYZExcel2('盈亏' . date("Y-m-d"), [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]);
+		ExcelUtil::getYZExcel2('盈亏_' . $dt, [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]);
 
 	}
 

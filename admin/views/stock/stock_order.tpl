@@ -207,10 +207,38 @@
 	</div>
 </div>
 
+<div class="modal fade" id="modModal_income" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">导出盈亏</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">选择日期</label>
+						<div class="col-sm-8">
+							<input type="text" data-field="imcome_dt" class="form-control my-date-input"/>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" id="btnComfirm_income">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$sls = {
 		dt: $("[data-field=dt]"),
 		cdt: $("[data-field=cdt]"),
+		imcome_dt: $("[data-field=imcome_dt]"),
 
 	};
 	$('.opImport').on('click', function () {
@@ -290,8 +318,21 @@
 	/********************* 计算今日卖出 end ******************************/
 
 	/********************* 导出今日盈亏 start ******************************/
-	$(".opIncome").on("click", function () {
-		location.href = "/stock/export_today_income";
+	// $(".opIncome").on("click", function () {
+	//location.href = "/stock/export_today_income";
+	// });
+	$('.opIncome').on('click', function () {
+		$sls.imcome_dt.val('');
+		$('#modModal_income').modal('show');
+	});
+
+	$('#btnComfirm_income').on('click', function () {
+		var dt = $sls.imcome_dt.val();
+		if (!dt) {
+			layer.msg('还没填写日期哦');
+			return;
+		}
+		location.href = "/stock/export_today_income?dt=" + dt;
 	});
 	/********************* 导出今日盈亏 end ********************************/
 
