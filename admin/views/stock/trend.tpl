@@ -51,6 +51,14 @@
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 新增用户数
+	</div>
+	<div class="panel-body">
+		<div id="new-chart" class="chart-wrapper"></div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
 		<i class="fa fa-bar-chart-o fa-fw"></i> 跟进统计
 	</div>
 	<div class="panel-body">
@@ -72,6 +80,7 @@
 		initChart('load-chart', "load");
 		initChart('users-chart', "users");
 		initChart('follow-chart', "follow");
+		initChart('new-chart', "new");
 	}
 
 	$(document).on('click', '.btnQuery', function () {
@@ -125,6 +134,10 @@
 					"follow_qiujuxing", "follow_yuhui", "follow_zhangmengying",
 					"follow_xufang", 'chenming', 'songfucheng'
 				];
+				break;
+			case "new":
+				names = ["新增"];
+				fields = ["new_user"];
 				break;
 		}
 		if (names) {

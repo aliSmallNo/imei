@@ -259,6 +259,13 @@ class TrendStockService
 			}
 		}
 
+		$sql = "select count(1) from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
+		$res = $this->conn->createCommand($sql)->bindValues([
+			':beginDT' => $beginDate,
+			':endDT' => $endDate,
+		])->queryScalar();
+		$trend['new_user'] = intval($res);
+
 		foreach ($trend as $field => $val) {
 			$this->add($step, $this->dateName, $this->beginDate, $this->endDate, $field, $val);
 		}

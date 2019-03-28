@@ -70,7 +70,7 @@ class SiteController extends BaseController
 
 	public function actionLogin()
 	{
-		// echo phpinfo();exit;
+		//echo phpinfo();exit;
 		$this->layout = 'login';
 		$name = self::postParam("name");
 		$pass = self::postParam("pass");
