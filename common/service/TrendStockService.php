@@ -259,12 +259,30 @@ class TrendStockService
 			}
 		}
 
-		$sql = "select count(1) from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
+		$new_user_str = "";
+		foreach ($salers as $v) {
+			$name = Pinyin::encode($v['uName'], 'all');
+			$name = str_replace(" ", '', ucwords($name));
+			$new_user_str .= "sum(case when uPhone='" . $v['uPhone'] . "' then 1 else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
+		}
+		$new_user_str = trim($new_user_str, ',');
+		$sql = "select $new_user_str from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
 		$res = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
-		])->queryScalar();
-		$trend['new_user'] = intval($res);
+		])->queryOne();
+		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//			echo $this->conn->createCommand($sql)->bindValues([
+//				':beginDT' => $beginDate,
+//				':endDT' => $endDate,
+//			])->getRawSql();
+//			exit;
+		}
+		if ($res) {
+			foreach ($res as $field => $num) {
+				$trend['new_users_' . $field] = intval($num);
+			}
+		}
 
 		foreach ($trend as $field => $val) {
 			$this->add($step, $this->dateName, $this->beginDate, $this->endDate, $field, $val);

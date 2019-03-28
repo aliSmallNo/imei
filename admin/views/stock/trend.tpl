@@ -136,8 +136,11 @@
 				];
 				break;
 			case "new":
-				names = ["新增"];
-				fields = ["new_user"];
+				names = ["小刀", "于辉", "金志新", "徐方", "王毅龙", '冯林', '陈明', '宋富城', '冯小强', '查俊'];
+				fields = ["new_users_ZuoDanLei_18513655687", "new_users_YuHui_13910838033", "new_users_JinZhiXin_18600649492",
+					"new_users_XuFang_13910838055", "new_users_WangYiLong_18622112893", "new_users_FengLin_18131243333",
+					"new_users_ChenMing_18931357765", "new_users_SongFuCheng_18611794484", "new_users_FengXiaoQiang_13643225272",
+					"new_users_ChaJun_13381081778"];
 				break;
 		}
 		if (names) {
