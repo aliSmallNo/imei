@@ -261,9 +261,9 @@ class TrendStockService
 
 		$new_user_str = "";
 		foreach ($salers as $v) {
-			$name = Pinyin::encode($v['uPtName'], 'all');
+			$name = Pinyin::encode($v['uName'], 'all');
 			$name = str_replace(" ", '', ucwords($name));
-			$new_user_str .= "sum(case when uPhone='" . $v['uPtPhone'] . "' then 1 else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
+			$new_user_str .= "sum(case when uPtPhone='" . $v['uPhone'] . "' then 1 else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
 		}
 		$new_user_str = trim($new_user_str, ',');
 		$sql = "select $new_user_str from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
