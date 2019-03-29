@@ -245,6 +245,7 @@ class TrendStockService
 				count(DISTINCT case when tAddedBy='1050' then tCId end) as xufang,
 				count(DISTINCT case when tAddedBy='1053' then tCId end) as chenming,
 				count(DISTINCT case when tAddedBy='1056' then tCId end) as songfucheng
+			  
 				from im_crm_stock_track as t 
 				join im_admin as a on a.aId=t.tAddedBy
 				WHERE t.tDeletedFlag=0 AND a.aId not in (1002)
