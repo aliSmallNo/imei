@@ -186,7 +186,7 @@ class Menu
 			],
 			[
 				"name" => "信息抓取",
-				"id" => "stock",
+				"id" => "stock_grap",
 				"icon" => "fa-users",
 				"staff" => 1,
 				"items" => [
@@ -206,7 +206,7 @@ class Menu
 			],
 			[
 				"name" => "信息统计",
-				"id" => "stock",
+				"id" => "stock_stat",
 				"icon" => "fa-users",
 				"staff" => 1,
 				"items" => [
