@@ -169,7 +169,6 @@ class StockController extends BaseController
 			list($sNext, $sIcon) = isset($sorts[$sort]) ? $sorts[$sort] : $sorts["sd"];
 		}
 
-
 		if ($sub_staff) {
 			$userInfo = Admin::userInfo();
 			$staff[] = ['id' => Admin::getAdminId(), 'name' => $userInfo['aName']];

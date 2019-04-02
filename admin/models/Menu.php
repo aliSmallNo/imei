@@ -143,24 +143,6 @@ class Menu
 						"revise" => 1,
 						"level" => 827
 					],
-					[
-						"name" => "抓取手机号",
-						"url" => "/stock/phones",
-						"revise" => 1,
-						"level" => 827
-					],
-					[
-						"name" => "首次注册",
-						"url" => "/stock/zdm_reg",
-						"revise" => 1,
-						"level" => 827
-					],
-					[
-						"name" => "客户来源",
-						"url" => "/stock/source",
-						"revise" => 1,
-						"level" => 830
-					],
 				]
 			],
 			[
@@ -194,18 +176,46 @@ class Menu
 						"level" => 810
 					],
 					[
+						"name" => "减持用户",
+						"url" => "/stock/reduce_stock",
+						"revise" => 1,
+						"level" => 810
+					],
+
+				]
+			],
+			[
+				"name" => "信息抓取",
+				"id" => "stock",
+				"icon" => "fa-users",
+				"staff" => 1,
+				"items" => [
+					[
+						"name" => "抓取手机号",
+						"url" => "/stock/phones",
+						"revise" => 1,
+						"level" => 827
+					],
+					[
+						"name" => "首次注册",
+						"url" => "/stock/zdm_reg",
+						"revise" => 1,
+						"level" => 827
+					],
+				]
+			],
+			[
+				"name" => "信息统计",
+				"id" => "stock",
+				"icon" => "fa-users",
+				"staff" => 1,
+				"items" => [
+					[
 						"name" => "多点统计",
 						"url" => "/stock/trend",
 						"revise" => 1,
 						"level" => 827
 					],
-					[
-						"name" => "减持用户",
-						"url" => "/stock/reduce_stock",
-						"revise" => 1,
-						"level" => 825
-					],
-
 				]
 			],
 			[
@@ -485,7 +495,13 @@ class Menu
 						"name" => "素材列表",
 						"url" => "/admin/media",
 						"level" => 830
-					]
+					],
+					[
+						"name" => "客户来源",
+						"url" => "/stock/source",
+						"revise" => 1,
+						"level" => 830
+					],
 				]
 			]
 		];

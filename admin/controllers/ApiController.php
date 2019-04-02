@@ -1337,7 +1337,8 @@ class ApiController extends Controller
 					$note = $this->admin_name . '扔到公海里了';
 				}
 				CRMStockTrack::add($id, [
-					"status" => trim(self::postParam("status", 0)),
+					//"status" => trim(self::postParam("status", 0)),// 2019-04-02 delete
+					"status" => CRMStockClient::findOne($id)->cStatus,
 					"note" => $note
 				], $adminId);
 				return self::renderAPI(0, "客户转移成功！");

@@ -402,7 +402,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				unset($params['phone']);
 			}
 			if (isset($params['wechat'])
-				&& !AppUtil::checkPhone($params['wechat'])
+				//&& !AppUtil::checkPhone($params['wechat'])//2019-04-02 delete
 			) {
 				unset($params['wechat']);
 			}
