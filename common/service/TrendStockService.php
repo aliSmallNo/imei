@@ -285,6 +285,36 @@ class TrendStockService
 			}
 		}
 
+		// 30天内的新用户借款数
+		$loan_30day_str = "";
+		foreach ($salers as $v) {
+			$name = Pinyin::encode($v['uName'], 'all');
+			$name = str_replace(" ", '', ucwords($name));
+			$loan_30day_str .= "sum(case when uPtPhone='" . $v['uPhone'] . "' then oLoan else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
+		}
+		$loan_30day_str = trim($loan_30day_str, ',');
+		$sql="select 
+				$loan_30day_str
+				from `im_stock_user` as u
+				left join `im_stock_order` as o on o.oPhone=u.uPhone 
+				where datediff(u.uAddedOn,:endDT)>-30 ";
+		$res = $this->conn->createCommand($sql)->bindValues([
+			//':beginDT' => $beginDate,
+			':endDT' => $endDate,
+		])->queryOne();
+		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//			echo $this->conn->createCommand($sql)->bindValues([
+//				':endDT' => $endDate,
+//			])->getRawSql();
+//			exit;
+		}
+		if ($res) {
+			foreach ($res as $field => $num) {
+				$trend['new_loan_' . $field] = intval($num);
+			}
+		}
+
+
 		foreach ($trend as $field => $val) {
 			$this->add($step, $this->dateName, $this->beginDate, $this->endDate, $field, $val);
 		}

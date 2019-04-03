@@ -59,6 +59,15 @@
 </div>
 <div class="panel panel-default">
 	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 新用户借款金额(指首次买股在30天以内的客户的借款金额)
+	</div>
+	<div class="panel-body">
+		<div id="new_loan-chart" class="chart-wrapper"></div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
 		<i class="fa fa-bar-chart-o fa-fw"></i> 跟进统计
 	</div>
 	<div class="panel-body">
@@ -81,6 +90,7 @@
 		initChart('users-chart', "users");
 		initChart('follow-chart', "follow");
 		initChart('new-chart', "new");
+		initChart('new_loan-chart', "new_loan");
 	}
 
 	$(document).on('click', '.btnQuery', function () {
@@ -153,6 +163,18 @@
 					// "new_users_WangYiLong_18622112893","new_users_YuHui_13910838033",
 				];
 				break;
+		case "new_loan":
+			names = ["小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
+				// "王毅龙","于辉",
+			];
+
+			fields = ["new_loan_ZuoDanLei_18513655687", "new_loan_JinZhiXin_18600649492",
+				"new_loan_XuFang_13910838055", "new_loan_FengLin_18131243333",
+				"new_loan_ChenMing_18931357765", "new_loan_SongFuCheng_18611794484", "new_loan_FengXiaoQiang_13643225272",
+				"new_loan_ChaJun_13381081778", "new_loan_ZhangMengYing_18410283058", 'new_loan_SunQingHai_13701269919',
+				// "new_loan_WangYiLong_18622112893","new_loan_YuHui_13910838033",
+			];
+			break;
 		}
 		if (names) {
 			for (var i in fields) {
