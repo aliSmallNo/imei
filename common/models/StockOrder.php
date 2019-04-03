@@ -432,4 +432,20 @@ class StockOrder extends ActiveRecord
 		array_multisort(array_column($reduce_users, 'diff_loan'), SORT_ASC, $reduce_users);
 		return [$reduce_users, $dt_return];
 	}
+
+	public static function cla_reduce_users_mouth($dt)
+	{
+		$conn = AppUtil::db();
+		$sql = "select u.* from im_stock_order as o
+				join im_stock_user as u on u.uPhone=o.oPhone
+				where date_format(DATE_SUB(:dt, INTERVAL 1 MONTH), '%m')=date_format(oAddedOn,'%m')
+				and oPhone not in (
+				select DISTINCT oPhone from im_stock_order where date_format(:dt, '%m')=date_format(oAddedOn,'%m')
+				)
+				group by oPhone
+				order by uPtPhone desc";
+
+		$users = $conn->createCommand($sql)->bindValues([':dt' => $dt])->queryAll();
+		return $users;
+	}
 }

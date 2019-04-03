@@ -175,6 +175,12 @@ class Menu
 						"revise" => 1,
 						"level" => 810
 					],
+					[
+						"name" => "比较上月",
+						"url" => "/stock/reduce_user",
+						"revise" => 1,
+						"level" => 830
+					],
 
 				]
 			],

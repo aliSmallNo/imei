@@ -141,7 +141,6 @@ class StockController extends BaseController
 			if ($is_jinzx) {
 				$criteria[] = " cBDAssign in (1059,1056) ";// 查俊 宋富城
 			}
-
 		}
 
 		list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
@@ -845,6 +844,20 @@ class StockController extends BaseController
 		return $this->renderPage('reduce_stock.tpl',
 			[
 				'dts' => $dts,
+				'list' => $list,
+			]);
+	}
+
+	//-- 查询 上个月有操作 这个月没有操作 的用户
+	public function actionReduce_user()
+	{
+		$dt = self::getParam("dt", date("Y-m-d"));
+
+
+		$list = StockOrder::cla_reduce_users_mouth($dt);
+		return $this->renderPage('reduce_user.tpl',
+			[
+				'dt' => $dt,
 				'list' => $list,
 			]);
 	}
