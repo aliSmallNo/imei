@@ -88,7 +88,7 @@
 		<div class="item">
 			<div class="os">苹果手机</div>
 			<div class="cont">
-				<a href="ttps://api.sanbao365.com/index.html">点击进入准点买iOS系统</a>
+				<a href="https://api.sanbao365.com/index.html">点击进入准点买iOS系统</a>
 				<!--<a href="https://api.sanbao365.com/api/version/zdmdl?from=groupmessage&isappinstalled=0">点击进入准点买iOS系统</a>-->
 				<!--<a href="https://api.sanbao365.com/index.html">点击进入准点买iOS系统</a>-->
 			</div>
