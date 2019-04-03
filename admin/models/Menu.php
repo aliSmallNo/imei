@@ -152,12 +152,6 @@ class Menu
 				"staff" => 1,
 				"items" => [
 					[
-						"name" => "客户列表",
-						"url" => "/stock/stock_user",
-						"revise" => 1,
-						"level" => 830
-					],
-					[
 						"name" => "订单列表",
 						"url" => "/stock/stock_order",
 						"revise" => 1,
@@ -499,6 +493,12 @@ class Menu
 					[
 						"name" => "客户来源",
 						"url" => "/stock/source",
+						"revise" => 1,
+						"level" => 830
+					],
+					[
+						"name" => "客户列表",
+						"url" => "/stock/stock_user",
 						"revise" => 1,
 						"level" => 830
 					],
