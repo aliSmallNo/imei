@@ -141,7 +141,7 @@ class Menu
 						"name" => "发送短信",
 						"url" => "/stock/send_msg",
 						"revise" => 1,
-						"level" => 827
+						"level" => 820
 					],
 				]
 			],
