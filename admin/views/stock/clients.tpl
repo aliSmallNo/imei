@@ -163,12 +163,24 @@
 <div class="row">
 	<ul class="nav nav-tabs">
 		{{foreach from=$tabs key=key item=tab}}
-			<li class="ng-scope {{if $cat== $key}} active{{/if}}">
-				<a href="/stock/clients?cat={{$key}}&sort={{$sort}}&{{$urlParams}}"
-					 class="ng-binding">{{$tab.title}}{{if $tab.count > 0}}
-						<span class="badge">{{$tab.count}}</span>{{/if}}
-				</a>
-			</li>
+			{{if $key=='sea'}}
+				{{if $is_saler}}
+					<li class="ng-scope {{if $cat== $key}} active{{/if}}">
+						<a href="/stock/clients?cat={{$key}}&sort={{$sort}}&{{$urlParams}}"
+							 class="ng-binding">{{$tab.title}}{{if $tab.count > 0}}
+								<span class="badge">{{$tab.count}}</span>{{/if}}
+						</a>
+					</li>
+				{{/if}}
+			{{else}}
+				<li class="ng-scope {{if $cat== $key}} active{{/if}}">
+					<a href="/stock/clients?cat={{$key}}&sort={{$sort}}&{{$urlParams}}"
+						 class="ng-binding">{{$tab.title}}{{if $tab.count > 0}}
+							<span class="badge">{{$tab.count}}</span>{{/if}}
+					</a>
+				</li>
+			{{/if}}
+
 		{{/foreach}}
 	</ul>
 </div>

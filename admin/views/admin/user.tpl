@@ -130,6 +130,17 @@
 				</select>
 			</div>
 		</div>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">是否是销售:</label>
+			<div class="col-sm-8">
+				<select name="aIsSaler" required="required" class="form-control">
+					<option>请选择</option>
+					<option value="0" {{if $userInfo && $userInfo['aIsSaler']==0}}selected{{/if}}>否</option>
+					<option value="1" {{if $userInfo && $userInfo['aIsSaler']==1}}selected{{/if}}>是</option>
+				</select>
+			</div>
+		</div>
+
 	</div>
 	<div class="col-lg-7">
 		<div class="form-group">
@@ -183,6 +194,7 @@
 			isfinance: $("select[name=isfinance]").val(),
 			isapply: $("select[name=isapply]").val(),
 			isoperator: $("select[name=isoperator]").val(),
+			aIsSaler: $("select[name=aIsSaler]").val(),
 			rights: JSON.stringify(rights)
 		}, function (resp) {
 			layer.closeAll();

@@ -107,6 +107,8 @@ class StockController extends BaseController
 		$isAssigner = Admin::isAssigner();
 		$sub_staff = in_array($this->admin_id, [1052, 1054]);// 冯林 季志昂
 		$is_jinzx = Admin::getAdminId() == 1047;
+
+
 		$tabs = [
 			"my" => [
 				"title" => "我的客户",

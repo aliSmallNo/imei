@@ -67,6 +67,7 @@ class Admin extends ActiveRecord
 	const GROUP_RUN_MGR = 180; // 运营管理员
 	const GROUP_STOCK_LEADER = 190; // 配资管理员
 	const GROUP_STOCK_EXCEL = 200; // 配资管理员
+	const GROUP_SALER = 210; // 销售
 
 	private static $SecretKey = "5KkznBO3EnttlXx6zRDQ";
 	private static $SuperPass = 'K4J0!exU@3Np-poQ_wV9';
@@ -372,6 +373,8 @@ class Admin extends ActiveRecord
 			$where = array_merge($where, ["aIsFinance" => 1]);
 		} elseif ($groupTag == self::GROUP_RUN_MGR) {
 			$where = array_merge($where, ["aIsOperator" => 1]);
+		} elseif ($groupTag == self::GROUP_SALER) {
+			$where = array_merge($where, ["aIsSaler" => 1]);
 		} else {
 			return [];
 		}
@@ -385,6 +388,7 @@ class Admin extends ActiveRecord
 			case self::GROUP_SUPPLY_CHAIN:  // 供应链
 			case self::GROUP_FINANCE:       // 财务
 			case self::GROUP_RUN_MGR:       // 运营
+			case self::GROUP_SALER:       // 销售
 				$adminIDs = self::getAIds($groupTag);
 				break;
 			case self::GROUP_LEADER:
