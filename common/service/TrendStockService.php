@@ -189,6 +189,7 @@ class TrendStockService
 
 		$st = StockOrder::ST_HOLD;
 		$sql = "select 
+				sum(case when u2.uPhone then oLoan else 0 end) as total,
 				$sum_loan_select
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
@@ -212,6 +213,7 @@ class TrendStockService
 		}
 		$sum_loan_user_select = trim($sum_loan_user_select, ',');
 		$sql = "select 
+				count(DISTINCT case when u2.uPhone then oPhone end) as as total,
 				$sum_loan_user_select
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
@@ -267,7 +269,9 @@ class TrendStockService
 			$new_user_str .= "sum(case when uPtPhone='" . $v['uPhone'] . "' then 1 else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
 		}
 		$new_user_str = trim($new_user_str, ',');
-		$sql = "select $new_user_str from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
+		$sql = "select 
+			sum(case when uPtPhone then 1 else 0 end) as total,
+			$new_user_str from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
 		$res = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
@@ -294,6 +298,7 @@ class TrendStockService
 		}
 		$loan_30day_str = trim($loan_30day_str, ',');
 		$sql="select 
+				sum(case when uPtPhone then oLoan else 0 end) as total,
 				$loan_30day_str
 				from `im_stock_user` as u
 				left join `im_stock_order` as o on o.oPhone=u.uPhone 
