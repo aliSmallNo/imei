@@ -213,7 +213,7 @@ class TrendStockService
 		}
 		$sum_loan_user_select = trim($sum_loan_user_select, ',');
 		$sql = "select 
-				count(DISTINCT oPhone ) as as total,
+				count(DISTINCT case when u2.uPhone then oPhone end) as total,
 				$sum_loan_user_select
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
