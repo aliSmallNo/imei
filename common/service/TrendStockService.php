@@ -189,7 +189,6 @@ class TrendStockService
 
 		$st = StockOrder::ST_HOLD;
 		$sql = "select 
-				sum(case when u2.uPhone then oLoan else 0 end) as total,
 				$sum_loan_select
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
@@ -200,8 +199,10 @@ class TrendStockService
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res) {
+			$trend['sum_loan_total'] = 0;
 			foreach ($res as $field => $num) {
 				$trend['sum_loan_' . $field] = intval($num);
+				$trend['sum_loan_total'] += intval($num);
 			}
 		}
 
@@ -213,7 +214,6 @@ class TrendStockService
 		}
 		$sum_loan_user_select = trim($sum_loan_user_select, ',');
 		$sql = "select 
-				count(DISTINCT case when u2.uPhone then oPhone end) as total,
 				$sum_loan_user_select
 				from im_stock_order as o
 				left join im_stock_user as u on u.uPhone=o.oPhone
@@ -231,8 +231,10 @@ class TrendStockService
 //			exit;
 		}
 		if ($res) {
+			$trend['sum_loan_users_total'] = 0;
 			foreach ($res as $field => $num) {
 				$trend['sum_loan_users_' . $field] = intval($num);
+				$trend['sum_loan_users_total'] += intval($num);
 			}
 		}
 
@@ -257,8 +259,10 @@ class TrendStockService
 			':endDT' => $endDate,
 		])->queryOne();
 		if ($res) {
+			$trend['follow_total'] = 0;
 			foreach ($res as $field => $num) {
 				$trend['follow_' . $field] = intval($num);
+				$trend['follow_total'] += intval($num);
 			}
 		}
 
@@ -270,7 +274,6 @@ class TrendStockService
 		}
 		$new_user_str = trim($new_user_str, ',');
 		$sql = "select 
-			sum(case when uPtPhone then 1 else 0 end) as total,
 			$new_user_str from `im_stock_user` where uAddedOn BETWEEN :beginDT and :endDT ";
 		$res = $this->conn->createCommand($sql)->bindValues([
 			':beginDT' => $beginDate,
@@ -284,8 +287,11 @@ class TrendStockService
 //			exit;
 		}
 		if ($res) {
+			$trend['new_users_total'] = 0;
 			foreach ($res as $field => $num) {
 				$trend['new_users_' . $field] = intval($num);
+				$trend['new_users_total'] += intval($num);
+
 			}
 		}
 
@@ -297,7 +303,7 @@ class TrendStockService
 			$loan_30day_str .= "sum(case when uPtPhone='" . $v['uPhone'] . "' then oLoan else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
 		}
 		$loan_30day_str = trim($loan_30day_str, ',');
-		$sql="select 
+		$sql = "select 
 				sum(case when uPtPhone then oLoan else 0 end) as total,
 				$loan_30day_str
 				from `im_stock_user` as u
@@ -314,8 +320,10 @@ class TrendStockService
 //			exit;
 		}
 		if ($res) {
+			$trend['new_loan_total'] = 0;
 			foreach ($res as $field => $num) {
 				$trend['new_loan_' . $field] = intval($num);
+				$trend['new_loan_total'] += intval($num);
 			}
 		}
 
