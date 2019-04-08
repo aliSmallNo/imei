@@ -983,7 +983,7 @@ class Log extends ActiveRecord
 				left join im_stock_user as u on u.uPhone=l.oBefore
 				left join im_crm_client as c on c.cPhone=l.oBefore  
 				where oCategory='$cat' $strCriteria
-				order by oAfter desc 
+				order by oDate desc 
 				limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 		foreach ($res as $k => $v) {
