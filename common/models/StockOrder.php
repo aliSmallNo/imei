@@ -460,7 +460,7 @@ class StockOrder extends ActiveRecord
 		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0";
 		$res = $conn->createCommand($sql)->queryAll();
 
-		$sql = " select oAddedOn from im_stock_order where oPhone=:phone and oStockId=:oStockId and oCostPrice=:oCostPrice order by oId desc limit 1";
+		$sql = " select oAddedOn from im_stock_order where oPhone=:phone and oStockId=:oStockId and oCostPrice=:oCostPrice order by oId desc limit 1,1";
 		$cmd = $conn->createCommand($sql);
 
 		$sql = " update im_stock_order set oHoldDays=:days where oId=:oId";
