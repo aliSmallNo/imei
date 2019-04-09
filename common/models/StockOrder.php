@@ -480,7 +480,7 @@ class StockOrder extends ActiveRecord
 				':oId' => $v['oId'],
 			])->execute();
 
-			echo $v['oId'] . ' == ' . date('H:i:s') . PHP_EOL;
+			echo $v['oId'] . ' == $days' . $days . '==' . date('H:i:s') . PHP_EOL;
 		}
 	}
 }
