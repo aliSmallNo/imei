@@ -574,7 +574,7 @@ class ExcelUtil
 		$rowIndex = 1;
 		//表格的具体数据
 		$data1 = $data[0];
-		array_unshift($data1, ['电话', '用户名', '股票代码', '股数', '初期借款', '买入价', '今日均价', '盈亏金额', '盈亏比例', '状态', 'BD', 'BDID']);
+		array_unshift($data1, ['电话', '用户名', '股票代码', '股数', '初期借款', '买入价', '今日均价', '盈亏金额', '盈亏比例','持有天数', '状态', 'BD', 'BDID']);
 		foreach ($data1 as $key => $rows) {
 			$span = ord("A");
 			foreach ($rows as $keyName => $value) {

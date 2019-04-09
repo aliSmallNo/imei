@@ -423,7 +423,7 @@ class StockController extends BaseController
 		}
 		$conn = AppUtil::db();
 		$sql = "select 
-				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,oAvgPrice,o.oIncome,oRate,
+				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,oAvgPrice,o.oIncome,oRate,oHoldDays,
 				(case when oStatus=1 then '持有' when oStatus=9 THEN '卖出' END ) as st,
 				a.aName,a.aId
 				from im_stock_order as o
