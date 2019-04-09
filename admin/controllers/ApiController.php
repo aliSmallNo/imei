@@ -1473,6 +1473,10 @@ class ApiController extends Controller
 				list($code, $msg) = Log::add_phone_section_admin($phone_sections);
 				return self::renderAPI($code, $msg);
 				break;
+			case 'cal_hold_days':
+				StockOrder::cla_stock_hold_days();
+				return self::renderAPI(0, '计算完成');
+				break;
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}

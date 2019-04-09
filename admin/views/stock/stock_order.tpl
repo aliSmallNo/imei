@@ -13,6 +13,7 @@
 				<a href="javascript:;" class="opDelete btn btn-outline btn-danger btn-xs">删除</a>
 				<a href="javascript:;" class="opCalSold btn btn-outline btn-primary btn-xs">计算今日卖出</a>
 				<a href="javascript:;" class="opIncome btn btn-outline btn-warning btn-xs">导出今日盈亏</a>
+				<a href="javascript:;" class="opHoldDays btn btn-outline btn-warning btn-xs">计算今日股票持有天数</a>
 			{{/if}}
 		</h4>
 	</div>
@@ -80,7 +81,7 @@
 				<th>状态</th>
 				<th>今日价格</th>
 				<th>收益</th>
-				<th>持股</th>
+				<th>持股天数</th>
 			{{/if}}
 			<th>时间</th>
 		</tr>
@@ -114,8 +115,8 @@
 						收益率：{{$item.oRate}}
 					</td>
 				{{/if}}
-				<td>{{$item.dt}}</td>
 				<td>{{$item.oHoldDays}}</td>
+				<td>{{$item.dt}}</td>
 			</tr>
 		{{/foreach}}
 		</tbody>
@@ -338,6 +339,29 @@
 		}
 		location.href = "/stock/export_today_income?dt=" + dt;
 	});
+	/********************* 导出今日盈亏 end ********************************/
+	/********************* 导出今日盈亏 end ********************************/
+
+  $('.opHoldDays').on('click', function () {
+	  if ($sls.load_flag) {
+		  return;
+	  }
+	  layer.load();
+	  $sls.load_flag = 1;
+	  $.post("/api/stock", {
+		  tag: 'cal_hold_days',
+	  }, function (resp) {
+		  layer.closeAll();
+		  $sls.load_flag = 0;
+		  layer.msg(resp.msg);
+		  if (resp.code == 0) {
+			  setTimeout(function () {
+				  location.reload();
+			  }, 2000);
+		  }
+	  }, 'json');
+
+  });
 	/********************* 导出今日盈亏 end ********************************/
 
 </script>

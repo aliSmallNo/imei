@@ -457,7 +457,7 @@ class StockOrder extends ActiveRecord
 	public static function cla_stock_hold_days()
 	{
 		$conn = AppUtil::db();
-		$sql = "select * from im_stock_order where 1";
+		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0";
 		$res = $conn->createCommand($sql)->queryAll();
 
 		$sql = " select oAddedOn from im_stock_order where 
@@ -493,7 +493,9 @@ class StockOrder extends ActiveRecord
 				':oId' => $v['oId'],
 			])->execute();
 
-			echo $v['oId'] . ' == $days' . $days . '==' . date('H:i:s') . PHP_EOL;
+			// echo $v['oId'] . ' == $days' . $days . '==' . date('H:i:s') . PHP_EOL;
 		}
+
+		return true;
 	}
 }
