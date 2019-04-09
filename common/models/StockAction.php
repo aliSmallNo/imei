@@ -56,6 +56,60 @@ class StockAction extends \yii\db\ActiveRecord
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
 
+		if (!$result) {
+			$result = [];
+		}
+		$insertCount = 0;
+
+		echo date('Y-m-d H:i:s') . '=s=' . PHP_EOL;
+
+		$conn = AppUtil::db();
+		$transaction = $conn->beginTransaction();
+
+		$phones = $values = '';
+		foreach ($result as $key => $value) {
+			if (!$key) {
+				continue;
+			}
+			$phone = $value[0];
+			$typeT = $value[1];
+			$time = date('Y-m-d H:i:s');
+			if (!AppUtil::checkPhone($phone)) {
+				continue;
+			}
+
+			$type = self::TYPE_ACTIVE;
+			$phones .= ',' . $phone;
+			$values .= ",($phone,$type,$typeT,$time)";
+		}
+
+		$sql = "update im_stock_action set aType=9 where aType=1 and aPhone in (" . trim($phones, ',') . ')';
+		$res1 = $conn->createCommand($sql);
+
+		$sql = "insert into im_stock_action (aPhone,aType,aTypeTxt,aAddedOn) 
+				values  " . trim($values, ',');
+		$res2 = $conn->createCommand($sql)->execute();
+
+		var_dump($res1);
+		var_dump($res2);
+
+		if ($error) {
+			$transaction->rollBack();
+		} else {
+			$transaction->rollBack();
+			//$transaction->commit();
+		}
+
+		echo date('Y-m-d H:i:s') . '=e=' . PHP_EOL;
+
+		return [$insertCount, $error];
+	}
+
+	public static function add_by_excel2($filepath)
+	{
+		$error = 0;
+		$result = ExcelUtil::parseProduct($filepath);
+
 
 		if (!$result) {
 			$result = [];
@@ -66,7 +120,7 @@ class StockAction extends \yii\db\ActiveRecord
 		$transaction = $conn->beginTransaction();
 
 		$sql = "insert into im_stock_action (aPhone,aType,aTypeTxt,aAddedOn) 
-				values (:aPhone,:aType,:aTypeTxt,:aAddedOn)";
+				values (:aPhone,:aType,:aTypeTxt,:aAddedOn) ";
 		$cmd = $conn->createCommand($sql);
 
 		$sql = "update im_stock_action set aType=9 where aType=1 and aPhone=:phone";
