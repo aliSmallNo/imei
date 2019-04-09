@@ -13,6 +13,8 @@ use common\models\ChatRoom;
 use common\models\CRMStockClient;
 use common\models\Log;
 use common\models\Stat;
+use common\models\StockAction;
+use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\UserMsg;
 use common\models\UserNet;
@@ -75,17 +77,42 @@ class CrontabController extends Controller
 	 */
 	public function actionPool()
 	{
-		$ret = UserWechat::refreshPool();
-		var_dump(count($ret));
-		// 每天晚上九点【唤醒】当天关注未注册用户
-		if (date("H") == 21) {
-			//WechatUtil::summonViewer();
-			//AppUtil::logFile("summonViewer", 5);
+		try {
+			// 配资crm客户6工作日无跟进则转移到公海
+			if (date("H") == '21') {
+				CRMStockClient::auto_client_2_sea();
+			}
+		} catch (\Exception $e) {
+
 		}
-		// 配资crm客户6工作日无跟进则转移到公海
-		if (date("H") == '21') {
-			CRMStockClient::auto_client_2_sea();
+
+		try {
+			if (in_array(date("H"), ['18', '21'])) {
+				StockAction::update_stock_clients();
+			}
+
+		} catch (\Exception $e) {
+
 		}
+
+
+		try {
+			if (in_array(date("H"), ['21'])) {
+				StockAction::add_by_stock_action();
+			}
+
+		} catch (\Exception $e) {
+
+		}
+
+
+		try {
+			$ret = UserWechat::refreshPool();
+		} catch (\Exception $e) {
+
+		}
+
+
 	}
 
 	public function actionRecycle()

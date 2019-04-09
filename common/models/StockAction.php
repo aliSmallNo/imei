@@ -83,8 +83,6 @@ class StockAction extends \yii\db\ActiveRecord
 				continue;
 			}
 
-			$cmdUpdate->bindValues([':phone' => $phone])->execute();
-
 			$params = [
 				':aPhone' => $phone,
 				':aType' => self::TYPE_ACTIVE,
@@ -93,14 +91,16 @@ class StockAction extends \yii\db\ActiveRecord
 			];
 
 			try {
+				$cmdUpdate->bindValues([':phone' => $phone])->execute();
+
 				$res = $cmd->bindValues($params)->execute();
 				// 2018-1-17 2018-2-14
-//				StockUser::pre_add($phone, [
-//					'uPhone' => $phone,
-//					'uName' => $phone,
-//				]);
-				// 2018-1-17添加到crm客户线索
-				CRMStockClient::add_by_stock_action($phone, $typeT);
+				/*StockUser::pre_add($phone, [
+					'uPhone' => $phone,
+					'uName' => $phone,
+				]);*/
+				// 2018-1-17添加到crm客户线索 2019-03-09 改为异步执行
+				// CRMStockClient::add_by_stock_action($phone, $typeT);
 
 			} catch (\Exception $e) {
 //				var_dump($cmd->bindValues($params)->getRawSql());
@@ -119,7 +119,8 @@ class StockAction extends \yii\db\ActiveRecord
 			$transaction->commit();
 		}
 
-		self::update_stock_clients();
+		//  改为定时任务执行 2019-03-09
+		// self::update_stock_clients();
 
 		return [$insertCount, $error];
 	}
@@ -156,6 +157,8 @@ class StockAction extends \yii\db\ActiveRecord
 		return [$res, $count];
 	}
 
+
+	// 改为定时任务
 	public static function update_stock_clients()
 	{
 		$conn = AppUtil::db();
@@ -174,5 +177,18 @@ class StockAction extends \yii\db\ActiveRecord
 				":dt" => $v['aAddedOn'],
 			])->execute();
 		}
+	}
+
+	// 改为定时任务
+	public static function add_by_stock_action()
+	{
+		$aType = self::TYPE_ACTIVE;
+		$conn = AppUtil::db();
+		$sql = "select * from im_stock_action where datediff(aAddedOn,now())=0 and aType=$aType order by aId asc";
+		$res = $conn->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			CRMStockClient::add_by_stock_action($v['aPhone'], $v['aTypeTxt']);
+		}
+
 	}
 }
