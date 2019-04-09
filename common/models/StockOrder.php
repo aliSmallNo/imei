@@ -479,7 +479,7 @@ class StockOrder extends ActiveRecord
 				':phone' => $v['oPhone'],
 				':oStockId' => $v['oStockId'],
 				':oStockAmt' => $v['oStockAmt'],
-				':oCostPrice' => ,
+				':oCostPrice' => $v['oCostPrice'],
 				':oAddedOn' => $v['oAddedOn'],
 			])->queryScalar();
 
