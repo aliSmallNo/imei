@@ -13,7 +13,7 @@
 				<a href="javascript:;" class="opDelete btn btn-outline btn-danger btn-xs">删除</a>
 				<a href="javascript:;" class="opCalSold btn btn-outline btn-primary btn-xs">计算今日卖出</a>
 				<a href="javascript:;" class="opIncome btn btn-outline btn-warning btn-xs">导出今日盈亏</a>
-				<a href="javascript:;" class="opHoldDays btn btn-outline btn-warning btn-xs">计算今日股票持有天数</a>
+				<a href="javascript:;" class="opHoldDays btn btn-outline btn-primary btn-xs">计算今日股票持有天数</a>
 			{{/if}}
 		</h4>
 	</div>
