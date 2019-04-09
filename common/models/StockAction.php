@@ -73,7 +73,7 @@ class StockAction extends \yii\db\ActiveRecord
 		$cmdUpdate = $conn->createCommand($sql);
 
 		foreach ($result as $key => $value) {
-			echo $key . PHP_EOL;
+			echo date('Y-m-d H:i:s') . '==' . $key . PHP_EOL;
 			$res = 0;
 			if (!$key) {
 				continue;
@@ -125,7 +125,7 @@ class StockAction extends \yii\db\ActiveRecord
 		//  改为定时任务执行 2019-03-09
 		// self::update_stock_clients();
 
-		echo $insertCount . ' == ' . $error . PHP_EOL;
+		echo date('Y-m-d H:i:s') . '==' . $insertCount . ' == ' . $error . PHP_EOL;
 
 		return [$insertCount, $error];
 	}
