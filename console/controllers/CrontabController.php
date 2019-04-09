@@ -165,7 +165,7 @@ class CrontabController extends Controller
 	public function actionAlert()
 	{
 		try {
-			UserMsg::routineAlert();
+			//UserMsg::routineAlert();
 			//ChatRoom::roomAlert();
 		} catch (\Exception $e) {
 
@@ -186,68 +186,28 @@ class CrontabController extends Controller
 
 		}
 
-		// 淘股吧
-		if (date('Y-m-d H:i') == '2019-02-20 18:05') {
-			set_time_limit(0);
-			TryPhone::phone_section_1();
-		}
-
-		// 淘股吧
-		if (date('Y-m-d H:i') == '2019-02-19 18:15') {
-			set_time_limit(0);
-			TryPhone::phone_section_2();
-		}
-
-		// 一号配资
-		if (date('Y-m-d H:i') == '2019-02-18 14:50') {
-			set_time_limit(0);
-			TryPhone::phone_section_7();
-		}
-
-		// 沃伦策略
-		if (date('Y-m-d H:i') == '2019-02-18 14:55') {
-			set_time_limit(0);
-			TryPhone::phone_section_8();
-		}
-
-		// 钱程策略
-		if (date('Y-m-d H:i') == '2019-02-19 18:20') {
-			set_time_limit(0);
-			TryPhone::phone_section_9();
-		}
-
-		// 弘大速配
-		if (date('Y-m-d H:i') == '2019-02-18 15:05') {
-			set_time_limit(0);
-			TryPhone::phone_section_10();
-		}
-
-		// 顺发配资
-		if (date('Y-m-d H:i') == '2019-02-21 14:35') {
-			set_time_limit(0);
-			TryPhone::phone_section_11();
-		}
-
 
 	}
 
 	public function actionYzuser()
 	{
+		// 停止任务 2019-04-09
+
 		// 更新有赞用户
-		YzUser::UpdateUser();
-		AppUtil::logByFile('exec 1 YzUser::UpdateUser() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+		//YzUser::UpdateUser();
+		//AppUtil::logByFile('exec 1 YzUser::UpdateUser() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
 
 		// 更新订单
-		YzOrders::Update_order();
-		AppUtil::logByFile('exec 2 YzOrders::Update_order() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+		//YzOrders::Update_order();
+		//AppUtil::logByFile('exec 2 YzOrders::Update_order() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
 
 		// 更新商品
-		YzGoods::update_goods();
-		AppUtil::logByFile('exec 3 YzGoods::update_goods() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+		//YzGoods::update_goods();
+		//AppUtil::logByFile('exec 3 YzGoods::update_goods() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
 
 		// 更新商家退款
-		YzRefund::get_goods_by_se_time();
-		AppUtil::logByFile('exec 4 YzRefund::get_goods_by_se_time() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
+		//YzRefund::get_goods_by_se_time();
+		//AppUtil::logByFile('exec 4 YzRefund::get_goods_by_se_time() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
 
 	}
 
