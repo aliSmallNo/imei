@@ -1504,7 +1504,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		StockAction::add_by_excel('/data/res/imei/excel/2019/04/5cac8de4c7f7d.xls');
+		StockOrder::cla_stock_hold_days();
 		exit;
 	}
 

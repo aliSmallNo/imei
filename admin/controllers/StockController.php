@@ -367,6 +367,7 @@ class StockController extends BaseController
 		$error = self::getParam("error");
 		$name = self::getParam("name");
 		$phone = self::getParam("phone");
+		$stock_id = self::getParam("stock_id");
 		$dt = self::getParam("dt");
 		$status = self::getParam("status");
 
@@ -380,6 +381,10 @@ class StockController extends BaseController
 		if ($phone) {
 			$criteria[] = "  u.uPhone like :phone ";
 			$params[':phone'] = $phone;
+		}
+		if($stock_id){
+			$criteria[] = "  o.oStockId = :oStockId ";
+			$params[':oStockId'] = $stock_id;
 		}
 		if ($dt) {
 			$dt = date('Y-m-d', strtotime($dt));

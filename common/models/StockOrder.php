@@ -453,4 +453,34 @@ class StockOrder extends ActiveRecord
 		$users = $conn->createCommand($sql)->bindValues([':dt' => $dt])->queryAll();
 		return $users;
 	}
+
+	public static function cla_stock_hold_days()
+	{
+		$conn = AppUtil::db();
+		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0";
+		$res = $conn->createCommand($sql)->queryAll();
+
+		$sql = " select oAddedOn from im_stock_order where oPhone=:phone and oStockId=:oStockId and oCostPrice=:oCostPrice order by oId desc limit 1";
+		$cmd = $conn->createCommand($sql);
+
+		$sql = " update im_stock_order set oHoldDays=:days where oId=:oId";
+		$upt = $conn->createCommand($sql);
+
+		foreach ($res as $v) {
+			$oAddedOn = $cmd->bindValues([
+				':phone' => $v['oPhone'],
+				':oStockId' => $v['oStockId'],
+				':oCostPrice' => $v['oCostPrice'],
+			])->queryScalar();
+
+			$days = ceil((strtotime($v['oAddedOn']) - strtotime($oAddedOn)) / 86400);
+
+			$upt->bindValues([
+				':days' => $days,
+				':oId' => $v['oId'],
+			])->execute();
+
+			echo $v['oId'] . ' == ' . date('H:i:s') . PHP_EOL;
+		}
+	}
 }

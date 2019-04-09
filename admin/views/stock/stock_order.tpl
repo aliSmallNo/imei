@@ -38,6 +38,8 @@
 						 value="{{if isset($getInfo['name'])}}{{$getInfo['name']}}{{/if}}"/>
 			<input class="form-control" placeholder="用户手机" type="text" name="phone"
 						 value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
+			<input class="form-control" placeholder="股票代码" type="text" name="stock_id"
+						 value="{{if isset($getInfo['stock_id'])}}{{$getInfo['stock_id']}}{{/if}}"/>
 			<select class="form-control" name="status">
 				<option value="">-=状态=-</option>
 				{{foreach from=$stDict key=key item=item}}
