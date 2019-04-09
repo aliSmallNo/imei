@@ -474,7 +474,10 @@ class StockOrder extends ActiveRecord
 				':oCostPrice' => $v['oCostPrice'],
 			])->queryScalar();
 
-			$days = ceil((strtotime($v['oAddedOn']) - strtotime($oAddedOn)) / 86400);
+			$days = 0;
+			if ($oAddedOn) {
+				$days = ceil((strtotime($v['oAddedOn']) - strtotime($oAddedOn)) / 86400);
+			}
 
 			$upt->bindValues([
 				':days' => $days,
