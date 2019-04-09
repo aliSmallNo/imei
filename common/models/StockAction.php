@@ -80,7 +80,7 @@ class StockAction extends \yii\db\ActiveRecord
 
 			$type = self::TYPE_ACTIVE;
 			$phones .= ',' . $phone;
-			$values .= ",($phone,$type,$typeT,$time)";
+			$values .= ",('$phone',$type,'$typeT','$time')";
 		}
 
 		$sql = "update im_stock_action set aType=9 where aType=1 and aPhone in (" . trim($phones, ',') . ')';
