@@ -59,9 +59,6 @@ class StockAction extends \yii\db\ActiveRecord
 		if (!$result) {
 			$result = [];
 		}
-		$insertCount = 0;
-
-		echo date('Y-m-d H:i:s') . '=s=' . PHP_EOL;
 
 		$conn = AppUtil::db();
 		$transaction = $conn->beginTransaction();
@@ -83,33 +80,32 @@ class StockAction extends \yii\db\ActiveRecord
 			$values .= ",('$phone',$type,'$typeT','$time')";
 		}
 
-		$sql = "update im_stock_action set aType=9 where aType=1 and aPhone in (" . trim($phones, ',') . ')';
-		$res1 = $conn->createCommand($sql)->execute();
+		$insertCount = $updateCount = 0;
+		try {
+			$sql = "update im_stock_action set aType=9 where aType=1 and aPhone in (" . trim($phones, ',') . ')';
+			$updateCount = $conn->createCommand($sql)->execute();
 
-		$sql = "insert into im_stock_action (aPhone,aType,aTypeTxt,aAddedOn) 
+			$sql = "insert into im_stock_action (aPhone,aType,aTypeTxt,aAddedOn) 
 				values  " . trim($values, ',');
-		$res2 = $conn->createCommand($sql)->execute();
+			$insertCount = $conn->createCommand($sql)->execute();
 
-		var_dump($res1);
-		var_dump($res2);
-
-		if ($error) {
+			if ($updateCount && $insertCount) {
+				$transaction->commit();
+			} else {
+				$transaction->rollBack();
+			}
+		} catch (\Exception $e) {
 			$transaction->rollBack();
-		} else {
-			$transaction->rollBack();
-			//$transaction->commit();
 		}
-
-		echo date('Y-m-d H:i:s') . '=e=' . PHP_EOL;
 
 		return [$insertCount, $error];
 	}
 
+	// 优化为上边的方法 => self::add_by_excel()
 	public static function add_by_excel2($filepath)
 	{
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
-
 
 		if (!$result) {
 			$result = [];
@@ -127,7 +123,7 @@ class StockAction extends \yii\db\ActiveRecord
 		$cmdUpdate = $conn->createCommand($sql);
 
 		foreach ($result as $key => $value) {
-			echo date('Y-m-d H:i:s') . '==' . $key . PHP_EOL;
+			// echo date('Y-m-d H:i:s') . '==' . $key . PHP_EOL;
 			$res = 0;
 			if (!$key) {
 				continue;
@@ -179,7 +175,7 @@ class StockAction extends \yii\db\ActiveRecord
 		//  改为定时任务执行 2019-03-09
 		// self::update_stock_clients();
 
-		echo date('Y-m-d H:i:s') . '==' . $insertCount . ' == ' . $error . PHP_EOL;
+		//echo date('Y-m-d H:i:s') . '==' . $insertCount . ' == ' . $error . PHP_EOL;
 
 		return [$insertCount, $error];
 	}
