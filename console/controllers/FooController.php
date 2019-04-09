@@ -1503,214 +1503,25 @@ class FooController extends Controller
 
 	public function actionZp()
 	{
-		StockOrder::cla_reduce_stock_users();
-		//TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
 
-		//TryPhone::put_logs_to_db(date('Ymd', time() - 86400));
-		//TryPhone::put_logs_to_db("qianChengCL_" . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
-		//TryPhone::put_logs_to_db("qianChengCL_20190216", TryPhone::CAT_QIANCHENGCL);
-		//TryPhone::put_logs_to_db("qianChengCL_20190219", TryPhone::CAT_QIANCHENGCL);
-
-		//TryPhone::request(17611629667, TryPhone::CAT_TAOGUBA);
-		//TryPhone::request(18810056120, TryPhone::CAT_YIHAOPZ);
-//		TryPhone::phone_section_3();
-
-		//TryPhone::phone_section_1(1);
-
-
-		//StockAction::update_stock_clients();
-
-
+		StockAction::add_by_excel('/data/res/imei/excel/2019/04/5cac8de4c7f7d.xls');
 		exit;
 	}
 
 	public function actionYz()
 	{
 
-		// AppUtil::logByFile(date('Y-m-d H:i:s'), 'youzan_user', __FUNCTION__, __LINE__);
-
-		$token = YouzanUtil::getAccessToken();
-		echo $token . PHP_EOL;
-		echo $token . PHP_EOL;
-
-		//YzUser::salesman_account_add(13810061446);
-		//YzUser::use_phone_get_user_info(13406917349);
-		//YzUser::getSalesManList();
-
-		// 更新用户
-		//YzUser::UpdateUser('2018-06-06 00:00:00','2018-06-07 00:00:00');
-
-		// 更新用户
-		//YzUser::UpdateUser('2018-07-31 08:00:00', '');
-		//YzUser::getUserBySETime('2018-07-25 00:00:00', '', 1);
-
-		// 更新分销员
-		//YzUser::getSalesManList();
-
-		// 更新
-//		YzUser::getSalesManList(1);
-//		print_r(YzUser::set_user_to_yxs(18863781181));
-
-		// ChatMsg::massmsg();
-
-		/* 去掉昵称表情符号
-		$conn = AppUtil::db();
-		$sql = 'update im_yz_user set uName=:uname where uId =:id';
-		$upCMD = $conn->createCommand($sql);
-		$sql = 'select uId,uName from im_yz_user where uId >0 ';
-		$res = $conn->createCommand($sql)->queryAll();
-
-		foreach ($res as $v) {
-			$id = $v['uId'];
-			$name = YzUser::filterEmoji($v['uName']);
-			$upCMD->bindValues([
-				':uname' => trim($name),
-				':id' => $id,
-			])->execute();
-		}*/
-
-		YzOrders::Update_order('2018-09-05 00:00:00', '', 1);
-
-		//YzOrders::orders_user_mix_update();
-
-		//$order = '[{"outer_sku_id":"","goods_url":"https:\/\/h5.youzan.com\/v2\/showcase\/goods?alias=2xcvsoqrf4x1b","item_id":422422370,"outer_item_id":"ZC-PDD-100478","item_type":0,"num":1,"sku_id":36212103,"sku_properties_name":"[{\"k\":\"规格\",\"k_id\":14,\"v\":\"2瓶装\",\"v_id\":416}]","pic_path":"https:\/\/img.yzcdn.cn\/upload_files\/2018\/06\/20\/Fj4VKD6yEvUlyL_TrIFYHFkiEkeT.jpg","oid":"1463796275690872643","title":"好太太洗洁精批发强效去残留 果蔬不伤手——买好货、想省钱，就去到家严选","buyer_messages":"","is_present":false,"points_price":"0","price":"19.90","total_fee":"19.90","alias":"2xcvsoqrf4x1b","payment":"16.61"}]';
-		//YzOrders::update_goods_skus(json_decode($order, 1)[0]);
-
-		// YzRefund::get_goods_by_se_time(1);
-		// YzGoods::get_goods_by_se_time_new(YzGoods::ST_STORE_HOUSE, 1);
-
-		//YzOrders::Update_order('', '', 1);
-
-
-		//YzGoods::update_goods(1);
-		// YzGoods::update_all_goods_desc(1);
-
-		//YzRefund::get_goods_by_se_time();
-
-		// 未知商品ID [418096436, 2147483647, 418492020,415342072];
-
-		/*$array = [
-			[1, 'oa'],
-			[2, 'ob'],
-			[3, 'oa'],
-		];
-		//$arr = array_column($array, 1);
-
-		$arr2 = array_map(function ($val) {
-			$val[1] = str_replace("o", '', $val[1]);
-			return $val;
-		}, $array);
-
-		print_r($arr2);*/
-
-		// print_r(YzOrders::process_express([]));
-
-		// YzCoupon::coupon_search_item_all();
-
-		// echo self::cal_all_next(18518082610);
-
 
 	}
 
 	public function actionAssign()
 	{
-		$phones = [
-			15090721932,
-			18570053541,
-			15166277438,
-			19925111131,
-			15961273550,
-			13402658622,
-			13679271571,
-			18676203788,
-			13860172620,
-			15558177152,
-			13485316600,
-			13428476921,
-			18181115465,
-			15020455278,
-			17614470861,
-			15275240583,
-			18545177496,
-			13810021830,
-			17557263040,
-			13508091928,
-			15311256511,
-			13424259916,
-			15899028285,
-			18524488621,
-			13947282345,
-			13822205211,
-			13133898958,
-			13868539875,
-			18718482581,
-			15707337637,
-			18396608405,
-			15807281325,
-			15328799091,
-			15090350274,
-			13873692520,
-			18357559582,
-			17761092667,
-			17731098798,
-			13980502283,
-			13305818938,
-			15200778729,
-			13107282383,
-			13324858492,
-			18274843767,
-			13699544280,
-			13902271627,
-			15970082226,
-			13333988920,
-		];
-		shuffle($phones);
-		$xiaodao = array_slice($phones, 0, 20);
-		$jin = array_slice($phones, 20, 20);
-		$cao = array_slice($phones, 40, 8);
-
-		print_r([count($xiaodao), count($jin), count($cao)]);
-
-		$send = function ($phones, $bd) {
-			foreach ($phones as $phone) {
-				CRMStockClient::edit([
-					"name" => $phone,
-					"phone" => $phone,
-					"wechat" => '',
-					"note" => '系统添加',
-					"prov" => '北京市',
-					"city" => '昌平区',
-					"addr" => '',
-					"age" => CRMStockClient::AGE_20_30,
-					"stock_age" => CRMStockClient::STOCK_AGE_1,
-					"gender" => CRMStockClient::GENDER_MALE,
-					"job" => '',
-					"category" => CRMStockClient::CATEGORY_YANXUAN,
-					"bd" => $bd,
-					"type" => 'user_zp',
-					"src" => CRMStockClient::SRC_WEBSITE,
-				], '', 1002);
-			}
-		};
-		$send($xiaodao, 1027);
-		$send($jin, 1047);
-		$send($cao, 1048);
 
 	}
 
 	public function actionTest()
 	{
-		$sql = "select * from im_stock_order group by oPhone  order by oId asc ";
-		$res = AppUtil::db()->createCommand($sql)->queryAll();
-		foreach ($res as $k => $v) {
-			$user = StockUser::findOne(['uPhone' => $v['oPhone']]);
-			$pt_user = StockUser::findOne(['uPhone' => $user->uPtPhone, 'uType' => StockUser::TYPE_PARTNER]);
-			if ($pt_user) {
-				StockUser::edit($user->uId, [
-					'uPtName' => $pt_user->uName,
-				]);
-			}
-		}
+
 
 		exit;
 
@@ -1719,7 +1530,6 @@ class FooController extends Controller
 	public function actionIps()
 	{
 
-//		TryPhone::phone_section_1();
 
 
 	}
@@ -1727,7 +1537,6 @@ class FooController extends Controller
 	public function actionIps2()
 	{
 
-		TryPhone::req("17611629667");
 
 	}
 

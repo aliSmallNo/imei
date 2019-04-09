@@ -56,10 +56,8 @@ class StockAction extends \yii\db\ActiveRecord
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
 
-		if (Admin::isDebugUser(Admin::getAdminId())) {
-			print_r($result);
-			exit;
-		}
+		print_r($result);
+		exit;
 
 		if (!$result) {
 			$result = [];
