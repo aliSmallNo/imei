@@ -84,7 +84,7 @@ class StockAction extends \yii\db\ActiveRecord
 		}
 
 		$sql = "update im_stock_action set aType=9 where aType=1 and aPhone in (" . trim($phones, ',') . ')';
-		$res1 = $conn->createCommand($sql);
+		$res1 = $conn->createCommand($sql)->execute();
 
 		$sql = "insert into im_stock_action (aPhone,aType,aTypeTxt,aAddedOn) 
 				values  " . trim($values, ',');
