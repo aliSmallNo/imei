@@ -56,8 +56,6 @@ class StockAction extends \yii\db\ActiveRecord
 		$error = 0;
 		$result = ExcelUtil::parseProduct($filepath);
 
-		print_r($result);
-		exit;
 
 		if (!$result) {
 			$result = [];
@@ -119,7 +117,8 @@ class StockAction extends \yii\db\ActiveRecord
 		if ($error) {
 			$transaction->rollBack();
 		} else {
-			$transaction->commit();
+			$transaction->rollBack();
+			//$transaction->commit();
 		}
 
 		//  改为定时任务执行 2019-03-09
