@@ -80,6 +80,7 @@
 				<th>状态</th>
 				<th>今日价格</th>
 				<th>收益</th>
+				<th>持股</th>
 			{{/if}}
 			<th>时间</th>
 		</tr>
@@ -114,6 +115,7 @@
 					</td>
 				{{/if}}
 				<td>{{$item.dt}}</td>
+				<td>{{$item.oHoldDays}}</td>
 			</tr>
 		{{/foreach}}
 		</tbody>
