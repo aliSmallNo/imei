@@ -1504,7 +1504,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		//StockOrder::cla_stock_hold_days();
+		StockOrder::update_price();
 		exit;
 	}
 

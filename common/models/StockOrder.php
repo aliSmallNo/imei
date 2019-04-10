@@ -234,7 +234,8 @@ class StockOrder extends ActiveRecord
 			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'UTF-8', 'GB2312', 'GBK']);
 		}
 		//$ret = AppUtil::check_encode($ret);
-		//echo $ret . PHP_EOL;
+		echo $ret . PHP_EOL;
+		exit;
 		$ret = explode(",", $ret);
 		// unset($ret[0]);
 		self::update_price_des($ret, $oId);
