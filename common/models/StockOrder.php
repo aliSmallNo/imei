@@ -73,7 +73,7 @@ class StockOrder extends ActiveRecord
 			$entity->$key = $val;
 		}
 		$res = $entity->save();
-		var_dump($res);
+		var_dump($entity->getErrors());
 		return $entity->oId;
 	}
 
