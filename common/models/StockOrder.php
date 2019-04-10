@@ -72,7 +72,8 @@ class StockOrder extends ActiveRecord
 		foreach ($values as $key => $val) {
 			$entity->$key = $val;
 		}
-		$entity->save();
+		$res = $entity->save();
+		var_dump($res);
 		return $entity->oId;
 	}
 
@@ -268,7 +269,8 @@ class StockOrder extends ActiveRecord
 			"oStockName" => $stockName,
 			"oRate" => $oRate,
 		]);
-		var_dump([$res, $v['oId']]);exit;
+		var_dump([$res, $v['oId']]);
+		exit;
 	}
 
 
