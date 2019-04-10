@@ -234,8 +234,7 @@ class StockOrder extends ActiveRecord
 			$ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'UTF-8', 'GB2312', 'GBK']);
 		}
 		//$ret = AppUtil::check_encode($ret);
-		echo $ret . PHP_EOL;
-		exit;
+		//echo $ret . PHP_EOL;exit;
 		$ret = explode(",", $ret);
 		// unset($ret[0]);
 		self::update_price_des($ret, $oId);
@@ -259,7 +258,7 @@ class StockOrder extends ActiveRecord
 			$oIncome = 0;
 		}
 		$oRate = sprintf("%.2f", $oIncome / $v['oLoan']);// 盈利比例
-		StockOrder::edit($v['oId'], [
+		$res = StockOrder::edit($v['oId'], [
 			"oPriceRaw" => AppUtil::json_encode($ret),
 			"oAvgPrice" => $avgPrice,
 			"oOpenPrice" => $openPrice,
@@ -269,6 +268,7 @@ class StockOrder extends ActiveRecord
 			"oStockName" => $stockName,
 			"oRate" => $oRate,
 		]);
+		var_dump([$res, $v['oId']]);exit;
 	}
 
 
