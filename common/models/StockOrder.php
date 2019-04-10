@@ -73,7 +73,7 @@ class StockOrder extends ActiveRecord
 			$entity->$key = $val;
 		}
 		$res = $entity->save();
-		var_dump($entity->getErrors());
+		//var_dump($entity->getErrors());
 		return $entity->oId;
 	}
 
@@ -269,8 +269,7 @@ class StockOrder extends ActiveRecord
 			"oStockName" => $stockName,
 			"oRate" => $oRate,
 		]);
-		var_dump([$res, $v['oId']]);
-		exit;
+		//var_dump([$res, $v['oId']]);exit;
 	}
 
 
