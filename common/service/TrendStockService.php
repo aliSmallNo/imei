@@ -198,6 +198,13 @@ class TrendStockService
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
+		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+			/*echo AppUtil::db()->createCommand($sql)->bindValues([
+				':beginDT' => $beginDate,
+				':endDT' => $endDate,
+			])->getRawSql();
+			exit;*/
+		}
 		if ($res) {
 			$trend['sum_loan_total'] = 0;
 			foreach ($res as $field => $num) {
@@ -205,6 +212,7 @@ class TrendStockService
 				$trend['sum_loan_total'] += intval($num);
 			}
 		}
+
 
 		$sum_loan_user_select = "";
 		foreach ($salers as $v) {

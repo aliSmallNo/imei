@@ -28,6 +28,7 @@ class TryPhone
 	const CAT_QIANCHENGCL = "qianChengCL";
 	const CAT_HONGDASP = "hongDaSP";
 	const CAT_SHUNFAPZ = "shunFaPZ";
+	const CAT_XIJINFA = "xiJinFa";
 	static $catDict = [
 		self::CAT_TAOGUBA => '淘股吧',
 		self::CAT_YIHAOPZ => '一号配资',
@@ -35,6 +36,7 @@ class TryPhone
 		self::CAT_QIANCHENGCL => '钱程策略',
 		self::CAT_HONGDASP => '弘大速配',
 		self::CAT_SHUNFAPZ => '顺发配资',
+		self::CAT_XIJINFA => '析金法',
 	];
 
 	// 把每天抓取到的手机号存入数据库
