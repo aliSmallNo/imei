@@ -382,7 +382,7 @@ class StockController extends BaseController
 			$criteria[] = "  u.uPhone like :phone ";
 			$params[':phone'] = $phone;
 		}
-		if($stock_id){
+		if ($stock_id) {
 			$criteria[] = "  o.oStockId = :oStockId ";
 			$params[':oStockId'] = $stock_id;
 		}
@@ -437,7 +437,7 @@ class StockController extends BaseController
 		foreach ($res1 as $k => $v) {
 			$key = $v['oPhone'];
 			//$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
-			$income = $v['oIncome'];
+			$income = floatval($v['oIncome']);
 			$load = $v['oLoan'];
 			$stockId = $v['oStockId'];
 			if ($v['st'] == "持有") {
@@ -483,7 +483,7 @@ class StockController extends BaseController
 		foreach ($res1 as $k => $v) {
 			$key = $v['aId'];
 			//$income = sprintf("%.2f", $v['oAvgPrice'] * $v['oStockAmt'] - $v['oLoan']);
-			$income = $income = $v['oIncome'];;
+			$income = $income = floatval($v['oIncome']);;
 			$load = $v['oLoan'];
 			$phone = $v['oPhone'];
 			if ($v['st'] == "持有") {
