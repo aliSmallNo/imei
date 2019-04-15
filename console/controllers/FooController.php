@@ -1505,7 +1505,9 @@ class FooController extends Controller
 	{
 
 		//TryPhone::phone_section_2();
-		TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time()), TryPhone::CAT_XIJINFA);
+		//TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time()), TryPhone::CAT_XIJINFA);
+
+		TryPhone::pre_reqData('17611629667',TryPhone::CAT_XIJINFA);
 		exit;
 	}
 

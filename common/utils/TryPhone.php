@@ -106,12 +106,15 @@ class TryPhone
 		if (is_array($msg)) {
 			$msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
 		}
+		echo '1:' . $msg . PHP_EOL;
 		if ($funcName) {
 			$msg = $funcName . ' ' . $line . ': ' . $msg;
 		} else {
 			$msg = 'message: ' . $msg;
 		}
+		echo '2:' . $msg . PHP_EOL;
 		$fileName = AppUtil::logDir() . 'phone_' . $filename . date('Ymd') . '.log';
+
 		@file_put_contents($fileName, date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
