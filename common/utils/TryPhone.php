@@ -567,7 +567,7 @@ class TryPhone
 
 	public static function combind_phone($p, $Index = 1)
 	{
-		$sql = "update im_log set oKey=9,oAfter=now() where `oCategory`='phone_section' and oOpenId =$p";
+		$sql = "update im_log set oKey=9,oAfter=now() where `oCategory`='phone_section' and oOpenId ='$p' ";
 		AppUtil::db()->createCommand($sql)->execute();
 		for ($i = 0; $i < 9999; $i++) {
 			$phone = $p * 10000 + $i;
@@ -577,7 +577,7 @@ class TryPhone
 
 	public static function combind_phone_new2($p, $cat)
 	{
-		$sql = "update im_log set oKey=9,oAfter=now() where `oCategory`='phone_section' and oOpenId =$p";
+		$sql = "update im_log set oKey=9,oAfter=now() where `oCategory`='phone_section' and oOpenId ='$p' ";
 		AppUtil::db()->createCommand($sql)->execute();
 
 		for ($i = 0; $i < 9999; $i++) {
