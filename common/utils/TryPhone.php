@@ -46,6 +46,7 @@ class TryPhone
 		// $dt => phone_yesqianChengCL_20190219.log
 		$filepath = "/data/logs/imei/phone_yes" . $dt . ".log";
 		// phone_yesxiJinFa_20190415.log
+		echo $filepath.PHP_EOL;
 		if (!file_exists($filepath)) {
 			return false;
 		}
@@ -57,6 +58,7 @@ class TryPhone
 		if (!$logs) {
 			return false;
 		}
+		echo $logs.PHP_EOL;
 		foreach ($logs as $log) {
 			if ($log) {
 				$date = substr($log, 0, 19);
