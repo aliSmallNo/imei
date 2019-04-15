@@ -1504,7 +1504,8 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		TryPhone::phone_section_2();
+		//TryPhone::phone_section_2();
+		TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time()), TryPhone::CAT_XIJINFA);
 		exit;
 	}
 

@@ -45,6 +45,7 @@ class TryPhone
 		// $dt => phone_yes20190217.log
 		// $dt => phone_yesqianChengCL_20190219.log
 		$filepath = "/data/logs/imei/phone_yes" . $dt . ".log";
+		// phone_yesxiJinFa_20190415.log
 		if (!file_exists($filepath)) {
 			return false;
 		}
