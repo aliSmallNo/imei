@@ -652,7 +652,7 @@ class TryPhone
 		}
 
 		if ($field && isset($ret[$field]) && $ret[$field] == $tip) {
-			self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, $yes_filename);
+			self::logFile(['phone' => intval($phone)], __FUNCTION__, __LINE__, $yes_filename);
 		}
 
 	}
