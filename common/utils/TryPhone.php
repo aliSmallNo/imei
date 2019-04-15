@@ -46,7 +46,7 @@ class TryPhone
 		// $dt => phone_yesqianChengCL_20190219.log
 		$filepath = "/data/logs/imei/phone_yes" . $dt . ".log";
 		// phone_yesxiJinFa_20190415.log
-		echo $filepath.PHP_EOL;
+
 		if (!file_exists($filepath)) {
 			return false;
 		}
@@ -58,11 +58,12 @@ class TryPhone
 		if (!$logs) {
 			return false;
 		}
-		print_r($logs);
+
 		foreach ($logs as $log) {
 			if ($log) {
 				$date = substr($log, 0, 19);
 				$phone = substr($log, -12, 11);
+				echo $date . '==' . $phone . PHP_EOL;
 				Log::add_phone_section_yes($phone, $date, $area);
 			}
 		}
