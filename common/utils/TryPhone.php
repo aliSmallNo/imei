@@ -354,7 +354,7 @@ class TryPhone
 		} else {
 			$response = AppUtil::check_encode($response);
 			curl_close($ch);
-			var_dump($response);
+			var_dump(json_decode($response, 1));
 			return $response;
 		}
 
@@ -1492,6 +1492,10 @@ class TryPhone
 			case self::CAT_HONGDASP:
 				$field = "info";
 				$tip = "密码错误";
+				break;
+			case self::CAT_XIJINFA:
+				$field = "errMsg";
+				$tip = "用户名已存在";
 				break;
 		}
 
