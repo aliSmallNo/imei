@@ -1504,7 +1504,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		TryPhone::pre_reqData('17611629667',TryPhone::CAT_XIJINFA);
+		TryPhone::phone_section_2();
 		exit;
 	}
 
