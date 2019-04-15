@@ -346,14 +346,14 @@ class TryPhone
 			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
 		}
 		$response = curl_exec($ch);
-		curl_close($ch);
+
 		if ($response === false) {
 			$error_info = curl_error($ch);
-			curl_close($ch);// 关闭curl
+			curl_close($ch);
 			return false;
 		} else {
-			curl_close($ch);//关闭 curl
 			$response = AppUtil::check_encode($response);
+			curl_close($ch);
 			var_dump($response);
 			return $response;
 		}
