@@ -58,7 +58,7 @@ class TryPhone
 		if (!$logs) {
 			return false;
 		}
-		echo $logs.PHP_EOL;
+		print_r($logs);
 		foreach ($logs as $log) {
 			if ($log) {
 				$date = substr($log, 0, 19);
