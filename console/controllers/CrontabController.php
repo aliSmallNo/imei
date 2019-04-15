@@ -40,6 +40,8 @@ class CrontabController extends Controller
 	// 1 */3 * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/pool
 	// */5 * * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/alert
 
+	// 1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/try_phone
+
 
 	public function actionRefresh($openId = '')
 	{
@@ -138,7 +140,6 @@ class CrontabController extends Controller
 			TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
 			TryPhone::put_logs_to_db(TryPhone::CAT_WOLUNCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_WOLUNCL);
 			TryPhone::put_logs_to_db(TryPhone::CAT_YIHAOPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_YIHAOPZ);
-
 
 		} catch (\Exception $e) {
 			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_YES, 'oUId' => '1000', 'oAfter' => AppUtil::json_decode($e)]);

@@ -111,7 +111,7 @@ class TryPhone
 		@file_put_contents($fileName, date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
 	}
 
-	public static function get_link($cat)
+	public static function get_link($cat, $params = [])
 	{
 		if ($cat == self::CAT_TAOGUBA) {
 			$link = 'https://sso.taoguba.com.cn/web/login/submit';
@@ -125,8 +125,11 @@ class TryPhone
 			$link = 'http://www.stianran.com/index.php?ctl=user&act=dologin&ajax=1';
 		} elseif ($cat == self::CAT_SHUNFAPZ) {
 			$link = 'http://www.pz79.com/index.php?app=web&mod=member&ac=dologin';
+		} elseif ($cat == self::CAT_XIJINFA) {
+			$link = 'http://www.xijinfa.com/auth/check-user?username=' . $params['username'];
 		} else {
 			$link = '';
+
 		}
 		return $link;
 	}
@@ -145,8 +148,11 @@ class TryPhone
 			$cookie = 'security_session_verify=e43a676ed6712bf46bf830173e93f710; ZDEDebuggerPresent=php,phtml,php3; PHPSESSID=ku08r19baqa7ohja5gupuielq7; cck_lasttime=1550200521916; cck_count=0; __51cke__=; firstEnterUrlInSession=http%3A//www.stianran.com/; ktime_vip/535c3814-de54-5901-8b23-da745236f387/1b93f3fd-d178-4bb3-b425-181c7567d49e=-3; k_vip/535c3814-de54-5901-8b23-da745236f387/1b93f3fd-d178-4bb3-b425-181c7567d49e=y; VisitorCapacity=1; __tins__19684689=%7B%22sid%22%3A%201550219128389%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201550220928389%7D; __51laig__=3';
 		} elseif ($cat == self::CAT_SHUNFAPZ) {
 			$cookie = 'aliyungf_tc=AQAAABYuImjPSQoAP6GHPew/L5aeLaZd; PHPSESSID=02r9tjuv09kde4j98clhoakqs7; cck_lasttime=1550199838384; cck_count=0; CCKF_visitor_id_140348=1163261272; cckf_track_140348_LastActiveTime=1550221007; cckf_track_140348_AutoInviteNumber=0; cckf_track_140348_ManualInviteNumber=0';
+		} elseif ($cat == self::CAT_XIJINFA) {
+			$cookie = 'UM_distinctid=16a0bfc0b98122-061fb37e4f9c1a-12306d51-fa000-16a0bfc0b9940a; device_token=eyJpdiI6InpWSnVDZDY3cUo5MjNqRml0Zm5KNXc9PSIsInZhbHVlIjoiVE8zSllGbTNna0FyK2owNTBTemhyK0NLTDRFRUxndlJKNzdLSWR4dlpMT0QwSk10S0pXTHA0am1zVHVyeWh1dGVnQWllK2JJSmloRVlhUUlKdVBWNUlMbElkRGVUZHl0a2tDM0tGN2x4XC9JPSIsIm1hYyI6IjgzM2VhOWMwNjE0MGRiNmNlZjU3MmMxNGNjOGFiNzk2ZmNlMzRlNThlMzc2MWQ5YjQwMmQwNTFjZTAzYjE2OTUifQ%3D%3D; CNZZDATA1260384432=740519197-1554975728-%7C1555256194; XSRF-TOKEN=eyJpdiI6ImxHbGg4UjE2NDlRVGRhZ29cLzZ0Rml3PT0iLCJ2YWx1ZSI6Ims4Y0FkeEgxRHVzTWp0eTA3UzhWeERxRWZPOFdEaGxZVUl1aTJcL2x0eVFPSjZCeVBTNlNxU1RhdE8xaTNYMERYSkVHZ3ZnUUtxRGgxUXV6WVBxTXlCQT09IiwibWFjIjoiMDVjYmQ2ZWEwYTRkYmQxNmU1MmNjM2Q2MGIyYjEyZjBhYWUzMzE5MGU2NjUzMDlhMzQ2YTE0ODE3YTVjMDE2YiJ9; laravel_session=eyJpdiI6Ijg4Yk1VaXdBMXJCdytscVN6MWI2WHc9PSIsInZhbHVlIjoiZFRBelwvTmRSY1k5aG5vc21uWjJ2bXVhaThmd0kyM09NMDhXeVlQcDJiUTlqdkhpdlZjMnVUeENFUHY2YVwvOFVJTW9FVEpKK21mYldjdDZzVGtGY0lSdz09IiwibWFjIjoiY2JlMjk4ZTQxZTMxMmEzNjI5YjcyMGUzMzIyMzFhYWUzMDcwNGRhZmMwMzczNDA2Yzg5MTUwNDdjNDcwMzIyZSJ9';
 		} else {
 			$cookie = '';
+
 		}
 		return $cookie;
 	}
@@ -173,6 +179,25 @@ class TryPhone
 		}
 		$ret = "";
 		switch ($cat) {
+			case self::CAT_XIJINFA:
+				$data = [
+					'username' => $phone,
+				];
+				$header = [
+					'Accept:*/*',
+					'accept-encoding: gzip, deflate',
+					'accept-language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Cache-Control: no-cache',
+					'Connection: keep-alive',
+					'Host: www.xijinfa.com',
+					'Pragma: no-cache',
+					'Referer: http://www.xijinfa.com/',
+					'X-CSRF-Token: z0EDSD7Bbywo0lMyIG6aBWuAHwfidfFF4puR6J2Y',
+					"User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::req_get_data($data, $cat, $header, 0, 'gzip');
+				break;
 			case self::CAT_TAOGUBA:
 				$data = [
 					'userName' => $phone,
@@ -302,6 +327,30 @@ class TryPhone
 		self::request_after($ret, $phone, $cat);
 	}
 
+	public static function req_get_data($data, $cat, $header = [], $proxy = 0, $encoding = 0)
+	{
+		$link = self::get_link($cat, $data);
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $link);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+		curl_setopt($ch, CURLOPT_COOKIE, self::get_cookie($cat));
+		if ($encoding) {
+			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
+		}
+		$ret = curl_exec($ch);
+		curl_close($ch);
+		var_dump($ret);
+	}
+
+
 	public static function reqData($data, $cat, $header = [], $proxy = 0, $encoding = 0)
 	{
 
@@ -333,6 +382,7 @@ class TryPhone
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时时间
 		curl_setopt($ch, CURLOPT_COOKIE, self::get_cookie($cat));
 
+		// 设置为post方式请求
 		curl_setopt($ch, CURLOPT_POST, 1);
 		$postdata = "";
 		foreach ($data as $key => $value) {
@@ -345,7 +395,6 @@ class TryPhone
 		if ($encoding) {
 			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
 		}
-
 
 		$response = curl_exec($ch);
 		if ($response === false) {
@@ -439,18 +488,7 @@ class TryPhone
 	// 淘股吧 bj
 	public static function phone_section_1($flag = 0)
 	{
-		$phone_section = [
-			//1561102,
-			1391026, 1891113, 1861815, 1372004, 1851048, 1305191, 1381198, 1368365,
-			1361119, 1330122, 1352129, 1371810, 1891133, 1851311, 1861174, 1891030, 1861192, 1504007, 1391183, 1861016,
-			1391076, 1841028, 1369128, 1326033, 1850026, 1346666, 1367134, 1391018, 1891081, 1864641, 1380100, 1391141,
-			1381050, 1860132, 1581004, 1381000, 1391104, 1891053, 1352194, 1851808, 1861264, 1861021, 1861838, 1340111,
-			1326971, 5786511, 1581039, 1343970, 1800632, 1391122, 1326122, 1234567, 1331234, 1111111, 1333444, 1851074,
-			1333119, 1590100, 1352018, 1346635, 1370110, 1871003, 1861163, 1391157, 1381102, 1358153, 1501143, 1731017,
-			1336637, 1581129, 1312026, 1760038, 1368121, 1390120, 1567947, 1860003, 1570168, 1885695, 1850004, 1561546,
-			1352182, 1331110, 1861259, 1360100, 1365137, 1851016, 1380102, 1771063, 1391080, 1358190, 1590125, 1860137,
-			1761167, 1891094, 1391096, 1352423, 1851032, 1362138, 1312149, 1891102, 1381171,
-		];
+
 		$phone_section = self::phone_section();
 		if ($flag) {
 			echo $phone_section . PHP_EOL;
@@ -463,16 +501,6 @@ class TryPhone
 	// 淘股吧 tianjin shanghai
 	public static function phone_section_2()
 	{
-		// select group_concat(oOpenId) from  im_log where oCategory='phone_section' and oBefore='tianjin' and oKey=1 group by oCategory order by oId asc limit 100;
-		$phone_section = [
-			//1375220,
-			//1361208,
-			1392069, 1351622, 1860226, 1512216, 1863099, 1552293, 1852236, 1592208,
-			1351245, 1351281, 1351285, 1351286, 1351287,
-			1303225, 1863090, 1351222, 1351225, 1862252, 1351226,
-			1832119, 1734976, 1366301, 1368179, 1590214, 1381641, 1521037, 1361164, 1500188, 1381643, 1590086,
-			1500045, 1502673, 1502131, 1502155, 1522134, 1580195, 1390146, 1582164, 1582196, 1358554, 1361161, 1364182, 1391749
-		];
 		$phone_section = self::phone_section();
 		foreach ($phone_section as $p) {
 			self::combind_phone($p, 2);

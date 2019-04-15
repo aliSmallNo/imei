@@ -1504,7 +1504,7 @@ class FooController extends Controller
 	public function actionZp()
 	{
 
-		StockOrder::update_price();
+		TryPhone::pre_reqData('17611629667',TryPhone::CAT_XIJINFA);
 		exit;
 	}
 

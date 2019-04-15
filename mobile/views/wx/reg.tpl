@@ -83,7 +83,8 @@
 			<div class="os">安卓手机</div>
 			<div class="cont">
 				<!--<a href="https://api.sanbao365.com/api/version/download?from=singlemessage&isappinstalled=0">点击进入准点买安卓系统</a>-->
-				<a href="https://api.sanbao365.com/api/version/zdmdl?from=groupmessage&isappinstalled=0">点击进入准点买安卓系统</a>
+				<!--<a href="https://api.sanbao365.com/api/version/zdmdl?from=groupmessage&isappinstalled=0">点击进入准点买安卓系统</a>-->
+				<a href="https://www.sanbao365.com/api/version/anzhuang">点击进入准点买安卓系统</a>
 			</div>
 		</div>
 		<div class="item">
