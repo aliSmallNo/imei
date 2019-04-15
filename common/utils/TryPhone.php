@@ -345,9 +345,19 @@ class TryPhone
 		if ($encoding) {
 			curl_setopt($ch, CURLOPT_ENCODING, $encoding);// 对返回数据进行解压
 		}
-		$ret = curl_exec($ch);
+		$response = curl_exec($ch);
 		curl_close($ch);
-		var_dump($ret);
+		if ($response === false) {
+			$error_info = curl_error($ch);
+			curl_close($ch);// 关闭curl
+			return false;
+		} else {
+			curl_close($ch);//关闭 curl
+			$response = AppUtil::check_encode($response);
+			var_dump($response);
+			return $response;
+		}
+
 	}
 
 
