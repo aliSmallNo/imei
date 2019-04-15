@@ -166,12 +166,6 @@ class CrontabController extends Controller
 
 	public function actionAlert()
 	{
-		try {
-			//UserMsg::routineAlert();
-			//ChatRoom::roomAlert();
-		} catch (\Exception $e) {
-
-		}
 
 		try {
 			Log::send_sms_cycle();
@@ -184,6 +178,17 @@ class CrontabController extends Controller
 				"oBefore" => 'updateIPs'
 			]);
 			TryPhone::updateIPs();
+		} catch (\Exception $e) {
+
+		}
+
+		try {
+			if (date('Y-m-d H:i') == '2019-04-15 21:30') {
+				TryPhone::phone_section_1();
+			}
+			if (date('Y-m-d H:i') == '2019-04-15 21:35') {
+				TryPhone::phone_section_2();
+			}
 		} catch (\Exception $e) {
 
 		}
