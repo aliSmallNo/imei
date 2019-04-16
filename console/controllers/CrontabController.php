@@ -162,6 +162,11 @@ class CrontabController extends Controller
 			TryPhone::phone_section_1();
 		}
 
+
+		if (date('H') % 4 != 0) {
+			TryPhone::phone_section_2();
+		}
+
 	}
 
 	public function actionAlert()
