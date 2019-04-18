@@ -191,7 +191,6 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 
 		// 有照片跟进的算跟进记录
 		$pic_where=" and CHAR_LENGTH(t.tImage)>5 ";
-
 		$sql = "select COUNT(DISTINCT t.tCId) as cnt, t.tAddedBy, a.aName as title
 		 from im_crm_stock_track as t 
 		 join im_admin as a on a.aId=t.tAddedBy
