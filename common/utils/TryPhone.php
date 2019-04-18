@@ -194,8 +194,8 @@ class TryPhone
 		switch ($cat) {
 			case self::CAT_XUANGUBAO:
 				$data = [
-					'Mobile' => $phone,
-					'Password' => '111111',
+					'mobile' => $phone,
+					'password' => '111111',
 				];
 				$header = [
 					'Accept:application/json, text/plain, */*',
