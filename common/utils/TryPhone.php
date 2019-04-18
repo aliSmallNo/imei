@@ -194,7 +194,7 @@ class TryPhone
 		switch ($cat) {
 			case self::CAT_XUANGUBAO:
 				$data = [
-					'Mobile' => $phone,
+					'Mobile' => (string)$phone,
 					'Password' => '111111',
 				];
 				$header = [
