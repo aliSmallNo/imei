@@ -194,8 +194,8 @@ class TryPhone
 		switch ($cat) {
 			case self::CAT_XUANGUBAO:
 				$data = [
-					'mobile' => $phone,
-					'password' => '111111',
+					'Mobile' => $phone,
+					'Password' => '111111',
 				];
 				$header = [
 					'Accept:application/json, text/plain, */*',
@@ -206,7 +206,7 @@ class TryPhone
 					'X-Appgo-Platform: device=pc',
 					'X-Track-Info: {"AppId":"com.xuangubao.web","AppVersion":"1.0.0"}',
 				];
-				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				$ret = self::reqData($data, $cat, $header, 0, 'gzip', 'Request-Payload');
 				var_dump($ret);
 				break;
 			case self::CAT_XIJINFA:
@@ -390,7 +390,7 @@ class TryPhone
 	}
 
 
-	public static function reqData($data, $cat, $header = [], $proxy = 0, $encoding = 0)
+	public static function reqData($data, $cat, $header = [], $proxy = 0, $encoding = 0, $post_type = 'form-data')
 	{
 
 		$link = self::get_link($cat);
@@ -423,10 +423,15 @@ class TryPhone
 
 		// 设置为post方式请求
 		curl_setopt($ch, CURLOPT_POST, 1);
+		// PHP中CURL发送Request Payload: https://blog.csdn.net/mayuko2012/article/details/79705067
+		// PHP中CURL发送form-data: https://blog.csdn.net/mayuko2012/article/details/79705067
 		$postdata = "";
-		foreach ($data as $key => $value) {
-			$postdata .= ($key . '=' . $value . '&');
+		if ($post_type == 'form-data') {
+			$postdata = http_build_query($data);
+		} else {
+			$postdata = json_encode($data);
 		}
+
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
