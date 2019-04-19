@@ -194,6 +194,9 @@
 					data: mTrend[fields[i]]
 				});
 			}
+			if (cat == 'cat') {
+				console.log(items);
+			}
 		}
 
 		var colors = ['#e91e63', '#2196F3', '#4CAF50', '#FF8A80', '#47639E', '#00bcd4', "#ff5722", "#9c27b0", "#86c351", '#795548'];
