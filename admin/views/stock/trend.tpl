@@ -194,7 +194,7 @@
 					data: mTrend[fields[i]]
 				});
 			}
-			if (cat == 'cat') {
+			if (cat == 'load') {
 				console.log(items);
 			}
 		}
