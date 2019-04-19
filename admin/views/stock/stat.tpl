@@ -139,7 +139,8 @@
 					initChartDetail(resp.data.new, resp.data.new_titles, "new-chart");
 				} else {
 					//新线索,跟进客户数--整体
-					initChart(resp.data.track, "track-chart", "跟进客户数");
+					//initChart(resp.data.track, "track-chart", "跟进客户数");
+					initChart(resp.data.track, "track-chart", "跟进记录数");// 2019.04.19 modify
 					initChart(resp.data.new, "new-chart", "新线索");
 				}
 				// CRM分布
