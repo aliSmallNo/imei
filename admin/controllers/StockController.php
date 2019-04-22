@@ -141,7 +141,7 @@ class StockController extends BaseController
 		} elseif ($cat == 'all') {
 			// 金志新
 			if ($is_jinzx) {
-				$criteria[] = " cBDAssign in (1059,1056) ";// 查俊 宋富城
+				$criteria[] = " cBDAssign in (1059,1056,1061) ";// 查俊 宋富城 吴淑霞
 			}
 		}
 
