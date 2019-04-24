@@ -352,6 +352,11 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$name = $value[3] ?? '';
 			$src = $value[4] ?? '';
 
+			$phone = trim($phone);
+			$note = trim($note);
+			$name = trim($name);
+			$src = trim($src);
+
 //			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
 //				echo $phone . '<br>';
 //			}
