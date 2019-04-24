@@ -346,10 +346,11 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			if (!$key) {
 				continue;
 			}
-			$phone = $value[0];
-			$note = $value[1];
-			$time = $value[2];
-			$name = $value[3];
+			$phone = $value[0] ?? '';
+			$note = $value[1] ?? '';
+			$time = $value[2] ?? '';
+			$name = $value[3] ?? '';
+			$src = $value[4] ?? '';
 
 //			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
 //				echo $phone . '<br>';
@@ -357,6 +358,12 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
 			if (!AppUtil::checkPhone($phone)) {
 				continue;
+			}
+			$SourceMap = array_flip(self::SourceMap());
+			if (!isset($SourceMap[$src])) {
+				$src = CRMStockClient::SRC_SHORT_TERM_WANG;
+			} else {
+				$src = $SourceMap[$src];
 			}
 
 			list($code, $msg) = CRMStockClient::edit([
@@ -373,17 +380,13 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"job" => '',
 				"category" => CRMStockClient::CATEGORY_YANXUAN,
 				"bd" => 0,
-				"src" => CRMStockClient::SRC_SHORT_TERM_WANG,
+				"src" => $src,
 			], '', Admin::getAdminId());
 
 			if (!$code) {
 				continue;
 			}
 			$insertCount++;
-//			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-//				echo $insertCount . '==' . $code . '==' . $msg . '==' . $phone . '<br>';
-//			}
-
 		}
 
 		return [$insertCount, $error];
