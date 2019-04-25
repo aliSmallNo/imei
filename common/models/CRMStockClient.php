@@ -351,11 +351,13 @@ class CRMStockClient extends \yii\db\ActiveRecord
 			$time = $value[2] ?? '';
 			$name = $value[3] ?? '';
 			$src = $value[4] ?? '';
+			$bdName = $value[5] ?? '';
 
 			$phone = trim($phone);
 			$note = trim($note);
 			$name = trim($name);
 			$src = trim($src);
+			$bdName = trim($bdName);
 
 //			if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
 //				echo $phone . '<br>';
@@ -371,6 +373,14 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				$src = $SourceMap[$src];
 			}
 
+			$bds_temp = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client');
+			$bds = array_combine(array_column($bds_temp, 'name'), array_column($bds_temp, 'id'));
+			if (isset($bds[$bdName])) {
+				$bd = $bds[$bdName];
+			} else {
+				$bd = 0;
+			}
+
 			list($code, $msg) = CRMStockClient::edit([
 				"name" => $name ? $name : $time,
 				"phone" => $phone,
@@ -384,7 +394,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				"gender" => self::GENDER_MALE,
 				"job" => '',
 				"category" => CRMStockClient::CATEGORY_YANXUAN,
-				"bd" => 0,
+				"bd" => $bd,
 				"src" => $src,
 			], '', Admin::getAdminId());
 
