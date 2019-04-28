@@ -532,6 +532,7 @@ class StockOrder extends ActiveRecord
 			':dt' => $last_order_dt,
 		])->queryAll();
 		foreach ($orders as $order) {
+			echo $order['oId'] . '___' . $order['oPhone'] . PHP_EOL;
 			$cost_price = $order['oCostPrice'];
 			if ($cost_price < 1) {
 				continue;
