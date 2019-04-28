@@ -10,6 +10,7 @@ namespace admin\controllers;
 
 use admin\models\Admin;
 use admin\models\Menu;
+use admin\widgets\PagenationWidgets;
 use yii\data\Pagination;
 use yii\filters\Cors;
 use yii\helpers\ArrayHelper;
@@ -197,6 +198,7 @@ class BaseController extends Controller
 		if (!$pageSize) {
 			$pageSize = self::PAGE_SIZE;
 		}
+		/*
 		$pages = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
 		$pages->setPage($pageIndex - 1);
 		$res = LinkPager::widget(['pagination' => $pages]);
@@ -205,7 +207,9 @@ class BaseController extends Controller
 		$pagination = mb_ereg_replace('&laquo;', '<i class="fa fa-angle-double-left"></i>', $pagination);
 		$pagination = mb_ereg_replace('&raquo;', '<i class="fa fa-angle-double-right"></i>', $pagination);
 
-		return $pagination;
+		return $pagination;*/
+
+		return PagenationWidgets::widget(['page' => $pageIndex, 'count' => $count, 'page_size' => $pageSize]);
 	}
 
 }

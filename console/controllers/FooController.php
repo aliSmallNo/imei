@@ -1506,8 +1506,9 @@ class FooController extends Controller
 
 		//TryPhone::phone_section_2();
 		//TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time()), TryPhone::CAT_XIJINFA);
+		//TryPhone::pre_reqData(13323232323,TryPhone::CAT_XUANGUBAO);
 
-		TryPhone::pre_reqData(13323232323,TryPhone::CAT_XUANGUBAO);
+		StockOrder::send_msg_on_stock_price();
 		exit;
 	}
 

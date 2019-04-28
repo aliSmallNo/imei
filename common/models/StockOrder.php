@@ -208,11 +208,12 @@ class StockOrder extends ActiveRecord
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			$stockId = $v['oStockId'];
-			StockOrder::getStockPrice($stockId, $v['oId']);
+			$ret = StockOrder::getStockPrice($stockId);
+			self::update_price_des($ret, $v['oId']);
 		}
 	}
 
-	public static function getStockPrice($stockId, $oId)
+	public static function getStockPrice($stockId)
 	{
 		$preFix = substr($stockId, 0, 1);
 		switch ($preFix) {
@@ -238,7 +239,8 @@ class StockOrder extends ActiveRecord
 		//echo $ret . PHP_EOL;exit;
 		$ret = explode(",", $ret);
 		// unset($ret[0]);
-		self::update_price_des($ret, $oId);
+		return $ret;
+
 	}
 
 	public static function update_price_des($ret, $oId)
@@ -499,5 +501,28 @@ class StockOrder extends ActiveRecord
 		}
 
 		return true;
+	}
+
+	// 根据实时股价触发短信发送给股民
+	public static function send_msg_on_stock_price()
+	{
+		$conn = AppUtil::db();
+		//算出上个交易日的日期
+		$sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') from im_stock_order order by oId desc limit 1";
+		$last_order_dt = $conn->createCommand($sql)->queryScalar();
+		if ($last_order_dt == date('Y-m-d')) {
+			return false;
+		}
+		//用户在上个交易日的持有的股票
+		$sql = "select * from im_stock_order where oStatus=:st and oCostPrice>0 and DATE_FORMAT(oAddedOn,'%Y-%m-%d')=:dt";
+		$orders = $conn->createCommand($sql)->bindValues([
+			':st' => self::ST_HOLD,
+			':dt' => $last_order_dt,
+		])->queryAll();
+		foreach ($orders as $order) {
+			$cost_price = $order['oCostPrice'];
+			$curr_price = self::getStockPrice($order['oStockId']);
+			print_r($curr_price);exit;
+		}
 	}
 }

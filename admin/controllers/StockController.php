@@ -876,6 +876,7 @@ class StockController extends BaseController
 
 			]);
 	}
+
 	// 断点续传接口
 	public function actionApiUp()
 	{
