@@ -997,4 +997,34 @@ class Log extends ActiveRecord
 		return [$res, $count];
 	}
 
+
+	// 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
+	const CAT_STOCK_PRICE_REDUCR_WARNING = 'stock_price_reduce_warning';
+
+	/*
+	 * oCategory stock_price_reduce_warning
+	 * oKey    toguba
+	 * oBefore 手机号
+	 * oAfter  发送内容
+	 * oOpenId
+	 * oUId  oId
+	 */
+	public static function pre_reduce_warning_add($oId, $phone,$content)
+	{
+		$sql = "select * from im_log where oCategory=:oCategory and oBefore=:oBefore and datediff(oDate,now())=0 ";
+		if (AppUtil::db()->createCommand($sql)->bindValues([
+			':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
+			':oBefore' => $phone,
+		])->queryOne()) {
+			return false;
+		}
+		self::add([
+			'oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
+			'oBefore' => $phone,
+			'oAfter' => $content,
+			'oUId' => $oId,
+		]);
+		return true;
+	}
+
 }

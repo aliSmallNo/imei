@@ -503,9 +503,21 @@ class StockOrder extends ActiveRecord
 		return true;
 	}
 
+
 	// 根据实时股价触发短信发送给股民
 	public static function send_msg_on_stock_price()
 	{
+		if (!in_array(date('H'), ['09', '10', '11', '13', '14'])) {
+			//return false;
+		}
+		if (date('H') == '11' && intval(date('i')) > 29) {
+			//return false;
+		}
+		$leftMsgCount = AppUtil::getSMSLeft();
+		if ($leftMsgCount < 200) {
+			return false;
+		}
+
 		$conn = AppUtil::db();
 		//算出上个交易日的日期
 		$sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') from im_stock_order order by oId desc limit 1";
@@ -521,8 +533,33 @@ class StockOrder extends ActiveRecord
 		])->queryAll();
 		foreach ($orders as $order) {
 			$cost_price = $order['oCostPrice'];
-			$curr_price = self::getStockPrice($order['oStockId']);
-			print_r($curr_price);exit;
+			if ($cost_price < 1) {
+				continue;
+			}
+			@$curr_price = self::getStockPrice($order['oStockId'])[3] ?? 0;
+			if (empty($curr_price)) {
+				continue;
+			}
+			$offset_price = floatval(sprintf('%.4f', $cost_price * 0.07));
+			if (($offset_price + $curr_price) > $cost_price) {
+				continue;
+			}
+
+			$res = self::send_msg_on_stock_price_after($order);
+			if ($res) {
+				exit;
+			}
 		}
+	}
+
+	public static function send_msg_on_stock_price_after($order)
+	{
+		$content = "您好，我是准点买客服。您的股票策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到股票策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
+		//发送短信
+		if (Log::pre_reduce_warning_add($order['oId'], $order['oPhone'], $content)) {
+			AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
+			return true;
+		}
+		return false;
 	}
 }
