@@ -547,9 +547,7 @@ class StockOrder extends ActiveRecord
 			}
 
 			$res = self::send_msg_on_stock_price_after($order);
-			if ($res) {
-				exit;
-			}
+
 		}
 	}
 
@@ -558,7 +556,7 @@ class StockOrder extends ActiveRecord
 		$content = "您好，我是准点买客服。您的股票策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到股票策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
 		//发送短信
 		if (Log::pre_reduce_warning_add($order['oId'], $order['oPhone'], $content)) {
-			AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
+			// AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
 			return true;
 		}
 		return false;
