@@ -179,26 +179,20 @@ class CrontabController extends Controller
 		}
 
 		try {
-			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
-				"oBefore" => 'updateIPs'
-			]);
+//			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
+//				"oBefore" => 'updateIPs'
+//			]);
 			TryPhone::updateIPs();
 		} catch (\Exception $e) {
 
 		}
 
+
 		try {
-			if (date('Y-m-d H:i') == '2019-04-15 21:40') {
-				TryPhone::phone_section_1();
-			}
-			if (date('Y-m-d H:i') == '2019-04-15 21:45') {
-				TryPhone::phone_section_2();
-			}
+			// StockOrder::send_msg_on_stock_price();
 		} catch (\Exception $e) {
 
 		}
-
-
 	}
 
 	public function actionYzuser()

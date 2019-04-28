@@ -508,13 +508,13 @@ class StockOrder extends ActiveRecord
 	public static function send_msg_on_stock_price()
 	{
 		if (!in_array(date('H'), ['09', '10', '11', '13', '14'])) {
-			//return false;
+			return false;
 		}
 		if (date('H') == '11' && intval(date('i')) > 29) {
-			//return false;
+			return false;
 		}
 		$leftMsgCount = AppUtil::getSMSLeft();
-		if ($leftMsgCount < 200) {
+		if ($leftMsgCount < 500) {
 			return false;
 		}
 
@@ -532,7 +532,7 @@ class StockOrder extends ActiveRecord
 			':dt' => $last_order_dt,
 		])->queryAll();
 		foreach ($orders as $order) {
-			echo $order['oId'] . '___' . $order['oPhone'] . PHP_EOL;
+			// echo $order['oId'] . '___' . $order['oPhone'] . PHP_EOL;
 			$cost_price = $order['oCostPrice'];
 			if ($cost_price < 1) {
 				continue;
@@ -547,7 +547,6 @@ class StockOrder extends ActiveRecord
 			}
 
 			$res = self::send_msg_on_stock_price_after($order);
-
 		}
 	}
 
@@ -556,7 +555,7 @@ class StockOrder extends ActiveRecord
 		$content = "您好，我是准点买客服。您的股票策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到股票策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
 		//发送短信
 		if (Log::pre_reduce_warning_add($order['oId'], $order['oPhone'], $content)) {
-			// AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
+			AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
 			return true;
 		}
 		return false;
