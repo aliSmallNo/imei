@@ -1016,7 +1016,7 @@ class Log extends ActiveRecord
 		$phone = $order['oPhone'];
 		$oId = $order['oId'];
 		// 今天【这支股票】有没有发过短信
-		$sql = "select * from im_log where oCategory=:oCategory and oOpenId=:oOpenId and datediff(oDate,now())=0 ";
+		$sql = "select * from im_log where oCategory=:oCategory and oOpenId=:oOpenId and oKey=:oKey and datediff(oDate,now())=0 ";
 		if (AppUtil::db()->createCommand($sql)->bindValues([
 			':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
 			':oOpenId' => $phone,
