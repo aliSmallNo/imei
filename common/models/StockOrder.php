@@ -154,6 +154,11 @@ class StockOrder extends ActiveRecord
 		return [$insertCount, $error];
 	}
 
+	public static function unique_stock_key($order)
+	{
+		return $order['oPhone'] . '_' . $order['oStockId'] . '_' . $order['oStockAmt'] . '_' . $order['oLoan'];
+	}
+
 	public static function sold_stock($last_dt = '')
 	{
 		$conn = AppUtil::db();
@@ -170,14 +175,14 @@ class StockOrder extends ActiveRecord
 		$_yestoday = [];
 
 		foreach ($yestoday as $k => $v) {
-			$key = $v['oPhone'] . '_' . $v['oStockId'] . '_' . $v['oStockAmt'] . '_' . $v['oLoan'];
+			$key = self::unique_stock_key($v);
 			$_yestoday[$key] = $v;
 		}
 		$sql = "select * from im_stock_order where datediff(oAddedOn,now())=0 and oStatus=1";
 		$today = $conn->createCommand($sql)->queryAll();
 		$_today = [];
 		foreach ($today as $k1 => $v1) {
-			$key = $v1['oPhone'] . '_' . $v1['oStockId'] . '_' . $v1['oStockAmt'] . '_' . $v1['oLoan'];
+			$key = self::unique_stock_key($v1);
 			$_today[$key] = $v1;
 		}
 
@@ -508,10 +513,10 @@ class StockOrder extends ActiveRecord
 	public static function send_msg_on_stock_price()
 	{
 		if (!in_array(date('H'), ['09', '10', '11', '13', '14'])) {
-			return false;
+			//return false;
 		}
 		if (in_array(date('H'), ['09', '11']) && intval(date('i')) > 29) {
-			return false;
+			//return false;
 		}
 		$leftMsgCount = AppUtil::getSMSLeft();
 		if ($leftMsgCount < 500) {
@@ -537,7 +542,8 @@ class StockOrder extends ActiveRecord
 			if ($cost_price < 1) {
 				continue;
 			}
-			@$curr_price = self::getStockPrice($order['oStockId'])[3] ?? 0;
+			$stockPrice = self::getStockPrice($order['oStockId']);
+			@$curr_price = $stockPrice[3] ?? 0;
 			if (empty($curr_price)) {
 				continue;
 			}
@@ -546,15 +552,14 @@ class StockOrder extends ActiveRecord
 				continue;
 			}
 
-			$res = self::send_msg_on_stock_price_after($order);
+			$res = self::send_msg_on_stock_price_after($order,$stockPrice);
 		}
 	}
 
-	public static function send_msg_on_stock_price_after($order)
+	public static function send_msg_on_stock_price_after($order,$stockPrice)
 	{
-		$content = "您好，我是准点买客服。您的股票策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到股票策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
 		//发送短信
-		if (Log::pre_reduce_warning_add($order['oId'], $order['oPhone'], $content)) {
+		if (Log::pre_reduce_warning_add($order,$stockPrice)) {
 			//AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
 			return true;
 		}

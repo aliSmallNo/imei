@@ -1003,26 +1003,43 @@ class Log extends ActiveRecord
 
 	/*
 	 * oCategory stock_price_reduce_warning
-	 * oKey    toguba
+	 * oKey
 	 * oBefore 手机号
 	 * oAfter  发送内容
 	 * oOpenId
 	 * oUId  oId
 	 */
-	public static function pre_reduce_warning_add($oId, $phone,$content)
+	public static function pre_reduce_warning_add($order,$stockPrice)
 	{
-		$sql = "select * from im_log where oCategory=:oCategory and oBefore=:oBefore and datediff(oDate,now())=0 ";
+		$content = "您好，我是准点买客服。您的股票策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到股票策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
+		$key = StockOrder::unique_stock_key($order);
+		$phone = $order['oPhone'];
+		$oId = $order['oId'];
+		// 今天【这支股票】有没有发过短信
+		$sql = "select * from im_log where oCategory=:oCategory and oOpenId=:oOpenId and datediff(oDate,now())=0 ";
 		if (AppUtil::db()->createCommand($sql)->bindValues([
 			':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
-			':oBefore' => $phone,
+			':oOpenId' => $phone,
+			':oKey' => $key,
 		])->queryOne()) {
+			return false;
+		}
+		//【这支股票】发过短信超过3条后不再提醒
+		$sql = "select count(1) from im_log where oCategory=:oCategory and oOpenId=:oOpenId and oKey=:oKey ";
+		if (AppUtil::db()->createCommand($sql)->bindValues([
+				':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
+				':oOpenId' => $phone,
+				':oKey' => $key,
+			])->queryScalar() > 3) {
 			return false;
 		}
 		self::add([
 			'oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
-			'oBefore' => $phone,
+			'oOpenId' => $phone,
+			'oBefore' => $stockPrice,
 			'oAfter' => $content,
 			'oUId' => $oId,
+			'oKey' => $key,
 		]);
 		return true;
 	}
