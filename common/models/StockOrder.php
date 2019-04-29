@@ -513,10 +513,10 @@ class StockOrder extends ActiveRecord
 	public static function send_msg_on_stock_price()
 	{
 		if (!in_array(date('H'), ['09', '10', '11', '13', '14'])) {
-			//return false;
+			return false;
 		}
 		if (in_array(date('H'), ['09', '11']) && intval(date('i')) > 29) {
-			//return false;
+			return false;
 		}
 		$leftMsgCount = AppUtil::getSMSLeft();
 		if ($leftMsgCount < 500) {
@@ -528,7 +528,7 @@ class StockOrder extends ActiveRecord
 		$sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') from im_stock_order order by oId desc limit 1";
 		$last_order_dt = $conn->createCommand($sql)->queryScalar();
 		if ($last_order_dt == date('Y-m-d')) {
-			//return false;
+			return false;
 		}
 		//用户在上个交易日的持有的股票
 		$sql = "select * from im_stock_order where oStatus=:st and oCostPrice>0 and DATE_FORMAT(oAddedOn,'%Y-%m-%d')=:dt";
@@ -537,7 +537,7 @@ class StockOrder extends ActiveRecord
 			':dt' => $last_order_dt,
 		])->queryAll();
 		foreach ($orders as $order) {
-			echo $order['oId'] . '___' . $order['oPhone'] . PHP_EOL;
+			//echo $order['oId'] . '___' . $order['oPhone'] . PHP_EOL;
 			$cost_price = $order['oCostPrice'];
 			if ($cost_price < 1) {
 				continue;
