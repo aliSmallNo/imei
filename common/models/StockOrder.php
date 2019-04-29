@@ -515,7 +515,7 @@ class StockOrder extends ActiveRecord
 		if (!in_array(date('H'), ['09', '10', '11', '13', '14'])) {
 			return false;
 		}
-		if (in_array(date('H'), ['09', '11']) && intval(date('i')) > 29) {
+		if (in_array(date('H'), ['09', '11']) && intval(date('i')) > 30) {
 			return false;
 		}
 		$leftMsgCount = AppUtil::getSMSLeft();
