@@ -188,8 +188,9 @@ class CrontabController extends Controller
 		}
 
 
+		// 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
 		try {
-			// StockOrder::send_msg_on_stock_price();
+			StockOrder::send_msg_on_stock_price();
 		} catch (\Exception $e) {
 
 		}
