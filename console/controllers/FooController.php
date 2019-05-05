@@ -1508,7 +1508,11 @@ class FooController extends Controller
 		//TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time()), TryPhone::CAT_XIJINFA);
 		//TryPhone::pre_reqData(13323232323,TryPhone::CAT_XUANGUBAO);
 
-		 StockOrder::send_msg_on_stock_price();
+		// StockOrder::send_msg_on_stock_price();
+		var_dump(AppUtil::is_weekend('2019-04-04'));
+		var_dump(AppUtil::is_weekend('2019-04-05'));
+		var_dump(AppUtil::is_weekend('2019-04-06'));
+
 		exit;
 	}
 
