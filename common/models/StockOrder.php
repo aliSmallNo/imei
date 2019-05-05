@@ -512,6 +512,12 @@ class StockOrder extends ActiveRecord
 	// 根据实时股价触发短信发送给股民
 	public static function send_msg_on_stock_price()
 	{
+		if (AppUtil::is_weekend()) {
+			return false;
+		}
+		if (self::stock_closed_days()) {
+			return false;
+		}
 		if (!in_array(date('H'), ['09', '10', '11', '13', '14'])) {
 			return false;
 		}
@@ -552,15 +558,43 @@ class StockOrder extends ActiveRecord
 				continue;
 			}
 
-			$res = self::send_msg_on_stock_price_after($order,$stockPrice);
+			$res = self::send_msg_on_stock_price_after($order, $stockPrice);
 		}
 	}
 
-	public static function send_msg_on_stock_price_after($order,$stockPrice)
+	public static function send_msg_on_stock_price_after($order, $stockPrice)
 	{
 		//发送短信
-		if (Log::pre_reduce_warning_add($order,$stockPrice)) {
+		if (Log::pre_reduce_warning_add($order, $stockPrice)) {
 			//AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 2019股市休市安排时间表
+	 * (一)元旦： 2018年12月30日(星期日)至2019年1月1日(星期二)休市，1月2日(星期三)起照常开市。另外，2018年12月29日(星期六)为周末休市。
+	 * (二)春节：2月4日(星期一)至2月10日(星期日)休市，2月11日(星期一)起照常开市。另外，2月2日(星期六)、2月3日(星期日)为周末休市。
+	 * (三)清明节：4月5日(星期五)至4月7日(星期日)休市，4月8日(星期一)起照常开市。
+	 * (四)劳动节：5月1日(星期三)至5月5日(星期天)休市，5月6日(星期一)起照常开市。
+	 * (五)端午节：6月7日(星期五)至6月9日(星期日)休市，6月10日(星期一)起照常开市。
+	 * (六)中秋节：9月13日(星期五)至9月15日(星期日)休市，9月16日(星期一)起照常开市。
+	 * (七)国庆节：10月1日(星期二)至10月7日(星期一)休市，10月8日(星期二)起照常开市。另外， 9月29日(星期日)、10月12日(星期六)为周末休市。
+	 */
+
+	/**
+	 * add 2019.5.5
+	 * 股市休市日期
+	 */
+	public static function stock_closed_days()
+	{
+		$closed_days = [
+			'2019-06-07', '2019-06-08', '2019-06-09',//2019端午节
+			'2019-09-13', '2019-09-14', '2019-09-15',//2019中秋节
+			'2019-10-01', '2019-10-02', '2019-10-03', '2019-10-04', '2019-10-05', '2019-10-06', '2019-10-07',//2019国庆节
+		];
+		if (in_array(date('Y-m-d'), $closed_days)) {
 			return true;
 		}
 		return false;

@@ -1569,6 +1569,22 @@ class AppUtil
 		return $times;
 	}
 
+	/**
+	 * add 2019.5.5
+	 * 是否是周末
+	 */
+	public static function is_weekend($dt = "")
+	{
+		if (!$dt) {
+			$dt = date('Y-m-d');
+		}
+		if (in_array(intval(date('w', strtotime($dt))), [0, 6])) {
+			return true;
+		}
+		return false;
+
+	}
+
 	public static function endWith($haystack, $needle)
 	{
 		$length = strlen($needle);
