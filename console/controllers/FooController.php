@@ -1509,9 +1509,6 @@ class FooController extends Controller
 		//TryPhone::pre_reqData(13323232323,TryPhone::CAT_XUANGUBAO);
 
 		// StockOrder::send_msg_on_stock_price();
-		var_dump(AppUtil::is_weekend('2019-05-04'));
-		var_dump(AppUtil::is_weekend('2019-05-05'));
-		var_dump(AppUtil::is_weekend('2019-05-06'));
 
 		exit;
 	}

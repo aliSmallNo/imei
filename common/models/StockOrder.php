@@ -587,14 +587,17 @@ class StockOrder extends ActiveRecord
 	 * add 2019.5.5
 	 * 股市休市日期
 	 */
-	public static function stock_closed_days()
+	public static function stock_closed_days($dt = "")
 	{
+		if (!$dt) {
+			$dt = date('Y-m-d');
+		}
 		$closed_days = [
 			'2019-06-07', '2019-06-08', '2019-06-09',//2019端午节
 			'2019-09-13', '2019-09-14', '2019-09-15',//2019中秋节
 			'2019-10-01', '2019-10-02', '2019-10-03', '2019-10-04', '2019-10-05', '2019-10-06', '2019-10-07',//2019国庆节
 		];
-		if (in_array(date('Y-m-d'), $closed_days)) {
+		if (in_array($dt, $closed_days)) {
 			return true;
 		}
 		return false;
