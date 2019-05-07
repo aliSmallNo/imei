@@ -65,6 +65,14 @@
 		<div id="new_loan-chart" class="chart-wrapper"></div>
 	</div>
 </div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<i class="fa fa-bar-chart-o fa-fw"></i> 新用户借款金额(新用户当月借款总数)
+	</div>
+	<div class="panel-body">
+		<div id="new_curr_month_loan-chart" class="chart-wrapper"></div>
+	</div>
+</div>
 
 <div class="panel panel-default">
 	<div class="panel-heading">
@@ -91,6 +99,7 @@
 		initChart('follow-chart', "follow");
 		initChart('new-chart', "new");
 		initChart('new_loan-chart', "new_loan");
+		initChart('new_curr_month_loan-chart', "new_curr_month_loan");
 	}
 
 	$(document).on('click', '.btnQuery', function () {
@@ -117,7 +126,7 @@
 		switch (cat) {
 			case 'load':
 				names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
-						"于辉","吴淑霞",
+					"于辉", "吴淑霞",
 				];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉","吴淑霞"
 				fields = [
 					'sum_loan_total',
@@ -127,7 +136,7 @@
 					"sum_loan_ZhangMengYing_18410283058", 'sum_loan_SunQingHai_13701269919',
 					//"sum_loan_XieShuoShuo_18101390540", "sum_loan_ShengJiaHao_17777857755", "sum_loan_ZhouPan_17611629667",
 					//"sum_loan_LuoWenYan_18801235947", "sum_loan_CaoJiaYi_13520364895","sum_loan_WangYiLong_18622112893",
-					"sum_loan_YuHui_13910838033","sum_loan_WuShuXia_18911781586",
+					"sum_loan_YuHui_13910838033", "sum_loan_WuShuXia_18911781586",
 				];
 				break;
 			case "users":
@@ -183,6 +192,18 @@
 					// "new_loan_WangYiLong_18622112893","new_loan_YuHui_13910838033",
 					"new_loan_YuHui_13910838033", "new_loan_WuShuXia_18911781586",
 				];
+				break;
+			case "new_curr_month_loan":
+		  names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
+			  "于辉", "吴淑霞",
+		  ];
+
+		  fields = ['new_curr_month_loan_total', "new_curr_month_loan_ZuoDanLei_18513655687", "new_curr_month_loan_JinZhiXin_18600649492",
+			  "new_curr_month_loan_XuFang_13910838055", "new_curr_month_loan_FengLin_18131243333",
+			  "new_curr_month_loan_ChenMing_18931357765", "new_curr_month_loan_SongFuCheng_18611794484", "new_curr_month_loan_FengXiaoQiang_13643225272",
+			  "new_curr_month_loan_ChaJun_13381081778", "new_curr_month_loan_ZhangMengYing_18410283058", 'new_curr_month_loan_SunQingHai_13701269919',
+			  "new_curr_month_loan_YuHui_13910838033", "new_curr_month_loan_WuShuXia_18911781586",
+		  ];
 				break;
 		}
 		if (names) {
