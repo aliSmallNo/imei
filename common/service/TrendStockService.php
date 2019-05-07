@@ -335,6 +335,37 @@ class TrendStockService
 			}
 		}
 
+		/**
+		 * "增加一个新用户借款金额统计：
+		 * 1.统计改为新用户在当月借款金额
+		 * 2.如4月1日，15日，30日的新用户，计算他进入4月新客借款金额，5月统统都不计算在内"
+		 */
+		if ($step == "month") {
+			$loan_curr_month_str = "";
+			foreach ($salers as $v) {
+				$name = Pinyin::encode($v['uName'], 'all');
+				$name = str_replace(" ", '', ucwords($name));
+				$loan_curr_month_str .= "sum(case when uPtPhone='" . $v['uPhone'] . "' then oLoan else 0 end) as " . $name . '_' . $v['uPhone'] . ',';
+			}
+			$loan_curr_month_str = trim($loan_curr_month_str, ',');
+			$sql = "select 
+				sum(case when uPtPhone then oLoan else 0 end) as total,
+				$loan_curr_month_str
+				from `im_stock_user` as u
+				left join `im_stock_order` as o on o.oPhone=u.uPhone 
+				where DATE_FORMAT(u.uAddedOn,'%m-%Y')= DATE_FORMAT(:endDT,'%m-%Y') ";
+			$res = $this->conn->createCommand($sql)->bindValues([
+				//':beginDT' => $beginDate,
+				':endDT' => $endDate,
+			])->queryOne();
+			if ($res) {
+				$trend['new_curr_month_loan_total'] = 0;
+				foreach ($res as $field => $num) {
+					$trend['new_curr_month_loan_' . $field] = intval($num);
+					$trend['new_curr_month_loan_total'] += intval($num);
+				}
+			}
+		}
 
 		foreach ($trend as $field => $val) {
 			$this->add($step, $this->dateName, $this->beginDate, $this->endDate, $field, $val);
