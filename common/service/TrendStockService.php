@@ -125,8 +125,7 @@ class TrendStockService
 		}
 		$trends = [];
 		$counters = [30, 12, 12];
-		//$steps = ['day', 'week', 'month'];
-		$steps = [ 'month'];
+		$steps = ['day', 'week', 'month'];
 		$service = TrendStockService::init(self::CAT_TREND);
 		foreach ($steps as $idx => $step) {
 			$cnt = $counters[$idx];
