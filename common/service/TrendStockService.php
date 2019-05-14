@@ -328,10 +328,8 @@ class TrendStockService
 //			exit;
 		}
 		if ($res) {
-			$trend['new_loan_total'] = 0;
 			foreach ($res as $field => $num) {
 				$trend['new_loan_' . $field] = intval($num);
-				$trend['new_loan_total'] += intval($num);
 			}
 		}
 
@@ -358,11 +356,16 @@ class TrendStockService
 				//':beginDT' => $beginDate,
 				':endDT' => $endDate,
 			])->queryOne();
+			/*if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+				echo $this->conn->createCommand($sql)->bindValues([
+					//':beginDT' => $beginDate,
+					':endDT' => $endDate,
+				])->getRawSql();
+				exit;
+			}*/
 			if ($res) {
-				$trend['new_curr_month_loan_total'] = 0;
 				foreach ($res as $field => $num) {
 					$trend['new_curr_month_loan_' . $field] = intval($num);
-					$trend['new_curr_month_loan_total'] += intval($num);
 				}
 			}
 			//print_r($trend);exit;
