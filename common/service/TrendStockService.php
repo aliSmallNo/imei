@@ -126,6 +126,7 @@ class TrendStockService
 		$trends = [];
 		$counters = [30, 12, 12];
 		$steps = ['day', 'week', 'month'];
+		//$steps = [ 'month'];
 		$service = TrendStockService::init(self::CAT_TREND);
 		foreach ($steps as $idx => $step) {
 			$cnt = $counters[$idx];
@@ -365,6 +366,7 @@ class TrendStockService
 					$trend['new_curr_month_loan_total'] += intval($num);
 				}
 			}
+			//print_r($trend);exit;
 		}
 
 		foreach ($trend as $field => $val) {

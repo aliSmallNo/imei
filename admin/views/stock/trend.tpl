@@ -204,6 +204,10 @@
 			  "new_curr_month_loan_ChaJun_13381081778", "new_curr_month_loan_ZhangMengYing_18410283058", 'new_curr_month_loan_SunQingHai_13701269919',
 			  "new_curr_month_loan_YuHui_13910838033", "new_curr_month_loan_WuShuXia_18911781586",
 		  ];
+		  /**
+	   [new_curr_month_loan_XieShuoShuo_18101390540] => 0
+	   [new_curr_month_loan_Huang_13552591660] => 0
+		   */
 				break;
 		}
 		if (names) {
