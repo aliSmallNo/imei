@@ -734,7 +734,7 @@ class StockController extends BaseController
 		$date = self::getParam('dt', date('Y-m-d'));
 		$reset = self::getParam('reset', 0);
 		if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
-			 //$reset = 1;
+			//$reset = 1;
 		}
 		$trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
 //		print_r($trends);exit;
@@ -934,4 +934,5 @@ class StockController extends BaseController
 
 
 	}
+
 }

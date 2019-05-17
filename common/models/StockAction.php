@@ -229,7 +229,8 @@ class StockAction extends \yii\db\ActiveRecord
 			}
 			$cmd->bindValues([
 				":phone" => $phone,
-				":dt" => $v['aAddedOn'],
+				//":dt" => $v['aAddedOn'],// 2019-5-17 modify by zp
+				":dt" => date('Y-m-d H:i:s'),
 			])->execute();
 		}
 	}
