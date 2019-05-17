@@ -226,7 +226,9 @@
 				<td>
 					{{if $prod.cIntro}}{{$prod.cIntro}}{{else}}<span class="text-muted">（无）</span>{{/if}}
 					<div class="text-muted">{{$prod.addedDate}}<br>来源：{{$prod.src}}</div>
-					<div class="action_{{$prod.cStockAction}}">{{$prod.action_t}}</div>
+					<div class="action_{{$prod.cStockAction}}">
+						{{$prod.action_t}} {{if $prod.cStockActionDate}}({{$prod.cStockActionDate}}){{/if}}
+					</div>
 
 				</td>
 

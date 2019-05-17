@@ -694,7 +694,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				c.cUpdatedDate,
 				c.cAddedBy,
 				c.cUpdatedBy,
-				c.cStockAction
+				c.cStockAction,
+				c.cStockActionDate
  				FROM im_crm_stock_client as c 
 				LEFT JOIN im_admin AS a ON c.cBDAssign = a.aId
  				WHERE cCategory=$category AND cDeletedFlag=0 $strCriteria 
