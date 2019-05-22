@@ -1033,8 +1033,8 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
 			if (isset($ret['response'][$phone]['detail'])) {
 				$detail = $ret['response'][$phone]['detail'];
-				$city = isset($detail['area'][0]['city']) ?? '';
-				$province = isset($detail['province']) ?? '';
+				$city = $detail['area'][0]['city'] ?? '';
+				$province = $detail['province'] ?? '';
 				echo $city . PHP_EOL;
 				echo $province . PHP_EOL;
 			}
