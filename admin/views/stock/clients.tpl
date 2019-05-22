@@ -99,6 +99,7 @@
 			<a class="addClue btn btn-xs btn-primary">添加线索</a>
 			{{if $isAssigner}}
 				<a class="addClueMore btn btn-xs btn-primary">批量导入线索</a>
+				<a class="choose_lose_client_btn btn btn-xs btn-primary">导入到无意向客户</a>
 			{{/if}}
 		</h4>
 	</div>
@@ -189,6 +190,9 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 		<tr>
+			{{if $cat=="sea"}}
+				<th>选择</th>
+			{{/if}}
 			<th>地区</th>
 			<th style="width: 185px">
 				姓名/手机/微信
@@ -214,6 +218,11 @@
 		<tbody>
 		{{foreach from=$items item=prod}}
 			<tr>
+				{{if $cat=="sea"}}
+					<td>
+						<input type="checkbox" data_cid="{{$prod.cId}}" class="choose_lose_client">
+					</td>
+				{{/if}}
 				<td>
 					{{$prod.cProvince}} - {{$prod.cCity}}
 				</td>
@@ -254,14 +263,15 @@
 				</td>
 				<td class="cell-act" data-id="{{$prod.cId}}">
 					<a href="/stock/detail?id={{$prod.cId}}" class="btnDetail btn btn-outline btn-primary btn-xs">跟进详情</a>
-					{{if $cat=="sea" && $prod.cBDAssign==0}}
-						<a href="javascript:;" class="btnGrab btn btn-outline btn-success btn-xs">我来跟进</a>
-					{{/if}}
-					{{if $isAssigner}}{{/if}}
-					<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
-
-					{{if $cat=="my" && !$sub_staff}}
-						<a href="javascript:;" class="btnChange btn btn-outline btn-info btn-xs">转给他人</a>
+					{{if $cat!="lose"}}
+						{{if $cat=="sea" && $prod.cBDAssign==0}}
+							<a href="javascript:;" class="btnGrab btn btn-outline btn-success btn-xs">我来跟进</a>
+						{{/if}}
+						{{if $isAssigner}}{{/if}}
+						<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
+						{{if $cat=="my" && !$sub_staff}}
+							<a href="javascript:;" class="btnChange btn btn-outline btn-info btn-xs">转给他人</a>
+						{{/if}}
 					{{/if}}
 				</td>
 			</tr>
@@ -700,6 +710,42 @@
 				}
 			}, 'json');
 		})
+	})
+
+	function get_lose_client() {
+		var data = [];
+		$(".choose_lose_client").each(function () {
+			var cid = $(this).attr('data_cid');
+			if ($(this).is(':checked')) {
+				data.push(cid);
+			}
+		});
+		if (data.length == 0) {
+			layer.msg("请先选择客户");
+			return false;
+		}
+		return data;
+	}
+
+	$(".choose_lose_client_btn").on("click", function () {
+		var data = get_lose_client();
+		if (!data) {
+			return false;
+		}
+		console.log(data);
+		console.log(JSON.stringify(data));
+		layer.load();
+		$.post("/api/stock_client", {
+			tag: 'choose_2_lose_client',
+			data: JSON.stringify(data)
+		}, function (resp) {
+			layer.closeAll();
+			if (resp.code == 0) {
+				//location.reload();
+			} else {
+				layer.msg(resp.msg);
+			}
+		}, 'json');
 	})
 </script>
 {{include file="layouts/footer.tpl"}}

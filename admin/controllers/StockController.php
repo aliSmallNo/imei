@@ -9,7 +9,6 @@
 namespace admin\controllers;
 
 
-use admin\controllers\BaseController;
 use admin\models\Admin;
 use common\models\CRMStockClient;
 use common\models\CRMStockSource;
@@ -122,6 +121,10 @@ class StockController extends BaseController
 				"title" => "全部客户",
 				"count" => !$is_jinzx ? $counters["cnt"] : $counters['cnt_jinzx']
 			],
+			"lose" => [
+				"title" => "无意向客户",
+				"count" => $counters["lose"]
+			],
 		];
 		if (!$isAssigner) {
 			unset($tabs['all']);
@@ -143,6 +146,8 @@ class StockController extends BaseController
 			if ($is_jinzx) {
 				$criteria[] = " cBDAssign in (1059,1056,1061) ";// 查俊 宋富城 吴淑霞
 			}
+		} elseif ($cat == "lose") {
+			$criteria[] = " cBDAssign=-1 ";
 		}
 
 		list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
@@ -728,6 +733,23 @@ class StockController extends BaseController
 		);
 	}
 
+	public function actionMsg_tip()
+	{
+		$page = self::getParam("page", 1);
+		$criteria = [];
+		$params = [];
+		$criteria[] = "  oCategory = :cat ";
+		$params[':cat'] = Log::CAT_STOCK_PRICE_REDUCR_WARNING;
+
+		list($list, $count) = Log::sms_tip_items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+		return $this->renderPage('msg_tip.tpl',
+			[
+				'list' => $list,
+				'pagination' => $pagination,
+			]);
+	}
+
 	public function actionTrend()
 	{
 
@@ -867,6 +889,7 @@ class StockController extends BaseController
 				'list' => $list,
 			]);
 	}
+
 
 	// 断点续传
 	public function actionUp()

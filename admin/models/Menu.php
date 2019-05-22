@@ -216,6 +216,12 @@ class Menu
 						"revise" => 1,
 						"level" => 827
 					],
+					[
+						"name" => '短信提醒',
+						"url" => "/stock/msg_tip",
+						"revise" => 1,
+						"level" => 827
+					]
 				]
 			],
 			[

@@ -1044,4 +1044,30 @@ class Log extends ActiveRecord
 		return true;
 	}
 
+	public static function sms_tip_items($criteria, $params, $page, $pageSize = 20)
+	{
+		$offset = ($page - 1) * $pageSize;
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+
+		$sql = "select l.*,u.uName
+				from im_log as l
+				left join im_stock_user as u on u.uPhone=l.oOpenId
+				left join im_stock_order as o on o.oId=l.oUId
+				where l.oId>0 $strCriteria
+				order by oDate desc 
+				limit $offset,$pageSize";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+
+		}
+		$sql = "select count(1) as co
+				from im_log as l
+				where oId>0 $strCriteria ";
+		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
+	}
 }

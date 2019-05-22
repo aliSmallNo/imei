@@ -41,6 +41,8 @@ use Yii;
 class CRMStockClient extends \yii\db\ActiveRecord
 {
 
+	const CBDASSIGN_LOSE = -1;
+
 	const CATEGORY_YANXUAN = 100;
 	const CATEGORY_ADVERT = 110;
 
@@ -630,6 +632,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		count(case when cBDAssign=:aid then 1 else null end) as mine,
 		count(case when cBDAssign=0 then 1 else null end) as sea,
 		count(1) as cnt ,
+		count(case when cBDAssign<0 then 1 else null end) as lose ,
 		count(case when cBDAssign in (1059,1056) then 1 else null end) as cnt_jinzx 
  		from im_crm_stock_client where cDeletedFlag=0 $strCriteria";
 		$conn = AppUtil::db();

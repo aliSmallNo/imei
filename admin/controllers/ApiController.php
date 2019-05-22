@@ -1359,6 +1359,16 @@ class ApiController extends Controller
 				$oid = self::postParam("oid");
 				list($code, $data) = Log::update_action_alert($oid, $this->admin_id);
 				return self::renderAPI($code, "", $data);
+			case "choose_2_lose_client":
+				$data = self::postParam('data');
+				$data = json_decode($data, 1);
+				if (!$data) {
+					return self::renderAPI(129, "还没选择客户", $data);
+				}
+				foreach ($data as $cid) {
+					CRMStockClient::mod($cid, ['cBDAssign' => CRMStockClient::CBDASSIGN_LOSE]);
+				}
+				return self::renderAPI(0, "", $data);
 		}
 		return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
 	}
