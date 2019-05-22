@@ -1026,9 +1026,18 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		$sql = "select * from im_crm_stock_client where cDeletedFlag=0 and CHAR_LENGTH(cPhone)=11 ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
-			$url = $base_url . $v['cPhone'];
+			$phone = $v['cPhone'];
+			$url = $base_url . $phone;
 			$ret = AppUtil::httpGet($url);
-			print_r(json_decode($ret, 1));
+			$ret = json_decode($ret, 1);
+
+			if (isset($ret['response'][$phone]['detail'])) {
+				$detail = $ret['response'][$phone]['detail'];
+				$city = isset($detail['area'][0]['city']) ?? '';
+				$province = isset($detail['province']) ?? '';
+				echo $city . PHP_EOL;
+				echo $province . PHP_EOL;
+			}
 			exit;
 		}
 	}

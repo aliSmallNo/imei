@@ -1514,37 +1514,6 @@ class FooController extends Controller
 		exit;
 	}
 
-	public function actionYz()
-	{
-
-
-	}
-
-	public function actionAssign()
-	{
-
-	}
-
-	public function actionTest()
-	{
-
-
-		exit;
-
-	}
-
-	public function actionIps()
-	{
-
-
-	}
-
-	public function actionIps2()
-	{
-
-
-	}
-
 	/**
 	 * 分析客户来源，来源的客户转化数
 	 * 渠道  渠道线索 渠道转化
