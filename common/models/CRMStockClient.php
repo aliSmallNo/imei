@@ -1019,4 +1019,17 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		return true;
 	}
 
+	// 根据手机号归属地 修改 客户的位置
+	public static function phone_to_location()
+	{
+		$base_url = "http://mobsec-dianhua.baidu.com/dianhua_api/open/location?tel=";
+		$sql = "select * from im_crm_stock_client where cDeletedFlag=0 and CHAR_LENGTH(cPhone)=11 ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			$url = $base_url . $v['cPhone'];
+			$ret = AppUtil::httpGet($url);
+			print_r(json_decode($ret, 1));
+			exit;
+		}
+	}
 }

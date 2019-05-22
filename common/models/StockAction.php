@@ -247,4 +247,5 @@ class StockAction extends \yii\db\ActiveRecord
 		}
 
 	}
+
 }

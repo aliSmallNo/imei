@@ -1510,7 +1510,7 @@ class FooController extends Controller
 
 		// StockOrder::send_msg_on_stock_price();
 
-		WechatUtil::createWechatMenus();
+		CRMStockClient::phone_to_location();
 		exit;
 	}
 
