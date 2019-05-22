@@ -1043,7 +1043,6 @@ class CRMStockClient extends \yii\db\ActiveRecord
 					]);
 				}
 			}
-			exit;
 		}
 	}
 }
