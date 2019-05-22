@@ -74,9 +74,23 @@ class CrontabController extends Controller
 		$service->reuseRoutine('month');
 	}
 
-	/**
-	 * @throws \yii\db\Exception
-	 */
+	public function actionExp()
+	{
+		try {
+			CRMStockClient::phone_to_location();
+		} catch (\Exception $e) {
+
+		}
+
+		try {
+			UserTag::calcExp();
+		} catch (\Exception $e) {
+
+		}
+
+
+	}
+
 	public function actionPool()
 	{
 		try {
@@ -148,12 +162,6 @@ class CrontabController extends Controller
 
 //		User::updateRank([], true);
 		Stat::userRank('', true);
-	}
-
-	public function actionExp()
-	{
-//		User::updateRank([], true);
-		UserTag::calcExp();
 	}
 
 	public function actionTry_phone()
