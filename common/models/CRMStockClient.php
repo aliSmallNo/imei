@@ -1035,8 +1035,13 @@ class CRMStockClient extends \yii\db\ActiveRecord
 				$detail = $ret['response'][$phone]['detail'];
 				$city = $detail['area'][0]['city'] ?? '';
 				$province = $detail['province'] ?? '';
-				echo $city . PHP_EOL;
-				echo $province . PHP_EOL;
+
+				if ($province && $city) {
+					self::mod($v['cId'], [
+						'cProvince' => $province,
+						'cCity' => $city,
+					]);
+				}
 			}
 			exit;
 		}
