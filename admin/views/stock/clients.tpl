@@ -193,7 +193,7 @@
 			{{if $cat=="sea"}}
 				<th>选择</th>
 			{{/if}}
-			<th>地区</th>
+			<th class="col-sm-1">地区</th>
 			<th style="width: 185px">
 				姓名/手机/微信
 			</th>
