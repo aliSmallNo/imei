@@ -1510,6 +1510,7 @@ class FooController extends Controller
 
 		// StockOrder::send_msg_on_stock_price();
 
+		WechatUtil::createWechatMenus();
 		exit;
 	}
 
@@ -1534,7 +1535,6 @@ class FooController extends Controller
 
 	public function actionIps()
 	{
-
 
 
 	}
