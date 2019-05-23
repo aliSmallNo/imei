@@ -35,6 +35,7 @@
 		<thead>
 		<tr>
 			<th>手机号</th>
+			<th>归属地</th>
 			<th>网站</th>
 			<th>时间</th>
 		</tr>
@@ -43,6 +44,7 @@
 		{{foreach from=$list item=item}}
 			<tr>
 				<td>{{$item.oOpenId}}</td>
+				<td>{{$item.oUId}}</td>
 				<td>{{$item.st_txt}}</td>
 				<td>{{$item.oAfter}}</td>
 			</tr>
