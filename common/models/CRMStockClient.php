@@ -1022,26 +1022,16 @@ class CRMStockClient extends \yii\db\ActiveRecord
 	// 根据手机号归属地 修改 客户的位置
 	public static function phone_to_location()
 	{
-		$base_url = "http://mobsec-dianhua.baidu.com/dianhua_api/open/location?tel=";
 		$sql = "select * from im_crm_stock_client where cDeletedFlag=0 and CHAR_LENGTH(cPhone)=11 ";
 		$res = AppUtil::db()->createCommand($sql)->queryAll();
 		foreach ($res as $v) {
 			$phone = $v['cPhone'];
-			$url = $base_url . $phone;
-			$ret = AppUtil::httpGet($url);
-			$ret = json_decode($ret, 1);
-
-			if (isset($ret['response'][$phone]['detail'])) {
-				$detail = $ret['response'][$phone]['detail'];
-				$city = $detail['area'][0]['city'] ?? '';
-				$province = $detail['province'] ?? '';
-
-				if ($province && $city) {
-					self::mod($v['cId'], [
-						'cProvince' => $province,
-						'cCity' => $city,
-					]);
-				}
+			list($province, $city) = AppUtil::get_phone_location($phone);
+			if ($province && $city) {
+				self::mod($v['cId'], [
+					'cProvince' => $province,
+					'cCity' => $city,
+				]);
 			}
 		}
 	}

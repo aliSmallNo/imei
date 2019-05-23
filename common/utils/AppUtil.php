@@ -1793,4 +1793,20 @@ class AppUtil
 	}
 
 
+	public static function get_phone_location($phone)
+	{
+		$url = "http://mobsec-dianhua.baidu.com/dianhua_api/open/location?tel=" . $phone;
+		$ret = AppUtil::httpGet($url);
+		$ret = json_decode($ret, 1);
+
+		$city = $province = '';
+		if (isset($ret['response'][$phone]['detail'])) {
+			$detail = $ret['response'][$phone]['detail'];
+			$city = $detail['area'][0]['city'] ?? '';
+			$province = $detail['province'] ?? '';
+		}
+		return [$province, $city];
+	}
+
+
 }

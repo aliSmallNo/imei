@@ -903,7 +903,13 @@ class Log extends ActiveRecord
 		if ($item) {
 			return false;
 		}
-		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area, 'oAfter' => $dt]));
+		$phone_location = AppUtil::get_phone_location($phone);
+		self::add(array_merge($data, [
+			'oKey' => self::KEY_WAIT,
+			"oBefore" => $area,
+			'oAfter' => $dt,
+			'oUId' => is_array($phone_location) ? implode('-', $phone_location) : ''
+		]));
 		return true;
 	}
 
@@ -1009,9 +1015,9 @@ class Log extends ActiveRecord
 	 * oOpenId
 	 * oUId  oId
 	 */
-	public static function pre_reduce_warning_add($order,$stockPrice)
+	public static function pre_reduce_warning_add($order, $stockPrice)
 	{
-		$content = "您好，我是准点买客服。您的股票策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到股票策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
+		$content = "您好，我是客服。您的策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
 		$key = StockOrder::unique_stock_key($order);
 		$phone = $order['oPhone'];
 		$oId = $order['oId'];

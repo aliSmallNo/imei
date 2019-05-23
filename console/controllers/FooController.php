@@ -1510,7 +1510,17 @@ class FooController extends Controller
 
 		// StockOrder::send_msg_on_stock_price();
 
-		CRMStockClient::phone_to_location();
+		//CRMStockClient::phone_to_location();
+
+		$sql = "select * from im_log where `oCategory`='phone_section_yes' ";
+		$res = AppUtil::db()->createCommand($sql)->queryAll();
+		foreach ($res as $v) {
+			list($pro, $city) = AppUtil::get_phone_location($v['oOpenId']);
+			$loc = $pro . '-' . $city;
+			echo $v['oId'] . '----' . $loc . PHP_EOL;
+			$sql = "update im_log set oUId='$loc' where `oId`= " . $v['oId'];
+			AppUtil::db()->createCommand($sql)->execute();
+		}
 		exit;
 	}
 
