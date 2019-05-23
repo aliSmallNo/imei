@@ -1015,9 +1015,9 @@ class Log extends ActiveRecord
 	 * oOpenId
 	 * oUId  oId
 	 */
-	public static function pre_reduce_warning_add($order, $stockPrice)
+	public static function pre_reduce_warning_add($order, $stockPrice,$content)
 	{
-		$content = "您好，我是客服。您的策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
+
 		$key = StockOrder::unique_stock_key($order);
 		$phone = $order['oPhone'];
 		$oId = $order['oId'];
