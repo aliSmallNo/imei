@@ -103,7 +103,8 @@ class StockController extends BaseController
 			$alert[] = "【" . CRMStockClient::SourceMap()[$src] . "】";
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
-		$isAssigner = Admin::isAssLigner();
+		//$isAssigner = Admin::isAssigner();
+		$isAssigner = Admin::isAssigner();
 		$sub_staff = in_array($this->admin_id, [1052, 1054]);// 冯林 季志昂
 		$is_jinzx = Admin::getAdminId() == 1047;
 
