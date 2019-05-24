@@ -364,6 +364,7 @@ class StockOrder extends ActiveRecord
 
 		$user = StockUser::findOne(['uPhone' => $phone, 'uType' => StockUser::TYPE_PARTNER]);
 		$rate = $user ? $user->uRate : 0;
+		$contribute_rate = $user ? $user->uContributeRate : 0;
 
 		$sql = "select 
 				Date_format(o.oAddedOn, '%Y%m%d') as ym,
@@ -380,15 +381,21 @@ class StockOrder extends ActiveRecord
 //			exit;
 		}
 		$sum_income = 0;
+		$sum_contribute = 0;
 		foreach ($res as $k => $v) {
 			$res[$k]['user_loan_amt'] = sprintf('%.0f', $v['user_loan_amt']);
 			$income = sprintf('%.2f', ($v['user_loan_amt'] * $rate / 250));
 			$res[$k]['income'] = $income;
 			$sum_income += $income;
+
+			$contribute_amt = sprintf('%.0f', ($v['user_loan_amt'] * $contribute_rate / 250));
+			$res[$k]['contribute_amt'] = $contribute_amt;
+			$sum_contribute += $contribute_amt;
 		}
 
-		return [$res, $sum_income];
+		return [$res, $sum_income, $sum_contribute];
 	}
+
 
 	/**
 	 * 计算减持用户

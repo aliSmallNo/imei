@@ -103,7 +103,7 @@ class StockController extends BaseController
 			$alert[] = "【" . CRMStockClient::SourceMap()[$src] . "】";
 		}
 		$counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
-		//$isAssigner = Admin::isAssigner();
+		// ============================> 此行不要删除
 		$isAssigner = Admin::isAssigner();
 		$sub_staff = in_array($this->admin_id, [1052, 1054]);// 冯林 季志昂
 		$is_jinzx = Admin::getAdminId() == 1047;
@@ -337,6 +337,7 @@ class StockController extends BaseController
 		);
 	}
 
+	// 订单统计
 	public function actionStock_order_stat()
 	{
 		$dt = self::getParam("dt", date('Ym'));
@@ -360,6 +361,35 @@ class StockController extends BaseController
 				'dt' => $dt,
 				'list' => $list,
 				'sum_income' => $sum_income,
+				'mouths' => StockOrder::order_year_mouth(),
+			]
+		);
+	}
+
+	// 个人贡献收入
+	public function actionContribute_income()
+	{
+		$dt = self::getParam("dt", date('Ym'));
+		$name = self::getParam("name");
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($dt) {
+			$criteria[] = "  o.oAddedOn between :st and :et ";
+			list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
+			$params[':st'] = $firstDate . ' 00:00:00';
+			$params[':et'] = $lastDate . ' 23:00:00';
+		}
+
+		list($list, $sum_income, $sum_contribute) = StockOrder::stat_items($criteria, $params);
+
+		return $this->renderPage("contribute_income.tpl",
+			[
+				'getInfo' => \Yii::$app->request->get(),
+				'dt' => $dt,
+				'list' => $list,
+				'sum_contribute' => $sum_contribute,
 				'mouths' => StockOrder::order_year_mouth(),
 			]
 		);

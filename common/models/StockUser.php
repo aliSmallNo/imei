@@ -19,7 +19,8 @@ use Yii;
  * @property string $uNote
  * @property integer $uStatus
  * @property string $uAddedOn
- * @property string uUpdatedOn
+ * @property string $uUpdatedOn
+ * @property string $uContributeRate
  */
 class StockUser extends \yii\db\ActiveRecord
 {

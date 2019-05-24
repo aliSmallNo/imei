@@ -181,6 +181,12 @@ class Menu
 						"revise" => 1,
 						"level" => 810
 					],
+					[
+						'name' => '贡献收入',
+						'url' => '/stock/contribute_income',
+						"revise" => 1,
+						"level" => 810
+					]
 
 				]
 			],
