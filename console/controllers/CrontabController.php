@@ -25,6 +25,7 @@ use common\models\YzOrders;
 use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
+use common\service\TrendStockService;
 use common\utils\AppUtil;
 use common\utils\TryPhone;
 use common\utils\WechatUtil;
@@ -88,6 +89,12 @@ class CrontabController extends Controller
 
 		}
 
+		try {
+			// 更新统计数据 /stock/trend
+			TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend(date('Y-m-d'), 1);
+		} catch (\Exception $e) {
+
+		}
 
 	}
 

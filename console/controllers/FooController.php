@@ -1524,7 +1524,7 @@ class FooController extends Controller
 			AppUtil::db()->createCommand($sql)->execute();
 		}*/
 
-		TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend(date('Y-m-d'), 1);
+
 
 		exit;
 	}
