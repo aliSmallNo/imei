@@ -175,19 +175,20 @@ class Menu
 						"revise" => 1,
 						"level" => 810
 					],
-					[
-						"name" => "比较上月",
-						"url" => "/stock/reduce_user",
-						"revise" => 1,
-						"level" => 810
-					],
+				]
+			],
+			[
+				"name" => "其他数据",
+				"id" => "other_data",
+				"icon" => "fa-bar-chart",
+				"staff" => 1,
+				"items" => [
 					[
 						'name' => '贡献收入',
 						'url' => '/stock/contribute_income',
 						"revise" => 1,
 						"level" => 810
 					]
-
 				]
 			],
 			[

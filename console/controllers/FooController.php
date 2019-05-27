@@ -31,6 +31,7 @@ use common\models\YzOrders;
 use common\models\YzRefund;
 use common\models\YzUser;
 use common\service\TrendService;
+use common\service\TrendStockService;
 use common\utils\AppUtil;
 use common\utils\AutoReplyUtil;
 use common\utils\COSUtil;
@@ -1522,6 +1523,8 @@ class FooController extends Controller
 			$sql = "update im_log set oUId='$loc' where `oId`= " . $v['oId'];
 			AppUtil::db()->createCommand($sql)->execute();
 		}*/
+
+		TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend(date('Y-m-d'), 1);
 
 		exit;
 	}
