@@ -198,13 +198,13 @@ class TrendStockService
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
-		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
-			/*echo AppUtil::db()->createCommand($sql)->bindValues([
+		/*if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+			echo AppUtil::db()->createCommand($sql)->bindValues([
 				':beginDT' => $beginDate,
 				':endDT' => $endDate,
 			])->getRawSql();
-			exit;*/
-		}
+			exit;
+		}*/
 		if ($res) {
 			$trend['sum_loan_total'] = 0;
 			foreach ($res as $field => $num) {
@@ -231,13 +231,13 @@ class TrendStockService
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
-		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
 //			echo AppUtil::db()->createCommand($sql)->bindValues([
 //				':beginDT' => $beginDate,
 //				':endDT' => $endDate,
 //			])->getRawSql();
 //			exit;
-		}
+//		}
 		if ($res) {
 			$trend['sum_loan_users_total'] = 0;
 			foreach ($res as $field => $num) {
@@ -287,13 +287,13 @@ class TrendStockService
 			':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
-		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
 //			echo $this->conn->createCommand($sql)->bindValues([
 //				':beginDT' => $beginDate,
 //				':endDT' => $endDate,
 //			])->getRawSql();
 //			exit;
-		}
+//		}
 		if ($res) {
 			$trend['new_users_total'] = 0;
 			foreach ($res as $field => $num) {
@@ -321,12 +321,12 @@ class TrendStockService
 			//':beginDT' => $beginDate,
 			':endDT' => $endDate,
 		])->queryOne();
-		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+//		if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
 //			echo $this->conn->createCommand($sql)->bindValues([
 //				':endDT' => $endDate,
 //			])->getRawSql();
 //			exit;
-		}
+//		}
 		if ($res) {
 			foreach ($res as $field => $num) {
 				$trend['new_loan_' . $field] = intval($num);
