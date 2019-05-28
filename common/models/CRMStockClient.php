@@ -970,6 +970,31 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		return [$series, $titles];
 	}
 
+	public static function location_stat($beginDate, $endDate, $category = 'cProvince', $id = "", $conn = "")
+	{
+		$strCriteria = "";
+		if ($id) {
+			$strCriteria = " AND c.cBDAssign=" . $id;
+		}
+		$sql = "select $category,COUNT(1) as cnt
+				from im_crm_stock_client as c
+				left join im_admin as a on a.aId=c.cBDAssign
+				WHERE c.cDeletedFlag=0 and CHAR_LENGTH(c.cPhone)=11 $strCriteria
+				and c.cAddedDate BETWEEN '$beginDate ' and '$endDate 23:59'
+				GROUP BY $category
+				order by cnt desc limit 20";
+		if (!$conn) {
+			$conn = AppUtil::db();
+		}
+		$ret = $conn->createCommand($sql)->queryAll();
+		$data = [];
+		foreach ($ret as $k => $v) {
+			$v['cnt'] = intval($v['cnt']);
+			$data[] = array_values($v);
+		}
+		return $data;
+	}
+
 	public static function getList($condition, $page, $pagesize)
 	{
 		$offset = ($page - 1) * $pagesize;

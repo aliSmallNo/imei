@@ -72,6 +72,15 @@
 				<div id="src-chart" class="chart-wrapper"></div>
 			</div>
 		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 用户归属省
+
+			</div>
+			<div class="panel-body">
+				<div id="prov-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
 	</div>
 	<div class="col-lg-6">
 		<div class="panel panel-default">
@@ -101,6 +110,15 @@
 				<div id="donut-chart" class="chart-wrapper"></div>
 			</div>
 		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-bar-chart-o fa-fw"></i> 用户归属市
+
+			</div>
+			<div class="panel-body">
+				<div id="city-chart" class="chart-wrapper"></div>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="row-divider2"></div>
@@ -116,6 +134,8 @@
 	var mChartNew = $('#new-chart');
 	var mChartClient = $('#client-chart');
 	var mChartSrc = $('#src-chart');
+	var mChartCity = $('#city-chart');
+	var mChartProv = $('#prov-chart');
 	var clue = $('#clues');
 	var clueVal;
 
@@ -124,6 +144,8 @@
 		mChartNew.html("");
 		mChartCnt.html("");
 		mChartClient.html("");
+		mChartCity.html("");
+		mChartProv.html("");
 		layer.load();
 		$.post("/api/stock_chart", {
 			tag: "stat",
@@ -137,11 +159,17 @@
 					//新线索,跟进客户数--每个BD
 					initChartDetail(resp.data.track, resp.data.track_titles, "track-chart");
 					initChartDetail(resp.data.new, resp.data.new_titles, "new-chart");
+
+					initChart(resp.data.prov, 'prov-chart', '客户数');
+					initChart(resp.data.city, 'city-chart', '客户数');
 				} else {
 					//新线索,跟进客户数--整体
 					//initChart(resp.data.track, "track-chart", "跟进客户数");
 					initChart(resp.data.track, "track-chart", "跟进记录数");// 2019.04.19 modify
 					initChart(resp.data.new, "new-chart", "新线索");
+
+					initChart(resp.data.prov, 'prov-chart', '客户数');
+					initChart(resp.data.city, 'city-chart', '客户数');
 				}
 				// CRM分布
 				initClient(resp.data.series, resp.data.titles, "client-chart");

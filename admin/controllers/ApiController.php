@@ -1407,11 +1407,17 @@ class ApiController extends Controller
 					$ret["new_titles"] = array_keys($newClientStat);
 					$ret["track"] = array_values($trackStat);
 					$ret["new"] = array_values($newClientStat);
+
+					$ret["prov"] = CRMStockClient::location_stat($beginDate, $endDate, 'cProvince', $id, $conn);
+					$ret["city"] = CRMStockClient::location_stat($beginDate, $endDate, 'cCity', $id, $conn);
 				} else {
 					$trackStat = CRMStockTrack::trackStat($category, $beginDate, $endDate, $id, $conn);
 					$newClientStat = CRMStockClient::newClientStat($category, $beginDate, $endDate, $id, $conn);
 					$ret["track"] = $trackStat;
 					$ret["new"] = $newClientStat;
+
+					$ret["prov"] = CRMStockClient::location_stat($beginDate, $endDate, 'cProvince', "", $conn);
+					$ret["city"] = CRMStockClient::location_stat($beginDate, $endDate, 'cCity', "", $conn);
 				}
 				return self::renderAPI(0, "", $ret);
 		}
