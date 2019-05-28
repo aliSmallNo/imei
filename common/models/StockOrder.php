@@ -363,7 +363,8 @@ class StockOrder extends ActiveRecord
 		$cond = StockOrder::channel_condition();
 
 		$user = StockUser::findOne(['uPhone' => $phone, 'uType' => StockUser::TYPE_PARTNER]);
-		$rate = $user ? $user->uRate : 0;
+		$rate = $user ? floatval($user->uRate) : 0;
+
 		$contribute_rate = $user ? $user->uContributeRate : 0;
 
 		$sql = "select 
@@ -382,6 +383,7 @@ class StockOrder extends ActiveRecord
 		}
 		$sum_income = 0;
 		$sum_contribute = 0;
+		//print_r($res);var_dump($rate);exit;
 		foreach ($res as $k => $v) {
 			$res[$k]['user_loan_amt'] = sprintf('%.0f', $v['user_loan_amt']);
 			$income = sprintf('%.2f', ($v['user_loan_amt'] * $rate / 250));
