@@ -218,7 +218,7 @@ class TryPhone
 					'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 					'X-Requested-With: XMLHttpRequest',
 				];
-				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				$ret = self::reqData($data, $cat, $header, 0, '');
 				var_dump($ret);
 
 				break;
