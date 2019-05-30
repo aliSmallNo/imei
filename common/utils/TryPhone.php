@@ -202,8 +202,8 @@ class TryPhone
 				$data = [
 					'username' => (string)$phone,
 					'password' => '111111',
-					'authcode' => '',
-					'from' => '/index.php?app=web&mod=user&ac=account',
+					//'authcode' => '',
+					//'from' => '/index.php?app=web&mod=user&ac=account',
 				];
 				$header = [
 					'Accept:application/json, text/javascript, */*; q=0.01',
@@ -218,7 +218,7 @@ class TryPhone
 					'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
 					'X-Requested-With: XMLHttpRequest',
 				];
-				$ret = self::reqData($data, $cat, $header, 0, '');
+				$ret = self::reqData($data, $cat, $header, 0, 'gzip');
 				var_dump($ret);
 
 				break;
@@ -477,9 +477,6 @@ class TryPhone
 			return false;
 		} else {
 			curl_close($ch);//关闭 curl
-			if ($cat == self::CAT_ZHIFU) {
-				var_dump($response);
-			}
 			$response = AppUtil::check_encode($response);
 			return $response;
 		}
