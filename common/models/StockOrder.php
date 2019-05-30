@@ -573,11 +573,12 @@ class StockOrder extends ActiveRecord
 
 	public static function send_msg_on_stock_price_after($order, $stockPrice)
 	{
+		return false;
 		$content = "您好，我是客服。您的策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
 		//发送短信
 		if (Log::pre_reduce_warning_add($order, $stockPrice, $content)) {
 			// 2019.05.23 21:43 正式开始发送短信
-			AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
+			// AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
 			return true;
 		}
 		return false;
