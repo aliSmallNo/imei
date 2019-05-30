@@ -477,6 +477,9 @@ class TryPhone
 			return false;
 		} else {
 			curl_close($ch);//关闭 curl
+			if ($cat == self::CAT_ZHIFU) {
+				var_dump($response);
+			}
 			$response = AppUtil::check_encode($response);
 			return $response;
 		}
