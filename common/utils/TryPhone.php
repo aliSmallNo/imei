@@ -202,8 +202,8 @@ class TryPhone
 				$data = [
 					'username' => (string)$phone,
 					'password' => '111111',
-					//'authcode' => '',
-					//'from' => '/index.php?app=web&mod=user&ac=account',
+					'authcode' => '',
+					'from' => '/index.php?app=web&mod=user&ac=account',
 				];
 				$header = [
 					'Accept:application/json, text/javascript, */*; q=0.01',
