@@ -959,7 +959,7 @@ class Log extends ActiveRecord
 		}
 		self::add(array_merge($data, [
 			'oUId' => $uid,
-			'oKey' => $ph,
+			'oKey' => AppUtil::decrypt($ph),
 		]));
 		return true;
 	}
@@ -999,6 +999,58 @@ class Log extends ActiveRecord
 		$sql = "select count(1) as co 
 				from im_log 
 				where oCategory='$cat' $strCriteria  ";
+		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+		return [$res, $count];
+	}
+
+	const CAT_REG_ZHUN_DIAN_MAI_LINK = 'reg_zhun_dian_mai_link';
+
+	/*
+	 * oCategory
+	 * oKey
+	 * oBefore 链接地址
+	 * oAfter
+	 * oOpenId 手机号
+	 * oUId
+	 */
+
+	public static function add_zdm_reg_link($phone)
+	{
+		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI_LINK, 'oOpenId' => $phone];
+		if (self::findOne($data)) {
+			return [129, '已添加此手机号的链接'];
+		}
+		self::add(array_merge($data, [
+			'oBefore' => 'https://wx.meipo100.com/wx/reg?ph=' . AppUtil::encrypt($phone),
+		]));
+		return [0, '添加成功'];
+	}
+
+	public static function zdm_link_items($criteria, $params, $page, $pageSize = 20)
+	{
+
+
+		$offset = ($page - 1) * $pageSize;
+		$strCriteria = '';
+		if ($criteria) {
+			$strCriteria = ' AND ' . implode(' AND ', $criteria);
+		}
+
+		$cat = self::CAT_REG_ZHUN_DIAN_MAI_LINK;
+		$sql = "select l.*
+				from im_log as l
+				  
+				where oCategory='$cat' $strCriteria
+				order by oDate desc 
+				limit $offset,$pageSize";
+		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+		foreach ($res as $k => $v) {
+
+		}
+		$sql = "select count(1) as co 
+				from im_log 
+				where oCategory='$cat' $strCriteria ";
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];

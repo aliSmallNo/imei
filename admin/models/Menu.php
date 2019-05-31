@@ -216,6 +216,12 @@ class Menu
 						"revise" => 1,
 						"level" => 827
 					],
+					[
+						"name" => "传播链接",
+						"url" => "/stock/zdm_reg_link",
+						"revise" => 1,
+						"level" => 810
+					],
 				]
 			],
 			[

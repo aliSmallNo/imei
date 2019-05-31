@@ -867,6 +867,31 @@ class StockController extends BaseController
 			]);
 	}
 
+	public function actionZdm_reg_link()
+	{
+		$page = self::getParam("page", 1);
+		$phone = self::getParam("phone");
+
+		$criteria = [];
+		$params = [];
+		if ($phone) {
+			$criteria[] = "  oOpenId = :phone ";
+			$params[':phone'] = $phone;
+		}
+
+		list($list, $count) = Log::zdm_link_items($criteria, $params, $page);
+		$pagination = self::pagination($page, $count, 20);
+
+		return $this->renderPage('zdm_reg_link.tpl',
+			[
+				'pagination' => $pagination,
+				'list' => $list,
+				'count' => $count,
+				'phone' => $phone,
+
+			]);
+	}
+
 	public function actionSource()
 	{
 		$page = self::getParam("page", 1);

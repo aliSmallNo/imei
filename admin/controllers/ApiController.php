@@ -1489,6 +1489,11 @@ class ApiController extends Controller
 				list($code, $msg) = Log::add_phone_section_admin($phone_sections);
 				return self::renderAPI($code, $msg);
 				break;
+			case "add_zdm_link":
+				$spread_phone = self::postParam("spread_phone");
+				list($code, $msg) = Log::add_zdm_reg_link($spread_phone);
+				return self::renderAPI($code, $msg);
+				break;
 			case 'cal_hold_days':
 				StockOrder::cla_stock_hold_days();
 				return self::renderAPI(0, '计算完成');
