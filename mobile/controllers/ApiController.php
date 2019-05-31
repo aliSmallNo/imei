@@ -721,11 +721,13 @@ class ApiController extends Controller
 			case 'reg':
 				$phone = self::postParam('phone');
 				$code = self::postParam('code');
+				//准点买 传播者|上级 的手机号 分析传播路径时候用到
+				$ph = self::postParam('ph');
 				if (!AppUtil::checkPhone($phone)) {
 					return self::renderAPI(129, '手机号格式不正确~');
 				}
 				if (User::verifySMSCode($phone, $code)) {
-					Log::pre_reg_zdm_add($phone,$wx_uid);
+					Log::pre_reg_zdm_add($phone, $wx_uid, $ph);
 					return self::renderAPI(0, '成功注册');
 				} else {
 					return self::renderAPI(129, '输入的验证码不正确或者已经失效');

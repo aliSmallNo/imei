@@ -951,7 +951,7 @@ class Log extends ActiveRecord
 	 * oUId
 	 */
 
-	public static function pre_reg_zdm_add($phone, $uid)
+	public static function pre_reg_zdm_add($phone, $uid, $ph = '')
 	{
 		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oBefore' => $phone];
 		if (self::findOne($data)) {
@@ -959,6 +959,7 @@ class Log extends ActiveRecord
 		}
 		self::add(array_merge($data, [
 			'oUId' => $uid,
+			'oKey' => $ph,
 		]));
 		return true;
 	}
@@ -1015,7 +1016,7 @@ class Log extends ActiveRecord
 	 * oOpenId
 	 * oUId  oId
 	 */
-	public static function pre_reduce_warning_add($order, $stockPrice,$content)
+	public static function pre_reduce_warning_add($order, $stockPrice, $content)
 	{
 
 		$key = StockOrder::unique_stock_key($order);

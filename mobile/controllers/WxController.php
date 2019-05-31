@@ -2482,10 +2482,13 @@ class WxController extends BaseController
 	{
 		$openId = self::$WX_OpenId;
 		LogAction::add($this->user_id, $openId, LogAction::ACTION_REG_ZDM);
+		// 来源
+		$phone = self::getParam("ph", '');
 
 		return self::renderPage('reg.tpl',
 			[
-				'reg_flag' => Log::reg_zdm($this->user_id)
+				'reg_flag' => Log::reg_zdm($this->user_id),
+				'phone' => $phone,
 			],
 			'terse',
 			'准点买-注册',

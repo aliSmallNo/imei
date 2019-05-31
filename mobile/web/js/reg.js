@@ -15,7 +15,8 @@ require(["layer"],
 			wxString: $("#tpl_wx_info").html(),
 			change: $('.change'),
 			btnCode: $('.btn-code'),
-			counting: 0
+			counting: 0,
+			phone: $('#CPHONE').val(),
 		};
 
 		var RoleUtil = {
@@ -117,6 +118,7 @@ require(["layer"],
 					phone: phone,
 					code: code,
 					role: role,
+					ph: $sls.phone,
 				};
 				util.loading = 1;
 				$.post('/api/user',

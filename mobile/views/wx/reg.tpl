@@ -123,6 +123,7 @@
 		<div class="m-popup-content"></div>
 	</div>
 </div>
+<input type="hidden" id="CPHONE" value="{{$phone}}">
 <script type="text/template" id="tpl_wx_info">
 	{{$wxInfoString}}
 </script>

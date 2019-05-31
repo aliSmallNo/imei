@@ -199,20 +199,6 @@ class Menu
 				]
 			],
 			[
-				"name" => "其他数据",
-				"id" => "stock_grap",
-				"icon" => "fa-users",
-				"staff" => 1,
-				"items" => [
-					[
-						'name' => '贡献收入',
-						'url' => '/stock/contribute_income',
-						"revise" => 1,
-						"level" => 810
-					]
-				]
-			],
-			[
 				"name" => "信息抓取",
 				"id" => "stock_grap",
 				"icon" => "fa-users",
