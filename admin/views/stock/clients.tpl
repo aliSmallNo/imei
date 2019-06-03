@@ -534,8 +534,9 @@
 				console.log(postData);
 				if (!postData["name"]
 					|| !postData["src"]
-					|| !postData["prov"]
-					|| !postData["city"]
+					// 2019.6.3 modify 与手机号查询的客户归属地冲突 暂时去掉验证
+					//|| !postData["prov"]
+					//|| !postData["city"]
 					|| !postData["stock_age"]
 				) {
 					layer.msg("客户姓名、来源、省、市、炒股时长不能为空！");
