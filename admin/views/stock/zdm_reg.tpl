@@ -28,6 +28,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 		<tr>
+			<th>上级</th>
 			<th>姓名</th>
 			<th>手机号</th>
 			<th>时间</th>
@@ -36,6 +37,7 @@
 		<tbody>
 		{{foreach from=$list item=item}}
 			<tr>
+				<td>{{$item.oKey}}</td>
 				<td>{{$item.name}}</td>
 				<td>{{$item.oBefore}}</td>
 				<td>{{$item.oDate}}</td>
