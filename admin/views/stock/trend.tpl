@@ -126,7 +126,8 @@
 		switch (cat) {
 			case 'load':
 				names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
-					"于辉", "吴淑霞", '冯卓刚', '高考',
+					"于辉", "吴淑霞",
+						//'冯卓刚', '高考',
 				];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉","吴淑霞"
 				fields = [
 					'sum_loan_total',
@@ -135,12 +136,13 @@
 					, "sum_loan_SongFuCheng_18611794484", 'sum_loan_FengXiaoQiang_13643225272', "sum_loan_ChaJun_13381081778",
 					"sum_loan_ZhangMengYing_18410283058", 'sum_loan_SunQingHai_13701269919',
 					"sum_loan_YuHui_13910838033", "sum_loan_WuShuXia_18911781586",
-					"sum_loan_FengZhuoGang_15698090788", 'sum_loan_GaoKao_15863756565',
+					//"sum_loan_FengZhuoGang_15698090788", 'sum_loan_GaoKao_15863756565',
 				];
 				break;
 			case "users":
 				names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
-					"于辉", "吴淑霞", '冯卓刚', '高考',
+					"于辉", "吴淑霞",
+						//'冯卓刚', '高考',
 				];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉",
 				fields = [
 					'sum_loan_users_total',
@@ -149,7 +151,7 @@
 					"sum_loan_users_ChenMing_18931357765", "sum_loan_users_SongFuCheng_18611794484", 'sum_loan_users_FengXiaoQiang_13643225272',
 					"sum_loan_users_ChaJun_13381081778", "sum_loan_users_ZhangMengYing_18410283058", 'sum_loan_users_SunQingHai_13701269919',
 					"sum_loan_users_YuHui_13910838033", "sum_loan_users_WuShuXia_18911781586",
-					"sum_loan_users_FengZhuoGang_15698090788", "sum_loan_users_GaoKao_15863756565",
+					//"sum_loan_users_FengZhuoGang_15698090788", "sum_loan_users_GaoKao_15863756565",
 				];
 				break;
 			case "follow":
@@ -165,8 +167,8 @@
 				break;
 			case "new":
 				names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
-					"于辉", "吴淑霞", '冯卓刚', '高考',
-					// "王毅龙","于辉",
+					"于辉", "吴淑霞",
+						//'冯卓刚', '高考',
 				];
 
 				fields = ['new_users_total', "new_users_ZuoDanLei_18513655687", "new_users_JinZhiXin_18600649492",
@@ -174,12 +176,13 @@
 					"new_users_ChenMing_18931357765", "new_users_SongFuCheng_18611794484", "new_users_FengXiaoQiang_13643225272",
 					"new_users_ChaJun_13381081778", "new_users_ZhangMengYing_18410283058", 'new_users_SunQingHai_13701269919',
 					"new_users_YuHui_13910838033", "new_users_WuShuXia_18911781586",
-					"new_users_FengZhuoGang_15698090788", "new_users_GaoKao_15863756565",
+					//"new_users_FengZhuoGang_15698090788", "new_users_GaoKao_15863756565",
 				];
 				break;
 			case "new_loan":
 				names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
-					"于辉", "吴淑霞", '冯卓刚', '高考',
+					"于辉", "吴淑霞",
+						//'冯卓刚', '高考',
 					// "王毅龙","于辉",
 				];
 
@@ -188,12 +191,13 @@
 					"new_loan_ChenMing_18931357765", "new_loan_SongFuCheng_18611794484", "new_loan_FengXiaoQiang_13643225272",
 					"new_loan_ChaJun_13381081778", "new_loan_ZhangMengYing_18410283058", 'new_loan_SunQingHai_13701269919',
 					"new_loan_YuHui_13910838033", "new_loan_WuShuXia_18911781586",
-					"new_loan_FengZhuoGang_15698090788", "new_loan_GaoKao_15863756565",
+					//"new_loan_FengZhuoGang_15698090788", "new_loan_GaoKao_15863756565",
 				];
 				break;
 			case "new_curr_month_loan":
 				names = ['合计', "小刀", "金志新", "徐方", '冯林', '陈明', '宋富城', '冯小强', '查俊', "张梦莹", '孙庆海',
-					"于辉", "吴淑霞", '冯卓刚', '高考',
+					"于辉", "吴淑霞",
+						//'冯卓刚', '高考',
 				];
 
 				fields = ['new_curr_month_loan_total', "new_curr_month_loan_ZuoDanLei_18513655687", "new_curr_month_loan_JinZhiXin_18600649492",
@@ -201,7 +205,7 @@
 					"new_curr_month_loan_ChenMing_18931357765", "new_curr_month_loan_SongFuCheng_18611794484", "new_curr_month_loan_FengXiaoQiang_13643225272",
 					"new_curr_month_loan_ChaJun_13381081778", "new_curr_month_loan_ZhangMengYing_18410283058", 'new_curr_month_loan_SunQingHai_13701269919',
 					"new_curr_month_loan_YuHui_13910838033", "new_curr_month_loan_WuShuXia_18911781586",
-					"new_curr_month_loan_FengZhuoGang_15698090788", "new_curr_month_loan_GaoKao_15863756565",
+					//"new_curr_month_loan_FengZhuoGang_15698090788", "new_curr_month_loan_GaoKao_15863756565",
 				];
 				/**
 				 [new_curr_month_loan_XieShuoShuo_18101390540] => 0
