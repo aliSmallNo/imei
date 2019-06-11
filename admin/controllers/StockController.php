@@ -14,6 +14,7 @@ use common\models\CRMStockClient;
 use common\models\CRMStockSource;
 use common\models\CRMStockTrack;
 use common\models\Log;
+use common\models\LogStock;
 use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
@@ -657,6 +658,22 @@ class StockController extends BaseController
 					$name = uniqid() . '.xls';
 					$filepath = "$uploads_dir/$name";
 					move_uploaded_file($tmp_name, $filepath);
+				}
+				// 记录表格数据
+				try {
+					LogStock::add([
+						'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
+						'oKey' => $cat,
+						'oBefore' => $filepath,
+						'oUId' => Admin::getAdminId(),
+					]);
+				} catch (\Exception $e) {
+					LogStock::add([
+						'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
+						'oKey' => $cat,
+						'oBefore' => $e->getMessage(),
+						'oUId' => Admin::getAdminId(),
+					]);
 				}
 			}
 			if (!$filepath) {

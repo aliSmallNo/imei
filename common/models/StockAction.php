@@ -63,6 +63,21 @@ class StockAction extends \yii\db\ActiveRecord
 		$conn = AppUtil::db();
 		$transaction = $conn->beginTransaction();
 
+		// 记录表格数据
+		try {
+			LogStock::add([
+				'oCategory' => LogStock::CAT_ADD_STOCK_ACTION,
+				'oBefore' => $result,
+				'oUId' => Admin::getAdminId(),
+			]);
+		} catch (\Exception $e) {
+			LogStock::add([
+				'oCategory' => LogStock::CAT_ADD_STOCK_ACTION,
+				'oBefore' => $e->getMessage(),
+				'oUId' => Admin::getAdminId(),
+			]);
+		}
+
 		$phones = $values = '';
 		foreach ($result as $key => $value) {
 			if (!$key) {
