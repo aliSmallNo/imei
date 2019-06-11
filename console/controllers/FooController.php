@@ -1540,7 +1540,7 @@ class FooController extends Controller
 			}
 			echo $oId . '__' . $province . '-' . $city . '__'.PHP_EOL;
 			if ($k == 17) {
-				break;
+				//break;
 			}
 		}
 
