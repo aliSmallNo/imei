@@ -1524,8 +1524,25 @@ class FooController extends Controller
 			AppUtil::db()->createCommand($sql)->execute();
 		}*/
 
+		//TryPhone::pre_reqData(17611629667, TryPhone::CAT_ZHIFU);
 
-		TryPhone::pre_reqData(17611629667, TryPhone::CAT_ZHIFU);
+		$conn = AppUtil::db();
+		$res = $conn->createCommand("select * from im_log where oCategory='phone_section' order by oId asc")->queryAll();
+		$cmd = $conn->createCommand("update im_log set oBefore=:loc where oId=:oid ");
+		foreach ($res as $k => $v) {
+			$oId = $v['oId'];
+			list($province, $city) = AppUtil::get_phone_location($v['oOpenId'] . '0000');
+			if ($province && $city) {
+				$cmd->bindValues([
+					":loc" => $province . '-' . $city,
+					":oid" => $oId,
+				])->execute();
+			}
+			echo $oId . '__' . $province . '-' . $city . '__';
+			if ($k == 2) {
+				break;
+			}
+		}
 
 		exit;
 	}

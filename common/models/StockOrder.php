@@ -247,6 +247,7 @@ class StockOrder extends ActiveRecord
 			default:
 				$city = "";
 		}
+		// https://blog.csdn.net/simon803/article/details/7784682
 		$base_url = "http://hq.sinajs.cn/list=" . $city . $stockId;
 		$ret = AppUtil::httpGet($base_url, ['Content-Type: application/javascript; charset=gbk']);
 		$pos = strpos($ret, "=");

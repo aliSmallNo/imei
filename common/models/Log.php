@@ -889,7 +889,7 @@ class Log extends ActiveRecord
 		if (self::findOne($data) || strlen($pre_phone) != 7) {
 			return false;
 		}
-		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area]));
+		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area, 'oUId' => Admin::getAdminId()]));
 		return true;
 	}
 
