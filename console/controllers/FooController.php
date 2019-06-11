@@ -1538,8 +1538,8 @@ class FooController extends Controller
 					":oid" => $oId,
 				])->execute();
 			}
-			echo $oId . '__' . $province . '-' . $city . '__';
-			if ($k == 2) {
+			echo $oId . '__' . $province . '-' . $city . '__'.PHP_EOL;
+			if ($k == 17) {
 				break;
 			}
 		}
