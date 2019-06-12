@@ -267,12 +267,13 @@
 						{{if $cat=="sea" && $prod.cBDAssign==0}}
 							<a href="javascript:;" class="btnGrab btn btn-outline btn-success btn-xs">我来跟进</a>
 						{{/if}}
-						{{if $isAssigner}}{{/if}}
-						<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
 						{{if $cat=="my" && !$sub_staff}}
 							<a href="javascript:;" class="btnChange btn btn-outline btn-info btn-xs">转给他人</a>
 						{{/if}}
 					{{/if}}
+					{{if $isAssigner}}{{/if}}
+					<a href="javascript:;" class="btnModify btn btn-outline btn-danger btn-xs">修改信息</a>
+
 				</td>
 			</tr>
 		{{/foreach}}
