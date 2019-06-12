@@ -148,7 +148,7 @@ class StockController extends BaseController
             if ($is_jinzx) {
                 $criteria[] = " cBDAssign in (1059,1056,1061) ";// 查俊 宋富城 吴淑霞
             } else {
-                $criteria[] = " cBDAssign >-1 ";// 无意向客户，不在公海显示，也不在“全部用户”里面显示
+                $criteria[] = " cBDAssign >-1 ";// 无意向客户，不在公海显示，也不在“全部用户”里面显示 2019-06-12
             }
         } elseif ($cat == "lose") {
             $criteria[] = " cBDAssign=-1 ";
