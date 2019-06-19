@@ -1539,9 +1539,10 @@ class FooController extends Controller
                 ])->execute();
             }
             if ($k > 1) {
-                break;
+                //break;
             }
 
+            echo $province . '__' . $city . '__' . $v['aId'] . PHP_EOL;
         }
 
         exit;
