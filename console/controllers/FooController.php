@@ -1532,17 +1532,17 @@ class FooController extends Controller
         foreach ($result as $k => $v) {
             list($province, $city) = AppUtil::get_phone_location($v['aPhone']);
             if ($province && $city) {
-                $cmd->bindValues([
+               /* $cmd->bindValues([
                     ':pro' => $province,
                     ':city' => $city,
                     ':aId' => $v['aId'],
-                ])->execute();
+                ])->execute();*/
             }
             if ($k > 1) {
                 //break;
             }
 
-            echo $province . '__' . $city . '__' . $v['aId'] . PHP_EOL;
+            //echo $province . '__' . $city . '__' . $v['aId'] . PHP_EOL;
         }
 
         exit;
