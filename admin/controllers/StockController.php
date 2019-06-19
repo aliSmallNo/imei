@@ -1033,4 +1033,29 @@ class StockController extends BaseController
 
     }
 
+    public function actionProcess_excel()
+    {
+        $filepath = "/Users/b_tt/Downloads/bpdj_parther.xlsx";
+        $result = ExcelUtil::parseProduct($filepath);
+        if (!$result) {
+            echo "empty file";
+            return;
+        }
+        //print_r($result);
+        $sql = "insert into im_excel_tmp (aName,aPhone,aWechat,aProv1,aCity1,aStreet1,aFollow) VALUES ";
+        $val_str = '';
+        foreach ($result as $k => $v) {
+            if ($k > 0) {
+                $v[6] = '';
+                $val_str .= ",('$v[0]','$v[1]','$v[2]','$v[3]','$v[4]','$v[5]','$v[6]')";
+            }
+        }
+        $val_str = trim($val_str, ',');
+        $sql = $sql . $val_str;
+        //echo AppUtil::db()->createCommand($sql)->execute();
+
+
+
+    }
+
 }
