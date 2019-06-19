@@ -1530,10 +1530,10 @@ class FooController extends Controller
         $result = $conn->createCommand("select * from im_excel_tmp order by aId asc")->queryAll();
         $cmd = $conn->createCommand("update im_excel_tmp set oProv2=:oProv2,oCity2=:oCity2 where aId=:aId ");
         foreach ($result as $k => $v) {
-            list($province, $city) = AppUtil::get_phone_location($v[1]);
+            list($province, $city) = AppUtil::get_phone_location($v['aPhone']);
             if ($province && $city) {
                 $cmd->bindValues([
-                    ':oProv2' => $province,
+                    ':aProv2' => $province,
                     ':oCity2' => $city,
                     ':aId' => $result['aId'],
                 ])->execute();
