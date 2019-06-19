@@ -1528,14 +1528,14 @@ class FooController extends Controller
 
         $conn = AppUtil::db();
         $result = $conn->createCommand("select * from im_excel_tmp order by aId asc")->queryAll();
-        $cmd = $conn->createCommand("update im_excel_tmp set oProv2=:oProv2,oCity2=:oCity2 where aId=:aId ");
+        $cmd = $conn->createCommand("update im_excel_tmp set oProv2=:pro,oCity2=:city where aId=:aId ");
         foreach ($result as $k => $v) {
             list($province, $city) = AppUtil::get_phone_location($v['aPhone']);
             if ($province && $city) {
                 echo $cmd->bindValues([
-                    ':aProv2' => $province,
-                    ':oCity2' => $city,
-                    ':aId' => $result['aId'],
+                    ':pro' => $province,
+                    ':city' => $city,
+                    ':aId' => $v['aId'],
                 ])->getRawSql();
                 exit;
             }
