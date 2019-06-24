@@ -154,6 +154,16 @@ class StockController extends BaseController
             $criteria[] = " cBDAssign=-1 ";
         }
 
+
+        if ($is_jinzx) {
+            $tabs = [
+                "my" => [
+                    "title" => "我的客户",
+                    "count" => $counters["mine"]
+                ],
+            ];
+        }
+
         list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
 
         $alertMsg = "";
@@ -1053,7 +1063,6 @@ class StockController extends BaseController
         $val_str = trim($val_str, ',');
         $sql = $sql . $val_str;
         //echo AppUtil::db()->createCommand($sql)->execute();
-
 
 
     }
