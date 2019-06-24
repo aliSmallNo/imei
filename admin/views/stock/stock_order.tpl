@@ -114,8 +114,9 @@
 						收益：{{$item.oIncome}}<br>
 						收益率：{{$item.oRate}}
 					</td>
+					<td>{{$item.oHoldDays}}</td>
 				{{/if}}
-				<td>{{$item.oHoldDays}}</td>
+
 				<td>{{$item.dt}}</td>
 			</tr>
 		{{/foreach}}

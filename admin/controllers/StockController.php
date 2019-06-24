@@ -353,6 +353,7 @@ class StockController extends BaseController
     // 订单统计
     public function actionStock_order_stat()
     {
+
         $dt = self::getParam("dt", date('Ym'));
         $name = self::getParam("name");
         $phone = self::getParam("phone");
@@ -466,6 +467,8 @@ class StockController extends BaseController
      */
     public function actionExport_today_income()
     {
+        Admin::staffOnly();
+
         $dt = self::getParam('dt');
         if (!$dt) {
             $dt = date('Y-m-d');
@@ -578,6 +581,8 @@ class StockController extends BaseController
      */
     public function actionExport_stock_order()
     {
+        Admin::staffOnly();
+
         $manager_aid = Admin::getAdminId();
         $sdate = self::getParam("sdate");
         $edate = self::getParam("edate");
@@ -654,6 +659,8 @@ class StockController extends BaseController
 
     public function actionUpload_excel()
     {
+        Admin::staffOnly();
+
         $cat = self::postParam("cat");
         $sign = self::postParam("sign");
 
@@ -767,6 +774,8 @@ class StockController extends BaseController
 
     public function actionSend_msg()
     {
+        Admin::staffOnly();
+
         $getInfo = \Yii::$app->request->get();
         $page = self::getParam("page", 1);
         $success = self::getParam("success");
@@ -812,6 +821,7 @@ class StockController extends BaseController
 
     public function actionTrend()
     {
+        Admin::staffOnly();
 
         $date = self::getParam('dt', date('Y-m-d'));
         $reset = self::getParam('reset', 0);
@@ -830,6 +840,8 @@ class StockController extends BaseController
 
     public function actionPhones()
     {
+        Admin::staffOnly();
+
         $page = self::getParam("page", 1);
         $cat = self::getParam("cat");
         $st = self::getParam("sdate");
@@ -864,6 +876,8 @@ class StockController extends BaseController
 
     public function actionZdm_reg()
     {
+        Admin::staffOnly();
+
         $page = self::getParam("page", 1);
         $phone = self::getParam("phone");
         $st = self::getParam("sdate");
@@ -898,6 +912,8 @@ class StockController extends BaseController
 
     public function actionZdm_reg_link()
     {
+        Admin::staffOnly();
+
         $page = self::getParam("page", 1);
         $phone = self::getParam("phone");
 
@@ -923,6 +939,8 @@ class StockController extends BaseController
 
     public function actionSource()
     {
+        Admin::staffOnly();
+
         $page = self::getParam("page", 1);
         $cat = self::getParam("cat");
         $st = self::getParam("sdate");
