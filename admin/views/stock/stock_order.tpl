@@ -73,16 +73,16 @@
 			{{if $is_staff}}
 				<th>ID</th>
 				<th>BD</th>
-			{{/if}}
+      {{/if}}
 			<th>用户名|手机</th>
 			<th>股票名称|股票代码</th>
 			<th>股数|初期借款</th>
-			{{if $is_staff}}
+			{{if $is_staff}}{{/if}}
 				<th>状态</th>
 				<th>今日价格</th>
 				<th>收益</th>
 				<th>持股天数</th>
-			{{/if}}
+
 			<th>时间</th>
 		</tr>
 		</thead>
@@ -103,7 +103,7 @@
 					{{$item.oLoan}}<br>
 					成本：{{$item.oCostPrice}}
 				</td>
-				{{if $is_staff}}
+				{{if $is_staff}}{{/if}}
 					<td>{{$item.st_t}}</td>
 					<td>
 						开盘：{{$item.oOpenPrice}}<br>
@@ -115,7 +115,7 @@
 						收益率：{{$item.oRate}}
 					</td>
 					<td>{{$item.oHoldDays}}</td>
-				{{/if}}
+
 
 				<td>{{$item.dt}}</td>
 			</tr>
