@@ -127,13 +127,35 @@ class StockController extends BaseController
                 "title" => "无意向客户",
                 "count" => $counters["lose"]
             ],
+            "voice" => [
+                "title" => "语音合作客户",
+                "count" => $counters["voice"]
+            ],
         ];
         if (!$isAssigner) {
-            unset($tabs['all']);
+            unset($tabs['all'], $tabs['voice']);
         }
         if ($sub_staff) {
-            unset($tabs['sea']);
+            unset($tabs['sea'], $tabs['voice']);
         }
+
+        if (Admin::$userInfo['aIsVoiceParther'] == 1) {
+            $tabs = [
+                "voice" => [
+                    "title" => "语音合作客户",
+                    "count" => $counters["voice"]
+                ],
+            ];
+        }
+        if ($is_jinzx) {
+            $tabs = [
+                "my" => [
+                    "title" => "我的客户",
+                    "count" => $counters["mine"]
+                ],
+            ];
+        }
+
 
         if (!isset($tabs[$cat])) {
             $cat = "my";
@@ -154,15 +176,6 @@ class StockController extends BaseController
             $criteria[] = " cBDAssign=-1 ";
         }
 
-
-        if ($is_jinzx) {
-            $tabs = [
-                "my" => [
-                    "title" => "我的客户",
-                    "count" => $counters["mine"]
-                ],
-            ];
-        }
 
         list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
 
@@ -195,7 +208,8 @@ class StockController extends BaseController
         } else {
             $staff = Admin::getStaffs();
         }
-        return $this->renderPage('clients.tpl',
+
+        return $this->renderPage('stock_clients.tpl',
             [
                 'detailcategory' => self::getRequestUri(),
                 'items' => $items,
@@ -269,13 +283,13 @@ class StockController extends BaseController
             $options[$key] = ($key - 100) . "% " . $option;
         }
         $isAssigner = Admin::isAssigner();
-        if (!$isAssigner && !$client["bd"] && !in_array(Admin::getAdminId(), [])) {
+        if (!$isAssigner && !$client["bd"]) {
             $len = strlen($client["phone"]);
             if ($len > 4) {
                 $client["phone"] = substr($client["phone"], 0, $len - 4) . "****";
             }
         }
-        return $this->renderPage('detail.tpl',
+        return $this->renderPage('stock_detail.tpl',
             [
                 'base_url' => 'stock/clients',
                 'items' => $items,
@@ -290,7 +304,7 @@ class StockController extends BaseController
     {
         Admin::staffOnly();
         $staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client');
-        return $this->renderPage('stat.tpl',
+        return $this->renderPage('stock_stat.tpl',
             [
                 "beginDate" => date("Y-m-d", time() - 15 * 86400),
                 "endDate" => date("Y-m-d"),
@@ -398,7 +412,7 @@ class StockController extends BaseController
 
         list($list, $sum_income, $sum_contribute) = StockOrder::stat_items($criteria, $params);
 
-        return $this->renderPage("contribute_income.tpl",
+        return $this->renderPage("stock_contribute_income.tpl",
             [
                 'getInfo' => \Yii::$app->request->get(),
                 'dt' => $dt,
@@ -790,7 +804,7 @@ class StockController extends BaseController
         $pagination = self::pagination($page, $count, 20);
 
         $leftMsgCount = AppUtil::getSMSLeft();
-        return $this->renderPage("send_msg.tpl",
+        return $this->renderPage("stock_send_msg.tpl",
             [
                 'leftMsgCount' => $leftMsgCount,
                 'getInfo' => $getInfo,
@@ -812,7 +826,7 @@ class StockController extends BaseController
 
         list($list, $count) = Log::sms_tip_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
-        return $this->renderPage('msg_tip.tpl',
+        return $this->renderPage('stock_msg_tip.tpl',
             [
                 'list' => $list,
                 'pagination' => $pagination,
@@ -830,7 +844,7 @@ class StockController extends BaseController
         }
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
 //		print_r($trends);exit;
-        return $this->renderPage('trend.tpl',
+        return $this->renderPage('stock_trend.tpl',
             [
                 'today' => date('Y年n月j日', time()),
                 'trends' => json_encode($trends),
@@ -862,7 +876,7 @@ class StockController extends BaseController
         list($list, $count) = Log::section_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('phones.tpl',
+        return $this->renderPage('stock_phones.tpl',
             [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -898,7 +912,7 @@ class StockController extends BaseController
         list($list, $count) = Log::zdm_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('zdm_reg.tpl',
+        return $this->renderPage('stock_zdm_reg.tpl',
             [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -927,7 +941,7 @@ class StockController extends BaseController
         list($list, $count) = Log::zdm_link_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('zdm_reg_link.tpl',
+        return $this->renderPage('stock_zdm_reg_link.tpl',
             [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -973,7 +987,7 @@ class StockController extends BaseController
     public function actionReduce_stock()
     {
         list($list, $dts) = StockOrder::cla_reduce_stock_users();
-        return $this->renderPage('reduce_stock.tpl',
+        return $this->renderPage('stock_reduce.tpl',
             [
                 'dts' => $dts,
                 'list' => $list,
@@ -986,7 +1000,7 @@ class StockController extends BaseController
         $dt = self::getParam("dt", date("Y-m-d"));
 
         $list = StockOrder::cla_reduce_users_mouth($dt);
-        return $this->renderPage('reduce_user.tpl',
+        return $this->renderPage('stock_reduce_user.tpl',
             [
                 'dt' => $dt,
                 'list' => $list,
@@ -1061,28 +1075,6 @@ class StockController extends BaseController
 
     }
 
-    public function actionProcess_excel()
-    {
-        $filepath = "/Users/b_tt/Downloads/bpdj_parther.xlsx";
-        $result = ExcelUtil::parseProduct($filepath);
-        if (!$result) {
-            echo "empty file";
-            return;
-        }
-        //print_r($result);
-        $sql = "insert into im_excel_tmp (aName,aPhone,aWechat,aProv1,aCity1,aStreet1,aFollow) VALUES ";
-        $val_str = '';
-        foreach ($result as $k => $v) {
-            if ($k > 0) {
-                $v[6] = '';
-                $val_str .= ",('$v[0]','$v[1]','$v[2]','$v[3]','$v[4]','$v[5]','$v[6]')";
-            }
-        }
-        $val_str = trim($val_str, ',');
-        $sql = $sql . $val_str;
-        //echo AppUtil::db()->createCommand($sql)->execute();
 
-
-    }
 
 }

@@ -634,6 +634,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 		count(case when cBDAssign>-1 then 1 else null end) as cnt_all,
 		count(1) as cnt ,
 		count(case when cBDAssign<0 then 1 else null end) as lose ,
+		count(case when cSource='voice_tel_partner' then 1 else null end) as voice ,
 		count(case when cBDAssign in (1059,1056) then 1 else null end) as cnt_jinzx 
  		from im_crm_stock_client where cDeletedFlag=0 $strCriteria";
 		$conn = AppUtil::db();

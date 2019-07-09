@@ -141,8 +141,8 @@ class CRMStockTrack extends \yii\db\ActiveRecord
 		];
 		$ret = $conn->createCommand($sql)->queryOne();
 		if ($ret) {
-			if (isset(CRMClient::$SourceMap[$ret["cSource"]])) {
-				$ret["src"] = CRMClient::$SourceMap[$ret["cSource"]];
+			if (isset(CRMStockClient::SourceMap()[$ret["cSource"]])) {
+				$ret["src"] = CRMStockClient::SourceMap()[$ret["cSource"]];
 			}
 			$clientInfo = $ret;
 		}

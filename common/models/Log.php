@@ -860,7 +860,6 @@ class Log extends ActiveRecord
 	 * oOpenId 记录发送人数
 	 * oUId    记录发送发送的管理员
 	 */
-	const CAT_PHONE_SECTION_TEST = 'phone_section_test';
 	const CAT_PHONE_SECTION_YES = 'phone_section_yes';
 	const CAT_PHONE_SECTION = 'phone_section';
 	const KEY_WAIT = 1;
@@ -910,7 +909,7 @@ class Log extends ActiveRecord
 		self::add(array_merge($data, [
 			'oKey' => self::KEY_WAIT,
 			"oBefore" => $area,
-			'oAfter' => $dt,
+			'oAfter' => $dt, // 抓取的时间
 			'oUId' => is_array($phone_location) ? implode('-', $phone_location) : ''
 		]));
 		return true;
@@ -927,7 +926,7 @@ class Log extends ActiveRecord
 		$cat = self::CAT_PHONE_SECTION_YES;
 		$sql = "select *
 				from im_log 
-				where oCategory='$cat' and oUId=0 $strCriteria
+				where oCategory='$cat' $strCriteria
 				order by oAfter desc 
 				limit $offset,$pageSize";
 		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
@@ -936,7 +935,7 @@ class Log extends ActiveRecord
 		}
 		$sql = "select count(1) as co
 				from im_log 
-				where oCategory='$cat' and oUId=0 $strCriteria  ";
+				where oCategory='$cat' $strCriteria  ";
 		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
 		return [$res, $count];
