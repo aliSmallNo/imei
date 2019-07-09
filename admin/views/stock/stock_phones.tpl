@@ -6,7 +6,12 @@
 		font-weight: 400;
 		color: #777;
 	}
+	.autoW {
+		width: auto;
+		display: inline-block;
+	}
 </style>
+
 <div class="row">
 	<div class="col-sm-6">
 		<h4>手机号列表
@@ -28,6 +33,20 @@
 		<button class="btn btn-primary">查询</button>
 		<span class="space"></span>
 	</form>
+
+	<div class="row-divider"></div>
+	<input class="form-control autoW beginDate my-date-input" placeholder="开始时间" export_name="sdate">
+	至
+	<input class="form-control autoW endDate my-date-input" placeholder="截止时间" export_name="edate">
+
+	<select class="form-control autoW" export_name="cat">
+		<option value="">请选择来源</option>
+        {{foreach from=$cats item=source key=key}}
+			<option value="{{$key}}" {{if $key==$cat}}selected{{/if}}>{{$source}}</option>
+        {{/foreach}}
+	</select>
+	<button class="btn btn-primary opExcel">导出手机号</button>
+	<p style="font-size: 12px;color: #666;">单次最多导出3000条记录，请合理选择条件</p>
 </div>
 <div class="row-divider"></div>
 <div class="row">
@@ -123,6 +142,18 @@
 				layer.msg(resp.msg);
 			}
 		}, "json");
-	})
+	});
+
+    /********************* 导出我的客户 start *********************************/
+    $(".opExcel").on("click", function () {
+
+      var sdate = $("input[export_name=sdate]").val();
+      var edate = $("input[export_name=edate]").val();
+      var cat = $("select[export_name=cat]").val();
+      var url = "/stock/export_stock_phones?sdate=" + sdate + "&edate=" + edate + "&sign=excel&cat=" + cat;
+      location.href = url;
+    });
+    /********************* 导出我的客户 end ******************************/
+
 </script>
 {{include file="layouts/footer.tpl"}}

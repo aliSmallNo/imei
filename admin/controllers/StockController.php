@@ -888,6 +888,65 @@ class StockController extends BaseController
             ]);
     }
 
+    /**
+     * 导出抓取的手机号码
+     */
+    public function actionExport_stock_phones()
+    {
+        Admin::staffOnly();
+
+        $sdate = self::getParam("sdate");
+        $edate = self::getParam("edate");
+        $cat = self::getParam("cat");
+        $condition = '';
+
+        $filename_time = date("Y-m-d");
+        if ($sdate && $edate) {
+            $filename_time = $sdate . "_" . $edate;
+            $sdate .= " 00:00:00";
+            $edate .= " 23:59:59";
+            $condition .= " and oDate between '$sdate' and '$edate' ";
+        }
+        $filename_satus = '';
+        if ($cat) {
+            $condition .= " and oBefore='$cat' ";
+            $filename_satus = "【" . TryPhone::$catDict[$cat] . "】";
+        }
+
+        $cat2 = Log::CAT_PHONE_SECTION_YES;
+        $sql = "select *
+				from im_log 
+				where oCategory='$cat2' $condition limit 3000";
+        $conn = AppUtil::db();
+        $res = $conn->createCommand($sql)->queryAll();
+
+        $header = $content = [];
+        $header = ['手机号', '归属地', '省', '市', '网站', '时间'];
+        $cloum_w = [20, 15, 15, 15, 15, 20];
+
+        foreach ($res as $v) {
+            $prov = $city = '';
+            if (strpos($v['oUId'], '-') !== false) {
+                list($prov, $city) = explode('-', $v['oUId']);
+            }
+            $st_txt = TryPhone::$catDict[$v['oBefore']] ?? '';
+            $row = [
+                $v['oOpenId'],
+                $v['oUId'],
+                $prov,
+                $city,
+                $st_txt,
+                $v['oAfter'],
+            ];
+            $content[] = $row;
+        }
+
+        $filename = "抓取手机号" . $filename_satus . $filename_time;
+
+        ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
+        exit;
+    }
+
     public function actionZdm_reg()
     {
         Admin::staffOnly();
@@ -1074,7 +1133,6 @@ class StockController extends BaseController
 
 
     }
-
 
 
 }
