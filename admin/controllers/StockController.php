@@ -174,6 +174,9 @@ class StockController extends BaseController
             }
         } elseif ($cat == "lose") {
             $criteria[] = " cBDAssign=-1 ";
+        } elseif ($cat == "voice") {
+            $source_tel_parther = CRMStockClient::SRC_VOICE_TEL_PARTHRE;
+            $criteria[] = " cSource='$source_tel_parther' ";
         }
 
 
