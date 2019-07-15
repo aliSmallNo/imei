@@ -247,15 +247,15 @@
     imcome_dt: $("[data-field=imcome_dt]"),
 
   };
-  $('.opImport').on('click', function() {
+  $('.opImport').on('click', function () {
     $('#modModal').modal('show');
   });
-  $('.opDelete').on('click', function() {
+  $('.opDelete').on('click', function () {
     $sls.dt.val('');
     $('#modModal_d').modal('show');
   });
 
-  $('#btnComfirm').on('click', function() {
+  $('#btnComfirm').on('click', function () {
     var dt = $sls.dt.val();
     if (!dt) {
       layer.msg('还没填写日期哦');
@@ -269,19 +269,19 @@
     $.post("/api/stock", {
       tag: 'delete_stock_order',
       dt: dt,
-    }, function(resp) {
+    }, function (resp) {
       layer.closeAll();
       $sls.load_flag = 0;
       layer.msg(resp.msg);
       if (resp.code == 0) {
-        setTimeout(function() {
+        setTimeout(function () {
           location.reload();
         }, 2000);
       }
     }, 'json');
   });
   /********************* 导出我的客户 start *********************************/
-  $(".opExcel").on("click", function() {
+  $(".opExcel").on("click", function () {
     // var admin = $("select[name=admin]").val();
     var sdate = $("input[name=sdate]").val();
     var edate = $("input[name=edate]").val();
@@ -292,11 +292,11 @@
   /********************* 导出我的客户 end ******************************/
 
   /********************* 计算今日卖出 start ******************************/
-  $('.opCalSold').on('click', function() {
+  $('.opCalSold').on('click', function () {
     $sls.cdt.val('');
     $('#modModal_c').modal('show');
   });
-  $('#btnComfirm_c').on('click', function() {
+  $('#btnComfirm_c').on('click', function () {
     var dt = $sls.cdt.val();
     if (!dt) {
       layer.msg('还没填写日期哦');
@@ -310,12 +310,12 @@
     $.post("/api/stock", {
       tag: 'cal_sold_order',
       dt: dt,
-    }, function(resp) {
+    }, function (resp) {
       layer.closeAll();
       $sls.load_flag = 0;
       layer.msg(resp.msg);
       if (resp.code == 0) {
-        setTimeout(function() {
+        setTimeout(function () {
           location.reload();
         }, 2000);
       }
@@ -327,12 +327,12 @@
   // $(".opIncome").on("click", function () {
   //location.href = "/stock/export_today_income";
   // });
-  $('.opIncome').on('click', function() {
+  $('.opIncome').on('click', function () {
     $sls.imcome_dt.val('');
     $('#modModal_income').modal('show');
   });
 
-  $('#btnComfirm_income').on('click', function() {
+  $('#btnComfirm_income').on('click', function () {
     var dt = $sls.imcome_dt.val();
     if (!dt) {
       layer.msg('还没填写日期哦');
@@ -343,7 +343,7 @@
   /********************* 导出今日盈亏 end ********************************/
   /********************* 导出今日盈亏 end ********************************/
 
-  $('.opHoldDays').on('click', function() {
+  $('.opHoldDays').on('click', function () {
     if ($sls.load_flag) {
       return;
     }
@@ -351,12 +351,12 @@
     $sls.load_flag = 1;
     $.post("/api/stock", {
       tag: 'cal_hold_days',
-    }, function(resp) {
+    }, function (resp) {
       layer.closeAll();
       $sls.load_flag = 0;
       layer.msg(resp.msg);
       if (resp.code == 0) {
-        setTimeout(function() {
+        setTimeout(function () {
           location.reload();
         }, 2000);
       }

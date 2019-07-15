@@ -471,20 +471,20 @@
 </script>
 <script src="/js/clue_areas.js?v={{#gVersion#}}"></script>
 <script>
-  $(document).on("click", "button.close", function() {
+  $(document).on("click", "button.close", function () {
     var form = $("form");
     form.find(".form-control").val("");
     form.submit();
   });
-  $(document).on('click', '#btnRemove', function() {
+  $(document).on('click', '#btnRemove', function () {
     var self = $(this);
     var cid = self.attr('cid');
     layer.confirm('是否确定要删除这个客户线索？', {
       btn: ['确定', '取消'],
       title: '删除客户线索'
-    }, function() {
+    }, function () {
       removeClient(cid);
-    }, function() {
+    }, function () {
     });
   });
 
@@ -493,16 +493,16 @@
     $.post("/api/stock_client", {
       tag: "remove",
       id: cid
-    }, function(resp) {
+    }, function (resp) {
       layer.closeAll();
       layer.msg(resp.msg);
-      setTimeout(function() {
+      setTimeout(function () {
         location.reload();
       }, 400);
     }, 'json');
   }
 
-  $(document).on('click', '#btnSaveMod', function() {
+  $(document).on('click', '#btnSaveMod', function () {
     var self = $(this);
     var tag = self.attr('tag');
     var postData = null;
@@ -550,11 +550,11 @@
     }
     if (postData) {
       layer.load();
-      $.post(url, postData, function(resp) {
+      $.post(url, postData, function (resp) {
         layer.closeAll();
         layer.msg(resp.msg);
         if (resp.code == 0) {
-          setTimeout(function() {
+          setTimeout(function () {
             location.reload();
           }, 800);
         }
@@ -563,15 +563,15 @@
 
   });
 
-  $(document).on("click", ".btnGrab", function() {
+  $(document).on("click", ".btnGrab", function () {
     var self = $(this);
     var cid = self.closest("td").attr("data-id");
     $.post("/api/stock_client", {
       tag: "grab",
       id: cid
-    }, function(resp) {
+    }, function (resp) {
       layer.msg(resp.msg);
-      setTimeout(function() {
+      setTimeout(function () {
         location.reload();
       }, 800);
     }, "json")
@@ -590,7 +590,7 @@
     mItems = [];
   }
 
-  $(document).on('click', '.btnModify', function() {
+  $(document).on('click', '.btnModify', function () {
     var self = $(this);
     var cid = self.closest("td").attr("data-id");
     var client = null;
@@ -632,7 +632,7 @@
     $('.clue_city').val(client.cCity);
   });
 
-  $(document).on('click', '.btnChange', function() {
+  $(document).on('click', '.btnChange', function () {
     var self = $(this);
     var cid = self.closest("td").attr("data-id");
     var client = null;
@@ -663,7 +663,7 @@
     $('.clue_bd').val(client.cBDAssign);
   });
 
-  $(document).on('click', '.addClue', function() {
+  $(document).on('click', '.addClue', function () {
     var vHtml = $('#cClueTmp').html();
     $('div.modal-body').html(vHtml);
     $('#myModalLabel').html('添加线索');
@@ -676,19 +676,19 @@
     updateArea("北京市");
   });
 
-  $(document).on('change', '.clue_province', function() {
+  $(document).on('change', '.clue_province', function () {
     updateArea($(this).val());
   });
 
-  $(document).on('click', '.addClueMore', function() {
+  $(document).on('click', '.addClueMore', function () {
     $('#addClueMoreModal').modal('show');
   });
 
-  $(function() {
+  $(function () {
     if (!$("input[name=phone]").val()) {
       $.post("/api/stock_client", {
         tag: 'user_alert'
-      }, function(resp) {
+      }, function (resp) {
         if (resp.code == 0) {
           var temp = "<ol class='users'>{[#data]}<li class=''>{[cName]}: <a href='javascript:;' class='update_alert' alert-phone='{[cPhone]}' alert-oId='{[oId]}'>{[cPhone]}</a></li>{[/data]}</ol>";
           layer.open({
@@ -700,14 +700,14 @@
       }, 'json');
     }
 
-    $(document).on("click", ".update_alert", function() {
+    $(document).on("click", ".update_alert", function () {
       var self = $(this);
       var phone = self.attr('alert-phone');
       layer.load();
       $.post("/api/stock_client", {
         tag: 'update_user_alert',
         oid: self.attr('alert-oId'),
-      }, function(resp) {
+      }, function (resp) {
         layer.closeAll();
         if (resp.code == 0) {
           location.href = "/stock/clients?phone=" + phone;
@@ -718,7 +718,7 @@
 
   function get_lose_client() {
     var data = [];
-    $(".choose_lose_client").each(function() {
+    $(".choose_lose_client").each(function () {
       var cid = $(this).attr('data_cid');
       if ($(this).is(':checked')) {
         data.push(cid);
@@ -731,7 +731,7 @@
     return data;
   }
 
-  $(".choose_lose_client_btn").on("click", function() {
+  $(".choose_lose_client_btn").on("click", function () {
     var data = get_lose_client();
     if (!data) {
       return false;
@@ -742,7 +742,7 @@
     $.post("/api/stock_client", {
       tag: 'choose_2_lose_client',
       data: JSON.stringify(data)
-    }, function(resp) {
+    }, function (resp) {
       layer.closeAll();
       if (resp.code == 0) {
         //location.reload();
