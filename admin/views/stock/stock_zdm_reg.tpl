@@ -76,48 +76,48 @@
     </div>
 </div>
 <script>
-    $sls = {
-        loadflag: 0,
-        tag: '',
-        modal: $("#modModal"),
-        title: $("#modModal").find(".modal-header h4"),
+  $sls = {
+    loadflag: 0,
+    tag: '',
+    modal: $("#modModal"),
+    title: $("#modModal").find(".modal-header h4"),
+  };
+  $(document).on("click", ".add_phone_section", function () {
+    $sls.tag = 'add_phone_section';
+    $sls.sId = '';
+    $sls.title.html("添加手机号段");
+    $("[data-field=section_phones]").val("");
+    $sls.modal.modal('show');
+  });
+  $(document).on('click', '#btnSave', function () {
+    var section_phones = $("[data-field=section_phones]").val();
+    if (!section_phones) {
+      layer.msg('号段不能为空');
+      return;
+    }
+    var postData = {
+      section_phones: section_phones,
+      tag: $sls.tag,
     };
-    $(document).on("click", ".add_phone_section", function () {
-        $sls.tag = 'add_phone_section';
-        $sls.sId = '';
-        $sls.title.html("添加手机号段");
-        $("[data-field=section_phones]").val("");
-        $sls.modal.modal('show');
-    });
-    $(document).on('click', '#btnSave', function () {
-        var section_phones = $("[data-field=section_phones]").val();
-        if (!section_phones) {
-            layer.msg('号段不能为空');
-            return;
-        }
-        var postData = {
-            section_phones: section_phones,
-            tag: $sls.tag,
-        };
-        console.log(postData);
+    console.log(postData);
 
-        if ($sls.loadflag) {
-            return;
-        }
-        $sls.loadflag = 1;
-        layer.load();
-        $.post("/api/stock", postData, function (resp) {
-            $sls.loadflag = 0;
-            layer.closeAll();
-            if (resp.code == 0) {
-                layer.msg(resp.msg);
-                setTimeout(function () {
-                    location.reload();
-                }, 5000)
-            } else {
-                layer.msg(resp.msg);
-            }
-        }, "json");
-    })
+    if ($sls.loadflag) {
+      return;
+    }
+    $sls.loadflag = 1;
+    layer.load();
+    $.post("/api/stock", postData, function (resp) {
+      $sls.loadflag = 0;
+      layer.closeAll();
+      if (resp.code == 0) {
+        layer.msg(resp.msg);
+        setTimeout(function () {
+          location.reload();
+        }, 5000)
+      } else {
+        layer.msg(resp.msg);
+      }
+    }, "json");
+  })
 </script>
 {{include file="layouts/footer.tpl"}}

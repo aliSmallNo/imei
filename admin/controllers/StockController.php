@@ -18,6 +18,7 @@ use common\models\LogStock;
 use common\models\StockAction;
 use common\models\StockOrder;
 use common\models\StockUser;
+use common\models\StockUserAdmin;
 use common\service\TrendStockService;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
@@ -1139,4 +1140,52 @@ class StockController extends BaseController
     }
 
 
+    /**
+     * 给BD分配渠道来方便管理
+     * eg: 给小刀分配冯林和冯小强，小刀可以看到冯林和冯小强下的用户的交易情况
+     * add by zp 2019.7.15 pm
+     */
+    public function actionStock_user_admin()
+    {
+        $getInfo = \Yii::$app->request->get();
+        $page = self::getParam("page", 1);
+        $name = self::getParam("name");
+        $phone = self::getParam("phone");
+        $bdphone = self::getParam("bdphone");
+
+        $criteria = [];
+        $params = [];
+        if ($name) {
+            $name = str_replace("'", "", $name);
+            $criteria[] = "  uaName like :name ";
+            $params[':name'] = "%$name%";
+        }
+        if ($phone) {
+            $criteria[] = "  uaPhone like :phone ";
+            $params[':phone'] = $phone;
+        }
+        if ($bdphone) {
+            $criteria[] = "  uaPtPhone = :bdphone ";
+            $params[':bdphone'] = $bdphone;
+        }
+
+        list($list, $count) = StockUserAdmin::items($criteria, $params, $page);
+        $pagination = self::pagination($page, $count, 20);
+
+        $orders = [
+            'update' => '正常排序',
+            'last_opt_asc' => '最近更新订单时间正序',
+            'last_opt_desc' => '最近更新订单时间倒序',
+        ];
+        return $this->renderPage("stock_user_admin.tpl",
+            [
+                'getInfo' => $getInfo,
+                'pagination' => $pagination,
+                'list' => $list,
+                'types' => StockUserAdmin::$types,
+                'bds' => StockUserAdmin::bds(),
+                'orders' => $orders,
+            ]
+        );
+    }
 }
