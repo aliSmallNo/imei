@@ -472,6 +472,7 @@ class StockController extends BaseController
                 'pagination' => $pagination,
                 'list' => $list,
                 'status' => $status,
+                'is_xiaodao' => Admin::getAdminId() == 1027,
                 'stDict' => StockOrder::$stDict,
                 'success' => $success,
                 'error' => $error,

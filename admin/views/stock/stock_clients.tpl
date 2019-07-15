@@ -257,8 +257,9 @@
                     {{if isset($prod.lastNote) && $prod.lastNote}}
                         {{$prod.lastNote}}
                         <br>
-                        <div class="text-muted">{{$prod.lastDate}}</div>
+                        <div class="text-muted">最后跟进：{{$prod.lastDate}}</div>
                     {{/if}}
+                    <div class="text-muted">更新：{{$prod.cUpdatedDate}}</div>
 
                 </td>
                 <td class="cell-act" data-id="{{$prod.cId}}">
