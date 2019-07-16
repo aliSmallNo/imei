@@ -18,10 +18,8 @@
     }
 </style>
 <div class="row">
-    <h4>BD管理客户列表
-        {{if $is_stock_leader}}
-            <a href="javascript:;" class="add_user btn btn-outline btn-primary btn-xs">添加用户</a>
-        {{/if}}
+    <h4>BD管理渠道列表
+        <a href="javascript:;" class="add_user btn btn-outline btn-primary btn-xs">添加</a>
     </h4>
 </div>
 <div class="row">
@@ -54,6 +52,7 @@
             <th>BD名</th>
             <th>BD手机</th>
             
+            <th>状态</th>
             <th>备注</th>
             <th>时间</th>
             <th>操作</th>
@@ -62,13 +61,16 @@
         <tbody>
         {{foreach from=$list item=item}}
             <tr data-uaPhone="{{$item.uaPhone}}" data-uaId="{{$item.uaId}}"
-                data-uaPtPhone="{{$item.uaPtPhone}}" data-uaNote="{{$item.uaNote}}">
+                data-uaPtPhone="{{$item.uaPtPhone}}"
+                data-uaNote="{{$item.uaNote}}"
+                data-uaStatus="{{$item.uaStatus}}">
                 <td>{{$item.uaName}}</td>
                 <td>{{$item.uaPhone}}</td>
 
                 <td>{{$item.uaPtName}}</td>
                 <td>{{$item.uaPtPhone}}</td>
 
+                <td>{{$item.st_t}}</td>
                 <td>{{$item.uaNote}}</td>
                 <td>{{$item.uaUpdatedOn}}</td>
                 <td>
@@ -108,9 +110,20 @@
                         <label class="col-sm-3 control-label">备注</label>
                         <div class="col-sm-8">
                             <input type="text" data-field="uaNote" class="form-control"/>
-                            <input type="hidden" data-field="uaId" class="form-control"/>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" data-field="uaStatus">
+                                <option value="">-=请选择=-</option>
+                                {{foreach from=$sts key=key item=item}}
+                                    <option value="{{$key}}">{{$item}}</option>
+                                {{/foreach}}
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" data-field="uaId" class="form-control"/>
                 </form>
             </div>
             <div class="modal-footer">
@@ -131,7 +144,7 @@
 
   $(document).on('click', '.add_user', function() {
     $sls.tag = 'edit_user_admin';
-    $sls.title.html('添加用户信息');
+    $sls.title.html('添加');
     $('[data-field]').each(function() {
       if ($(this).attr('data-field') == 'uaType') {
         //$(this).val(1);
@@ -146,11 +159,12 @@
   $(document).on('click', '.edit_user', function() {
     var self = $(this).closest('tr');
     $sls.tag = 'edit_user_admin';
-    $sls.title.html('修改用户信息');
+    $sls.title.html('修改');
     $('[data-field=uaNote]').val(self.attr('data-uaNote'));
     $('[data-field=uaPtPhone]').val(self.attr('data-uaPtPhone'));
     $('[data-field=uaPhone]').val(self.attr('data-uaPhone'));
     $('[data-field=uaId]').val(self.attr('data-uaId'));
+    $('[data-field=uaStatus]').val(self.attr('data-uaStatus'));
     $sls.modal.modal('show');
   });
 
@@ -159,6 +173,7 @@
     var uaPtPhone = $('[data-field=uaPtPhone]').val();
     var uaNote = $('[data-field=uaNote]').val();
     var uaId = $('[data-field=uaId]').val();
+    var uaStatus = $('[data-field=uaStatus]').val();
     if (!uaPhone) {
       layer.msg('渠道手机号不能为空');
       return;
@@ -172,6 +187,7 @@
       uaPtPhone: uaPtPhone,
       uaId: uaId,
       uaNote: uaNote,
+      uaStatus: uaStatus,
       tag: $sls.tag,
     };
     console.log(postData);

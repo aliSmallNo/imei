@@ -33,6 +33,10 @@ class StockUserAdmin extends \yii\db\ActiveRecord
 
     const ST_USE = 1;
     const ST_VOID = 9;
+    static $stDict = [
+        self::ST_USE => '有效',
+        self::ST_VOID => '无效',
+    ];
 
     /* public static function tableName()
      {
@@ -108,11 +112,12 @@ class StockUserAdmin extends \yii\db\ActiveRecord
         return $entity->uaId;
     }
 
-    public static function edit_admin($uaId, $uaPhone, $uaPtPhone, $uaNote)
+    public static function edit_admin($uaId, $uaPhone, $uaPtPhone, $uaStatus, $uaNote)
     {
         $data = [
             'uaPhone' => $uaPhone,
             'uaPtPhone' => $uaPtPhone,
+            'uaStatus' => $uaStatus,
             'uaNote' => $uaNote,
         ];
 
@@ -123,7 +128,10 @@ class StockUserAdmin extends \yii\db\ActiveRecord
             return [0, 'BD手机格式不正确', $data];
         }
         if ($uaPtPhone == $uaPhone) {
-            return [0, '不能给自己分配', $data];
+            return [0, '不用给自己分配', $data];
+        }
+        if (!array_key_exists($uaStatus, self::$stDict)) {
+            return [0, '状态未填写', $data];
         }
 
         $stock_user1 = StockUser::findOne(['uPhone' => $uaPhone]);
@@ -140,7 +148,7 @@ class StockUserAdmin extends \yii\db\ActiveRecord
             'uaPtName' => $stock_user2->uName,
         ]);
 
-        $user_admin1 = self::findOne(['uaPhone' => $uaPhone]);
+        $user_admin1 = self::findOne(['uaPhone' => $uaPhone, 'uaStatus' => self::ST_USE]);
         $user_admin2 = self::findOne($uaId);
 
         if ($user_admin2) {
@@ -174,22 +182,19 @@ class StockUserAdmin extends \yii\db\ActiveRecord
 
         $order_str = " uaUpdatedOn desc";
 
-        $cond = StockOrder::channel_condition();
-
         $sql = "select *
 				from im_stock_user_admin  
-				where uaId>0 $strCriteria $cond
+				where uaStatus=:uaStatus $strCriteria 
 				order by  $order_str
 				limit $offset,$pageSize";
-        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        $res = AppUtil::db()->createCommand($sql, [':uaStatus' => self::ST_USE])->bindValues($params)->queryAll();
         foreach ($res as $k => $v) {
-            //$res[$k]['type_t'] = self::$types[$v['uType']];
-            //$res[$k]['opt_dt'] = date('Y-m-d', strtotime($v['uLastOptOn']));
+            $res[$k]['st_t'] = self::$stDict[$v['uaStatus']];
         }
         $sql = "select count(1) as co
 				from im_stock_user_admin  
-				 where uaId>0 $strCriteria $cond ";
-        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+				 where uaStatus=:uaStatus $strCriteria  ";
+        $count = AppUtil::db()->createCommand($sql, [':uaStatus' => self::ST_USE])->bindValues($params)->queryScalar();
 
         return [$res, $count];
     }

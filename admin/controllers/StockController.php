@@ -427,6 +427,9 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 客户订单
+     */
     public function actionStock_order()
     {
         $getInfo = \Yii::$app->request->get();
@@ -438,6 +441,7 @@ class StockController extends BaseController
         $stock_id = self::getParam("stock_id");
         $dt = self::getParam("dt");
         $status = self::getParam("status");
+        $bdphone = self::getParam("bdphone");
 
         $criteria = [];
         $params = [];
@@ -464,6 +468,11 @@ class StockController extends BaseController
             $criteria[] = "  o.oStatus = :status ";
             $params[':status'] = $status;
         }
+        if ($bdphone) {
+            $criteria[] = "  u.uPtPhone = :bdphone ";
+            $params[':bdphone'] = $bdphone;
+        }
+
 
         list($list, $count) = StockOrder::items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
@@ -475,6 +484,7 @@ class StockController extends BaseController
                 'status' => $status,
                 'is_xiaodao' => Admin::getAdminId() == 1027,
                 'stDict' => StockOrder::$stDict,
+                'bds' => StockUser::bds(),
                 'success' => $success,
                 'error' => $error,
             ]
@@ -1147,6 +1157,8 @@ class StockController extends BaseController
      */
     public function actionStock_user_admin()
     {
+        Admin::staffOnly();
+
         $getInfo = \Yii::$app->request->get();
         $page = self::getParam("page", 1);
         $name = self::getParam("name");
@@ -1183,6 +1195,7 @@ class StockController extends BaseController
                 'pagination' => $pagination,
                 'list' => $list,
                 'types' => StockUserAdmin::$types,
+                'sts' => StockUserAdmin::$stDict,
                 'bds' => StockUserAdmin::bds(),
                 'orders' => $orders,
             ]

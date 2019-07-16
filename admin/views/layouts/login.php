@@ -1,4 +1,6 @@
-<?php $this->beginPage() ?>
+<?php
+
+$this->beginPage() ?>
 	<!DOCTYPE html>
 	<html lang="zh-cmn-Hans">
 	<head>

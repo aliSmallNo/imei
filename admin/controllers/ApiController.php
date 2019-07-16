@@ -1472,8 +1472,9 @@ class ApiController extends Controller
                 $uaId = self::postParam("uaId");
                 $uaPhone = self::postParam("uaPhone");
                 $uaPtPhone = self::postParam("uaPtPhone");
+                $uaStatus = self::postParam("uaStatus");
                 $uaNote = self::postParam("uaNote");
-                list($code, $msg, $data) = StockUserAdmin::edit_admin($uaId, $uaPhone, $uaPtPhone, $uaNote);
+                list($code, $msg, $data) = StockUserAdmin::edit_admin($uaId, $uaPhone, $uaPtPhone, $uaStatus, $uaNote);
                 return self::renderAPI($code, $msg, $data);
             case "delete_stock_order":
                 $dt = self::postParam("dt");

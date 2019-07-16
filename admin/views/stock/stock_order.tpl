@@ -47,6 +47,14 @@
                     <option value="{{$key}}" {{if $key==$status}}selected{{/if}}>{{$item}}</option>
                 {{/foreach}}
             </select>
+            {{if $is_staff}}
+            <select class="form-control" name="bdphone">
+                <option value="">-=BD=-</option>
+                {{foreach from=$bds key=key item=item}}
+                    <option value="{{$key}}">{{$item}}</option>
+                {{/foreach}}
+            </select>
+            {{/if}}
         </div>
         <button class="btn btn-primary">查询</button>
         <span class="space"></span>
@@ -91,7 +99,9 @@
             <tr>
                 {{if $is_staff}}
                     <td>{{$item.oId}}</td>
-                    <td>{{$item.uPtName}}</td>
+                    <td>{{$item.uPtName}}
+                    <br>{{$item.uPtPhone}}
+                    </td>
                 {{/if}}
                 <td>{{$item.oName}}({{$item.oPhone}})</td>
                 <td>
