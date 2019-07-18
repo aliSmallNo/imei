@@ -1294,11 +1294,17 @@ class AppUtil
 
     public static function setCookie($name, $value, $duration)
     {
+        if (AppUtil::isDev()) {
+            $domain = "localhost.mpadmin";
+        } else {
+            $domain = "admin.meipo100.com";
+        }
         $respCookies = \Yii::$app->response->cookies;
         $respCookies->add(new Cookie([
             "name" => $name,
             "value" => $value,
-            "expire" => time() + $duration
+            "expire" => time() + $duration,
+            //"domain" => $domain,
         ]));
     }
 
@@ -1313,9 +1319,9 @@ class AppUtil
 
     public static function removeCookie($name)
     {
-        self::setCookie($name, "", 1);
+        self::setCookie($name, "", -1);
         $cookies = \Yii::$app->response->cookies;
-        $cookies->remove($name);
+        $cookies->remove($name, true);
         unset($cookies[$name]);
     }
 

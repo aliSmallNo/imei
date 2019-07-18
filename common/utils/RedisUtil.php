@@ -66,6 +66,7 @@ class RedisUtil
 	const KEY_YOUZAN_USER_ORDERS_STAT = "you_user_order_stat";
 
 	const KEY_PROXY_IPS = "proxy_ips";
+	const KEY_LOGIN_CODE = "login_code";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -109,6 +110,7 @@ class RedisUtil
 		self::KEY_YOUZAN_USER_CHAIN => 60 * 30,
 		self::KEY_YOUZAN_USER_ORDERS_STAT => 60 * 30,
 		self::KEY_PROXY_IPS => 60 * 10,
+		self::KEY_LOGIN_CODE => 60 * 10,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

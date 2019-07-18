@@ -78,17 +78,21 @@ class SiteController extends BaseController
         $pass = self::postParam("pass");
         $code = self::postParam("code");
         $tip = '';
-        $session_key = AppUtil::getCookie('PHPSESSID') . ':loginCode';
+
+        session_start();
+        //$session_key = AppUtil::getCookie('PHPSESSID') . ':loginCode';
+        $session_key = AppUtil::getCookie('PHPSESSID');
+
+        // var_dump(Yii::$app->request->hostInfo);exit;
+
         if ($name && $pass) {
             Admin::logout();
 
-//            print_r([$code, AppUtil::getCookie('loginCode')]);
-//            var_dump(strcasecmp($code, AppUtil::getCookie('loginCode')) === 0);
-//            var_dump($code && (strcasecmp($code, AppUtil::getCookie('loginCode')) === 0));
-//            exit;
+            // $cache_code = AppUtil::getCookie($session_key);
+            $cache_code = RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->getCache();
 
             if ($code
-                && (strcasecmp($code, AppUtil::getCookie($session_key)) === 0)) {
+                && (strcasecmp($code, $cache_code) === 0)) {
                 $this->admin_id = Admin::login($name, $pass);
                 if ($this->admin_id) {
                     Admin::userInfo($this->admin_id, true);
@@ -104,7 +108,8 @@ class SiteController extends BaseController
         list($code, $src) = CaptchaUtil::create();
 
         // 可以改为redis
-        AppUtil::setCookie($session_key, $code, 600);
+        // AppUtil::setCookie($session_key, $code, 600);
+        RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->setCache($code);
 
 
         return $this->renderPage('login.tpl', [
