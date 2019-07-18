@@ -7,6 +7,9 @@
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
+ *
+ * local use: /usr/bin/php yii foo/zp
+ *
  */
 
 defined('YII_DEBUG') or define('YII_DEBUG', true);

@@ -17,6 +17,15 @@
 					<label class="active" for="pass">密码</label>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input name="code" id="code" type="text" placeholder="请输入验证码" >
+					<img src="{{$src}}" alt="">
+					<label class="active" for="code">验证码</label>
+				</div>
+			</div>
+
 			<button type="submit" class="btn btn-3d">登 录</button>
 			{{if isset($tip) && $tip}}
 			<p class="help-block" style="font-size: 14px;color: #f33">{{$tip}}</p>

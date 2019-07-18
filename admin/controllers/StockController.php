@@ -474,7 +474,7 @@ class StockController extends BaseController
         }
 
 
-        list($list, $count) = StockOrder::items($criteria, $params, $page);
+        list($list, $count, $bds) = StockOrder::items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
         return $this->renderPage("stock_order.tpl",
             [
@@ -482,9 +482,10 @@ class StockController extends BaseController
                 'pagination' => $pagination,
                 'list' => $list,
                 'status' => $status,
+                'bdphone' => $bdphone,
                 'is_xiaodao' => Admin::getAdminId() == 1027,
                 'stDict' => StockOrder::$stDict,
-                'bds' => StockUser::bds(),
+                'bds' => $bds,
                 'success' => $success,
                 'error' => $error,
             ]

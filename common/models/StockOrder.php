@@ -345,16 +345,24 @@ class StockOrder extends ActiveRecord
         }
 
         $cond = StockOrder::channel_condition();
+        $phone = Admin::get_phone();
+
+        $bds = [$phone => Admin::$userInfo['aName']];
+        if (!$cond) {
+            $bds = StockUser::bds();
+        }
 
         // 一个BD管理多个渠道，此BD可以看到渠道的客户订单情况
-        $phone = Admin::get_phone();
-        //$records = StockUserAdmin::find()->where(['uaPtPhone' => $phone])->asArray()->all();
         if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)
             && $records = StockUserAdmin::find()->where(['uaPtPhone' => $phone])->asArray()->all()) {
             $phones = array_column($records, 'uaPhone');
             $phones_str = trim(implode(',', $phones), ',');
             $cond = " and u.uPtPhone in ($phone,$phones_str) ";
+
+            $res_bds = StockUser::find()->where(" uPhone in ($phone,$phones_str) ")->asArray()->all();
+            $bds = array_combine(array_column($res_bds, 'uPhone'), array_column($res_bds, 'uName'));
         }
+
 
         $sql = "select *
 				from im_stock_order as o
@@ -374,7 +382,7 @@ class StockOrder extends ActiveRecord
 				where oId>0 $strCriteria $cond ";
         $count = $conn->createCommand($sql)->bindValues($params)->queryScalar();
 
-        return [$res, $count];
+        return [$res, $count, $bds];
     }
 
     public static function stat_items($criteria, $params)

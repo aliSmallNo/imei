@@ -1526,24 +1526,11 @@ class FooController extends Controller
 
         //TryPhone::pre_reqData(17611629667, TryPhone::CAT_ZHIFU);
 
-        $conn = AppUtil::db();
-        $result = $conn->createCommand("select * from im_excel_tmp order by aId asc")->queryAll();
-        $cmd = $conn->createCommand("update im_excel_tmp set aProv2=:pro,aCity2=:city where aId=:aId ");
-        foreach ($result as $k => $v) {
-            list($province, $city) = AppUtil::get_phone_location($v['aPhone']);
-            if ($province && $city) {
-               /* $cmd->bindValues([
-                    ':pro' => $province,
-                    ':city' => $city,
-                    ':aId' => $v['aId'],
-                ])->execute();*/
-            }
-            if ($k > 1) {
-                //break;
-            }
-
-            //echo $province . '__' . $city . '__' . $v['aId'] . PHP_EOL;
+        $i = $j = 0;
+        if (1 % 2 && (($i = 1) > 2) || !(2 % 2) && $j = 1 > 9) {
+            echo '$i:' . $i . '___' . '$j:' . $j;
         }
+        echo '$i2:' . $i . '___' . '$j2:' . $j;
 
         exit;
     }

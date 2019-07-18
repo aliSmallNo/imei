@@ -47,14 +47,14 @@
                     <option value="{{$key}}" {{if $key==$status}}selected{{/if}}>{{$item}}</option>
                 {{/foreach}}
             </select>
-            {{if $is_staff}}
-            <select class="form-control" name="bdphone">
-                <option value="">-=BD=-</option>
-                {{foreach from=$bds key=key item=item}}
-                    <option value="{{$key}}">{{$item}}</option>
-                {{/foreach}}
-            </select>
-            {{/if}}
+            {{if $is_staff}}{{/if}}
+                <select class="form-control" name="bdphone">
+                    <option value="">-=BD=-</option>
+                    {{foreach from=$bds key=key item=item}}
+                        <option value="{{$key}}" {{if $key==$bdphone}}selected{{/if}} >{{$item}}</option>
+                    {{/foreach}}
+                </select>
+
         </div>
         <button class="btn btn-primary">查询</button>
         <span class="space"></span>
@@ -78,10 +78,9 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            {{if $is_staff}}
-                <th>ID</th>
-                <th>BD</th>
-            {{/if}}
+            {{if $is_staff}}{{/if}}
+            <th>BD</th>
+
             <th>用户名|手机</th>
             <th>股票名称|股票代码</th>
             <th>股数|初期借款</th>
@@ -97,12 +96,11 @@
         <tbody>
         {{foreach from=$list item=item}}
             <tr>
-                {{if $is_staff}}
-                    <td>{{$item.oId}}</td>
-                    <td>{{$item.uPtName}}
+                {{if $is_staff}}{{/if}}
+                <td>{{$item.uPtName}}
                     <br>{{$item.uPtPhone}}
-                    </td>
-                {{/if}}
+                </td>
+
                 <td>{{$item.oName}}({{$item.oPhone}})</td>
                 <td>
                     {{$item.oStockName}}<br>
@@ -252,20 +250,20 @@
 
 <script>
   $sls = {
-    dt: $("[data-field=dt]"),
-    cdt: $("[data-field=cdt]"),
-    imcome_dt: $("[data-field=imcome_dt]"),
+    dt: $('[data-field=dt]'),
+    cdt: $('[data-field=cdt]'),
+    imcome_dt: $('[data-field=imcome_dt]'),
 
   };
-  $('.opImport').on('click', function () {
+  $('.opImport').on('click', function() {
     $('#modModal').modal('show');
   });
-  $('.opDelete').on('click', function () {
+  $('.opDelete').on('click', function() {
     $sls.dt.val('');
     $('#modModal_d').modal('show');
   });
 
-  $('#btnComfirm').on('click', function () {
+  $('#btnComfirm').on('click', function() {
     var dt = $sls.dt.val();
     if (!dt) {
       layer.msg('还没填写日期哦');
@@ -276,37 +274,37 @@
     }
     layer.load();
     $sls.load_flag = 1;
-    $.post("/api/stock", {
+    $.post('/api/stock', {
       tag: 'delete_stock_order',
       dt: dt,
-    }, function (resp) {
+    }, function(resp) {
       layer.closeAll();
       $sls.load_flag = 0;
       layer.msg(resp.msg);
       if (resp.code == 0) {
-        setTimeout(function () {
+        setTimeout(function() {
           location.reload();
         }, 2000);
       }
     }, 'json');
   });
   /********************* 导出我的客户 start *********************************/
-  $(".opExcel").on("click", function () {
+  $('.opExcel').on('click', function() {
     // var admin = $("select[name=admin]").val();
-    var sdate = $("input[name=sdate]").val();
-    var edate = $("input[name=edate]").val();
-    var st = $("select[name=st]").val();
-    var url = "/stock/export_stock_order?sdate=" + sdate + "&edate=" + edate + "&sign=excel&st=" + st;
+    var sdate = $('input[name=sdate]').val();
+    var edate = $('input[name=edate]').val();
+    var st = $('select[name=st]').val();
+    var url = '/stock/export_stock_order?sdate=' + sdate + '&edate=' + edate + '&sign=excel&st=' + st;
     location.href = url;
   });
   /********************* 导出我的客户 end ******************************/
 
   /********************* 计算今日卖出 start ******************************/
-  $('.opCalSold').on('click', function () {
+  $('.opCalSold').on('click', function() {
     $sls.cdt.val('');
     $('#modModal_c').modal('show');
   });
-  $('#btnComfirm_c').on('click', function () {
+  $('#btnComfirm_c').on('click', function() {
     var dt = $sls.cdt.val();
     if (!dt) {
       layer.msg('还没填写日期哦');
@@ -317,15 +315,15 @@
     }
     layer.load();
     $sls.load_flag = 1;
-    $.post("/api/stock", {
+    $.post('/api/stock', {
       tag: 'cal_sold_order',
       dt: dt,
-    }, function (resp) {
+    }, function(resp) {
       layer.closeAll();
       $sls.load_flag = 0;
       layer.msg(resp.msg);
       if (resp.code == 0) {
-        setTimeout(function () {
+        setTimeout(function() {
           location.reload();
         }, 2000);
       }
@@ -337,36 +335,36 @@
   // $(".opIncome").on("click", function () {
   //location.href = "/stock/export_today_income";
   // });
-  $('.opIncome').on('click', function () {
+  $('.opIncome').on('click', function() {
     $sls.imcome_dt.val('');
     $('#modModal_income').modal('show');
   });
 
-  $('#btnComfirm_income').on('click', function () {
+  $('#btnComfirm_income').on('click', function() {
     var dt = $sls.imcome_dt.val();
     if (!dt) {
       layer.msg('还没填写日期哦');
       return;
     }
-    location.href = "/stock/export_today_income?dt=" + dt;
+    location.href = '/stock/export_today_income?dt=' + dt;
   });
   /********************* 导出今日盈亏 end ********************************/
   /********************* 导出今日盈亏 end ********************************/
 
-  $('.opHoldDays').on('click', function () {
+  $('.opHoldDays').on('click', function() {
     if ($sls.load_flag) {
       return;
     }
     layer.load();
     $sls.load_flag = 1;
-    $.post("/api/stock", {
+    $.post('/api/stock', {
       tag: 'cal_hold_days',
-    }, function (resp) {
+    }, function(resp) {
       layer.closeAll();
       $sls.load_flag = 0;
       layer.msg(resp.msg);
       if (resp.code == 0) {
-        setTimeout(function () {
+        setTimeout(function() {
           location.reload();
         }, 2000);
       }
