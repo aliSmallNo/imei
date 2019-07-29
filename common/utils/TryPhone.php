@@ -736,18 +736,18 @@ class TryPhone
     {
 
         $files = [
-            "phone_logs20190729.log",
-            "phone_logs20190728.log",
-            "phone_logs20190727.log",
-            "phone_logs20190726.log",
-            "phone_logs20190725.log",
-            "phone_logs20190724.log",
-            "phone_logs20190723.log",
-            "phone_logs20190722.log",
-            "phone_logs20190721.log",
-            "phone_logs20190720.log",
-            "phone_logs20190719.log",
-            "phone_logs20190718.log",
+//            "phone_logs20190729.log",
+//            "phone_logs20190728.log",
+//            "phone_logs20190727.log",
+//            "phone_logs20190726.log",
+//            "phone_logs20190725.log",
+//            "phone_logs20190724.log",
+//            "phone_logs20190723.log",
+//            "phone_logs20190722.log",
+//            "phone_logs20190721.log",
+//            "phone_logs20190720.log",
+//            "phone_logs20190719.log",
+//            "phone_logs20190718.log",
             "phone_logs20190717.log",
         ];
 
