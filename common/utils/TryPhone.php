@@ -279,7 +279,6 @@ class TryPhone
                 ];
 //				$ret = self::reqData($data, $cat, $header, 1);
                 $ret = self::taoguba_phone($data);
-                if ($flag) print_r($ret);
 
                 break;
             case self::CAT_YIHAOPZ:
@@ -686,7 +685,8 @@ class TryPhone
         switch ($cat) {
             case self::CAT_TAOGUBA:
                 $field = "errorMessage";
-                $tip = "密码错误";
+                //$tip = "密码错误";
+                $tip = "滑动验证不通过";
                 break;
             case self::CAT_YIHAOPZ:
             case self::CAT_SHUNFAPZ:
