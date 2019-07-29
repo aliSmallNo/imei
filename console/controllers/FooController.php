@@ -1561,7 +1561,7 @@ class FooController extends Controller
                 }
                 //print_r($data) . PHP_EOL;
                 if ($line > 100) {
-                    break;
+                   // break;
                 }
             }
 
