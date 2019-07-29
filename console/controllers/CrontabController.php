@@ -152,7 +152,7 @@ class CrontabController extends Controller
             }
             StockUser::update_last_opt();
         } catch (\Exception $e) {
-            Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST, 'oUId' => '0', 'oAfter' => 'StockUser::update_last_opt() exec fail']);
+
         }
 
         try {
