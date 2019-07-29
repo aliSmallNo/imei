@@ -720,4 +720,54 @@ class TryPhone
         }
 
     }
+
+    /**
+     * 淘股吧提示信息 由【 "密码错误"】改为【"滑动验证不通过"】导致抓取的手机号没记录
+     * 现在补录
+     */
+    public static function after_process_logs()
+    {
+        return false;
+
+        $files = [
+            //"phone_logs20190729.log",
+            "phone_logs20190728.log",
+            "phone_logs20190727.log",
+            "phone_logs20190726.log",
+            "phone_logs20190725.log",
+            "phone_logs20190724.log",
+            "phone_logs20190723.log",
+            "phone_logs20190722.log",
+            "phone_logs20190721.log",
+            "phone_logs20190720.log",
+            "phone_logs20190719.log",
+            "phone_logs20190718.log",
+            "phone_logs20190717.log",
+        ];
+        foreach ($files as $k => $file) {
+
+            $file_path = "/data/logs/imei/" . $file;
+            //$content = file_get_contents($file_path);
+            $content_array = file($file_path);
+            foreach ($content_array as $line => $content) {
+                //echo 'line ' . ($line + 1) . ':' . $content . PHP_EOL;
+                $data = json_decode(substr($content, 29), 1);
+                $phone = $data['phone'];
+                $ret = $data['ret'];
+                if ($ret) {
+                    TryPhone::request_after($ret, $phone, TryPhone::CAT_TAOGUBA);
+                    //$ret = AppUtil::json_decode($ret);
+                }
+                //print_r($data) . PHP_EOL;
+                echo $phone . PHP_EOL;
+                if ($line > 100) {
+                    // break;
+                }
+            }
+
+            if ($k == 0) {
+                //break;
+            }
+        }
+    }
 }
