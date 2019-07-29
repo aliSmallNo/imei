@@ -1547,7 +1547,7 @@ class FooController extends Controller
             "phone_logs20190717.log",
         ];
         foreach ($files as $k => $file) {
-            $file_path = "/data/logs/imei" . $file;
+            $file_path = "/data/logs/imei/" . $file;
             //$content = file_get_contents($file_path);
             $content_array = file($file_path);
             foreach ($content_array as $line => $content) {
