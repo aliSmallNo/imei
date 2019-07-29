@@ -1552,6 +1552,8 @@ class FooController extends Controller
             $content_array = file($file_path);
             foreach ($content_array as $line => $content) {
                 echo 'line ' . ($line + 1) . ':' . $content . PHP_EOL;
+                $data = json_decode(substr($content, 29));
+                print_r($data) . PHP_EOL;
                 if ($line > 100) {
                     break;
                 }
