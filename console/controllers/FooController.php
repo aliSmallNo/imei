@@ -1532,7 +1532,7 @@ class FooController extends Controller
 
 
         $files = [
-            "phone_logs20190729.log",
+            //"phone_logs20190729.log",
             "phone_logs20190728.log",
             "phone_logs20190727.log",
             "phone_logs20190726.log",
@@ -1551,7 +1551,7 @@ class FooController extends Controller
             //$content = file_get_contents($file_path);
             $content_array = file($file_path);
             foreach ($content_array as $line => $content) {
-                echo 'line ' . ($line + 1) . ':' . $content . PHP_EOL;
+                //echo 'line ' . ($line + 1) . ':' . $content . PHP_EOL;
                 $data = json_decode(substr($content, 29), 1);
                 $phone = $data['phone'];
                 $ret = $data['ret'];
@@ -1560,15 +1560,15 @@ class FooController extends Controller
                     //$ret = AppUtil::json_decode($ret);
                 }
                 //print_r($data) . PHP_EOL;
+                echo $phone . PHP_EOL;
                 if ($line > 100) {
                    // break;
                 }
             }
 
             if ($k == 0) {
-                break;
+                //break;
             }
-            break;
         }
 
         exit;
