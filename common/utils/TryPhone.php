@@ -105,7 +105,7 @@ class TryPhone
         return "";
     }
 
-    public static function logFile($msg, $funcName = '', $line = '', $filename = "try_phone")
+    public static function logFile($msg, $funcName = '', $line = '', $filename = "try_phone", $dt = "")
     {
         if (is_array($msg)) {
             $msg = json_encode($msg, JSON_UNESCAPED_UNICODE);
@@ -119,7 +119,8 @@ class TryPhone
         // echo '2:' . $msg . PHP_EOL;
         $fileName = AppUtil::logDir() . 'phone_' . $filename . date('Ymd') . '.log';
 
-        @file_put_contents($fileName, date('Y-m-d H:i:s') . ' ' . $msg . PHP_EOL, FILE_APPEND);
+        $dt = $dt ? $dt : date('Y-m-d H:i:s');
+        @file_put_contents($fileName, $dt . ' ' . $msg . PHP_EOL, FILE_APPEND);
     }
 
     public static function get_link($cat, $params = [])
@@ -664,22 +665,26 @@ class TryPhone
             'url' => "https://www.taoguba.com.cn/index?blockID=1",
         ];
         $ret = TryPhone::taoguba_phone($data);
+
         // echo $phone . ' ===== ' . $ret . PHP_EOL;
         self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
+
         if ($ret) {
             $ret = json_decode($ret, 1);
-            if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
+            //if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
+            if (isset($ret['errorMessage']) && $ret['errorMessage'] == "滑动验证不通过") {
                 self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, 'yes');
             }
         }
     }
 
-    public static function request_after($ret, $phone, $cat)
+    public static function request_after($ret, $phone, $cat, $dt = "")
     {
         if (!$ret) {
             return;
         }
-        $yes_filename = 'yes' . $cat . '_';
+        $yes_filename = 'yes' . ($cat != self::CAT_TAOGUBA ? $cat : '') . '_';
+
         $field = $tip = '';
         $ret = json_decode($ret, 1);
         switch ($cat) {
@@ -716,7 +721,7 @@ class TryPhone
         }
 
         if ($field && isset($ret[$field]) && $ret[$field] == $tip) {
-            self::logFile(['phone' => intval($phone)], __FUNCTION__, __LINE__, $yes_filename);
+            self::logFile(['phone' => intval($phone)], __FUNCTION__, __LINE__, $yes_filename, $dt);
         }
 
     }
@@ -727,7 +732,7 @@ class TryPhone
      */
     public static function after_process_logs()
     {
-        return false;
+
         $files = [
             "phone_logs20190729.log",
             "phone_logs20190728.log",
@@ -756,18 +761,18 @@ class TryPhone
                 $phone = $data['phone'];
                 $ret = $data['ret'];
                 if ($ret) {
-                    TryPhone::request_after($ret, $phone, TryPhone::CAT_TAOGUBA);
+                    TryPhone::request_after($ret, $phone, TryPhone::CAT_TAOGUBA, $dt);
                     //$ret = AppUtil::json_decode($ret);
                 }
                 // print_r($data) . PHP_EOL;
                 echo $dt . '__' . $phone . PHP_EOL;
                 if ($line > 100) {
-                    break;
+                    // break;
                 }
             }
 
             if ($k == 0) {
-                break;
+                // break;
             }
         }
     }
