@@ -669,13 +669,15 @@ class TryPhone
         // echo $phone . ' ===== ' . $ret . PHP_EOL;
         self::logFile(['phone' => $phone, 'ret' => $ret], __FUNCTION__, __LINE__, 'logs');
 
-        if ($ret) {
+        /*if ($ret) {
             $ret = json_decode($ret, 1);
             //if (isset($ret['errorMessage']) && $ret['errorMessage'] == "密码错误") {
             if (isset($ret['errorMessage']) && $ret['errorMessage'] == "滑动验证不通过") {
                 self::logFile(['phone' => $phone], __FUNCTION__, __LINE__, 'yes');
             }
-        }
+        }*/
+        self::request_after($ret, $phone, self::CAT_TAOGUBA);
+
     }
 
     public static function request_after($ret, $phone, $cat, $dt = "")
