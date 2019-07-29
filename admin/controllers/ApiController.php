@@ -10,6 +10,7 @@ namespace admin\controllers;
 
 
 use admin\models\Admin;
+use Codeception\Module\Redis;
 use common\models\ChatMsg;
 use common\models\ChatRoom;
 use common\models\ChatRoomFella;
@@ -1529,4 +1530,60 @@ class ApiController extends Controller
     {
         return self::renderAPI(0, "Foo got it！");
     }
+
+    const GULE = ":";
+    const FIXED_PREFIX = "imei";
+
+    public function actionRedis_opt()
+    {
+        $redis = Yii::$app->redis;
+        $tag = self::postParam("tag");
+        $tag = strtolower($tag);
+        switch ($tag) {
+            case "delete_key":
+                $key_name = self::postParam("key_name");
+
+                return self::renderAPI(self::CODE_MESSAGE, '暂不使用', ['key_name' => $key_name]);
+
+                // 检查键是否存在
+                if (!$redis->exists($key_name)) {
+                    return self::renderAPI(self::CODE_MESSAGE, '键不存在', ['key_name' => $key_name]);
+                }
+                $int = $redis->del($key_name);
+                if (!$int) {
+                    return self::renderAPI(self::CODE_MESSAGE, '删除失败', ['key_name' => $key_name]);
+                }
+                return self::renderAPI(self::CODE_SUCCESS, '删除' . $int . '个键成功', ['key_name' => $key_name]);
+            case "add_key":
+                $key_type = self::postParam("key_type");
+                $key_name = self::postParam("key_name");
+                $key_name_sub = self::postParam("key_name_sub");
+                $key_val = self::postParam("key_val");
+                $key_expire = self::postParam("key_expire");
+
+                $res = false;
+
+                $main_key = self::FIXED_PREFIX . self::GULE . $key_name;
+                if ($key_type == 'string') {
+                    $mainKey = $main_key . self::GULE . $key_name_sub;
+                    $res = $redis->set($mainKey, $key_val);
+                    $redis->expire($mainKey, intval($key_expire) > 0 ? intval($key_expire) : 60);
+
+                } elseif ($key_type == 'list') {
+
+                } elseif ($key_type == 'hash') {
+                    $key_name_sub = self::GULE . $key_name_sub;
+                    $res = $redis->hset($main_key, $key_name_sub, $key_val);
+
+                } elseif ($key_type == 'set') {
+
+                }
+
+                return self::renderAPI(self::CODE_MESSAGE, "ok！", ['res' => $res]);
+
+
+        }
+        return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+    }
+
 }

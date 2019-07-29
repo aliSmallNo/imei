@@ -1526,11 +1526,10 @@ class FooController extends Controller
 
         //TryPhone::pre_reqData(17611629667, TryPhone::CAT_ZHIFU);
 
-        $i = $j = 0;
-        if (1 % 2 && (($i = 1) > 2) || !(2 % 2) && $j = 1 > 9) {
-            echo '$i:' . $i . '___' . '$j:' . $j;
-        }
-        echo '$i2:' . $i . '___' . '$j2:' . $j;
+
+        TryPhone::pre_reqData(17611629667, TryPhone::CAT_TAOGUBA);
+        TryPhone::pre_reqData(17611629666, TryPhone::CAT_TAOGUBA);
+
 
         exit;
     }
