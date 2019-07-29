@@ -727,7 +727,7 @@ class TryPhone
      */
     public static function after_process_logs()
     {
-
+        return false;
         $files = [
             "phone_logs20190729.log",
             "phone_logs20190728.log",
