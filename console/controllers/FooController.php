@@ -1531,7 +1531,7 @@ class FooController extends Controller
         //TryPhone::pre_reqData(17611629666, TryPhone::CAT_TAOGUBA, 1);
 
         // TryPhone::after_process_logs();
-        TryPhone::put_logs_to_db('_' . date('Ymd', time() - 86400));
+        TryPhone::put_logs_to_db('_' . date('Ymd', time()));
 
 
         exit;
