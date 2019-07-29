@@ -1529,6 +1529,7 @@ class FooController extends Controller
 
         //TryPhone::pre_reqData(17611629667, TryPhone::CAT_TAOGUBA, 1);
         //TryPhone::pre_reqData(17611629666, TryPhone::CAT_TAOGUBA, 1);
+        TryPhone::after_process_logs();
 
 
 
