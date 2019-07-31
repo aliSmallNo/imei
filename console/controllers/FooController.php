@@ -1534,9 +1534,14 @@ class FooController extends Controller
 
 
         // strtotime(date('Y-m-01 00:00:00',strtotime('-1 month')));
-        $time = time();
-        $t = mktime(0, 0, 0, date('m', $time) - 1, 1, date('Y', $time));
-        echo date('Y-m-d', $t);
+
+
+        $date = date('Y-m-d');
+        $reset = 1;
+
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+        print_r($trends);
+
         exit;
     }
 
