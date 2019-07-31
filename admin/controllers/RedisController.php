@@ -249,43 +249,27 @@ class RedisController extends BaseController
     public function actionString()
     {
         $redis = $this->redis;
-
         //$res = $redis->executeCommand('setex', ["imei:string:test:zp", 100, 10]);
         //$res = $redis->executeCommand('get', ["imei:string:test:zp"]);
 
-        // 有序集合 zset
-        // 1.增 ： zadd key score member [ score member ... ]
-        //      redis3.2为zadd命令添加了nx、xx、ch、incr四个选项
-        // 2.计算成员个数 zcard key
-        // 3.计算某个成员分数 zscore key member
-        // 4.计算成员排名 zrank key member    zrevrank key member
-        // 5.删除成员 zrem key member [ member ... ]
-        // 6.增加成员分数 zincrby key increment member
-        // 7.返回指定排名范围的成员（加上withscores同时返回成员分数）
-        //      低到高：zrange key start end [withscores]
-        //      高到低：zrevrange key start end [withscores]
-        // 8.返回指定分数范围的成员（加上withscores同时返回成员分数, [limit offset count]可以限制输出的起始位置和个数)
-        //      zrangebyscore key min max [withscores] [limit offset count]
-        //      zrevrangebyscore key max min [withscores] [limit offset count]
-        //      min和max还支持开区间(小括号)和闭区间(中括号)，-inf、+inf分别代表无限小和无限大
-        // 9.返回指定分数范围成员个数 zcount key min max
-        // 10.删除指定排名内的升序元素 zremrangebyrank key start end
-        // 11.删除指定分数范围的成员 zremrangebyscore key start end
-
-
-        $k31 = 'imei:set:test1';
-        $k32 = 'imei:set:test2';
-        $k33 = 'imei:set:test3';
-        $k34 = 'imei:set:test4';
-        $k35 = 'imei:set:test5';
-        $redis->del($k31);
-        $redis->del($k32);
-        $redis->del($k33);
-        $redis->del($k34);
-        $redis->del($k35);
-
-        $redis->sadd($k31, '1', '2', '3', '4', '5', '6');
-        $redis->sadd($k32, 'a', 'b', 'c', 'd', '5', '6');
+        // 3 键过期
+        // expire : expire key seconds 键在seconds秒后过期
+        // ttl : ttl key 查询键的过期时间
+        // pttl :  pttl key 查询键的过期时间（毫秒级）
+        // expireat : expireat key timestamp 键在秒级时间戳 timestamp 后过期
+        // pexpire  :
+        // pexpireat  :
+        // persist  :
+        $k20 = "imei:string:20";
+        $k21 = "imei:string:21";
+        $k22 = "imei:string:22";
+        $k23 = "imei:string:23";
+        $k24 = "imei:string:24";
+        $redis->del($k20);
+        $redis->del($k21);
+        $redis->del($k22);
+        $redis->del($k23);
+        $redis->del($k24);
 
 
     }

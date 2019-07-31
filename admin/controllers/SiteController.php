@@ -91,8 +91,9 @@ class SiteController extends BaseController
             // $cache_code = AppUtil::getCookie($session_key);
             $cache_code = RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->getCache();
 
-            if ($code
-                && (strcasecmp($code, $cache_code) === 0)) {
+            // 去掉验证码验证
+            //if ($code && (strcasecmp($code, $cache_code) === 0)) {
+            if ($code || (strcasecmp($code, $cache_code) === 0)) {
                 $this->admin_id = Admin::login($name, $pass);
                 if ($this->admin_id) {
                     Admin::userInfo($this->admin_id, true);
