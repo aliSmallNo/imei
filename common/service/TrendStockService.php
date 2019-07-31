@@ -397,20 +397,20 @@ class TrendStockService
                     )";
             $time = strtotime($endDate);
             $t = mktime(0, 0, 0, date('m', $time) - 1, 1, date('Y', $time));
-            $last_mouth = date('Y-m-d', $t);
+            $last_mouth = date('Ym', $t);
             $res = $this->conn->createCommand($sql)->bindValues([
                 ':last_mouth' => $last_mouth,
                 ':curr_mouth' => date('Ym', strtotime($endDate)),
             ])->queryOne();
 
 
-            /*if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+            if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
                 echo $this->conn->createCommand($sql)->bindValues([
                     ':last_mouth' => $last_mouth,
                     ':curr_mouth' => date('Ym', strtotime($endDate)),
                 ])->getRawSql();
                 exit;
-            }*/
+            }/**/
 
             if ($res) {
                 foreach ($res as $field => $num) {
