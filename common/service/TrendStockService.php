@@ -404,13 +404,13 @@ class TrendStockService
             ])->queryOne();
 
 
-            if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+            /*if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
                 echo $this->conn->createCommand($sql)->bindValues([
                     ':last_mouth' => $last_mouth,
                     ':curr_mouth' => date('Ym', strtotime($endDate)),
                 ])->getRawSql();
                 exit;
-            }/**/
+            }*/
 
             if ($res) {
                 foreach ($res as $field => $num) {
