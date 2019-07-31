@@ -73,6 +73,14 @@
         <div id="new_curr_month_loan-chart" class="chart-wrapper"></div>
     </div>
 </div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <i class="fa fa-bar-chart-o fa-fw"></i> 流失用户（之前交易，这月不交易了）
+  </div>
+  <div class="panel-body">
+    <div id="lose_curr_last_month_user-chart" class="chart-wrapper"></div>
+  </div>
+</div>
 
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -100,6 +108,7 @@
     initChart('new-chart', 'new');
     initChart('new_loan-chart', 'new_loan');
     initChart('new_curr_month_loan-chart', 'new_curr_month_loan');
+    initChart('lose_curr_last_month_user-chart', 'lose_curr_last_month_user');
   }
 
   $(document).on('click', '.btnQuery', function() {
@@ -243,6 +252,30 @@
          [new_curr_month_loan_XieShuoShuo_18101390540] => 0
          [new_curr_month_loan_Huang_13552591660] => 0
          */
+        break;
+      case "lose_curr_last_month_user":
+        names = [
+          '合计', '小刀', '金志新', '徐方', '冯林', '陈明', '宋富城', '冯小强', '查俊', '张梦莹', '孙庆海',
+          '于辉', '吴淑霞',
+          '李士琪',
+        ];
+
+        fields = [
+          'lose_curr_last_month_user__total',
+          'lose_curr_last_month_user_ZuoDanLei_18513655687',
+          'lose_curr_last_month_user_JinZhiXin_18600649492',
+          'lose_curr_last_month_user_XuFang_13910838055',
+          'lose_curr_last_month_user_FengLin_18131243333',
+          'lose_curr_last_month_user_ChenMing_18931357765',
+          'lose_curr_last_month_user_SongFuCheng_18611794484',
+          'lose_curr_last_month_user_FengXiaoQiang_13643225272',
+          'lose_curr_last_month_user_ChaJun_13381081778',
+          'lose_curr_last_month_user_ZhangMengYing_18410283058',
+          'lose_curr_last_month_user_SunQingHai_13701269919',
+          'lose_curr_last_month_user_YuHui_13910838033',
+          'lose_curr_last_month_user_WuShuXia_18911781586',
+          'lose_curr_last_month_user_LiShi_18612991838',
+        ];
         break;
     }
     if (names) {
