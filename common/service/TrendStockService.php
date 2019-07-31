@@ -395,16 +395,26 @@ class TrendStockService
                     date_format(oAddedOn, '%Y%m') = :last_mouth and oPhone not in (
                     select oPhone from im_stock_order where date_format(oAddedOn, '%Y%m') = :curr_mouth group by oPhone
                     )";
-           /* $res = $this->conn->createCommand($sql)->bindValues([
+            $res = $this->conn->createCommand($sql)->bindValues([
                 ':last_mouth' => date('Ym', strtotime($endDate) - 30 * 86400),
                 ':curr_mouth' => date('Ym', strtotime($endDate)),
-            ])->queryOne();*/
-            if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
+            ])->queryOne();
+
+            $time = strtotime($endDate);
+            $t = mktime(0, 0, 0, date('m', $time) - 1, 1, date('Y', $time));
+            $last_mouth = date('Y-m-d', $t);
+            /*if (Admin::isGroupUser(Admin::GROUP_DEBUG)) {
                 echo $this->conn->createCommand($sql)->bindValues([
-                    ':last_mouth' => date('Ym', strtotime($endDate) - 30 * 86400),
+                    ':last_mouth' => $last_mouth,
                     ':curr_mouth' => date('Ym', strtotime($endDate)),
                 ])->getRawSql();
                 exit;
+            }
+            */
+            if ($res) {
+                foreach ($res as $field => $num) {
+                    $trend['lose_curr_last_month_user_' . $field] = intval($num);
+                }
             }
         }
 
