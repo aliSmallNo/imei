@@ -146,6 +146,13 @@
                 <option value="{{$key}}" {{if $key==$src}}selected{{/if}}>{{$source}}</option>
             {{/foreach}}
         </select>
+        <select class="form-control" name="follow_again">
+            <option value="">-=是否是二次跟进=-</option>
+            {{foreach from=$followDict item=source key=key}}
+                <option value="{{$key}}" {{if $key==$follow_again}}selected{{/if}}>{{$source}}</option>
+            {{/foreach}}
+        </select>
+
         <button type="submit" class="btn btn-primary">查询</button>
 
     </form>

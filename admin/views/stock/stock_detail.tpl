@@ -77,6 +77,13 @@
 			<br>
 			<label class="control-label">相关图片</label>
 			<input type="file" multiple name="images[]" accept="image/jpg, image/jpeg, image/png">
+			<br>
+			<label class="control-label">是否是二次跟进</label>
+			<select name="follow_again" class="t-status">
+                {{foreach from=$followDict key=k item=option}}
+					<option value="{{$k}}" {{if $k==$client.cFollowAgain}}selected{{/if}}>{{$option}}</option>
+                {{/foreach}}
+			</select>
 			<div class="btn-divider2"></div>
 			<a class="btnSave btn btn-primary" href="javascript:;">确定保存</a>
 		</div>

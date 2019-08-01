@@ -50,6 +50,7 @@ class StockController extends BaseController
         $src = self::getParam("src");
         $bdassign = self::getParam("bdassign");
         $action = self::getParam("action");
+        $follow_again = self::getParam("follow_again", '');
         $perSize = 20;
 
         $criteria = [" cCategory=" . CRMStockClient::CATEGORY_YANXUAN];
@@ -104,6 +105,13 @@ class StockController extends BaseController
             $urlParams[] = "src=" . $src;
             $alert[] = "【" . CRMStockClient::SourceMap()[$src] . "】";
         }
+        if ($follow_again) {
+            $criteria[] = "cFollowAgain = :cFollowAgain";
+            $params[":cFollowAgain"] = $follow_again;
+            $urlParams[] = "follow_again=" . $follow_again;
+            $alert[] = "【二次跟进：" . CRMStockClient::$followDict[$follow_again] . "】";
+        }
+
         $counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
         // ============================> 此行不要删除
         $isAssigner = Admin::isAssigner();
@@ -234,6 +242,7 @@ class StockController extends BaseController
                 "bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
                 "bdassign" => $bdassign,
                 "src" => $src,
+                "follow_again" => $follow_again,
                 "action" => $action,
                 "sources" => $sources,
                 "bdDefault" => $bdDefault,
@@ -247,6 +256,7 @@ class StockController extends BaseController
                 "SourceMap" => CRMStockClient::SourceMap(),
                 "stock_age_map" => CRMStockClient::$stock_age_map,
                 "actionDict" => CRMStockClient::$actionDict,
+                "followDict" => CRMStockClient::$followDict,
                 'success' => $success,
                 'error' => $error,
             ]);
@@ -280,6 +290,8 @@ class StockController extends BaseController
                 "image" => json_encode($images),
             ], $this->admin_id);
 
+            // follow_again
+            CRMStockClient::edit(['follow_again' => self::postParam("follow_again")], $postId);
         }
         list($items, $client) = CRMStockTrack::tracks($cid);
         $options = CRMStockClient::$StatusMap;
@@ -300,6 +312,7 @@ class StockController extends BaseController
                 'client' => $client,
                 "cid" => $cid,
                 "options" => $options,
+                "followDict" => CRMStockClient::$followDict,
                 "adminId" => $this->admin_id
             ]);
     }

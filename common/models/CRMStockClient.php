@@ -151,6 +151,14 @@ class CRMStockClient extends \yii\db\ActiveRecord
         self::ACTION_NO => 'CRM客户线索中',
     ];
 
+    // 是否是二次跟进
+    const FOLLOW_AGAIN_YES = 3;
+    const FOLLOW_AGAIN_NO = 1;
+    static $followDict = [
+        self::FOLLOW_AGAIN_NO => '否',
+        self::FOLLOW_AGAIN_YES => '是',
+    ];
+
     public static function SourceMap()
     {
         $Sources = CRMStockSource::find()->where(['sStatus' => CRMStockSource::ST_ACTIVE])->asArray()->all();
@@ -466,6 +474,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
             "stock_age" => "cStockAge",
             "job" => "cJob",
             "type" => "cTypes",
+            "follow_again" => "cFollowAgain",
         ];
 
         foreach ($params as $key => $val) {
