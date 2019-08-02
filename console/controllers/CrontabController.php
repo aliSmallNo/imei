@@ -78,16 +78,13 @@ class CrontabController extends Controller
     public function actionExp()
     {
         try {
+            // 根据手机号归属地 修改 客户的位置
             CRMStockClient::phone_to_location();
         } catch (\Exception $e) {
 
         }
 
-        try {
-            UserTag::calcExp();
-        } catch (\Exception $e) {
-
-        }
+        // UserTag::calcExp();
 
         try {
             // 更新统计数据 /stock/trend
@@ -140,8 +137,8 @@ class CrontabController extends Controller
 
     public function actionRecycle()
     {
-        $ret = UserNet::recycleReward();
-        var_dump($ret);
+        // $ret = UserNet::recycleReward();
+        // var_dump($ret);
     }
 
     public function actionRank()
@@ -150,6 +147,7 @@ class CrontabController extends Controller
             if (date('H' == "04")) {
 
             }
+            // 更新用户表的 用户最后操作时间
             StockUser::update_last_opt();
         } catch (\Exception $e) {
 
@@ -168,7 +166,7 @@ class CrontabController extends Controller
         }
 
 //		User::updateRank([], true);
-        Stat::userRank('', true);
+//        Stat::userRank('', true);
     }
 
     public function actionTry_phone()
@@ -188,27 +186,22 @@ class CrontabController extends Controller
     {
 
         try {
+            // 发送短信
             Log::send_sms_cycle();
         } catch (\Exception $e) {
 
         }
 
         try {
-//			Log::add(['oCategory' => Log::CAT_PHONE_SECTION_TEST,
-//				"oBefore" => 'updateIPs'
-//			]);
+            // 更新代理IP
             TryPhone::updateIPs();
         } catch (\Exception $e) {
 
         }
 
-
         // 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
-        try {
-            StockOrder::send_msg_on_stock_price();
-        } catch (\Exception $e) {
+        //  StockOrder::send_msg_on_stock_price();
 
-        }
     }
 
     public function actionYzuser()

@@ -190,7 +190,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
 
     }
 
-    public static function mod($cId, $values)
+    public static function mod($cId, $values, $edit_cUpdatedDate = true)
     {
         if (!$cId || !$values) {
             return 0;
@@ -204,7 +204,10 @@ class CRMStockClient extends \yii\db\ActiveRecord
         if (isset($values["cBDAssign"])) {
             $newItem->cUpdatedBy = $values["cBDAssign"];
         }
-        $newItem->cUpdatedDate = date("Y-m-d H:i:s");
+
+        if ($edit_cUpdatedDate) {
+            $newItem->cUpdatedDate = date("Y-m-d H:i:s");
+        }
 
         $newItem->save();
         return $newItem->cId;
@@ -343,6 +346,11 @@ class CRMStockClient extends \yii\db\ActiveRecord
         return true;
     }
 
+    /**
+     * 批量导出线索
+     * @param $filepath
+     * @return array
+     */
     public static function add_by_excel($filepath)
     {
         $error = 0;
@@ -1069,7 +1077,7 @@ class CRMStockClient extends \yii\db\ActiveRecord
                 self::mod($v['cId'], [
                     'cProvince' => $province,
                     'cCity' => $city,
-                ]);
+                ], false);
             }
         }
     }
