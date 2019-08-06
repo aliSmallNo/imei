@@ -437,16 +437,8 @@ class WechatUtil
 				]
 			]
 		];
-		//		测爱情	个人情感	https://mimapi.xuanyiai.com/hulk/singleReportFill/pea001?m=102110220
-//	恋人相处	https://mimapi.xuanyiai.com/hulk/singleReportFill/rml001?m=102110220
-//	夫妻读心	https://mimapi.xuanyiai.com/hulk/singleReportFill/rms001?m=102110220
-		//				测性格	最全解析	https://mimapi.xuanyiai.com/hulk/index?m=102110220
-//	性格深度解析	https://mimapi.xuanyiai.com/hulk/singleReportFill/10?m=102110220
-		//				测运势	2019流年运势	https://mimapi.xuanyiai.com/hulk/singleReportFill/11?m=102110220
-//	个人财运	https://mimapi.xuanyiai.com/hulk/singleReportFill/12?m=102110220
-//	创业运势	https://mimapi.xuanyiai.com/hulk/singleReportFill/13?m=102110220
-//	工作运势	https://mimapi.xuanyiai.com/hulk/singleReportFill/14?m=102110220
-		$postData = [
+
+		/*$postData = [
 			'button' => [
 				[
 					"name" => "测爱情",
@@ -509,7 +501,7 @@ class WechatUtil
 					]
 				]
 			],
-		];
+		];*/
 		$postData = json_encode($postData, JSON_UNESCAPED_UNICODE);
 		$res = AppUtil::postJSON($url, $postData);
 		return $res;

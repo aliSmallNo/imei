@@ -1541,6 +1541,14 @@ class FooController extends Controller
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
         print_r($trends);*/
 
+        var_dump(WechatUtil::createWechatMenus());
+
+        $date = date('Y-m-d');
+        $reset = 1;
+        TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+
+
+
         exit;
     }
 

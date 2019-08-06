@@ -1095,7 +1095,6 @@ class StockController extends BaseController
             ]);
     }
 
-
     // 断点续传
     public function actionUp()
     {
@@ -1162,7 +1161,6 @@ class StockController extends BaseController
 
 
     }
-
 
     /**
      * 给BD分配渠道来方便管理
