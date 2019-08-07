@@ -249,7 +249,7 @@ class TrendStockService
         $action = CRMStockTrack::ACTION_USER;
         $sql = "select 
 				count(DISTINCT case when tAddedBy='1027' then tCId end) as xiaodao,
-				count(DISTINCT case when tAddedBy='1072' then tCId end) as sunqinghai
+				count(DISTINCT case when tAddedBy='1069' then tCId end) as lishiqi
 			  
 				from im_crm_stock_track as t 
 				join im_admin as a on a.aId=t.tAddedBy

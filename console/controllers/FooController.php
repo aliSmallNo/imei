@@ -1536,10 +1536,10 @@ class FooController extends Controller
         // strtotime(date('Y-m-01 00:00:00',strtotime('-1 month')));
 
 
-        /*$date = date('Y-m-d');
+        $date = date('Y-m-d');
         $reset = 1;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
-        print_r($trends);*/
+        /*print_r($trends);*/
 
         // var_dump(WechatUtil::createWechatMenus());
 

@@ -179,13 +179,12 @@
         names = [
           '小刀',
           //'金志新', '邱聚兴', '张梦莹', '徐方', '陈明', '宋富城',
-          '孙庆海',
+          '李士琪',
         ];
         fields = [
           'follow_xiaodao',
-          //'follow_jinzhixin', 'follow_qiujuxing', 'follow_zhangmengying', 'follow_xufang', 'chenming', 'songfucheng',
-           "sunqinghai",
-
+          //'follow_jinzhixin', 'follow_qiujuxing', 'follow_zhangmengying', 'follow_xufang',
+           "follow_lishiqi",
         ];
         break;
       case 'new':
