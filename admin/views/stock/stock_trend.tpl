@@ -138,6 +138,7 @@
           '合计', '小刀', '金志新', '徐方', '冯林', '陈明', '宋富城', '冯小强', '查俊', '张梦莹', '孙庆海',
           '于辉', '吴淑霞',
           '李士琪', '孙庆海2',
+          '达林太',
         ];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉","吴淑霞"
         fields = [
           'sum_loan_total',
@@ -147,6 +148,7 @@
           'sum_loan_ZhangMengYing_18410283058', 'sum_loan_SunQingHai_13701269919',
           'sum_loan_YuHui_13910838033', 'sum_loan_WuShuXia_18911781586',
           'sum_loan_LiShi_18612991838', 'sum_loan_SunQingHai_13501299927',
+          'sum_loan_DaLinTai_13910502331',
         ];
         break;
       case 'users':
@@ -154,6 +156,7 @@
           '合计', '小刀', '金志新', '徐方', '冯林', '陈明', '宋富城', '冯小强', '查俊', '张梦莹', '孙庆海',
           '于辉', '吴淑霞',
           '李士琪','孙庆海2',
+          '达林太',
           //'冯卓刚', '高考',
         ];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉",
         fields = [
@@ -172,6 +175,7 @@
           'sum_loan_users_WuShuXia_18911781586',
           'sum_loan_users_LiShi_18612991838',
           'sum_loan_users_SunQingHai_13501299927',
+          'sum_loan_users_DaLinTai_13910502331',
           //"sum_loan_users_FengZhuoGang_15698090788", "sum_loan_users_GaoKao_15863756565",
         ];
         break;
@@ -193,6 +197,7 @@
           '于辉', '吴淑霞',
           '李士琪',
           '孙庆海2',
+          '达林太',
           //'冯卓刚', '高考',
         ];
 
@@ -204,6 +209,7 @@
           'new_users_YuHui_13910838033', 'new_users_WuShuXia_18911781586',
           'new_users_LiShi_18612991838',
           'new_users_SunQingHai_13501299927',
+          'new_users_DaLinTai_13910502331',
           //"new_users_FengZhuoGang_15698090788", "new_users_GaoKao_15863756565",
         ];
         break;
@@ -212,6 +218,7 @@
           '合计', '小刀', '金志新', '徐方', '冯林', '陈明', '宋富城', '冯小强', '查俊', '张梦莹', '孙庆海',
           '于辉', '吴淑霞',
           '李士琪','孙庆海2',
+          '达林太',
           //'冯卓刚', '高考',
           // "王毅龙","于辉",
         ];
@@ -224,6 +231,7 @@
           'new_loan_YuHui_13910838033', 'new_loan_WuShuXia_18911781586',
           'new_loan_LiShi_18612991838',
           'new_loan_SunQingHai_13501299927',
+          'new_loan_DaLinTai_13910502331',
           //"new_loan_FengZhuoGang_15698090788", "new_loan_GaoKao_15863756565",
         ];
         break;
@@ -232,6 +240,7 @@
           '合计', '小刀', '金志新', '徐方', '冯林', '陈明', '宋富城', '冯小强', '查俊', '张梦莹', '孙庆海',
           '于辉', '吴淑霞',
           '李士琪','孙庆海2',
+          '达林太',
           //'冯卓刚', '高考',
         ];
 
@@ -251,6 +260,7 @@
           'new_curr_month_loan_WuShuXia_18911781586',
           'new_curr_month_loan_LiShi_18612991838',
           'new_curr_month_loan_SunQingHai_13501299927',
+          'new_curr_month_loan_DaLinTai_13910502331',
           //"new_curr_month_loan_FengZhuoGang_15698090788", "new_curr_month_loan_GaoKao_15863756565",
         ];
         /**
@@ -263,6 +273,7 @@
           '合计', '小刀', '金志新', '徐方', '冯林', '陈明', '宋富城', '冯小强', '查俊', '张梦莹', '孙庆海',
           '于辉', '吴淑霞',
           '李士琪','孙庆海2',
+          '达林太',
         ];
 
         fields = [
@@ -281,6 +292,7 @@
           'lose_curr_last_month_user_WuShuXia_18911781586',
           'lose_curr_last_month_user_LiShi_18612991838',
           'lose_curr_last_month_user_SunQingHai_13501299927',
+          'lose_curr_last_month_user_DaLinTai_13910502331',
         ];
         break;
     }
