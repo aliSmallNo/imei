@@ -496,7 +496,6 @@ class StockController extends BaseController
                 'list' => $list,
                 'status' => $status,
                 'bdphone' => $bdphone,
-                'is_xiaodao' => Admin::getAdminId() == 1027,
                 'stDict' => StockOrder::$stDict,
                 'bds' => $bds,
                 'success' => $success,

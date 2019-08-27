@@ -28,6 +28,7 @@ use common\models\MomentSub;
 use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
+use common\models\StockActionChange;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
@@ -1508,6 +1509,11 @@ class ApiController extends Controller
             case 'cal_hold_days':
                 StockOrder::cla_stock_hold_days();
                 return self::renderAPI(0, '计算完成');
+                break;
+            case "update_user_action_change":
+                $dt = self::postParam("dt");
+                StockActionChange::insert_today_change($dt);
+                return self::renderAPI(0, '更新完成');
                 break;
         }
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");

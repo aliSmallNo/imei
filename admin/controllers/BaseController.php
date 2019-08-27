@@ -118,7 +118,7 @@ class BaseController extends Controller
 		$params['is_staff'] = Admin::get_level() >= Admin::LEVEL_STAFF;
 		$params['is_stock_leader'] = Admin::isGroupUser(Admin::GROUP_STOCK_LEADER);
 		$params['is_saler'] = Admin::isGroupUser(Admin::GROUP_SALER);
-
+		$params['is_xiaodao'] = Admin::getAdminId() == 1027;
 		return self::render($view, $params);
 	}
 
