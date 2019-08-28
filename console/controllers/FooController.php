@@ -1536,13 +1536,25 @@ class FooController extends Controller
         // strtotime(date('Y-m-01 00:00:00',strtotime('-1 month')));
 
 
-        $date = date('Y-m-d');
+        /*$date = date('Y-m-d');
         $reset = 1;
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
         /*print_r($trends);*/
 
         // var_dump(WechatUtil::createWechatMenus());
 
+
+        $data = [
+            'userName' => '17611629667',
+            'password' => "123456",
+            'checkCode' => "checkCode",
+            'save' => "Y",
+            'url' => "https://www.taoguba.com.cn/index?blockID=1",
+        ];
+
+        $ret = TryPhone::taoguba_phone($data);
+
+        print_r(json_decode($ret,1));
 
 
         exit;
