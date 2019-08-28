@@ -661,6 +661,7 @@ class TryPhone
         $data = [
             'userName' => $phone,
             'password' => "123456",
+            'checkCode' => "checkCode",
             'save' => "Y",
             'url' => "https://www.taoguba.com.cn/index?blockID=1",
         ];
