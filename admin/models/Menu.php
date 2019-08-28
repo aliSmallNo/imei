@@ -170,6 +170,12 @@ class Menu
                         "level" => 810
                     ],
                     [
+                        "name" => "操作变化",
+                        "url" => "/stock/stock_action_change",
+                        "revise" => 1,
+                        "level" => 810
+                    ],
+                    [
                         "name" => "减持用户",
                         "url" => "/stock/reduce_stock",
                         "revise" => 1,

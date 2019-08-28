@@ -2,8 +2,10 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use Yii;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "im_stock_action_change".
@@ -35,6 +37,11 @@ class StockActionChange extends \yii\db\ActiveRecord
         return "{{%stock_action_change}}";
     }
 
+    /**
+     * 添加
+     * @since 2019.8.27 PM
+     * @author zp
+     */
     public static function add($values = [])
     {
         if (!$values) {
@@ -49,6 +56,11 @@ class StockActionChange extends \yii\db\ActiveRecord
         return $entity->acId;
     }
 
+    /**
+     * 添加前的检查
+     * @since 2019.8.27 PM
+     * @author zp
+     */
     public static function pre_add($values = [])
     {
         $acPhone = $values['acPhone'] ?? '';
@@ -66,6 +78,11 @@ class StockActionChange extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 判断唯一性
+     * @since 2019.8.27 PM
+     * @author zp
+     */
     public static function has_one($acPhone, $acType)
     {
         if (self::findOne([
@@ -77,6 +94,11 @@ class StockActionChange extends \yii\db\ActiveRecord
         return false;
     }
 
+    /**
+     * @param string $day 日期
+     * @since 2019.8.27 PM
+     * @author zp
+     */
     public static function insert_today_change($day)
     {
         // $day = '2019-8-22';
@@ -96,6 +118,11 @@ class StockActionChange extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 整理要添加的数据
+     * @since 2019.8.27 PM
+     * @author zp
+     */
     public static function get_origin_data($data, $day)
     {
         $acPhone = $data['aPhone'];
@@ -127,6 +154,11 @@ class StockActionChange extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 获取 acAeforeTxt 字段信息
+     * @since 2019.8.27 PM
+     * @author zp
+     */
     public static function get_before_txt($acPhone, $day)
     {
         $type = StockAction::TYPE_DELETE;
@@ -138,4 +170,89 @@ class StockActionChange extends \yii\db\ActiveRecord
         return $acTxtBefore ? $acTxtBefore : '';
     }
 
+    // 渠道限制条件
+    public static function channel_condition()
+    {
+        $cond = "";
+        $phone = Admin::get_phone();
+        $cId = Admin::getAdminId();
+        if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
+            $cond = " and c.cBDAssign=$cId ";
+        }
+        return $cond;
+    }
+
+    public static function items($criteria, $params, $page, $pageSize = 20)
+    {
+        $conn = AppUtil::db();
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+        }
+
+        $strCriteria .= self::channel_condition();
+
+        $order_str = " acAddedOn desc,cUpdatedDate asc";
+
+        $sql = "select 
+                ac.*,
+                c.*,
+                a.aName,a.aPhone
+				from im_stock_action_change as ac
+				left join im_crm_stock_client as c on c.cPhone=ac.acPhone 
+				left join im_admin as a on a.aId = c.cBDAssign 
+				where acId>0 $strCriteria 
+				order by  $order_str
+				limit $offset,$pageSize";
+        $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
+            $ids[] = $v["cId"];
+        }
+        //去重
+        $ids = array_unique($ids);
+        // 去除空值
+        $ids = array_filter($ids);
+        if ($ids) {
+            $sql = "SELECT t.* 
+					FROM im_crm_stock_track as t
+ 					JOIN (
+ 					select max(tId) as lastId,tCId from im_crm_stock_track 
+ 					WHERE tDeletedFlag=0 and tAction=100 
+ 					AND tCId in (" . implode(",", $ids) . ") GROUP BY tCId
+ 					) as c on c.lastId=t.tId ";
+            $ret = $conn->createCommand($sql)->queryAll();
+            $items = [];
+            foreach ($ret as $row) {
+                $cid = $row["tCId"];
+
+                $items[$cid]["lastId"] = $row["tId"];
+                $items[$cid]["lastDate"] = AppUtil::prettyDateTime($row["tDate"]);
+                $items[$cid]["lastNote"] = $row["tNote"];
+            }
+
+            // 插入最近的一条跟进信息
+            foreach ($res as $k2 => $v2) {
+                $cId = $v2['cId'];
+                if (isset($items[$cId])) {
+                    $res[$k2] = array_merge($v2, $items[$cId]);
+                } else {
+                    $res[$k2] = array_merge($v2, [
+                        'lastId' => '',
+                        'lastDate' => '',
+                        'lastNote' => '无跟进信息',
+                    ]);
+                }
+            }
+        }
+
+        $sql = "select count(1) as co
+				from im_stock_action_change as ac
+				left join im_crm_stock_client as c on c.cPhone=ac.acPhone 
+				left join im_admin as a on a.aId = c.cBDAssign 
+				where acId>0 $strCriteria ";
+        $count = $conn->createCommand($sql, [])->bindValues($params)->queryScalar();
+
+        return [$res, $count];
+    }
 }

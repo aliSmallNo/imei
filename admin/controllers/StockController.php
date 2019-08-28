@@ -16,6 +16,7 @@ use common\models\CRMStockTrack;
 use common\models\Log;
 use common\models\LogStock;
 use common\models\StockAction;
+use common\models\StockActionChange;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
@@ -1212,4 +1213,60 @@ class StockController extends BaseController
             ]
         );
     }
+
+    public function actionStock_action_change()
+    {
+        //Admin::staffOnly();
+
+        $getInfo = \Yii::$app->request->get();
+        $page = self::getParam("page", 1);
+        $name = self::getParam("name");
+        $phone = self::getParam("phone");
+        $type = self::getParam("type");
+        $bdid = self::getParam("bdid");
+
+        $criteria = [];
+        $params = [];
+        if ($name) {
+            $name = str_replace("'", "", $name);
+            $criteria[] = "  c.cName like :name ";
+            $params[':name'] = "%$name%";
+        }
+        if ($phone) {
+            $criteria[] = "  ac.acPhone like :phone ";
+            $params[':phone'] = $phone;
+        }
+        if ($type) {
+            $criteria[] = "  ac.acType like :type ";
+            $params[':type'] = $type;
+        }
+        if($bdid){
+            $criteria[] = "  c.cBDAssign like :cBDAssign ";
+            $params[':cBDAssign'] = $bdid;
+        }
+
+        list($list, $count) = StockActionChange::items($criteria, $params, $page);
+        $pagination = self::pagination($page, $count, 20);
+
+        $orders = [
+            'update' => '正常排序',
+            'last_opt_asc' => '最近更新订单时间正序',
+            'last_opt_desc' => '最近更新订单时间倒序',
+        ];
+
+        $bds = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client');
+
+        return $this->renderPage("stock_action_change.tpl",
+            [
+                'getInfo' => $getInfo,
+                'pagination' => $pagination,
+                'list' => $list,
+                'types' => StockActionChange::$types,
+                'sts' => StockUserAdmin::$stDict,
+                "bds" => $bds,
+                'orders' => $orders,
+            ]
+        );
+    }
+
 }
