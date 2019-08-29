@@ -1,6 +1,8 @@
 {{include file="layouts/header.tpl"}}
 <style>
-
+    .color_red {
+        color: #ff3300;
+    }
 </style>
 <div class="row">
     <h4>用户操作状态变化列表
@@ -12,15 +14,16 @@
             <input class="form-control" placeholder="客户手机" type="text" name="phone"
                    value="{{if isset($getInfo['phone'])}}{{$getInfo['phone']}}{{/if}}"/>
             {{if $is_stock_leader }}
-            <select class="form-control" name="bdid">
-                <option value="">-=归属BD=-</option>
-                {{foreach from=$bds key=key item=item}}
-                    <option value="{{$item.id}}"
-                            {{if isset($getInfo['bdid']) && $getInfo['bdid']==$item.id}}selected{{/if}}>
-                        {{$item.name}}
-                    </option>
-                {{/foreach}}
-            </select>
+                <select class="form-control" name="bdid">
+                    <option value="">-=归属BD=-</option>
+                    <option value="0" {{if isset($getInfo['bdid']) && $getInfo['bdid']=="0"}}selected{{/if}}>无归属BD</option>
+                    {{foreach from=$bds key=key item=item}}
+                        <option value="{{$item.id}}"
+                                {{if isset($getInfo['bdid']) && $getInfo['bdid']==$item.id}}selected{{/if}}>
+                            {{$item.name}}
+                        </option>
+                    {{/foreach}}
+                </select>
             {{/if}}
 
             <select class="form-control" name="type">
@@ -63,7 +66,7 @@
                     {{$item.acPhone}}
                 </td>
 
-                <td>
+                <td class="{{if $item.acTxtBefore!=$item.acTxtAfter}}color_red{{/if}}">
                     {{$item.acTxtBefore}}=>{{$item.acTxtAfter}}
                 </td>
                 <td>

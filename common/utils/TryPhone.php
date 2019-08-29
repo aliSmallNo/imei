@@ -779,4 +779,11 @@ class TryPhone
             }
         }
     }
+
+    /**
+     * 淘股吧 2019.8.21 日志(vi /data/logs/imei/phone_logs20190821.log):line 29614 淘股吧加入滑动验证，已无法获得手机号
+     * 本页代码：line 664
+     */
+
+
 }

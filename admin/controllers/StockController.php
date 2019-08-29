@@ -1233,15 +1233,18 @@ class StockController extends BaseController
             $params[':name'] = "%$name%";
         }
         if ($phone) {
-            $criteria[] = "  ac.acPhone like :phone ";
+            $criteria[] = "  ac.acPhone = :phone ";
             $params[':phone'] = $phone;
         }
         if ($type) {
-            $criteria[] = "  ac.acType like :type ";
+            $criteria[] = "  ac.acType = :type ";
             $params[':type'] = $type;
         }
-        if($bdid){
-            $criteria[] = "  c.cBDAssign like :cBDAssign ";
+        if ($bdid) {
+            $criteria[] = "  c.cBDAssign = :cBDAssign ";
+            $params[':cBDAssign'] = $bdid;
+        } elseif ($bdid == "0") {
+            $criteria[] = "  c.cBDAssign = :cBDAssign ";
             $params[':cBDAssign'] = $bdid;
         }
 
