@@ -72,6 +72,8 @@ class SiteController extends BaseController
 
     public function actionLogin()
     {
+        Admin::logout();
+
         //echo phpinfo();exit;
         $this->layout = 'login';
         $name = self::postParam("name");
@@ -86,7 +88,6 @@ class SiteController extends BaseController
         // var_dump(Yii::$app->request->hostInfo);exit;
 
         if ($name && $pass) {
-            Admin::logout();
 
             // $cache_code = AppUtil::getCookie($session_key);
             $cache_code = RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->getCache();
@@ -111,7 +112,6 @@ class SiteController extends BaseController
         // 可以改为redis
         // AppUtil::setCookie($session_key, $code, 600);
         RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->setCache($code);
-
 
         return $this->renderPage('login.tpl', [
             'tip' => $tip,
