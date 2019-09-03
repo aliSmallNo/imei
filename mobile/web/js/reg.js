@@ -167,7 +167,7 @@ require(["layer"],
 			wxInfo.jsApiList = ['hideOptionMenu', 'hideMenuItems', 'getLocation'];
 			wx.config(wxInfo);
 			wx.ready(function () {
-				// wx.hideOptionMenu();
+				wx.hideOptionMenu();
 			});
 
 			RoleUtil.init();
