@@ -158,10 +158,15 @@ class StockController extends BaseController
             ];
         }
         if ($is_jinzx) {
+            //2019.9.3 modify
             $tabs = [
                 "my" => [
                     "title" => "我的客户",
                     "count" => $counters["mine"]
+                ],
+                "sea" => [
+                    "title" => "公海客户",
+                    "count" => $counters["sea"]
                 ],
             ];
         }

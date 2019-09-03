@@ -2495,6 +2495,10 @@ class WxController extends BaseController
 			'');
 	}
 
+    /**
+     * @des 传播连接
+     * @since 2019.9.3
+     */
     public function actionRegAll()
     {
 
