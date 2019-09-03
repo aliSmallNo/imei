@@ -1272,4 +1272,17 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * @des 生成短连接
+     * @since 2019.9.3
+     */
+    public function actionLong2short()
+    {
+        return $this->renderPage("stock_long_2_short.tpl",
+            [
+
+            ]
+        );
+    }
+
 }

@@ -228,6 +228,12 @@ class Menu
                         "revise" => 1,
                         "level" => 810
                     ],
+                    [
+                        "name" => "短链接",
+                        "url" => "/stock/long2short",
+                        "revise" => 1,
+                        "level" => 810
+                    ],
                 ]
             ],
             [

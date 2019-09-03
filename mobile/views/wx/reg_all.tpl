@@ -78,7 +78,7 @@
     <div class="des">您提供交易策略,别人提供8倍杠杆,实盘交易<br>如连续跌停爆仓,不用赔偿</div>
 </div>
 <div class="sms-form">
-    <div class="item">
+    <div class="item" style="display: none">
         <div class="os">安卓手机</div>
         <div class="cont">
             <!--<a href="https://api.sanbao365.com/api/version/download?from=singlemessage&isappinstalled=0">点击进入准点买安卓系统</a>-->
@@ -88,9 +88,9 @@
         </div>
     </div>
     <div class="item">
-        <div class="os">苹果手机</div>
+        <div class="os">准点买</div>
         <div class="cont">
-            <a href="https://api.sanbao365.com/index.html">点击进入准点买iOS系统</a>
+            <a href="https://api.sanbao365.com/index.html">点击进入准点买系统</a>
             <!--<a href="https://api.sanbao365.com/api/version/zdmdl?from=groupmessage&isappinstalled=0">点击进入准点买iOS系统</a>-->
             <!--<a href="https://api.sanbao365.com/index.html">点击进入准点买iOS系统</a>-->
         </div>

@@ -1515,6 +1515,13 @@ class ApiController extends Controller
                 StockActionChange::insert_today_change($dt);
                 return self::renderAPI(0, '更新完成');
                 break;
+            case "create_short_url":
+                $originUrl = self::postParam("originUrl");
+                $shortUrl = WechatUtil::long2short_url($originUrl);
+                $code = $shortUrl ? 0 : 129;
+                $msg = $shortUrl ? "ok" : '请稍后再试';
+                return self::renderAPI($code, $msg, $shortUrl);
+                break;
         }
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
