@@ -41,7 +41,7 @@ class BaseController extends Controller
 	{
 		$actionId = $action->id;
 		$duration = 3600 * 51;
-		$safeActions = ['error', 'err', 'help', 'pub-share', 'shake'];
+		$safeActions = ['error', 'err', 'help', 'pub-share', 'shake','reg-all'];
 
 		//echo 123;print_r($action);exit;
 		if (in_array($actionId, $safeActions)) {

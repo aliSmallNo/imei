@@ -2495,5 +2495,17 @@ class WxController extends BaseController
 			'');
 	}
 
+    public function actionRegAll()
+    {
+
+        return self::renderPage('reg_all.tpl',
+            [
+
+            ],
+            'terse',
+            '准点买',
+            '');
+    }
+
 
 }
