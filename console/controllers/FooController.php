@@ -1557,13 +1557,13 @@ class FooController extends Controller
         print_r(json_decode($ret,1));*/
 
 
-        for ($i = -53; $i > -1000; $i--) {
+        for ($i = -1; $i > -100; $i--) {
             $sql = " select * from im_stock_order where datediff(oAddedOn,now())=$i ";
             $res = AppUtil::db()->createCommand($sql)->queryAll();
             foreach ($res as $v) {
                 $stockId = $v['oStockId'];
-                $start = date('Ymd', strtotime($v['oCreatedOn']));
-                $end = date('Ymd', strtotime($v['oCreatedOn']));
+                $start = date('Ymd', strtotime($v['oAddedOn']));
+                $end = date('Ymd', strtotime($v['oAddedOn']));
 
                 $oTurnover = StockOrder::getStockTurnover($stockId, $start, $end);
                 StockOrder::edit($v['oId'], [
