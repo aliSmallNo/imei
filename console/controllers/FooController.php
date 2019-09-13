@@ -1544,7 +1544,7 @@ class FooController extends Controller
         // var_dump(WechatUtil::createWechatMenus());
 
 
-        $data = [
+        /*$data = [
             'userName' => '17611629667',
             'password' => "123456",
             'checkCode' => "checkCode",
@@ -1554,7 +1554,29 @@ class FooController extends Controller
 
         $ret = TryPhone::taoguba_phone($data);
 
-        print_r(json_decode($ret,1));
+        print_r(json_decode($ret,1));*/
+
+
+        for ($i = -53; $i > -1000; $i--) {
+            $sql = " select * from im_stock_order where datediff(oAddedOn,now())=$i ";
+            $res = AppUtil::db()->createCommand($sql)->queryAll();
+            foreach ($res as $v) {
+                $stockId = $v['oStockId'];
+                $start = date('Ymd', strtotime($v['oCreatedOn']));
+                $end = date('Ymd', strtotime($v['oCreatedOn']));
+
+                $oTurnover = StockOrder::getStockTurnover($stockId, $start, $end);
+                StockOrder::edit($v['oId'], [
+                    "oTurnover" => $oTurnover
+                ]);
+            }
+        }
+
+
+        //$start = date('Ymd', time() - 86400 * 2);
+        //$end = date('Ymd', time() - 86400 * 2);
+        //StockOrder::getStockTurnover('002249', $start, $end);
+        //StockOrder::getStockTurnover('002249');
 
 
         exit;

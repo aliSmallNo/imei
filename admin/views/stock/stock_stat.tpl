@@ -215,7 +215,7 @@
 	}
 
 	function initFunnel(cData, pid) {
-//	setTheme();
+		//	setTheme();
 		var colors = [];
 		for (var k in cData) {
 			var item = cData[k];

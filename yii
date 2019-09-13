@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  *
- * local use: /usr/bin/php yii foo/zp
+ * local use: /usr/local/opt/php@7.1/bin/php yii foo/zp
  *
  */
 
