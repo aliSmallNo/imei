@@ -1558,7 +1558,7 @@ class FooController extends Controller
         print_r(json_decode($ret,1));*/
 
 
-        StockMenu::getStockSZList();
+        StockMenu::getStockList('sh');
 
 
         //$start = date('Ymd', time() - 86400 * 2);
