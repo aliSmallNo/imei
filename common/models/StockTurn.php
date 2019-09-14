@@ -47,7 +47,7 @@ class StockTurn extends \yii\db\ActiveRecord
 
         if ($entity = self::findOne([
             'oStockId' => $values['oStockId'],
-            'oTransOn' => $values['oTransOn'],
+            'oTransOn' => $values['oTransOn'] . " 00:00:00",
         ])) {
             return [false, false];
         }
@@ -108,13 +108,21 @@ class StockTurn extends \yii\db\ActiveRecord
         $sql = "select * from im_stock_menu";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            self::add_one_stock($v);
+            //self::add_one_stock($v);
+            self::add_one_stock_last($v);
         }
     }
 
-    public static function add_one_stock($v)
+    public static function add_one_stock($v, $dt = "")
     {
-        $Turnover = self::getStockTurnover($v['mStockId'], "20190912", "20190912");
+        if (!$dt) {
+            $dt1 = date("Ymd");
+            $dt2 = date("Y-m-d");
+        } else {
+            $dt1 = date("Ymd", strtotime($dt));
+            $dt2 = date("Y-m-d", strtotime($dt));
+        }
+        $Turnover = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
         if ($Turnover) {
             $Turnover = substr($Turnover, 0, -1) * 100;
             self::add([
@@ -122,8 +130,17 @@ class StockTurn extends \yii\db\ActiveRecord
                 "oStockName" => $v['mStockName'],
                 "oStockId" => $v['mStockId'],
                 "oTurnover" => $Turnover,
-                "oTransOn" => "2019-09-12",
+                "oTransOn" => $dt2,
             ]);
+        }
+    }
+
+    public static function add_one_stock_last($v, $count = 30)
+    {
+        echo "stockId:" . $v['mStockId'] . PHP_EOL;
+        for ($i = 1; $i <= $count; $i++) {
+            $dt = date("Y-m-d", time() - 86400 * $i);
+            self::add_one_stock($v, $dt);
         }
     }
 
