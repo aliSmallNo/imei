@@ -105,7 +105,11 @@ class StockTurn extends \yii\db\ActiveRecord
 
     public static function update_current_day_all()
     {
-        $sql = "select * from im_stock_menu";
+        $where = "";
+        if (date('Y-m-d') == "2019-09-14") {
+            $where = " where mId>1388 ";
+        }
+        $sql = "select * from im_stock_menu $where ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
             //self::add_one_stock($v);
@@ -124,7 +128,7 @@ class StockTurn extends \yii\db\ActiveRecord
         }
         $Turnover = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
         if ($Turnover) {
-            $Turnover = substr($Turnover, 0, -1) * 100;
+            $Turnover = floatval(substr($Turnover, 0, -1)) * 100;
             self::add([
                 "oCat" => $v['mCat'],
                 "oStockName" => $v['mStockName'],
