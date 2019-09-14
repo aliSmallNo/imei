@@ -16,6 +16,7 @@ use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
 use common\models\StockAction;
+use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\User;
@@ -1557,20 +1558,7 @@ class FooController extends Controller
         print_r(json_decode($ret,1));*/
 
 
-        for ($i = -1; $i > -100; $i--) {
-            $sql = " select * from im_stock_order where datediff(oAddedOn,now())=$i ";
-            $res = AppUtil::db()->createCommand($sql)->queryAll();
-            foreach ($res as $v) {
-                $stockId = $v['oStockId'];
-                $start = date('Ymd', strtotime($v['oAddedOn']));
-                $end = date('Ymd', strtotime($v['oAddedOn']));
-
-                $oTurnover = StockOrder::getStockTurnover($stockId, $start, $end);
-                StockOrder::edit($v['oId'], [
-                    "oTurnover" => $oTurnover
-                ]);
-            }
-        }
+        StockMenu::pre_add();
 
 
         //$start = date('Ymd', time() - 86400 * 2);

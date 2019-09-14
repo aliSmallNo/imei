@@ -264,47 +264,6 @@ class StockOrder extends ActiveRecord
 
     }
 
-    /**
-     * 获取换手率
-     * @param $stockId
-     * @param string $start
-     * @param string $end
-     * @return int
-     */
-    public static function getStockTurnover($stockId, $start = "", $end = "")
-    {
-        if (!$start) {
-            $start = date('Ymd', time());
-            $end = date('Ymd', time());
-        }
-
-        // https://blog.csdn.net/llingmiao/article/details/79941066
-        $base_url = "http://q.stock.sohu.com/hisHq?code=cn_%s&start=%s&end=%s&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp";
-        $ret = AppUtil::httpGet(sprintf($base_url, $stockId, $start, $end));
-
-        $ret = AppUtil::check_encode($ret);
-        //echo sprintf($base_url, $stockId, $start, $end) . PHP_EOL . PHP_EOL;
-        //echo $ret . PHP_EOL . PHP_EOL;
-        $pos = strpos($ret, "{");
-        $rpos = strrpos($ret, "}");
-        $ret = substr($ret, $pos, $rpos - $pos + 1);
-
-        $ret = AppUtil::json_decode($ret);
-
-        $status = $ret['status'] ?? 129;
-        $hq = $ret['hq'] ?? [];
-        $stat = $ret['stat'] ?? [];
-
-        $turnover = 0;
-        if ($status == 0 && count($hq[0]) == 10) {
-            $turnover = $hq[0][9];
-        }
-
-        echo "stockId:" . $stockId . " start:" . $start . " end:" . $end . " turnover:" . $turnover . PHP_EOL;
-        return $turnover;
-
-    }
-
     public static function update_price_des($ret, $oId)
     {
         $v = self::find()->where(['oId' => $oId])->asArray()->one();
