@@ -74,8 +74,8 @@ class StockMenu extends \yii\db\ActiveRecord
         }
 
         if ($entity = self::findOne(['mStockId' => $values['mStockId']])) {
-            return [false, false];
-            //return self::edit($entity->mStockId, $values);
+            //return [false, false];
+            return self::edit($entity->mStockId, $values);
         }
 
         $entity = new self();
