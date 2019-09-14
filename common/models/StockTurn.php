@@ -98,7 +98,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $turnover = $hq[0][9];
         }
 
-        echo "stockId:" . $stockId . " start:" . $start . " end:" . $end . " turnover:" . $turnover . PHP_EOL;
+        //echo "stockId:" . $stockId . " start:" . $start . " end:" . $end . " turnover:" . $turnover . PHP_EOL;
         return $turnover;
 
     }
@@ -114,7 +114,7 @@ class StockTurn extends \yii\db\ActiveRecord
 
     public static function add_one_stock($v)
     {
-        $Turnover = self::getStockTurnover($v['mStockId'], "2019-9-12", "2019-9-12");
+        $Turnover = self::getStockTurnover($v['mStockId'], "20190912", "20190912");
         if ($Turnover) {
             $Turnover = substr($Turnover, 0, -1) * 100;
             self::add([
@@ -122,7 +122,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 "oStockName" => $v['mStockName'],
                 "oStockId" => $v['mStockId'],
                 "oTurnover" => $Turnover,
-                "oTransOn" => "2019-9-12",
+                "oTransOn" => "2019-09-12",
             ]);
         }
     }
