@@ -56,7 +56,7 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($values as $key => $val) {
             $entity->$key = $val;
         }
-        $entity->mAddedOn = date('Y-m-d H:i:s');
+        $entity->oAddedOn = date('Y-m-d H:i:s');
         $res = $entity->save();
 
         return [$res, $entity];
