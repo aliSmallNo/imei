@@ -18,6 +18,7 @@ use common\models\Pin;
 use common\models\StockAction;
 use common\models\StockMenu;
 use common\models\StockOrder;
+use common\models\StockTurn;
 use common\models\StockUser;
 use common\models\User;
 use common\models\UserNet;
@@ -1558,8 +1559,8 @@ class FooController extends Controller
         print_r(json_decode($ret,1));*/
 
 
-        StockMenu::getStockList('sz');
-
+        //StockMenu::getStockList('sz');
+        StockTurn::update_current_day_all();
 
         //$start = date('Ymd', time() - 86400 * 2);
         //$end = date('Ymd', time() - 86400 * 2);
