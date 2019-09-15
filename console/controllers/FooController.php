@@ -1561,8 +1561,8 @@ class FooController extends Controller
 
 
         //StockMenu::getStockList('sz');
-        //StockTurn::update_current_day_all();
-        StockTurnStat::stat();
+        StockTurn::update_current_day_all();
+        //StockTurnStat::stat();
 
         //$start = date('Ymd', time() - 86400 * 2);
         //$end = date('Ymd', time() - 86400 * 2);

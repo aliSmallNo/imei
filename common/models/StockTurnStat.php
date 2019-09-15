@@ -62,6 +62,9 @@ class StockTurnStat extends \yii\db\ActiveRecord
             ':stockId' => $stockId,
             ':dt' => $dt,
         ])->queryAll();
+        if (!$res) {
+            return false;
+        }
         $et = $res[0]['oTransOn'];
         $st = $res[count($res) - 1]['oTransOn'];
 
@@ -78,7 +81,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
             ':stockId' => $stockId,
             ':dt' => $dt,
         ])->queryOne();
-        if ($res) {
+        if (isset($res['id'])) {
             list($res, $model) = self::add([
                 'sCat' => $day,
                 'sStockId' => $res['id'],
