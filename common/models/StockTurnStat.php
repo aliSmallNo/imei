@@ -10,6 +10,7 @@ use Yii;
  *
  * @property integer $sId
  * @property string $sCat
+ * @property string $sRealCount
  * @property string $sStockId
  * @property string $sStockName
  * @property integer $sVal
@@ -56,7 +57,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
         if (!$dt) {
             $dt = date("Y-m-d");
         }
-        $sql = "select oTransOn from im_stock_turn where oStockId=:stockId and oTransOn<=:dt order by oTransOn desc limit :num";
+        $sql = "select * from im_stock_turn where oStockId=:stockId and oTransOn<=:dt order by oTransOn desc limit :num";
         $res = AppUtil::db()->createCommand($sql, [
             ':num' => $day,
             ':stockId' => $stockId,
@@ -65,32 +66,26 @@ class StockTurnStat extends \yii\db\ActiveRecord
         if (!$res) {
             return false;
         }
+        $real_count = count($res);
+        $stockName = $res[0]['oStockName'];
         $et = $res[0]['oTransOn'];
-        $st = $res[count($res) - 1]['oTransOn'];
+        $st = $res[$real_count - 1]['oTransOn'];
 
-        $sql = "select
-                oStockId as id,
-                oStockName as `name`,
-                round(sum(oTurnover)/:num) as av
-                from im_stock_turn 
-                where oStockId=:stockId and oTransOn<=:dt
-                order by oTransOn desc 
-                limit :num ";
-        $res = AppUtil::db()->createCommand($sql, [
-            ':num' => $day,
-            ':stockId' => $stockId,
-            ':dt' => $dt,
-        ])->queryOne();
-        if (isset($res['id'])) {
-            list($res, $model) = self::add([
-                'sCat' => $day,
-                'sStockId' => $res['id'],
-                'sStockName' => $res['name'],
-                'sVal' => $res['av'],
-                'sStart' => $st,
-                'sEnd' => $et,
-            ]);
+        $sum = 0;
+        foreach ($res as $k => $v) {
+            $sum += $v['oTurnover'];
         }
+
+        list($res, $model) = self::add([
+            'sCat' => $day,
+            'sRealCount' => $real_count,
+            'sStockId' => $stockId,
+            'sStockName' => $stockName,
+            'sVal' => round($sum / $real_count),
+            'sStart' => $st,
+            'sEnd' => $et,
+        ]);
+
     }
 
     public static function stat()
@@ -101,6 +96,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
             $id = $v['mStockId'];
             echo $id . PHP_EOL;
             self::stat_one($id, 20);
+            self::stat_one($id, 15);
             self::stat_one($id, 10);
             self::stat_one($id, 5);
         }

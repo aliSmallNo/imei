@@ -1508,37 +1508,6 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        //TryPhone::phone_section_2();
-        //TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time()), TryPhone::CAT_XIJINFA);
-        //TryPhone::pre_reqData(13323232323,TryPhone::CAT_XUANGUBAO);
-
-        // StockOrder::send_msg_on_stock_price();
-
-        //CRMStockClient::phone_to_location();
-
-        // 抓取的手机号获取归属地
-        /*$sql = "select * from im_log where `oCategory`='phone_section_yes' ";
-        $res = AppUtil::db()->createCommand($sql)->queryAll();
-        foreach ($res as $v) {
-            list($pro, $city) = AppUtil::get_phone_location($v['oOpenId']);
-            $loc = $pro . '-' . $city;
-            echo $v['oId'] . '----' . $loc . PHP_EOL;
-            $sql = "update im_log set oUId='$loc' where `oId`= " . $v['oId'];
-            AppUtil::db()->createCommand($sql)->execute();
-        }*/
-
-        //TryPhone::pre_reqData(17611629667, TryPhone::CAT_ZHIFU);
-
-
-        //TryPhone::pre_reqData(17611629667, TryPhone::CAT_TAOGUBA, 1);
-        //TryPhone::pre_reqData(17611629666, TryPhone::CAT_TAOGUBA, 1);
-
-        // TryPhone::after_process_logs();
-
-
-        // strtotime(date('Y-m-01 00:00:00',strtotime('-1 month')));
-
-
         /*$date = date('Y-m-d');
         $reset = 1;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
@@ -1547,27 +1516,9 @@ class FooController extends Controller
         // var_dump(WechatUtil::createWechatMenus());
 
 
-        /*$data = [
-            'userName' => '17611629667',
-            'password' => "123456",
-            'checkCode' => "checkCode",
-            'save' => "Y",
-            'url' => "https://www.taoguba.com.cn/index?blockID=1",
-        ];
-
-        $ret = TryPhone::taoguba_phone($data);
-
-        print_r(json_decode($ret,1));*/
-
-
         //StockMenu::getStockList('sz');
-        StockTurn::update_current_day_all();
-        //StockTurnStat::stat();
-
-        //$start = date('Ymd', time() - 86400 * 2);
-        //$end = date('Ymd', time() - 86400 * 2);
-        //StockOrder::getStockTurnover('002249', $start, $end);
-        //StockOrder::getStockTurnover('002249');
+        //StockTurn::update_current_day_all();
+        StockTurnStat::stat();
 
 
         exit;
@@ -1610,28 +1561,6 @@ select DISTINCT cPhone as co from im_crm_stock_client where cAddedDate BETWEEN :
         exit;
     }
 
-    public static function actionAddp()
-    {
-        /*$sql = "select * from `im_crm_stock_client` where cProvince like '%上海%' and CHAR_LENGTH(cPhone)=11";
-        $res = AppUtil::db()->createCommand($sql)->queryAll();
-        $res = array_column($res, "cPhone");
-        $res = array_map(function ($v) {
-            return substr($v, 0, 7);
-        }, $res);
-        print_r(array_unique($res));
-        foreach ($res as $phone) {
-            Log::add_phone_section($phone, 'shanghai');
-        }*/
-
-        // TryPhone::phone_section_4();
-
-        // TryPhone::updateIPs();
-        // echo TryPhone::get_proxy_ip() . PHP_EOL;
-
-        //TryPhone::phone_section_4();
-        Log::add_phone_section_yes('13012833901', "taoguba");
-
-    }
 
 
 }
