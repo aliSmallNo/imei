@@ -125,7 +125,7 @@ class StockTurn extends \yii\db\ActiveRecord
         $sql = "select * from im_stock_menu $where order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            self::add_one_stock($v);
+            self::add_one_stock($v, "2019-09-12");
             //self::add_one_stock_last($v);
         }
     }
@@ -145,6 +145,7 @@ class StockTurn extends \yii\db\ActiveRecord
         }
         echo "stockId:" . $v['mStockId'] . PHP_EOL;
         list($Turnover, $change_percent) = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
+
         if ($Turnover) {
             $Turnover = floatval(substr($Turnover, 0, -1)) * 100;
             $change_percent = floatval(substr($change_percent, 0, -1)) * 100;
