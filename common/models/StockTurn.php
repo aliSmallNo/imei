@@ -143,6 +143,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt1 = date("Ymd", strtotime($dt));
             $dt2 = date("Y-m-d", strtotime($dt));
         }
+        echo "stockId:" . $v['mStockId'] . PHP_EOL;
         list($Turnover, $change_percent) = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
         if ($Turnover) {
             $Turnover = floatval(substr($Turnover, 0, -1)) * 100;
