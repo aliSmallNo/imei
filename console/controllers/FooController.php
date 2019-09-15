@@ -1517,8 +1517,8 @@ class FooController extends Controller
 
 
         //StockMenu::getStockList('sz');
-        //StockTurn::update_current_day_all();
-        StockTurnStat::stat();
+        StockTurn::update_current_day_all();
+        //StockTurnStat::stat();
 
 
         exit;

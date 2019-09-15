@@ -13,6 +13,7 @@ use Yii;
  * @property string $oStockId
  * @property string $oStockName
  * @property integer $oTurnover
+ * @property integer $oChangePercent
  * @property string $oAddedOn
  * @property string $oTransOn
  */
@@ -26,19 +27,6 @@ class StockTurn extends \yii\db\ActiveRecord
         return 'im_stock_turn';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['oTurnover'], 'integer'],
-            [['oAddedOn', 'oTransOn'], 'safe'],
-            [['oCat'], 'string', 'max' => 8],
-            [['oStockId', 'oStockName'], 'string', 'max' => 16],
-        ];
-    }
-
     public static function add($values = [])
     {
         if (!$values) {
@@ -49,10 +37,32 @@ class StockTurn extends \yii\db\ActiveRecord
             'oStockId' => $values['oStockId'],
             'oTransOn' => $values['oTransOn'] . " 00:00:00",
         ])) {
-            return [false, false];
+            //return [false, false];
+            return self::edit($entity->oId, ['oChangePercent' => $values['oChangePercent']]);
         }
 
         $entity = new self();
+        foreach ($values as $key => $val) {
+            $entity->$key = $val;
+        }
+        $entity->oAddedOn = date('Y-m-d H:i:s');
+        $res = $entity->save();
+
+        return [$res, $entity];
+    }
+
+    public static function edit($id, $values = [])
+    {
+        if (!$values) {
+            return [false, false];
+        }
+
+        $entity = self::findOne($id);
+
+        if (!$entity) {
+            return [false, false];
+        }
+
         foreach ($values as $key => $val) {
             $entity->$key = $val;
         }
@@ -90,13 +100,14 @@ class StockTurn extends \yii\db\ActiveRecord
         $hq = $ret['hq'] ?? [];
         $stat = $ret['stat'] ?? [];
 
-        $turnover = 0;
+        $turnover = $change_percent = 0;
         if ($status == 0 && count($hq[0]) == 10) {
             $turnover = $hq[0][9];
+            $change_percent = $hq[0][4];
         }
 
         //echo "stockId:" . $stockId . " start:" . $start . " end:" . $end . " turnover:" . $turnover . PHP_EOL;
-        return $turnover;
+        return [$turnover, $change_percent];
 
     }
 
@@ -114,8 +125,8 @@ class StockTurn extends \yii\db\ActiveRecord
         $sql = "select * from im_stock_menu $where order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            //self::add_one_stock($v);
-            self::add_one_stock_last($v);
+            self::add_one_stock($v);
+            //self::add_one_stock_last($v);
         }
     }
 
@@ -132,14 +143,16 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt1 = date("Ymd", strtotime($dt));
             $dt2 = date("Y-m-d", strtotime($dt));
         }
-        $Turnover = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
+        list($Turnover, $change_percent) = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
         if ($Turnover) {
             $Turnover = floatval(substr($Turnover, 0, -1)) * 100;
+            $change_percent = floatval(substr($change_percent, 0, -1)) * 100;
             self::add([
                 "oCat" => $v['mCat'],
                 "oStockName" => $v['mStockName'],
                 "oStockId" => $v['mStockId'],
                 "oTurnover" => $Turnover,
+                "oChangePercent" => $change_percent,
                 "oTransOn" => $dt2,
             ]);
         }
