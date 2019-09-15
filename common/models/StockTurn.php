@@ -64,9 +64,6 @@ class StockTurn extends \yii\db\ActiveRecord
 
     /**
      * 获取换手率
-     * @param $stockId
-     * @param string $start
-     * @param string $end
      * @return int
      */
     public static function getStockTurnover($stockId, $start = "", $end = "")
@@ -103,20 +100,29 @@ class StockTurn extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 更新今日大盘股票 换手率
+     * @time 2019.9.14
+     */
     public static function update_current_day_all()
     {
         $where = "";
         if (date('Y-m-d') == "2019-09-14") {
             $where = " where mId>1388 ";
         }
-        $sql = "select * from im_stock_menu $where ";
+
+        $sql = "select * from im_stock_menu $where order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            //self::add_one_stock($v);
-            self::add_one_stock_last($v);
+            self::add_one_stock($v);
+            //self::add_one_stock_last($v);
         }
     }
 
+    /**
+     * 添加 指定日期 指定股票的换手率
+     * @time 2019.9.14
+     */
     public static function add_one_stock($v, $dt = "")
     {
         if (!$dt) {
@@ -139,6 +145,12 @@ class StockTurn extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 添加 $count天前的换手率数据
+     * @param $v
+     * @param int $count
+     * @time 2019.9.14
+     */
     public static function add_one_stock_last($v, $count = 30)
     {
         echo "stockId:" . $v['mStockId'] . PHP_EOL;

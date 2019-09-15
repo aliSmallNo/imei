@@ -67,7 +67,7 @@ class StockMenu extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
-    //聚合数据 股票数据 APPKEY => https://www.juhe.cn/myData
+    // 聚合数据 股票数据 APPKEY => https://www.juhe.cn/myData
     const APPKEY = "fa1c2dacb35f3c558ab1641524a36038";
 
     public static function getAllStock()
