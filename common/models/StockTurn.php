@@ -114,8 +114,8 @@ class StockTurn extends \yii\db\ActiveRecord
         $sql = "select * from im_stock_menu $where order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            self::add_one_stock($v);
-            //self::add_one_stock_last($v);
+            //self::add_one_stock($v);
+            self::add_one_stock_last($v);
         }
     }
 
@@ -151,7 +151,7 @@ class StockTurn extends \yii\db\ActiveRecord
      * @param int $count
      * @time 2019.9.14
      */
-    public static function add_one_stock_last($v, $count = 30)
+    public static function add_one_stock_last($v, $count = 32)
     {
         echo "stockId:" . $v['mStockId'] . PHP_EOL;
         for ($i = 1; $i <= $count; $i++) {
