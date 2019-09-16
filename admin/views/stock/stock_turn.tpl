@@ -32,10 +32,10 @@
         <tr>
             <th>股票代码</th>
             <th>股票名</th>
+            <th>{{$day}}日均值换手率</th>
             <th>换手率</th>
             <th>涨幅比</th>
             <th>时间</th>
-            <th>{{$day}}日均值</th>
         </tr>
         </thead>
         <tbody>
@@ -43,10 +43,11 @@
             <tr data-uaPhone="">
                 <td>{{$item.oStockId}}</td>
                 <td>{{$item.oStockName}}</td>
+                <td>{{sprintf("%.2f",$item.sVal/100)}}%</td>
                 <td>{{sprintf("%.2f",$item.oTurnover/100)}}%</td>
                 <td>{{sprintf("%.2f",$item.oChangePercent/100)}}%</td>
                 <td>{{$item.dt}}</td>
-                <td>{{sprintf("%.2f",$item.sVal/100)}}%</td>
+
             </tr>
         {{/foreach}}
         </tbody>
