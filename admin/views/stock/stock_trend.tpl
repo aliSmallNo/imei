@@ -140,6 +140,7 @@
           '李士琪', '孙庆海2',
           '达林太',
           '孙鹏',
+          '焦晓悦',
         ];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉","吴淑霞"
         fields = [
           'sum_loan_total',
@@ -151,6 +152,7 @@
           'sum_loan_LiShi_18612991838', 'sum_loan_SunQingHai_13501299927',
           'sum_loan_DaLinTai_13910502331',
           'sum_loan_SunPeng_13838067113',
+          'sum_loan_JiaoXiaoYue_13717717659',
         ];
         break;
       case 'users':
@@ -160,6 +162,7 @@
           '李士琪','孙庆海2',
           '达林太',
           '孙鹏',
+          '焦晓悦',
           //'冯卓刚', '高考',
         ];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉",
         fields = [
@@ -180,6 +183,7 @@
           'sum_loan_users_SunQingHai_13501299927',
           'sum_loan_users_DaLinTai_13910502331',
           'sum_loan_users_SunPeng_13838067113',
+          'sum_loan_users_JiaoXiaoYue_13717717659',
         ];
         break;
       case 'follow':
@@ -202,6 +206,7 @@
           '孙庆海2',
           '达林太',
           '孙鹏',
+          '焦晓悦',
         ];
 
         fields = [
@@ -214,6 +219,7 @@
           'new_users_SunQingHai_13501299927',
           'new_users_DaLinTai_13910502331',
           'new_users_SunPeng_13838067113',
+          'new_users_JiaoXiaoYue_13717717659',
         ];
         break;
       case 'new_loan':
@@ -223,6 +229,7 @@
           '李士琪','孙庆海2',
           '达林太',
           '孙鹏',
+          '焦晓悦',
         ];
 
         fields = [
@@ -235,6 +242,7 @@
           'new_loan_SunQingHai_13501299927',
           'new_loan_DaLinTai_13910502331',
           'new_loan_SunPeng_13838067113',
+          'new_loan_JiaoXiaoYue_13717717659',
           //"new_loan_FengZhuoGang_15698090788", "new_loan_GaoKao_15863756565",
         ];
         break;
@@ -245,6 +253,7 @@
           '李士琪','孙庆海2',
           '达林太',
           '孙鹏',
+          '焦晓悦',
         ];
 
         fields = [
@@ -265,6 +274,7 @@
           'new_curr_month_loan_SunQingHai_13501299927',
           'new_curr_month_loan_DaLinTai_13910502331',
           'new_curr_month_loan_SunPeng_13838067113',
+          'new_curr_month_loan_JiaoXiaoYue_13717717659',
         ];
         /**
          [new_curr_month_loan_XieShuoShuo_18101390540] => 0
@@ -278,6 +288,7 @@
           '李士琪','孙庆海2',
           '达林太',
           '孙鹏',
+          '焦晓悦',
         ];
 
         fields = [
@@ -298,6 +309,7 @@
           'lose_curr_last_month_user_SunQingHai_13501299927',
           'lose_curr_last_month_user_DaLinTai_13910502331',
           'lose_curr_last_month_user_SunPeng_13838067113',
+          'lose_curr_last_month_user_JiaoXiaoYue_13717717659',
         ];
         break;
     }
