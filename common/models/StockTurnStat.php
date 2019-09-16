@@ -38,6 +38,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
         if ($entity = self::findOne([
             'sStockId' => $values['sStockId'],
             'sCat' => $values['sCat'],
+            'sEnd' => $values['sEnd'],
         ])) {
             return [false, false];
         }
@@ -88,6 +89,10 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 每天更新  任务入口
+     * @time 2019.9.15
+     */
     public static function stat()
     {
         $sql = "select * from im_stock_menu order by mId asc ";
@@ -100,6 +105,27 @@ class StockTurnStat extends \yii\db\ActiveRecord
             self::stat_one($id, 10);
             self::stat_one($id, 5);
         }
+    }
+
+    public static function items($criteria, $params)
+    {
+        $conn = AppUtil::db();
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+        }
+
+        $sql = "select 
+                oStockId,oStockName,oTurnover,oChangePercent,date_format(oTransOn,'%Y-%m-%d') as dt,sVal 
+                from im_stock_turn as t
+                join `im_stock_turn_stat` as s on s.sStockId=t.oStockId
+                where  (oChangePercent>200 or oChangePercent<-200) and s.sVal>t.oTurnover $strCriteria ";
+        $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
+            //sprintf("%.2d", $v['oChangePercent'] / 100);
+        }
+
+        return $res;
     }
 
 }

@@ -18,6 +18,7 @@ use common\models\LogStock;
 use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockOrder;
+use common\models\StockTurnStat;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
 use common\service\TrendStockService;
@@ -1286,6 +1287,49 @@ class StockController extends BaseController
         return $this->renderPage("stock_long_2_short.tpl",
             [
 
+            ]
+        );
+    }
+
+    /**
+     * 大盘 换手率符合要求股票
+     * @time 2019.9.16
+     */
+    public function actionStock_turn()
+    {
+        Admin::staffOnly();
+
+        $dt = self::getParam("dt","2019-09-12");
+        $day = self::getParam("day", 20);
+
+        $criteria = [];
+        $params = [];
+
+        if ($day) {
+            $criteria[] = " sCat=:d ";
+            $params[':d'] = $day;
+        }
+        if ($dt) {
+            $criteria[] = "  date_format(oTransOn,'%Y-%m-%d')=:dt and sEnd=:dt ";
+            $params[':dt'] = $dt;
+        }
+
+        $list= StockTurnStat::items($criteria, $params);
+
+        $days = [
+            '20' => '20日均值',
+            '15' => '15日均值',
+            '10' => '10日均值',
+            '5' => '5日均值',
+        ];
+
+        return $this->renderPage("stock_turn.tpl",
+            [
+                'list' => $list,
+                'count' => count($list),
+                'days' => $days,
+                'day' => $day,
+                'dt' => $dt,
             ]
         );
     }

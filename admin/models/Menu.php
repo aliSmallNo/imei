@@ -234,6 +234,12 @@ class Menu
                         "revise" => 1,
                         "level" => 810
                     ],
+                    [
+                        "name" => "换手率",
+                        "url" => "/stock/stock_turn",
+                        "revise" => 1,
+                        "level" => 827
+                    ],
                 ]
             ],
             [

@@ -37,8 +37,8 @@ class StockTurn extends \yii\db\ActiveRecord
             'oStockId' => $values['oStockId'],
             'oTransOn' => $values['oTransOn'] . " 00:00:00",
         ])) {
-            //return [false, false];
-            return self::edit($entity->oId, ['oChangePercent' => $values['oChangePercent']]);
+            return [false, false];
+            //return self::edit($entity->oId, ['oChangePercent' => $values['oChangePercent']]);
         }
 
         $entity = new self();
@@ -112,21 +112,17 @@ class StockTurn extends \yii\db\ActiveRecord
     }
 
     /**
+     * 每天更新 任务入口
      * 更新今日大盘股票 换手率
      * @time 2019.9.14
      */
     public static function update_current_day_all()
     {
-        $where = "";
-        if (date('Y-m-d') == "2019-09-14") {
-            $where = " where mId>1388 ";
-        }
 
-        $sql = "select * from im_stock_menu $where order by mId asc ";
+        $sql = "select * from im_stock_menu order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            self::add_one_stock($v, "2019-09-12");
-            //self::add_one_stock_last($v);
+            self::add_one_stock($v);
         }
     }
 
@@ -172,6 +168,19 @@ class StockTurn extends \yii\db\ActiveRecord
         for ($i = 1; $i <= $count; $i++) {
             $dt = date("Y-m-d", time() - 86400 * $i);
             self::add_one_stock($v, $dt);
+        }
+    }
+
+    /**
+     * $count 天前的换手率数据
+     * @time 2019.9.15
+     */
+    public static function update_last_day_all()
+    {
+        $sql = "select * from im_stock_menu order by mId asc ";
+        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+        foreach ($ids as $v) {
+            self::add_one_stock_last($v);
         }
     }
 
