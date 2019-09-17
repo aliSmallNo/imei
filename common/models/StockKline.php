@@ -202,13 +202,31 @@ class StockKline extends \yii\db\ActiveRecord
 
     }
 
-    public static function loseStock()
+    public static function loseStock($dt)
     {
         $sql = "select * from im_stock_menu where mStockId not in ( select DISTINCT kStockId from im_stock_kline )";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            self::update_one_stock_kline($v['mStockId'], false);
-            echo $v['mStockId'] . PHP_EOL;
+            $stockId = $v['mStockId'];
+            $turn = StockTurn::unique_one($stockId, $dt);
+            echo '$stockId:' . $stockId . PHP_EOL;
+
+            if ($turn) {
+                $avg5 = StockKline::avg_one($stockId, 5, $dt);
+                $avg10 = StockKline::avg_one($stockId, 10, $dt);
+                $avg20 = StockKline::avg_one($stockId, 20, $dt);
+                $avg30 = StockKline::avg_one($stockId, 30, $dt);
+                $avg60 = StockKline::avg_one($stockId, 60, $dt);
+
+                StockTurn::edit($turn->oId, [
+                    "oAvg5" => $avg5,
+                    "oAvg10" => $avg10,
+                    "oAvg20" => $avg20,
+                    "oAvg30" => $avg30,
+                    "oAvg60" => $avg60,
+                ]);
+            }
+
         }
     }
 }

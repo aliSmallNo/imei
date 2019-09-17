@@ -1524,7 +1524,7 @@ class FooController extends Controller
         //StockTurnStat::stat($dt);
 
         //StockKline::update_avg_price($dt);
-        StockKline::loseStock();
+        StockKline::loseStock($dt);
 
 
         exit;
