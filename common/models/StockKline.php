@@ -20,8 +20,17 @@ use Yii;
  * @property integer $kHight
  * @property integer $kLow
  */
+// 获取K线数据
+// 分时数据 http://data.gtimg.cn/flashdata/hushen/minute/sh600519.js
+// 五天分时数据 http://data.gtimg.cn/flashdata/hushen/4day/sh/sh600519.js
+// 周K线数据 http://data.gtimg.cn/flashdata/hushen/weekly/sh600519.js
+// 日K线数据 http://data.gtimg.cn/flashdata/hushen/daily/13/sh600519.js
+// 获取月K线数据 http://data.gtimg.cn/flashdata/hushen/monthly/sh600519.js
+// 获取实时成交量明细 http://stock.gtimg.cn/data/index.php?appn=detail&action=data&c=sh600519&p=3 p为分页
 class StockKline extends \yii\db\ActiveRecord
 {
+    const CAT_DAY = 1;
+
     /**
      * @inheritdoc
      */
@@ -36,10 +45,7 @@ class StockKline extends \yii\db\ActiveRecord
             return [false, false];
         }
 
-        if ($entity = self::findOne([
-            'kStockId' => $values['kStockId'],
-            'kTransOn' => $values['kTransOn'],
-        ])) {
+        if ($entity = self::unique_one($values['kStockId'], $values['kTransOn'], $values['kCat'])) {
             return [false, false];
         }
 
@@ -54,8 +60,17 @@ class StockKline extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
+    public static function unique_one($kStockId, $kTransOn, $kCat)
+    {
+        return self::findOne([
+            'kStockId' => $kStockId,
+            'kTransOn' => $kTransOn,
+            'kCat' => $kCat,
+        ]);
+    }
+
     /**
-     * 更新日K线
+     * 更新【日K线】
      * @time 2019.9.17
      */
     public static function update_all_stock_dayKLine()
@@ -63,7 +78,8 @@ class StockKline extends \yii\db\ActiveRecord
         $sql = "select * from im_stock_menu order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
-            self::update_one_stock_kline($v['mStockId'], $v['mStockName'], false);
+            //self::update_one_stock_kline($v['mStockId'], $v['mStockName'], false);
+            self::update_one_stock_kline($v['mStockId'], $v['mStockName']);
         }
     }
 
@@ -97,20 +113,24 @@ class StockKline extends \yii\db\ActiveRecord
         // 更新 $year:19年【日k线】
         $insert = [];
         foreach ($data as $v) {
+            // $v style => 190912 16.45 16.45 16.45 16.45 17459
             //self::pre_edit_kline($v, $stockId, $stockName);
             $prices = explode(" ", $v);
             $dt = date('Y-m-d', strtotime("20" . $prices[0]));
-            $insert[] = [
-                "kTransOn" => $dt,
-                "kStockId" => $stockId,
-                "kStockName" => $stockName,
-                "kOpen" => $prices[1] * 100,//开盘价
-                "kClose" => $prices[2] * 100,//收盘价
-                "kHight" => $prices[3] * 100,//最高价
-                "kLow" => $prices[4] * 100,//最低价
-                "kAddedOn" => date('Y-m-d H:i:s'),
-                "kUpdatedOn" => date('Y-m-d H:i:s'),
-            ];
+            if (!self::unique_one($stockId, $dt, self::CAT_DAY)) {
+                $insert[] = [
+                    "kCat" => self::CAT_DAY,
+                    "kTransOn" => $dt,
+                    "kStockId" => $stockId,
+                    "kStockName" => $stockName,
+                    "kOpen" => $prices[1] * 100,//开盘价
+                    "kClose" => $prices[2] * 100,//收盘价
+                    "kHight" => $prices[3] * 100,//最高价
+                    "kLow" => $prices[4] * 100,//最低价
+                    "kAddedOn" => date('Y-m-d H:i:s'),
+                    "kUpdatedOn" => date('Y-m-d H:i:s'),
+                ];
+            }
         }
         Yii::$app->db->createCommand()->batchInsert(self::tableName(),
             ['kTransOn', 'kStockId', 'kStockName', 'kOpen', 'kClose', 'kHight', 'kLow', "kAddedOn", "kUpdatedOn"],
@@ -123,6 +143,7 @@ class StockKline extends \yii\db\ActiveRecord
         $prices = explode(" ", $line_data);
         $dt = date('Y-m-d', strtotime("20" . $prices[0]));
         self::add([
+            "kCat" => self::CAT_DAY,
             "kTransOn" => $dt,
             "kStockId" => $stockId,
             "kStockName" => $stockName,
@@ -131,5 +152,66 @@ class StockKline extends \yii\db\ActiveRecord
             "kHight" => $prices[3] * 100,//最高价
             "kLow" => $prices[4] * 100,//最低价
         ]);
+    }
+
+    /**
+     * 更新均价 任务入口
+     * @time 2019.9.17
+     */
+    public static function update_avg_price()
+    {
+        $sql = "select * from im_stock_menu order by mId asc ";
+        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+        foreach ($ids as $v) {
+            $stockId = $v['mStockId'];
+            $dt = "2019-09-16";
+
+            $turn = StockTurn::unique_one($stockId, $dt);
+
+            echo '$stockId:' . $stockId . PHP_EOL;
+
+            if ($turn) {
+                $avg5 = StockKline::avg_one($stockId, 5, $dt);
+                $avg10 = StockKline::avg_one($stockId, 10, $dt);
+                $avg20 = StockKline::avg_one($stockId, 20, $dt);
+                $avg30 = StockKline::avg_one($stockId, 30, $dt);
+                $avg60 = StockKline::avg_one($stockId, 60, $dt);
+
+                StockTurn::edit($turn->oId, [
+                    "oAvg5" => $avg5,
+                    "oAvg10" => $avg10,
+                    "oAvg20" => $avg20,
+                    "oAvg30" => $avg30,
+                    "oAvg60" => $avg60,
+                ]);
+            }
+
+        }
+    }
+
+    public static function avg_one($stockId, $day = 5, $dt = "")
+    {
+        if (!$dt) {
+            $dt = date("Y-m-d");
+        }
+
+        $sql = "select * from im_stock_kline where kStockId=:stockId and kTransOn<=:dt order by kTransOn desc limit :num";
+        $res = AppUtil::db()->createCommand($sql, [
+            ':num' => $day,
+            ':stockId' => $stockId,
+            ':dt' => $dt,
+        ])->queryAll();
+        if (!$res) {
+            return false;
+        }
+        $real_count = count($res);
+
+        $sum = 0;
+        foreach ($res as $k => $v) {
+            $sum += $v['kClose'];
+        }
+
+        return round($sum / $real_count);
+
     }
 }

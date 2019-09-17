@@ -1523,8 +1523,10 @@ class FooController extends Controller
         StockTurn::update_current_day_all($dt);
         StockTurnStat::stat($dt);*/
 
-        StockKline::update_all_stock_dayKLine();
+         //StockKline::update_all_stock_dayKLine();
         // StockKline::update_one_stock_kline('000029','~~');
+         StockKline::update_avg_price();
+
 
         exit;
     }

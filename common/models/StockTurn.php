@@ -16,22 +16,10 @@ use Yii;
  * @property integer $oChangePercent
  * @property string $oAddedOn
  * @property string $oTransOn
- * @property string $oOpen
- * @property string $oClose
- * @property string $oHight
- * @property string $oLow
  */
 class StockTurn extends \yii\db\ActiveRecord
 {
     // 腾迅股票数据接口 https://blog.csdn.net/USTBHacker/article/details/8365756
-
-    // 获取K线数据
-    // 分时数据 http://data.gtimg.cn/flashdata/hushen/minute/sh600519.js
-    // 五天分时数据 http://data.gtimg.cn/flashdata/hushen/4day/sh/sh600519.js
-    // 周K线数据 http://data.gtimg.cn/flashdata/hushen/weekly/sh600519.js
-    // 日K线数据 http://data.gtimg.cn/flashdata/hushen/daily/13/sh600519.js
-    // 获取月K线数据 http://data.gtimg.cn/flashdata/hushen/monthly/sh600519.js
-    // 获取实时成交量明细 http://stock.gtimg.cn/data/index.php?appn=detail&action=data&c=sh600519&p=3 p为分页
 
     /**
      * @inheritdoc
@@ -47,10 +35,7 @@ class StockTurn extends \yii\db\ActiveRecord
             return [false, false];
         }
 
-        if ($entity = self::findOne([
-            'oStockId' => $values['oStockId'],
-            'oTransOn' => $values['oTransOn'] . " 00:00:00",
-        ])) {
+        if ($entity = self::unique_one($values['oStockId'], $values['oTransOn'])) {
             return [false, false];
             //return self::edit($entity->oId, ['oChangePercent' => $values['oChangePercent']]);
         }
@@ -63,6 +48,14 @@ class StockTurn extends \yii\db\ActiveRecord
         $res = $entity->save();
 
         return [$res, $entity];
+    }
+
+    public static function unique_one($oStockId, $oTransOn)
+    {
+        return self::findOne([
+            'oStockId' => $oStockId,
+            'oTransOn' => $oTransOn,
+        ]);
     }
 
     public static function edit($id, $values = [])
@@ -87,7 +80,7 @@ class StockTurn extends \yii\db\ActiveRecord
     }
 
     /**
-     * 获取换手率
+     * 获取换手率 涨跌幅
      * @return int
      */
     public static function getStockTurnover($stockId, $start = "", $end = "")
