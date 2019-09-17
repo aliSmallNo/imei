@@ -1524,6 +1524,7 @@ class FooController extends Controller
         StockTurnStat::stat($dt);*/
 
         StockKline::update_all_stock_dayKLine();
+        // StockKline::update_one_stock_kline('000029','~~');
 
         exit;
     }

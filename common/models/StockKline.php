@@ -75,11 +75,15 @@ class StockKline extends \yii\db\ActiveRecord
         $api = "http://data.gtimg.cn/flashdata/hushen/daily/%s/%s.js";
         $api = sprintf($api, $year, $city . $stockId);
         $data = AppUtil::httpGet($api);
-        if (!$data) {
+
+        if (strpos($data, "html")) {
             return false;
         }
         $data = str_replace(['\n\\', '"', ";"], '', $data);
         $data = explode("\n", $data);
+        if (!is_array($data)) {
+            return false;
+        }
 
         array_pop($data);
         array_shift($data);
@@ -91,9 +95,26 @@ class StockKline extends \yii\db\ActiveRecord
         }
 
         // 更新 $year:19年【日k线】
+        $insert = [];
         foreach ($data as $v) {
-            self::pre_edit_kline($v, $stockId, $stockName);
+            //self::pre_edit_kline($v, $stockId, $stockName);
+            $prices = explode(" ", $v);
+            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            $insert[] = [
+                "kTransOn" => $dt,
+                "kStockId" => $stockId,
+                "kStockName" => $stockName,
+                "kOpen" => $prices[1] * 100,//开盘价
+                "kClose" => $prices[2] * 100,//收盘价
+                "kHight" => $prices[3] * 100,//最高价
+                "kLow" => $prices[4] * 100,//最低价
+                "kAddedOn" => date('Y-m-d H:i:s'),
+                "kUpdatedOn" => date('Y-m-d H:i:s'),
+            ];
         }
+        Yii::$app->db->createCommand()->batchInsert(self::tableName(),
+            ['kTransOn', 'kStockId', 'kStockName', 'kOpen', 'kClose', 'kHight', 'kLow', "kAddedOn", "kUpdatedOn"],
+            $insert)->execute();
         return true;
     }
 
