@@ -233,7 +233,7 @@ class StockOrder extends ActiveRecord
         }
     }
 
-    public static function getStockPrice($stockId)
+    public static function get_stock_prefix($stockId)
     {
         $preFix = substr($stockId, 0, 1);
         switch ($preFix) {
@@ -247,8 +247,14 @@ class StockOrder extends ActiveRecord
             default:
                 $city = "";
         }
+        return $city;
+    }
+
+    public static function getStockPrice($stockId)
+    {
+
         // https://blog.csdn.net/simon803/article/details/7784682
-        $base_url = "http://hq.sinajs.cn/list=" . $city . $stockId;
+        $base_url = "http://hq.sinajs.cn/list=" . self::get_stock_prefix($stockId) . $stockId;
         $ret = AppUtil::httpGet($base_url, ['Content-Type: application/javascript; charset=gbk']);
         $pos = strpos($ret, "=");
         $ret = substr($ret, $pos + 2, -2);

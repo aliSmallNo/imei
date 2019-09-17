@@ -16,6 +16,7 @@ use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
 use common\models\StockAction;
+use common\models\StockKline;
 use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockTurn;
@@ -1518,10 +1519,11 @@ class FooController extends Controller
 
         //StockMenu::getStockList('sz');
 
-        $dt = "2019-09-16";
+        /*$dt = "2019-09-16";
         StockTurn::update_current_day_all($dt);
-        StockTurnStat::stat($dt);
+        StockTurnStat::stat($dt);*/
 
+        StockKline::update_all_stock_dayKLine();
 
         exit;
     }
