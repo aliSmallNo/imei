@@ -90,20 +90,20 @@ class StockTurnStat extends \yii\db\ActiveRecord
     }
 
     /**
-     * 每天更新  任务入口
+     * 每天更新 任务入口
      * @time 2019.9.15
      */
-    public static function stat()
+    public static function stat($dt = "")
     {
         $sql = "select * from im_stock_menu order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {
             $id = $v['mStockId'];
             echo $id . PHP_EOL;
-            self::stat_one($id, 20);
-            self::stat_one($id, 15);
-            self::stat_one($id, 10);
-            self::stat_one($id, 5);
+            self::stat_one($id, 20, $dt);
+            self::stat_one($id, 15, $dt);
+            self::stat_one($id, 10, $dt);
+            self::stat_one($id, 5, $dt);
         }
     }
 

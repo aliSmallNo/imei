@@ -1517,8 +1517,10 @@ class FooController extends Controller
 
 
         //StockMenu::getStockList('sz');
+
+        $dt = "2019-09-16";
         StockTurn::update_current_day_all();
-        //StockTurnStat::stat();
+        StockTurnStat::stat();
 
 
         exit;
@@ -1560,7 +1562,6 @@ select DISTINCT cPhone as co from im_crm_stock_client where cAddedDate BETWEEN :
         print_r($src_arr);
         exit;
     }
-
 
 
 }
