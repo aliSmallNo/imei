@@ -137,12 +137,11 @@ class StockTurn extends \yii\db\ActiveRecord
 
     /**
      * 每天更新 任务入口
-     * 更新今日大盘股票 换手率
+     * 更新今日大盘股票 换手率 k线价格
      * @time 2019.9.14
      */
     public static function update_current_day_all($dt = "")
     {
-
         $sql = "select * from im_stock_menu order by mId asc ";
         $ids = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($ids as $v) {

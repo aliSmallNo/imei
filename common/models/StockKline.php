@@ -112,20 +112,20 @@ class StockKline extends \yii\db\ActiveRecord
             // $v style => 190912 16.45 16.45 16.45 16.45 17459
             $prices = explode(" ", $v);
             $dt = date('Y-m-d', strtotime("20" . $prices[0]));
-            /*if (!self::unique_one($stockId, $dt, self::CAT_DAY)) {
+            if (!self::unique_one($stockId, $dt, self::CAT_DAY)) {
+                $insert[] = [
+                    "kCat" => self::CAT_DAY,
+                    "kTransOn" => $dt,
+                    "kStockId" => $stockId,
+                    "kOpen" => $prices[1] * 100,//开盘价
+                    "kClose" => $prices[2] * 100,//收盘价
+                    "kHight" => $prices[3] * 100,//最高价
+                    "kLow" => $prices[4] * 100,//最低价
+                    "kAddedOn" => date('Y-m-d H:i:s'),
+                    "kUpdatedOn" => date('Y-m-d H:i:s'),
+                ];
+            }
 
-            }*/
-            $insert[] = [
-                "kCat" => self::CAT_DAY,
-                "kTransOn" => $dt,
-                "kStockId" => $stockId,
-                "kOpen" => $prices[1] * 100,//开盘价
-                "kClose" => $prices[2] * 100,//收盘价
-                "kHight" => $prices[3] * 100,//最高价
-                "kLow" => $prices[4] * 100,//最低价
-                "kAddedOn" => date('Y-m-d H:i:s'),
-                "kUpdatedOn" => date('Y-m-d H:i:s'),
-            ];
         }
         Yii::$app->db->createCommand()->batchInsert(self::tableName(),
             ['kTransOn', 'kStockId', 'kOpen', 'kClose', 'kHight', 'kLow', "kAddedOn", "kUpdatedOn"],
@@ -202,31 +202,4 @@ class StockKline extends \yii\db\ActiveRecord
 
     }
 
-    public static function loseStock($dt)
-    {
-        $sql = "select * from im_stock_menu where mStockId not in ( select DISTINCT kStockId from im_stock_kline )";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
-        foreach ($ids as $v) {
-            $stockId = $v['mStockId'];
-            $turn = StockTurn::unique_one($stockId, $dt);
-            echo '$stockId:' . $stockId . PHP_EOL;
-
-            if ($turn) {
-                $avg5 = StockKline::avg_one($stockId, 5, $dt);
-                $avg10 = StockKline::avg_one($stockId, 10, $dt);
-                $avg20 = StockKline::avg_one($stockId, 20, $dt);
-                $avg30 = StockKline::avg_one($stockId, 30, $dt);
-                $avg60 = StockKline::avg_one($stockId, 60, $dt);
-
-                StockTurn::edit($turn->oId, [
-                    "oAvg5" => $avg5,
-                    "oAvg10" => $avg10,
-                    "oAvg20" => $avg20,
-                    "oAvg30" => $avg30,
-                    "oAvg60" => $avg60,
-                ]);
-            }
-
-        }
-    }
 }
