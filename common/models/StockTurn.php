@@ -108,9 +108,26 @@ class StockTurn extends \yii\db\ActiveRecord
         $stat = $ret['stat'] ?? [];
 
         $turnover = $change_percent = 0;
+        $open = $close = $hight = $low = 0;
         if ($status == 0 && count($hq[0]) == 10) {
             $turnover = $hq[0][9];
             $change_percent = $hq[0][4];
+
+            $open = floatval($hq[0][1]);
+            $close = floatval($hq[0][2]);
+            $hight = floatval($hq[0][6]);
+            $low = floatval($hq[0][5]);
+
+            StockKline::add([
+                "kCat" => StockKline::CAT_DAY,
+                "kTransOn" => date("Y-m-d", strtotime($start)),
+                "kStockId" => $stockId,
+                "kOpen" => $open * 100,//开盘价
+                "kClose" => $close * 100,//收盘价
+                "kHight" => $hight * 100,//最高价
+                "kLow" => $low * 100,//最低价
+            ]);
+
         }
 
         //echo "stockId:" . $stockId . " start:" . $start . " end:" . $end . " turnover:" . $turnover . PHP_EOL;

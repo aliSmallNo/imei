@@ -53,6 +53,24 @@ class StockTurnStat extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
+    /**
+     * 每天更新 任务入口
+     * @time 2019.9.15
+     */
+    public static function stat($dt = "")
+    {
+        $sql = "select * from im_stock_menu order by mId asc ";
+        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+        foreach ($ids as $v) {
+            $id = $v['mStockId'];
+            echo $id . PHP_EOL;
+            self::stat_one($id, 20, $dt);
+            self::stat_one($id, 15, $dt);
+            self::stat_one($id, 10, $dt);
+            self::stat_one($id, 5, $dt);
+        }
+    }
+
     public static function stat_one($stockId, $day = 20, $dt = "")
     {
         if (!$dt) {
@@ -89,23 +107,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
     }
 
-    /**
-     * 每天更新 任务入口
-     * @time 2019.9.15
-     */
-    public static function stat($dt = "")
-    {
-        $sql = "select * from im_stock_menu order by mId asc ";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
-        foreach ($ids as $v) {
-            $id = $v['mStockId'];
-            echo $id . PHP_EOL;
-            self::stat_one($id, 20, $dt);
-            self::stat_one($id, 15, $dt);
-            self::stat_one($id, 10, $dt);
-            self::stat_one($id, 5, $dt);
-        }
-    }
+
 
     public static function items($criteria, $params)
     {
