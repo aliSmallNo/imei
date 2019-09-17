@@ -106,6 +106,8 @@ class Log extends ActiveRecord
 	const CAT_SPREAD_MERMAIND = 8009; // 跨时空推广
 	const CAT_EXCEL = 8010; //
 
+	const CAT_STOCK_MENU_UPDATE = 'stock_menu_update'; //
+
 	public static function tableName()
 	{
 		return '{{%log}}';

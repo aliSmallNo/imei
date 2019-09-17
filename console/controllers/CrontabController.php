@@ -14,7 +14,10 @@ use common\models\CRMStockClient;
 use common\models\Log;
 use common\models\Stat;
 use common\models\StockAction;
+use common\models\StockKline;
 use common\models\StockOrder;
+use common\models\StockTurn;
+use common\models\StockTurnStat;
 use common\models\StockUser;
 use common\models\UserMsg;
 use common\models\UserNet;
@@ -165,8 +168,18 @@ class CrontabController extends Controller
             Log::add(['oCategory' => Log::CAT_PHONE_SECTION_YES, 'oUId' => '1000', 'oAfter' => AppUtil::json_decode($e)]);
         }
 
-//		User::updateRank([], true);
-//        Stat::userRank('', true);
+
+        try {
+            if (date('H' == "20")) {
+                StockTurn::update_current_day_all();
+                StockTurnStat::stat();
+                StockKline::update_avg_price();
+            }
+        } catch (\Exception $e) {
+            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oAfter' => $e->getMessage()]);
+            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oAfter' => AppUtil::json_encode($e)]);
+        }
+
     }
 
     public function actionTry_phone()
