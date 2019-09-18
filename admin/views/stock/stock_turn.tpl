@@ -13,10 +13,10 @@
         <input class="my-date-input form-control" name="dt" placeholder="日期" type="text" value="{{$dt}}">
         <div class="form-group">
             <select class="form-control" name="day">
-                {{foreach from=$days key=key item=day}}
+                {{foreach from=$days key=key item=item}}
                     <option value="{{$key}}"
                             {{if $day==$key}}selected{{/if}}
-                    >{{$day}}</option>
+                    >{{$item}}</option>
                 {{/foreach}}
             </select>
         </div>
@@ -36,6 +36,11 @@
             <th>换手率</th>
             <th>涨幅比</th>
             <th>时间</th>
+            <th>当日收盘价</th>
+            <th>5日均价</th>
+            <th>10日均价</th>
+            <th>20日均价</th>
+            <th>60日均价</th>
         </tr>
         </thead>
         <tbody>
@@ -47,6 +52,11 @@
                 <td>{{sprintf("%.2f",$item.oTurnover/100)}}%</td>
                 <td>{{sprintf("%.2f",$item.oChangePercent/100)}}%</td>
                 <td>{{$item.dt}}</td>
+                <td>{{sprintf("%.2f",$item.kClose/100)}}</td>
+                <td>{{sprintf("%.2f",$item.oAvg5/100)}}</td>
+                <td>{{sprintf("%.2f",$item.oAvg10/100)}}</td>
+                <td>{{sprintf("%.2f",$item.oAvg20/100)}}</td>
+                <td>{{sprintf("%.2f",$item.oAvg60/100)}}</td>
 
             </tr>
         {{/foreach}}

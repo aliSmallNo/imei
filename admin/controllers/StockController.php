@@ -1310,7 +1310,7 @@ class StockController extends BaseController
             $params[':d'] = $day;
         }
         if ($dt) {
-            $criteria[] = "  date_format(oTransOn,'%Y-%m-%d')=:dt and sEnd=:dt ";
+            $criteria[] = "  date_format(oTransOn,'%Y-%m-%d')=:dt and kTransOn=:dt and sEnd=:dt ";
             $params[':dt'] = $dt;
         }
 
@@ -1318,7 +1318,6 @@ class StockController extends BaseController
 
         $days = [
             '20' => '20日均值',
-            '15' => '15日均值',
             '10' => '10日均值',
             '5' => '5日均值',
         ];
