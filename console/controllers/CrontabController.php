@@ -158,26 +158,27 @@ class CrontabController extends Controller
 
         try {
             TryPhone::put_logs_to_db('_' . date('Ymd', time() - 86400));
-            TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
-            TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
-            TryPhone::put_logs_to_db(TryPhone::CAT_WOLUNCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_WOLUNCL);
-            TryPhone::put_logs_to_db(TryPhone::CAT_YIHAOPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_YIHAOPZ);
-            TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time() - 86400), TryPhone::CAT_XIJINFA);
-            // phone_yesxiJinFa_20190415.log
+//            TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
+//            TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
+//            TryPhone::put_logs_to_db(TryPhone::CAT_WOLUNCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_WOLUNCL);
+//            TryPhone::put_logs_to_db(TryPhone::CAT_YIHAOPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_YIHAOPZ);
+//            TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time() - 86400), TryPhone::CAT_XIJINFA);
         } catch (\Exception $e) {
             Log::add(['oCategory' => Log::CAT_PHONE_SECTION_YES, 'oUId' => '1000', 'oAfter' => AppUtil::json_decode($e)]);
         }
 
 
         try {
+            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'out', 'oAfter' => $e->getMessage()]);
             if (date('H' == "20")) {
+                Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'in', 'oAfter' => $e->getMessage()]);
                 StockTurn::update_current_day_all();
                 StockTurnStat::stat();
                 StockKline::update_avg_price();
             }
         } catch (\Exception $e) {
-            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oAfter' => $e->getMessage()]);
-            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oAfter' => AppUtil::json_encode($e)]);
+            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err1', 'oAfter' => $e->getMessage()]);
+            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err2', 'oAfter' => AppUtil::json_encode($e)]);
         }
 
     }

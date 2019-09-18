@@ -57,7 +57,6 @@
                 <td>{{sprintf("%.2f",$item.oAvg10/100)}}</td>
                 <td>{{sprintf("%.2f",$item.oAvg20/100)}}</td>
                 <td>{{sprintf("%.2f",$item.oAvg60/100)}}</td>
-
             </tr>
         {{/foreach}}
         </tbody>
