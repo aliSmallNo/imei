@@ -3,6 +3,10 @@
     .color_red {
         color: #ff3300;
     }
+
+    .color_green {
+        color: #0f9d58;
+    }
 </style>
 <div class="row">
     <h4>股票列表 ({{$count}})
@@ -36,6 +40,7 @@
             <th>换手率</th>
             <th>涨幅比</th>
             <th>时间</th>
+            <th>当日开盘价</th>
             <th>当日收盘价</th>
             <th>5日均价</th>
             <th>10日均价</th>
@@ -52,7 +57,8 @@
                 <td>{{sprintf("%.2f",$item.oTurnover/100)}}%</td>
                 <td>{{sprintf("%.2f",$item.oChangePercent/100)}}%</td>
                 <td>{{$item.dt}}</td>
-                <td>{{sprintf("%.2f",$item.kClose/100)}}</td>
+                <td class="{{if $item.kOpen<$item.kClose || $item.oChangePercent>0}}color_red{{else}}color_green{{/if}}">{{sprintf("%.2f",$item.kOpen/100)}}</td>
+                <td class="{{if $item.kOpen<$item.kClose || $item.oChangePercent>0}}color_red{{else}}color_green{{/if}}">{{sprintf("%.2f",$item.kClose/100)}}</td>
                 <td>{{sprintf("%.2f",$item.oAvg5/100)}}</td>
                 <td>{{sprintf("%.2f",$item.oAvg10/100)}}</td>
                 <td>{{sprintf("%.2f",$item.oAvg20/100)}}</td>

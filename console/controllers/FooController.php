@@ -1519,7 +1519,7 @@ class FooController extends Controller
 
         //StockMenu::getStockList('sz');
 
-        $dt = "2019-09-18";
+        $dt = "2019-09-19";
         StockTurn::update_current_day_all($dt);
         StockTurnStat::stat($dt);
         StockKline::update_avg_price($dt);

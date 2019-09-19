@@ -170,15 +170,15 @@ class CrontabController extends Controller
 
         try {
             Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'out']);
-            if (date('H' == "20")) {
-                Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'in']);
+            if (date('H') == "20") {
+                Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'start']);
                 StockTurn::update_current_day_all();
                 StockTurnStat::stat();
                 StockKline::update_avg_price();
+                Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'end']);
             }
         } catch (\Exception $e) {
             Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err1', 'oAfter' => $e->getMessage()]);
-            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err2', 'oAfter' => AppUtil::json_encode($e)]);
         }
 
     }

@@ -125,13 +125,14 @@ class StockTurnStat extends \yii\db\ActiveRecord
         $sql = "select 
                 oStockId,oStockName,oTurnover,oChangePercent,
                 date_format(oTransOn,'%Y-%m-%d') as dt,
-                sVal,kClose,
+                sVal,kClose,kOpen,
                 oAvg5,oAvg10,oAvg20,oAvg30,oAvg60
                 from im_stock_turn as t
                 join `im_stock_turn_stat` as s on s.sStockId=t.oStockId
                 join `im_stock_kline` as k on k.kStockId=t.oStockId
                 where (oChangePercent>200 or oChangePercent<-200) and s.sVal>t.oTurnover $strCriteria
-                and kClose>oAvg20 and kClose>oAvg10 and kClose>oAvg30 and kClose>oAvg5 and kClose>oAvg60 ";
+                and kClose>oAvg20 and kClose>oAvg10 and kClose>oAvg30 and kClose>oAvg5 and kClose>oAvg60 
+                order by oChangePercent desc";
         $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
         foreach ($res as $k => $v) {
             //sprintf("%.2d", $v['oChangePercent'] / 100);
