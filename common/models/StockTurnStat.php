@@ -28,6 +28,14 @@ class StockTurnStat extends \yii\db\ActiveRecord
         return 'im_stock_turn_stat';
     }
 
+    public static function has_unique_one($sStockId, $sCat, $sEnd)
+    {
+        return self::findOne([
+            'sStockId' => $sStockId,
+            'sCat' => $sCat,
+            'sEnd' => $sEnd,
+        ]);
+    }
 
     public static function add($values = [])
     {
@@ -35,11 +43,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
             return [false, false];
         }
 
-        if ($entity = self::findOne([
-            'sStockId' => $values['sStockId'],
-            'sCat' => $values['sCat'],
-            'sEnd' => $values['sEnd'],
-        ])) {
+        if ($entity = self::has_unique_one($values['sStockId'], $values['sCat'], $values['sEnd'])) {
             return [false, false];
         }
 
@@ -59,15 +63,23 @@ class StockTurnStat extends \yii\db\ActiveRecord
      */
     public static function stat($dt = "")
     {
-        $sql = "select * from im_stock_menu order by mId asc ";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+        $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $id = $v['mStockId'];
             echo $id . PHP_EOL;
-            self::stat_one($id, 20, $dt);
-            self::stat_one($id, 15, $dt);
-            self::stat_one($id, 10, $dt);
-            self::stat_one($id, 5, $dt);
+
+            $insertData = [];
+            foreach ([20, 15, 10, 5] as $day) {
+                if ($data = self::stat_one($id, $day, $dt)) {
+                    $insertData[] = $data;
+                }
+            }
+
+            if ($insertData) {
+                Yii::$app->db->createCommand()->batchInsert(self::tableName(),
+                    ["sCat", "sRealCount", "sStockId", "sStockName", "sVal", "sStart", "sEnd"],
+                    $insertData)->execute();
+            }
         }
     }
 
@@ -94,8 +106,12 @@ class StockTurnStat extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
             $sum += $v['oTurnover'];
         }
+        // 验证唯一性
+        if (self::has_unique_one($stockId, $day, $et)) {
+            return [];
+        }
 
-        list($res, $model) = self::add([
+        return [
             'sCat' => $day,
             'sRealCount' => $real_count,
             'sStockId' => $stockId,
@@ -103,8 +119,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
             'sVal' => round($sum / $real_count),
             'sStart' => $st,
             'sEnd' => $et,
-        ]);
-
+        ];
     }
 
 

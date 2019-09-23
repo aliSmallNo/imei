@@ -8,14 +8,17 @@ use Yii;
 /**
  * This is the model class for table "im_stock_turn".
  *
- * @property integer $oId
- * @property string $oCat
- * @property string $oStockId
- * @property string $oStockName
- * @property integer $oTurnover
- * @property integer $oChangePercent
- * @property string $oAddedOn
- * @property string $oTransOn
+ * @property integer $tId
+ * @property string $tStockId
+ * @property integer $tTurnover
+ * @property integer $tChangePercent
+ * @property integer $tOpen
+ * @property integer $tClose
+ * @property integer $tHight
+ * @property integer $tLow
+ * @property string $tTransOn
+ * @property string $tAddedOn
+ * @property string $tUpdatedOn
  */
 class StockTurn extends \yii\db\ActiveRecord
 {
@@ -35,16 +38,15 @@ class StockTurn extends \yii\db\ActiveRecord
             return [false, false];
         }
 
-        if ($entity = self::unique_one($values['oStockId'], $values['oTransOn'])) {
+        if ($entity = self::unique_one($values['tStockId'], $values['tTransOn'])) {
             return [false, false];
-            //return self::edit($entity->oId, ['oChangePercent' => $values['oChangePercent']]);
         }
 
         $entity = new self();
         foreach ($values as $key => $val) {
             $entity->$key = $val;
         }
-        $entity->oAddedOn = date('Y-m-d H:i:s');
+        $entity->tAddedOn = date('Y-m-d H:i:s');
         $res = $entity->save();
 
         return [$res, $entity];
@@ -53,8 +55,8 @@ class StockTurn extends \yii\db\ActiveRecord
     public static function unique_one($oStockId, $oTransOn)
     {
         return self::findOne([
-            'oStockId' => $oStockId,
-            'oTransOn' => $oTransOn,
+            'tStockId' => $oStockId,
+            'tTransOn' => $oTransOn,
         ]);
     }
 
@@ -73,7 +75,7 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($values as $key => $val) {
             $entity->$key = $val;
         }
-        $entity->oAddedOn = date('Y-m-d H:i:s');
+        $entity->tUpdatedOn = date('Y-m-d H:i:s');
         $res = $entity->save();
 
         return [$res, $entity];
@@ -83,11 +85,14 @@ class StockTurn extends \yii\db\ActiveRecord
      * 获取换手率 涨跌幅
      * @return int
      */
-    public static function getStockTurnover($stockId, $start = "", $end = "")
+    public static function get_stock_turnover($stockId, $start = "", $end = "")
     {
         if (!$start) {
             $start = date('Ymd', time());
             $end = date('Ymd', time());
+        } else {
+            $start = date('Ymd', strtotime($start));
+            $end = date('Ymd', strtotime($end));
         }
 
         // https://blog.csdn.net/llingmiao/article/details/79941066
@@ -102,36 +107,16 @@ class StockTurn extends \yii\db\ActiveRecord
         $ret = substr($ret, $pos, $rpos - $pos + 1);
 
         $ret = AppUtil::json_decode($ret);
+//        print_r($ret);
+//        exit;
+
 
         $status = $ret['status'] ?? 129;
         $hq = $ret['hq'] ?? [];
         $stat = $ret['stat'] ?? [];
 
-        $turnover = $change_percent = 0;
-        $open = $close = $hight = $low = 0;
-        if ($status == 0 && count($hq[0]) == 10) {
-            $turnover = $hq[0][9];
-            $change_percent = $hq[0][4];
+        return [$status, $hq, $stat];
 
-            $open = floatval($hq[0][1]);
-            $close = floatval($hq[0][2]);
-            $hight = floatval($hq[0][6]);
-            $low = floatval($hq[0][5]);
-
-            StockKline::add([
-                "kCat" => StockKline::CAT_DAY,
-                "kTransOn" => date("Y-m-d", strtotime($start)),
-                "kStockId" => $stockId,
-                "kOpen" => $open * 100,//开盘价
-                "kClose" => $close * 100,//收盘价
-                "kHight" => $hight * 100,//最高价
-                "kLow" => $low * 100,//最低价
-            ]);
-
-        }
-
-        //echo "stockId:" . $stockId . " start:" . $start . " end:" . $end . " turnover:" . $turnover . PHP_EOL;
-        return [$turnover, $change_percent];
 
     }
 
@@ -142,69 +127,89 @@ class StockTurn extends \yii\db\ActiveRecord
      */
     public static function update_current_day_all($dt = "")
     {
-        $sql = "select * from im_stock_menu order by mId asc ";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
-            self::add_one_stock($v, $dt);
+            $stockId = $v['mStockId'];
+            self::add_one_stock($stockId, $dt);
         }
     }
 
     /**
      * 添加 指定日期 指定股票的换手率
-     * @time 2019.9.14
+     * @time 2019.9.23
      */
-    public static function add_one_stock($v, $dt = "")
+    public static function add_one_stock($stockId, $dt = "")
     {
         if (!$dt) {
             $dt1 = date("Ymd");
-            $dt2 = date("Y-m-d");
         } else {
             $dt1 = date("Ymd", strtotime($dt));
-            $dt2 = date("Y-m-d", strtotime($dt));
         }
 
-        list($Turnover, $change_percent) = self::getStockTurnover($v['mStockId'], $dt1, $dt1);
-        echo "stockId:" . $v['mStockId'] . " Turnover:" . $Turnover . PHP_EOL;
-        if ($Turnover) {
-            $Turnover = floatval(substr($Turnover, 0, -1)) * 100;
-            $change_percent = floatval(substr($change_percent, 0, -1)) * 100;
-            self::add([
-                "oCat" => $v['mCat'],
-                "oStockName" => $v['mStockName'],
-                "oStockId" => $v['mStockId'],
-                "oTurnover" => $Turnover,
-                "oChangePercent" => $change_percent,
-                "oTransOn" => $dt2,
-            ]);
+        list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $dt1, $dt1);
+        if ($status == 0) {
+            $data = self::process_data($hqs, $stockId);
+            if ($data) {
+                self::add($data);
+            }
         }
     }
 
-    /**
-     * 添加 $count天前的换手率数据
-     * @param $v
-     * @param int $count
-     * @time 2019.9.14
-     */
-    public static function add_one_stock_last($v, $count = 32)
-    {
-        echo "stockId:" . $v['mStockId'] . PHP_EOL;
-        for ($i = 1; $i <= $count; $i++) {
-            $dt = date("Y-m-d", time() - 86400 * $i);
-            self::add_one_stock($v, $dt);
-        }
-    }
 
     /**
-     * $count 天前的换手率数据
+     * 换手率数据
      * @time 2019.9.15
      */
-    public static function update_last_day_all()
+    public static function get_stime_etime_turnover_data($start = '', $end = '')
     {
-        $sql = "select * from im_stock_menu order by mId asc ";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
-        foreach ($ids as $v) {
-            self::add_one_stock_last($v);
+        if (!$start || !$end) {
+            return false;
         }
+        $ids = StockMenu::get_valid_stocks();
+        foreach ($ids as $v) {
+            $stockId = $v['mStockId'];
+            echo $stockId . PHP_EOL;
+            list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $start, $end);
+            if ($status == 0) {
+                $insertData = self::process_data($hqs, $stockId);
+                if ($insertData) {
+                    Yii::$app->db->createCommand()->batchInsert(self::tableName(),
+                        ["tStockId", "tTurnover", "tChangePercent", "tOpen", "tClose", "tHight", "tLow", "tTransOn"],
+                        $insertData)->execute();
+
+                }
+            }
+        }
+    }
+
+    public static function process_data($hqs, $stockId)
+    {
+        $data = [];
+        foreach ($hqs as $i => $hq) {
+            $trans_on = $hq[0];
+            $open = floatval($hq[1]);
+            $close = floatval($hq[2]);
+            $change_percent = floatval(substr($hq[4], 0, -1));
+            $low = floatval($hq[5]);
+            $hight = floatval($hq[6]);
+            $turnover = floatval(substr($hq[9], 0, -1));
+
+            if (!self::unique_one($stockId, $trans_on)) {
+                $data[] = [
+                    "tStockId" => $stockId,
+                    "tTurnover" => $turnover * 100,             //换手率
+                    "tChangePercent" => $change_percent * 100,  //涨跌幅
+                    "tOpen" => $open * 100,                     //开盘价
+                    "tClose" => $close * 100,                   //收盘价
+                    "tHight" => $hight * 100,                   //最高价
+                    "tLow" => $low * 100,                       //最低价
+                    "tTransOn" => $trans_on,                    //交易日
+                ];
+            }
+
+        }
+        return $data;
     }
 
 }

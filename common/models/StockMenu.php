@@ -18,8 +18,46 @@ use Yii;
 class StockMenu extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * 1、创业板 创业板的代码是300打头的股票代码；
+     * 2、沪市A股 沪市A股的代码是以600、601或603打头；
+     * 3、沪市B股 沪市B股的代码是以900打头；
+     * 4、深市A股 深市A股的代码是以000打头；
+     * 5、中小板 中小板的代码是002打头；
+     * 6、深圳B股 深圳B股的代码是以200打头；
+     *
+     * 目前数据库中股票代码前三位 （select DISTINCT substring(mstockId,1,3) from im_stock_menu;）
+     * 600
+     * 601
+     * 603
+     * 000
+     * 002
+     * 300
+     *
+     * 900
+     * 200
+     *
+     * 001
+     * 003
+     * 201
+     *
+     * select * from im_stock_menu where mStockId like '60%'; -- 沪市A股 1401
+     * select * from im_stock_menu where mStockId like '000%'; -- 沪市A股 454
+     * select * from im_stock_menu where mStockId like '002%'; -- 中小板 943
+     * select * from im_stock_menu where mStockId like '300%'; -- 创业板 767
+     *
+     * select * from im_stock_menu where mStockId like '900%'; -- 沪市B股 45
+     * select * from im_stock_menu where mStockId like '200%'; -- 深圳B股 46
+     *
+     * select * from im_stock_menu where mStockId like '001%';  -- 5
+     * select * from im_stock_menu where mStockId like '003%';  -- 1
+     * select * from im_stock_menu where mStockId like '201%';  -- 1
      */
+
+
+    const STATUS_USE = 1;
+    const STATUS_DELETE = 9;
+
+
     public static function tableName()
     {
         return 'im_stock_menu';
@@ -116,6 +154,14 @@ class StockMenu extends \yii\db\ActiveRecord
                 ]);
             }
         }
+    }
+
+    public static function get_valid_stocks()
+    {
+        $sql = "select * from im_stock_menu where mStatus=:st order by mId asc ";
+        return AppUtil::db()->createCommand($sql, [
+            ':st' => self::STATUS_USE,
+        ])->queryAll();
     }
 
 }

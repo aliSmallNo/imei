@@ -74,11 +74,10 @@ class StockKline extends \yii\db\ActiveRecord
      */
     public static function update_all_stock_dayKLine()
     {
-        $sql = "select * from im_stock_menu order by mId asc ";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+        $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
-            //self::update_one_stock_kline($v['mStockId'], false);
-            self::update_one_stock_kline($v['mStockId'], $v['mCat']);
+            self::update_one_stock_kline($v['mStockId'], $v['mCat'], false);
+            //self::update_one_stock_kline($v['mStockId'], $v['mCat']);
         }
     }
 
@@ -100,6 +99,56 @@ class StockKline extends \yii\db\ActiveRecord
         array_pop($data);
         array_shift($data);
 
+        // 插入 im_stock_kline
+        // self::batch_insert_kline_table($today, $data, $stockId);
+
+        // 插入 im_stock_turn
+        self::batch_insert_turn_table($today, $data, $stockId);
+
+        return true;
+    }
+
+    public static function batch_insert_turn_table($today, $data, $stockId)
+    {
+        // 只更新今日turn
+        if ($today) {
+            $prices = explode(" ", array_pop($data));
+            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            StockTurn::add([
+                "tStockId" => $stockId,
+                "tOpen" => $prices[1] * 100,                        //开盘价
+                "tClose" => $prices[2] * 100,                       //收盘价
+                "tHight" => $prices[3] * 100,                       //最高价
+                "tLow" => $prices[4] * 100,                         //最低价
+                "tTransOn" => $dt,                                  //交易日
+            ]);
+            return 1;
+        }
+
+        $insert = [];
+        foreach ($data as $v) {
+            // $v style => 190912 16.45 16.45 16.45 16.45 17459
+            $prices = explode(" ", $v);
+            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            if (!StockTurn::unique_one($stockId, $dt)) {
+                $insert[] = [
+                    "tStockId" => $stockId,
+                    "tOpen" => $prices[1] * 100,                        //开盘价
+                    "tClose" => $prices[2] * 100,                       //收盘价
+                    "tHight" => $prices[3] * 100,                       //最高价
+                    "tLow" => $prices[4] * 100,                         //最低价
+                    "tTransOn" => $dt,                                  //交易日
+                ];
+            }
+        }
+        return Yii::$app->db->createCommand()->batchInsert(StockTurn::tableName(),
+            ['tStockId', 'tOpen', 'tClose', 'tHight', 'tLow', "tTransOn"],
+            $insert)->execute();
+
+    }
+
+    public static function batch_insert_kline_table($today, $data, $stockId)
+    {
         // 只更新今日【日k线】
         if ($today) {
             self::pre_edit_kline(array_pop($data), $stockId);
@@ -125,12 +174,10 @@ class StockKline extends \yii\db\ActiveRecord
                     "kUpdatedOn" => date('Y-m-d H:i:s'),
                 ];
             }
-
         }
         Yii::$app->db->createCommand()->batchInsert(self::tableName(),
             ['kTransOn', 'kStockId', 'kOpen', 'kClose', 'kHight', 'kLow', "kAddedOn", "kUpdatedOn"],
             $insert)->execute();
-        return true;
     }
 
     public static function pre_edit_kline($line_data, $stockId)
@@ -157,8 +204,7 @@ class StockKline extends \yii\db\ActiveRecord
         if (!$dt) {
             $dt = date("Y-m-d");
         }
-        $sql = "select * from im_stock_menu order by mId asc ";
-        $ids = AppUtil::db()->createCommand($sql)->queryAll();
+        $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $turn = StockTurn::unique_one($stockId, $dt);
