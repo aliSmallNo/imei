@@ -125,6 +125,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
     public static function items($criteria, $params)
     {
+        return [];
         $conn = AppUtil::db();
         $strCriteria = '';
         if ($criteria) {
