@@ -156,9 +156,9 @@ class StockMenu extends \yii\db\ActiveRecord
         }
     }
 
-    public static function get_valid_stocks()
+    public static function get_valid_stocks($where = "")
     {
-        $sql = "select * from im_stock_menu where mStatus=:st order by mId asc ";
+        $sql = "select * from im_stock_menu where mStatus=:st $where order by mId asc ";
         return AppUtil::db()->createCommand($sql, [
             ':st' => self::STATUS_USE,
         ])->queryAll();

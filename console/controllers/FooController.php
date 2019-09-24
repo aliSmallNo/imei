@@ -1517,7 +1517,7 @@ class FooController extends Controller
         // var_dump(WechatUtil::createWechatMenus());
 
 
-        //StockTurn::get_stime_etime_turnover_data('20190101', date("Ymd"));
+        StockTurn::get_stime_etime_turnover_data('20190101', date("Ymd"));
         StockKline::update_all_stock_dayKLine();
 
         /*$dt = "2019-09-19";

@@ -165,7 +165,7 @@ class StockTurn extends \yii\db\ActiveRecord
         if (!$start || !$end) {
             return false;
         }
-        $ids = StockMenu::get_valid_stocks();
+        $ids = StockMenu::get_valid_stocks(" and mStockId>601788");
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             echo $stockId . PHP_EOL;
