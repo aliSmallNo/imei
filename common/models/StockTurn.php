@@ -86,9 +86,12 @@ class StockTurn extends \yii\db\ActiveRecord
      * @return array
      * @time 2019.9.24
      */
-    public static function get_trans_days()
+    public static function get_trans_days($year = '2019')
     {
-        return AppUtil::db()->createCommand("select DISTINCT tTransOn from im_stock_turn order by tTransOn asc ")->queryAll();
+        $sql = "select DISTINCT tTransOn from im_stock_turn where date_format(tTransOn,'%Y')=:y order by tTransOn asc";
+        return AppUtil::db()->createCommand($sql, [
+            ':y' => $year
+        ])->queryAll();
     }
 
     /**
@@ -174,7 +177,7 @@ class StockTurn extends \yii\db\ActiveRecord
      * 批量更新 换手率数据 入口
      * @time 2019.9.23
      */
-    public static function get_stime_etime_turnover_data($start = '', $end = '')
+    public static function get_stime_etime_turnover_data($year, $start = '', $end = '')
     {
         if (!$start || !$end) {
             return false;
@@ -182,6 +185,7 @@ class StockTurn extends \yii\db\ActiveRecord
         $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
+            $mCat = $v['mCat'];
             echo 'get_stime_etime_turnover_data:' . $stockId . PHP_EOL;
             list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $start, $end);
             if ($status == 0) {
@@ -192,6 +196,8 @@ class StockTurn extends \yii\db\ActiveRecord
                         $insertData)->execute();
                 }
             }
+            // 用k线接口补充遗漏
+            self::update_one_stock_kline($stockId, $mCat, false, $year);
         }
         return true;
     }
@@ -222,6 +228,74 @@ class StockTurn extends \yii\db\ActiveRecord
             }
         }
         return $data;
+    }
+
+    /**
+     * 周K线数据    http://data.gtimg.cn/flashdata/hushen/weekly/sh600519.js
+     * 日K线数据    http://data.gtimg.cn/flashdata/hushen/daily/13/sh600519.js
+     * 获取月K线数据 http://data.gtimg.cn/flashdata/hushen/monthly/sh600519.js
+     */
+    public static function update_one_stock_kline($stockId, $cat, $today = true, $year = "19")
+    {
+        $api = "http://data.gtimg.cn/flashdata/hushen/daily/%s/%s.js";
+        $api = sprintf($api, $year, $cat . $stockId);
+        $data = AppUtil::httpGet($api);
+
+        if (strpos($data, "html")) {
+            return false;
+        }
+        $data = str_replace(['\n\\', '"', ";"], '', $data);
+        $data = explode("\n", $data);
+        if (!is_array($data)) {
+            return false;
+        }
+
+        array_pop($data);
+        array_shift($data);
+
+        // 插入 im_stock_turn
+        self::batch_insert_turn_table($today, $data, $stockId);
+
+        return true;
+    }
+
+    public static function batch_insert_turn_table($today, $data, $stockId)
+    {
+        // 只更新今日
+        if ($today) {
+            $prices = explode(" ", array_pop($data));
+            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            StockTurn::add([
+                "tStockId" => $stockId,
+                "tOpen" => $prices[1] * 100,                        //开盘价
+                "tClose" => $prices[2] * 100,                       //收盘价
+                "tHight" => $prices[3] * 100,                       //最高价
+                "tLow" => $prices[4] * 100,                         //最低价
+                "tTransOn" => $dt,                                  //交易日
+            ]);
+            return 1;
+        }
+
+        $insert = [];
+        foreach ($data as $v) {
+            // $v style => 190912 16.45 16.45 16.45 16.45 17459
+            $prices = explode(" ", $v);
+            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            if (!StockTurn::unique_one($stockId, $dt)) {
+                $insert[] = [
+                    "tStockId" => $stockId,
+                    "tOpen" => $prices[1] * 100,                        //开盘价
+                    "tClose" => $prices[2] * 100,                       //收盘价
+                    "tHight" => $prices[3] * 100,                       //最高价
+                    "tLow" => $prices[4] * 100,                         //最低价
+                    "tTransOn" => $dt,                                  //交易日
+                ];
+            }
+        }
+        return Yii::$app->db->createCommand()->batchInsert(StockTurn::tableName(),
+            ['tStockId', 'tOpen', 'tClose', 'tHight', 'tLow', "tTransOn"],
+            $insert)->execute();
+
     }
 
 }

@@ -1518,18 +1518,20 @@ class FooController extends Controller
         // var_dump(WechatUtil::createWechatMenus());
 
 
-        StockTurn::get_stime_etime_turnover_data('20180101', '20181231');
-        StockKline::update_all_stock_dayKLine(18);
+        //StockTurn::get_stime_etime_turnover_data('18','20180101', '20181231');
+        //StockTurn::get_stime_etime_turnover_data('17','20170101', '20171231');
+        //StockTurn::get_stime_etime_turnover_data('16','20160101', '20161231');
+        //StockTurn::get_stime_etime_turnover_data('15','20150101', '20151231');
 
         /*$dt = "2019-09-19";
         StockTurn::update_current_day_all($dt);
         StockTurnStat::stat($dt);
         StockKline::update_avg_price($dt);*/
 
-        /*$days = StockTurn::get_trans_days();
+        $days = StockTurn::get_trans_days();
         foreach ($days as $day) {
             StockTurnStat::stat($day['tTransOn']);
-        }*/
+        }
 
         exit;
     }
