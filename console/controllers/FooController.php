@@ -54,6 +54,7 @@ use console\utils\QueueUtil;
 use Gregwar\Image\Image;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use yii\console\Controller;
+use yii\helpers\VarDumper;
 
 class FooController extends Controller
 {
@@ -1517,14 +1518,18 @@ class FooController extends Controller
         // var_dump(WechatUtil::createWechatMenus());
 
 
-        StockTurn::get_stime_etime_turnover_data('20190101', date("Ymd"));
-        StockKline::update_all_stock_dayKLine();
+        //StockTurn::get_stime_etime_turnover_data('20190101', date("Ymd"));
+        //StockKline::update_all_stock_dayKLine();
 
         /*$dt = "2019-09-19";
         StockTurn::update_current_day_all($dt);
         StockTurnStat::stat($dt);
         StockKline::update_avg_price($dt);*/
 
+        $days = StockTurn::get_trans_days();
+        foreach ($days as $day) {
+            StockTurnStat::stat($day['tTransOn']);
+        }
 
         exit;
     }

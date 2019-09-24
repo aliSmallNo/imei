@@ -12,8 +12,8 @@ use Yii;
  * @property string $sCat
  * @property string $sRealCount
  * @property string $sStockId
- * @property string $sStockName
- * @property integer $sVal
+ * @property integer $sAvgTurnover
+ * @property integer $sAvgClose
  * @property string $sStart
  * @property string $sEnd
  * @property string $sAddedOn
@@ -64,62 +64,73 @@ class StockTurnStat extends \yii\db\ActiveRecord
     public static function stat($dt = "")
     {
         $ids = StockMenu::get_valid_stocks();
+        $insertData = [];
         foreach ($ids as $v) {
             $id = $v['mStockId'];
-            echo $id . PHP_EOL;
-
-            $insertData = [];
-            foreach ([20, 15, 10, 5] as $day) {
-                if ($data = self::stat_one($id, $day, $dt)) {
-                    $insertData[] = $data;
-                }
+            echo 'dt:' . $dt . ' mStockId' . $id . PHP_EOL;
+            if ($data = self::stat_one($id, $dt)) {
+                $insertData = array_merge($insertData, $data);
             }
-
-            if ($insertData) {
-                Yii::$app->db->createCommand()->batchInsert(self::tableName(),
-                    ["sCat", "sRealCount", "sStockId", "sStockName", "sVal", "sStart", "sEnd"],
-                    $insertData)->execute();
-            }
+        }
+        if ($insertData) {
+            Yii::$app->db->createCommand()->batchInsert(self::tableName(),
+                ["sCat", "sRealCount", "sStockId", "sAvgTurnover", 'sAvgClose', "sStart", "sEnd"],
+                $insertData)->execute();
         }
     }
 
-    public static function stat_one($stockId, $day = 20, $dt = "")
+    public static function stat_one($stockId, $dt = "")
     {
         if (!$dt) {
             $dt = date("Y-m-d");
         }
-        $sql = "select * from im_stock_turn where oStockId=:stockId and oTransOn<=:dt order by oTransOn desc limit :num";
+        $sql = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
         $res = AppUtil::db()->createCommand($sql, [
-            ':num' => $day,
+            ':num' => 60,
             ':stockId' => $stockId,
             ':dt' => $dt,
         ])->queryAll();
         if (!$res) {
             return false;
         }
-        $real_count = count($res);
-        $stockName = $res[0]['oStockName'];
-        $et = $res[0]['oTransOn'];
-        $st = $res[$real_count - 1]['oTransOn'];
 
-        $sum = 0;
-        foreach ($res as $k => $v) {
-            $sum += $v['oTurnover'];
-        }
-        // 验证唯一性
-        if (self::has_unique_one($stockId, $day, $et)) {
-            return [];
-        }
+        $item = function ($res, $stockId, $day) {
+            //去除 0 的值
+            $count = count($res);
+            $count_trunover = count(array_filter(array_column($res, 'tTurnover')));
+            $count_close = count(array_filter(array_column($res, 'tClose')));
 
-        return [
-            'sCat' => $day,
-            'sRealCount' => $real_count,
-            'sStockId' => $stockId,
-            'sStockName' => $stockName,
-            'sVal' => round($sum / $real_count),
-            'sStart' => $st,
-            'sEnd' => $et,
-        ];
+            $et = $res[0]['tTransOn'];
+            $st = $res[$count - 1]['tTransOn'];
+
+            $sum = $sum2 = 0;
+            foreach ($res as $k => $v) {
+                $sum += $v['tTurnover'];
+                $sum2 += $v['tClose'];
+            }
+            // 验证唯一性
+            if (self::has_unique_one($stockId, $day, $et)) {
+                return [];
+            }
+            return [
+                'sCat' => $day,
+                'sRealCount' => $count_trunover,
+                'sStockId' => $stockId,
+                'sAvgTurnover' => round($sum / $count_trunover),
+                'sAvgClose' => round($sum2 / $count_close),
+                'sStart' => $st,
+                'sEnd' => $et,
+            ];
+        };
+
+        $insertData = [];
+        foreach ([60, 30, 20, 15, 10, 5] as $day) {
+            $data = $item(array_slice($res, 0, $day), $stockId, $day);
+            if ($data) {
+                $insertData[] = $data;
+            }
+        }
+        return $insertData;
     }
 
 
@@ -132,23 +143,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
             $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
 
-        /*$sql = "select
-                oStockId,oStockName,oTurnover,oChangePercent,date_format(oTransOn,'%Y-%m-%d') as dt,sVal 
-                from im_stock_turn as t
-                join `im_stock_turn_stat` as s on s.sStockId=t.oStockId
-                where  (oChangePercent>200 or oChangePercent<-200) and s.sVal>t.oTurnover $strCriteria ";*/
-
-        $sql = "select 
-                oStockId,oStockName,oTurnover,oChangePercent,
-                date_format(oTransOn,'%Y-%m-%d') as dt,
-                sVal,kClose,kOpen,
-                oAvg5,oAvg10,oAvg20,oAvg30,oAvg60
-                from im_stock_turn as t
-                join `im_stock_turn_stat` as s on s.sStockId=t.oStockId
-                join `im_stock_kline` as k on k.kStockId=t.oStockId
-                where (oChangePercent>200 or oChangePercent<-200) and s.sVal>t.oTurnover $strCriteria
-                and kClose>oAvg20 and kClose>oAvg10 and kClose>oAvg30 and kClose>oAvg5 and kClose>oAvg60 
-                order by oChangePercent desc";
+        $sql = "";
         $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
         foreach ($res as $k => $v) {
             //sprintf("%.2d", $v['oChangePercent'] / 100);

@@ -156,6 +156,11 @@ class StockMenu extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 获取有效大盘股票
+     * @return array
+     * @time 2019.9.23
+     */
     public static function get_valid_stocks($where = "")
     {
         $sql = "select * from im_stock_menu where mStatus=:st $where order by mId asc ";

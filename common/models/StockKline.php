@@ -20,10 +20,10 @@ use Yii;
  * @property integer $kLow
  */
 // 获取K线数据
-// 分时数据 http://data.gtimg.cn/flashdata/hushen/minute/sh600519.js
-// 五天分时数据 http://data.gtimg.cn/flashdata/hushen/4day/sh/sh600519.js
-// 周K线数据 http://data.gtimg.cn/flashdata/hushen/weekly/sh600519.js
-// 日K线数据 http://data.gtimg.cn/flashdata/hushen/daily/13/sh600519.js
+// 分时数据     http://data.gtimg.cn/flashdata/hushen/minute/sh600519.js
+// 五天分时数据  http://data.gtimg.cn/flashdata/hushen/4day/sh/sh600519.js
+// 周K线数据    http://data.gtimg.cn/flashdata/hushen/weekly/sh600519.js
+// 日K线数据    http://data.gtimg.cn/flashdata/hushen/daily/13/sh600519.js
 // 获取月K线数据 http://data.gtimg.cn/flashdata/hushen/monthly/sh600519.js
 // 获取实时成交量明细 http://stock.gtimg.cn/data/index.php?appn=detail&action=data&c=sh600519&p=3 p为分页
 class StockKline extends \yii\db\ActiveRecord
@@ -104,7 +104,7 @@ class StockKline extends \yii\db\ActiveRecord
         array_pop($data);
         array_shift($data);
 
-        // 插入 im_stock_kline
+        // 插入 im_stock_kline 2019.9.23停止更新
         // self::batch_insert_kline_table($today, $data, $stockId);
 
         // 插入 im_stock_turn
@@ -213,7 +213,7 @@ class StockKline extends \yii\db\ActiveRecord
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $turn = StockTurn::unique_one($stockId, $dt);
-            echo '$stockId:' . $stockId . PHP_EOL;
+            echo 'update_avg_price $stockId:' . $stockId . PHP_EOL;
 
             if ($turn) {
                 $avg5 = StockKline::avg_one($stockId, 5, $dt);
@@ -240,8 +240,8 @@ class StockKline extends \yii\db\ActiveRecord
             $dt = date("Y-m-d");
         }
 
-        $sql = "select round(sum(kClose)/:num) from (
-                select kClose from im_stock_kline where kStockId=:stockId and kTransOn<=:dt order by kTransOn desc limit :num
+        $sql = "select round(sum(tClose)/:num) from (
+                select tClose from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num
                 ) a ";
         $res = AppUtil::db()->createCommand($sql, [
             ':num' => $day,

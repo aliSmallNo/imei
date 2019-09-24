@@ -82,6 +82,16 @@ class StockTurn extends \yii\db\ActiveRecord
     }
 
     /**
+     * 获取交易日
+     * @return array
+     * @time 2019.9.24
+     */
+    public static function get_trans_days()
+    {
+        return AppUtil::db()->createCommand("select DISTINCT tTransOn from im_stock_turn order by tTransOn asc ")->queryAll();
+    }
+
+    /**
      * 获取换手率 涨跌幅等数据
      * @time 2019.9.23 modify
      */
@@ -130,7 +140,11 @@ class StockTurn extends \yii\db\ActiveRecord
         $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
+            $cat = $v['mCat'];
+            // 用 sohu 接口添加换手率等信息
             self::add_one_stock($stockId, $dt);
+            //用 kline接口 来补充遗漏
+            StockKline::update_one_stock_kline($stockId, $cat, true, "19");
         }
     }
 
@@ -168,7 +182,7 @@ class StockTurn extends \yii\db\ActiveRecord
         $ids = StockMenu::get_valid_stocks(" and mStockId>601788");
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
-            echo $stockId . PHP_EOL;
+            echo 'get_stime_etime_turnover_data:' . $stockId . PHP_EOL;
             list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $start, $end);
             if ($status == 0) {
                 $insertData = self::process_data($hqs, $stockId);
