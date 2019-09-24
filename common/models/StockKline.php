@@ -76,7 +76,12 @@ class StockKline extends \yii\db\ActiveRecord
     {
         $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
-            self::update_one_stock_kline($v['mStockId'], $v['mCat'], false);
+            $mStockId = $v['mStockId'];
+            $mCat = $v['mCat'];
+            echo 'update_all_stock_dayKLine $mStockId:' . $mStockId . PHP_EOL;
+            // 更新每年【日K线】
+            self::update_one_stock_kline($mStockId, $mCat, false, 19);
+            // 更新每日【日K线】
             //self::update_one_stock_kline($v['mStockId'], $v['mCat']);
         }
     }

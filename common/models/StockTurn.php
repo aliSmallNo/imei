@@ -82,8 +82,8 @@ class StockTurn extends \yii\db\ActiveRecord
     }
 
     /**
-     * 获取换手率 涨跌幅
-     * @return int
+     * 获取换手率 涨跌幅等数据
+     * @time 2019.9.23 modify
      */
     public static function get_stock_turnover($stockId, $start = "", $end = "")
     {
@@ -127,7 +127,6 @@ class StockTurn extends \yii\db\ActiveRecord
      */
     public static function update_current_day_all($dt = "")
     {
-
         $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
@@ -158,8 +157,8 @@ class StockTurn extends \yii\db\ActiveRecord
 
 
     /**
-     * 换手率数据
-     * @time 2019.9.15
+     * 批量更新 换手率数据 入口
+     * @time 2019.9.23
      */
     public static function get_stime_etime_turnover_data($start = '', $end = '')
     {
@@ -181,6 +180,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 }
             }
         }
+        return true;
     }
 
     public static function process_data($hqs, $stockId)
@@ -207,7 +207,6 @@ class StockTurn extends \yii\db\ActiveRecord
                     "tTransOn" => $trans_on,                    //交易日
                 ];
             }
-
         }
         return $data;
     }
