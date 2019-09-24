@@ -116,8 +116,8 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 'sCat' => $day,
                 'sRealCount' => $count_trunover,
                 'sStockId' => $stockId,
-                'sAvgTurnover' => round($sum / $count_trunover),
-                'sAvgClose' => round($sum2 / $count_close),
+                'sAvgTurnover' => $count_trunover > 0 ? round($sum / $count_trunover) : 0,
+                'sAvgClose' => $count_close > 0 ? round($sum2 / $count_close) : 0,
                 'sStart' => $st,
                 'sEnd' => $et,
             ];
