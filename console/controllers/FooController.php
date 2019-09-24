@@ -1531,6 +1531,7 @@ class FooController extends Controller
             StockTurnStat::stat($day['tTransOn']);
         }
 
+
         exit;
     }
 
