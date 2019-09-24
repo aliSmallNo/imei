@@ -72,7 +72,7 @@ class StockKline extends \yii\db\ActiveRecord
      * 更新【日K线】
      * @time 2019.9.17
      */
-    public static function update_all_stock_dayKLine()
+    public static function update_all_stock_dayKLine($year = 19)
     {
         $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
@@ -80,7 +80,7 @@ class StockKline extends \yii\db\ActiveRecord
             $mCat = $v['mCat'];
             echo 'update_all_stock_dayKLine $mStockId:' . $mStockId . PHP_EOL;
             // 更新每年【日K线】
-            self::update_one_stock_kline($mStockId, $mCat, false, 19);
+            self::update_one_stock_kline($mStockId, $mCat, false, $year);
             // 更新每日【日K线】
             //self::update_one_stock_kline($v['mStockId'], $v['mCat']);
         }

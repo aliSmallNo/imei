@@ -179,7 +179,7 @@ class StockTurn extends \yii\db\ActiveRecord
         if (!$start || !$end) {
             return false;
         }
-        $ids = StockMenu::get_valid_stocks(" and mStockId>601788");
+        $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             echo 'get_stime_etime_turnover_data:' . $stockId . PHP_EOL;
@@ -190,7 +190,6 @@ class StockTurn extends \yii\db\ActiveRecord
                     Yii::$app->db->createCommand()->batchInsert(self::tableName(),
                         ["tStockId", "tTurnover", "tChangePercent", "tOpen", "tClose", "tHight", "tLow", "tTransOn"],
                         $insertData)->execute();
-
                 }
             }
         }
