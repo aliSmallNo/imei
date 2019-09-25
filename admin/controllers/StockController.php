@@ -1302,9 +1302,25 @@ class StockController extends BaseController
 
         $dt = self::getParam("dt", "2019-09-12");
         $day = self::getParam("day", 0);
+        $avg5 = self::getParam("avg5", 0);
+        $avg10 = self::getParam("avg10", 0);
+        $avg15 = self::getParam("avg15", 0);
+        $avg20 = self::getParam("avg20", 0);
+        $avg30 = self::getParam("avg30", 0);
+        $avg60 = self::getParam("avg60", 0);
 
+        $where = "";
+        foreach ([5, 10, 15, 20, 30, 60] as $int) {
+            $var = 'avg' . $int;
+            if ($$var) {
+                $where .= " and tClose<s" . $int . ".sAvgClose ";
+            }
+        }
+        if ($day) {
+            $where .= ' and tTurnover<s' . $day . '.sAvgTurnover';
+        }
 
-        $list = StockTurnStat::items($day, $dt);
+        $list = StockTurnStat::items($where, $day, $dt);
 
         //VarDumper::dump($list, 10, true);exit;
 
@@ -1312,7 +1328,10 @@ class StockController extends BaseController
             '0' => '-=请选择换手率=-',
             '5' => '低于5日均值',
             '10' => '低于10日均值',
+            '15' => '低于15日均值',
             '20' => '低于20日均值',
+            '30' => '低于30日均值',
+            '60' => '低于60日均值',
         ];
 
         return $this->renderPage("stock_turn.tpl",
@@ -1322,6 +1341,12 @@ class StockController extends BaseController
                 'days' => $days,
                 'day' => $day,
                 'dt' => $dt,
+                'avg5' => $avg5,
+                'avg10' => $avg10,
+                'avg15' => $avg15,
+                'avg20' => $avg20,
+                'avg30' => $avg30,
+                'avg60' => $avg60,
             ]
         );
     }

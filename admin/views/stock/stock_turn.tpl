@@ -18,11 +18,34 @@
         <div class="form-group">
             <select class="form-control" name="day">
                 {{foreach from=$days key=key item=item}}
-                    <option value="{{$key}}"
-                            {{if $day==$key}}selected{{/if}}
-                    >{{$item}}</option>
+                    <option value="{{$key}}" {{if $day==$key}}selected{{/if}}>{{$item}}</option>
                 {{/foreach}}
             </select>
+            <select class="form-control" name="avg5">
+                <option value="0">-=选择5日=-</option>
+                <option value="5" {{if $avg5==5}}selected{{/if}}>低于5日均价</option>
+            </select>
+            <select class="form-control" name="avg10">
+                <option value="0">-=选择10日=-</option>
+                <option value="10" {{if $avg10==10}}selected{{/if}}>低于10日均价</option>
+            </select>
+            <select class="form-control" name="avg15">
+                <option value="0">-=选择15日=-</option>
+                <option value="15" {{if $avg15==15}}selected{{/if}}>低于15日均价</option>
+            </select>
+            <select class="form-control" name="avg20">
+                <option value="0">-=选择20日=-</option>
+                <option value="20" {{if $avg20==20}}selected{{/if}}>低于20日均价</option>
+            </select>
+            <select class="form-control" name="avg30">
+                <option value="0">-=选择30日=-</option>
+                <option value="30" {{if $avg30==30}}selected{{/if}}>低于30日均价</option>
+            </select>
+            <select class="form-control" name="avg60">
+                <option value="0">-=选择60日=-</option>
+                <option value="60" {{if $avg60==60}}selected{{/if}}>低于60日均价</option>
+            </select>
+
         </div>
         <button class="btn btn-primary">查询</button>
         <span class="space"></span>
