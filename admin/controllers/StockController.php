@@ -27,6 +27,7 @@ use common\utils\ExcelUtil;
 use common\utils\ImageUtil;
 use common\utils\TryPhone;
 use Yii;
+use yii\helpers\VarDumper;
 
 class StockController extends BaseController
 {
@@ -1299,27 +1300,19 @@ class StockController extends BaseController
     {
         Admin::staffOnly();
 
-        $dt = self::getParam("dt","2019-09-12");
-        $day = self::getParam("day", 20);
+        $dt = self::getParam("dt", "2019-09-12");
+        $day = self::getParam("day", 0);
 
-        $criteria = [];
-        $params = [];
 
-        if ($day) {
-            $criteria[] = " sCat=:d ";
-            $params[':d'] = $day;
-        }
-        if ($dt) {
-            $criteria[] = "  date_format(oTransOn,'%Y-%m-%d')=:dt and kTransOn=:dt and sEnd=:dt ";
-            $params[':dt'] = $dt;
-        }
+        $list = StockTurnStat::items($day, $dt);
 
-        $list= StockTurnStat::items($criteria, $params);
+        //VarDumper::dump($list, 10, true);exit;
 
         $days = [
-            '20' => '20日均值',
-            '10' => '10日均值',
-            '5' => '5日均值',
+            '0' => '-=请选择换手率=-',
+            '5' => '低于5日均值',
+            '10' => '低于10日均值',
+            '20' => '低于20日均值',
         ];
 
         return $this->renderPage("stock_turn.tpl",

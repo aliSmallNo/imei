@@ -51,18 +51,18 @@
         <tbody>
         {{foreach from=$list item=item}}
             <tr data-uaPhone="">
-                <td>{{$item.oStockId}}</td>
-                <td>{{$item.oStockName}}</td>
-                <td>{{sprintf("%.2f",$item.sVal/100)}}%</td>
-                <td>{{sprintf("%.2f",$item.oTurnover/100)}}%</td>
-                <td>{{sprintf("%.2f",$item.oChangePercent/100)}}%</td>
-                <td>{{$item.dt}}</td>
-                <td class="{{if $item.kOpen<$item.kClose || $item.oChangePercent>0}}color_red{{else}}color_green{{/if}}">{{sprintf("%.2f",$item.kOpen/100)}}</td>
-                <td class="{{if $item.kOpen<$item.kClose || $item.oChangePercent>0}}color_red{{else}}color_green{{/if}}">{{sprintf("%.2f",$item.kClose/100)}}</td>
-                <td>{{sprintf("%.2f",$item.oAvg5/100)}}</td>
-                <td>{{sprintf("%.2f",$item.oAvg10/100)}}</td>
-                <td>{{sprintf("%.2f",$item.oAvg20/100)}}</td>
-                <td>{{sprintf("%.2f",$item.oAvg60/100)}}</td>
+                <td>{{$item.tStockId}}</td>
+                <td></td>
+                <td>{{sprintf("%.2f",$item.cur_turnover/100)}}%</td>
+                <td>{{sprintf("%.2f",$item.tTurnover/100)}}%</td>
+                <td>{{sprintf("%.2f",$item.tChangePercent/100)}}%</td>
+                <td>{{$item.tTransOn}}</td>
+                <td class="{{if $item.tOpen<$item.tClose || $item.tChangePercent>0}}color_red{{else}}color_green{{/if}}">{{sprintf("%.2f",$item.tOpen/100)}}</td>
+                <td class="{{if $item.tOpen<$item.tClose || $item.tChangePercent>0}}color_red{{else}}color_green{{/if}}">{{sprintf("%.2f",$item.tClose/100)}}</td>
+                <td>{{sprintf("%.2f",$item.s5_sAvgClose/100)}}</td>
+                <td>{{sprintf("%.2f",$item.s10_sAvgClose/100)}}</td>
+                <td>{{sprintf("%.2f",$item.s20_sAvgClose/100)}}</td>
+                <td>{{sprintf("%.2f",$item.s60_sAvgClose/100)}}</td>
             </tr>
         {{/foreach}}
         </tbody>

@@ -144,7 +144,7 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $cat = $v['mCat'];
-            // 用 sohu 接口添加换手率等信息
+            //用 sohu 接口添加换手率等信息
             self::add_one_stock($stockId, $dt);
             //用 kline接口 来补充遗漏
             StockKline::update_one_stock_kline($stockId, $cat, true, "19");

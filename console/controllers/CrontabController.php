@@ -174,7 +174,6 @@ class CrontabController extends Controller
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'start']);
 //                StockTurn::update_current_day_all();
 //                StockTurnStat::stat();
-//                StockKline::update_avg_price();
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'end']);
             }
         } catch (\Exception $e) {

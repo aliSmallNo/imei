@@ -134,19 +134,41 @@ class StockTurnStat extends \yii\db\ActiveRecord
     }
 
 
-    public static function items($criteria, $params)
+    public static function items($day, $dt)
     {
-        return [];
+
         $conn = AppUtil::db();
-        $strCriteria = '';
-        if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+
+        $where = "";
+        if ($day) {
+            $where = ' and tTurnover<s' . $day . '.sAvgTurnover';
         }
 
-        $sql = "";
-        $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
+        $sql = "select 
+                t.*,
+                s5.sAvgTurnover as s5_sAvgTurnover,s5.sAvgClose as s5_sAvgClose,
+                s10.sAvgTurnover as s10_sAvgTurnover,s10.sAvgClose as s10_sAvgClose,
+                s15.sAvgTurnover as s15_sAvgTurnover,s15.sAvgClose as s15_sAvgClose,
+                s20.sAvgTurnover as s20_sAvgTurnover,s20.sAvgClose as s20_sAvgClose,
+                s30.sAvgTurnover as s30_sAvgTurnover,s30.sAvgClose as s30_sAvgClose,
+                s60.sAvgTurnover as s60_sAvgTurnover,s60.sAvgClose as s60_sAvgClose
+                from im_stock_turn as t
+                left join im_stock_turn_stat as s5 on s5.sStockId=t.tStockId and s5.sCat=5 and s5.sEnd=:dt
+                left join im_stock_turn_stat as s10 on s10.sStockId=t.tStockId and s10.sCat=10 and s10.sEnd=:dt
+                left join im_stock_turn_stat as s15 on s15.sStockId=t.tStockId and s15.sCat=15 and s15.sEnd=:dt
+                left join im_stock_turn_stat as s20 on s20.sStockId=t.tStockId and s20.sCat=20 and s20.sEnd=:dt
+                left join im_stock_turn_stat as s30 on s30.sStockId=t.tStockId and s30.sCat=30 and s30.sEnd=:dt
+                left join im_stock_turn_stat as s60 on s60.sStockId=t.tStockId and s60.sCat=60 and s60.sEnd=:dt
+                where tTransOn=:dt and tChangePercent>200  $where
+                and tClose<s5.sAvgClose and tClose<s10.sAvgClose and tClose<s20.sAvgClose and tClose<s60.sAvgClose";
+        // and tClose<s15.sAvgClose and tClose<s30.sAvgClose
+        $res = $conn->createCommand($sql, [])->bindValues([
+            ':dt' => $dt,
+        ])->queryAll();
         foreach ($res as $k => $v) {
-            //sprintf("%.2d", $v['oChangePercent'] / 100);
+            // 当前平均换手率的值
+            $res[$k]['cur_turnover'] = $day ? $v['s' . $day . '_sAvgTurnover'] : 0;
+
         }
 
         return $res;
