@@ -167,7 +167,7 @@ class StockTurn extends \yii\db\ActiveRecord
         if ($status == 0) {
             $data = self::process_data($hqs, $stockId);
             if ($data) {
-                self::add($data);
+                self::add($data[0]);
             }
         }
     }
