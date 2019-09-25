@@ -144,6 +144,8 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $cat = $v['mCat'];
+            echo 'update_current_day_all:' . $stockId . PHP_EOL;
+
             //用 sohu 接口添加换手率等信息
             self::add_one_stock($stockId, $dt);
             //用 kline接口 来补充遗漏
