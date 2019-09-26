@@ -1300,7 +1300,7 @@ class StockController extends BaseController
     {
         Admin::staffOnly();
 
-        $dt = self::getParam("dt", date('Y-m-d'));
+        $dt = self::getParam("dt", date('Y-m-d', time() - 86400));
         $day = self::getParam("day", 0);
         $avg5 = self::getParam("avg5", 0);
         $avg10 = self::getParam("avg10", 0);
