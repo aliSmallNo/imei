@@ -30,11 +30,13 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
     public static function has_unique_one($sStockId, $sCat, $sEnd)
     {
-        return self::findOne([
-            'sStockId' => $sStockId,
-            'sCat' => $sCat,
-            'sEnd' => $sEnd,
-        ]);
+        return self::findOne(
+            [
+                'sStockId' => $sStockId,
+                'sCat' => $sCat,
+                'sEnd' => $sEnd,
+            ]
+        );
     }
 
     public static function add($values = [])
@@ -43,7 +45,10 @@ class StockTurnStat extends \yii\db\ActiveRecord
             return [false, false];
         }
 
-        if ($entity = self::has_unique_one($values['sStockId'], $values['sCat'], $values['sEnd'])) {
+        if ($entity = self::has_unique_one(
+            $values['sStockId'], $values['sCat'], $values['sEnd']
+        )
+        ) {
             return [false, false];
         }
 
@@ -59,6 +64,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
     /**
      * 每天更新 任务入口
+     *
      * @time 2019.9.15
      */
     public static function stat($dt = "")
@@ -73,9 +79,14 @@ class StockTurnStat extends \yii\db\ActiveRecord
             }
         }
         if ($insertData) {
-            Yii::$app->db->createCommand()->batchInsert(self::tableName(),
-                ["sCat", "sRealCount", "sStockId", "sAvgTurnover", 'sAvgClose', "sStart", "sEnd"],
-                $insertData)->execute();
+            Yii::$app->db->createCommand()->batchInsert(
+                self::tableName(),
+                [
+                    "sCat", "sRealCount", "sStockId", "sAvgTurnover",
+                    'sAvgClose', "sStart", "sEnd",
+                ],
+                $insertData
+            )->execute();
         }
     }
 
@@ -84,12 +95,15 @@ class StockTurnStat extends \yii\db\ActiveRecord
         if (!$dt) {
             $dt = date("Y-m-d");
         }
-        $sql = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
-        $res = AppUtil::db()->createCommand($sql, [
-            ':num' => 60,
-            ':stockId' => $stockId,
-            ':dt' => $dt,
-        ])->queryAll();
+        $sql
+            = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
+        $res = AppUtil::db()->createCommand(
+            $sql, [
+                ':num' => 60,
+                ':stockId' => $stockId,
+                ':dt' => $dt,
+            ]
+        )->queryAll();
         if (!$res) {
             return false;
         }
@@ -97,7 +111,9 @@ class StockTurnStat extends \yii\db\ActiveRecord
         $item = function ($res, $stockId, $day) {
             //去除 0 的值
             $count = count($res);
-            $count_trunover = count(array_filter(array_column($res, 'tTurnover')));
+            $count_trunover = count(
+                array_filter(array_column($res, 'tTurnover'))
+            );
             $count_close = count(array_filter(array_column($res, 'tClose')));
 
             $et = $res[0]['tTransOn'];
@@ -112,12 +128,16 @@ class StockTurnStat extends \yii\db\ActiveRecord
             if (self::has_unique_one($stockId, $day, $et)) {
                 return [];
             }
+
             return [
                 'sCat' => $day,
                 'sRealCount' => $count_trunover,
                 'sStockId' => $stockId,
-                'sAvgTurnover' => $count_trunover > 0 ? round($sum / $count_trunover) : 0,
-                'sAvgClose' => $count_close > 0 ? round($sum2 / $count_close) : 0,
+                'sAvgTurnover' => $count_trunover > 0 ? round(
+                    $sum / $count_trunover
+                ) : 0,
+                'sAvgClose' => $count_close > 0 ? round($sum2 / $count_close)
+                    : 0,
                 'sStart' => $st,
                 'sEnd' => $et,
             ];
@@ -130,16 +150,48 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 $insertData[] = $data;
             }
         }
+
         return $insertData;
     }
 
 
-    public static function items($where, $day,$dt)
+    public static function stat_to_turn($dt = "")
+    {
+        if (!$dt) {
+            $dt = date('Y-m-d');
+        }
+        $stocks = StockMenu::get_valid_stocks();
+        foreach ($stocks as $v) {
+            $stock_id = $v['mStockId'];
+            echo '$dt:' . $dt . ' ' . $stock_id . PHP_EOL;
+            self::stat_to_turn_one($stock_id, $dt);
+        }
+    }
+
+    public static function stat_to_turn_one($stock_id, $dt = "")
+    {
+        $sql = "select sCat,sAvgTurnover,sAvgClose from im_stock_turn_stat where sStockId=:id and sEnd=:dt ";
+        $res = AppUtil::db()->createCommand($sql, [
+            ':id' => $stock_id,
+            ':dt' => $dt,
+        ])->queryAll();
+        if ($res) {
+            $res = array_column($res, null, 'sCat');
+            foreach ($res as $k => $v) {
+                unset($v['sCat']);
+                $res[$k] = $v;
+            }
+            StockTurn::modify_stat($stock_id, $dt, $res);
+        }
+    }
+
+    public static function items($where, $day, $dt)
     {
 
         $conn = AppUtil::db();
 
-        $sql = "select 
+        $sql
+            = "select 
                 mStockName,
                 t.*,
                 s5.sAvgTurnover as s5_sAvgTurnover,s5.sAvgClose as s5_sAvgClose,
@@ -159,9 +211,11 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 where tTransOn=:dt and tChangePercent>200  $where
                 order by tChangePercent desc ";
         // and tClose<s5.sAvgClose and tClose<s10.sAvgClose and tClose<s20.sAvgClose and tClose<s60.sAvgClose and tClose<s15.sAvgClose and tClose<s30.sAvgClose
-        $res = $conn->createCommand($sql, [])->bindValues([
-            ':dt' => $dt,
-        ])->queryAll();
+        $res = $conn->createCommand($sql, [])->bindValues(
+            [
+                ':dt' => $dt,
+            ]
+        )->queryAll();
         foreach ($res as $k => $v) {
             // 当前平均换手率的值
             $res[$k]['cur_turnover'] = $day ? $v['s' . $day . '_sAvgTurnover'] : 0;

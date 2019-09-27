@@ -17,6 +17,7 @@ use Yii;
  * @property integer $tHight
  * @property integer $tLow
  * @property string $tTransOn
+ * @property string $tStat
  * @property string $tAddedOn
  * @property string $tUpdatedOn
  */
@@ -81,6 +82,20 @@ class StockTurn extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
+    public static function modify_stat($stock_id, $dt, $res)
+    {
+        $entity = self::unique_one($stock_id, $dt);
+        if (!$entity) {
+            return false;
+        }
+        $entity->tStat = AppUtil::json_encode($res);
+        $entity->tUpdatedOn = date('Y-m-d H:i:s');
+
+        $entity->save();
+
+        return true;
+    }
+
     /**
      * 获取交易日
      * @return array
@@ -88,7 +103,7 @@ class StockTurn extends \yii\db\ActiveRecord
      */
     public static function get_trans_days($year = '2019')
     {
-        $sql = "select DISTINCT tTransOn from im_stock_turn where date_format(tTransOn,'%Y')=:y order by tTransOn asc";
+        $sql = "select DISTINCT tTransOn from im_stock_turn where date_format(tTransOn,'%Y')=:y order by tTransOn desc";
         return AppUtil::db()->createCommand($sql, [
             ':y' => $year
         ])->queryAll();

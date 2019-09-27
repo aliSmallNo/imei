@@ -1531,10 +1531,16 @@ class FooController extends Controller
 //        }
 
         // 每日任务
-        $date = "2019-09-24";
-        StockTurn::update_current_day_all($date);
-        StockTurnStat::stat($date);
+//        $date = "2019-09-24";
+//        StockTurn::update_current_day_all($date);
+//        StockTurnStat::stat($date);
 
+        // 更新统计数据到 StockTurn
+        // stat_to_turn
+        $days = StockTurn::get_trans_days('2019');
+        foreach ($days as $day) {
+            StockTurnStat::stat_to_turn($day['tTransOn']);
+        }
         exit;
     }
 
