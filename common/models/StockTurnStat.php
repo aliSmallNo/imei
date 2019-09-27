@@ -155,7 +155,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 left join im_stock_turn_stat as s30 on s30.sStockId=t.tStockId and s30.sCat=30 and s30.sEnd=:dt
                 left join im_stock_turn_stat as s60 on s60.sStockId=t.tStockId and s60.sCat=60 and s60.sEnd=:dt
                 where tTransOn=:dt and tChangePercent>200  $where
-                ";
+                order by tChangePercent desc ";
         // and tClose<s5.sAvgClose and tClose<s10.sAvgClose and tClose<s20.sAvgClose and tClose<s60.sAvgClose and tClose<s15.sAvgClose and tClose<s30.sAvgClose
         $res = $conn->createCommand($sql, [])->bindValues([
             ':dt' => $dt,
