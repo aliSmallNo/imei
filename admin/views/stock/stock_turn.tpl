@@ -75,7 +75,7 @@
         {{foreach from=$list item=item}}
             <tr data-uaPhone="">
                 <td>{{$item.tStockId}}</td>
-                <td></td>
+                <td>{{$item.mStockName}}</td>
                 <td>{{sprintf("%.2f",$item.cur_turnover/100)}}%</td>
                 <td>{{sprintf("%.2f",$item.tTurnover/100)}}%</td>
                 <td>{{sprintf("%.2f",$item.tChangePercent/100)}}%</td>

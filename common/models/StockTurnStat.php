@@ -140,6 +140,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
         $conn = AppUtil::db();
 
         $sql = "select 
+                mStockName,
                 t.*,
                 s5.sAvgTurnover as s5_sAvgTurnover,s5.sAvgClose as s5_sAvgClose,
                 s10.sAvgTurnover as s10_sAvgTurnover,s10.sAvgClose as s10_sAvgClose,
@@ -154,6 +155,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 left join im_stock_turn_stat as s20 on s20.sStockId=t.tStockId and s20.sCat=20 and s20.sEnd=:dt
                 left join im_stock_turn_stat as s30 on s30.sStockId=t.tStockId and s30.sCat=30 and s30.sEnd=:dt
                 left join im_stock_turn_stat as s60 on s60.sStockId=t.tStockId and s60.sCat=60 and s60.sEnd=:dt
+                left join im_stock_menu as m on m.mStockId=t.tStockId
                 where tTransOn=:dt and tChangePercent>200  $where
                 order by tChangePercent desc ";
         // and tClose<s5.sAvgClose and tClose<s10.sAvgClose and tClose<s20.sAvgClose and tClose<s60.sAvgClose and tClose<s15.sAvgClose and tClose<s30.sAvgClose
