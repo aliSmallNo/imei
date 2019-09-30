@@ -17,6 +17,7 @@ use common\models\Log;
 use common\models\Pin;
 use common\models\StockAction;
 use common\models\StockKline;
+use common\models\StockLow;
 use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockTurn;
@@ -1537,10 +1538,12 @@ class FooController extends Controller
 
         // 更新统计数据到 StockTurn
         // stat_to_turn
-        $days = StockTurn::get_trans_days('2019');
-        foreach ($days as $day) {
-            StockTurnStat::stat_to_turn($day['tTransOn']);
-        }
+//        $days = StockTurn::get_trans_days('2019');
+//        foreach ($days as $day) {
+//            StockTurnStat::stat_to_turn($day['tTransOn']);
+//        }
+
+        StockLow::add_all();
         exit;
     }
 

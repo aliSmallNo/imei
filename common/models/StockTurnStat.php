@@ -190,8 +190,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
         $conn = AppUtil::db();
 
-        $sql
-            = "select 
+        $sql = "select 
                 mStockName,
                 t.*,
                 s5.sAvgTurnover as s5_sAvgTurnover,s5.sAvgClose as s5_sAvgClose,
