@@ -16,6 +16,7 @@ use common\models\Img;
 use common\models\Log;
 use common\models\Pin;
 use common\models\StockAction;
+use common\models\StockBack;
 use common\models\StockKline;
 use common\models\StockLow;
 use common\models\StockMenu;
@@ -1528,7 +1529,7 @@ class FooController extends Controller
         // 按年度 计算平均换手率 平均收盘价
 //        $days = StockTurn::get_trans_days('2019');
 //        foreach ($days as $day) {
-//            StockTurnStat::stat($day['tTransOn']);
+//            StockTurnStat::stat($day);
 //        }
 
         // 每日任务
@@ -1540,10 +1541,12 @@ class FooController extends Controller
         // stat_to_turn
 //        $days = StockTurn::get_trans_days('2019');
 //        foreach ($days as $day) {
-//            StockTurnStat::stat_to_turn($day['tTransOn']);
+//            StockTurnStat::stat_to_turn($day);
 //        }
 
-        StockLow::add_all();
+        //StockLow::add_all();
+        StockBack::cal_stock_back();
+
         exit;
     }
 

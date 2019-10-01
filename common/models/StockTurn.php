@@ -104,9 +104,11 @@ class StockTurn extends \yii\db\ActiveRecord
     public static function get_trans_days($year = '2019')
     {
         $sql = "select DISTINCT tTransOn from im_stock_turn where date_format(tTransOn,'%Y')=:y order by tTransOn desc";
-        return AppUtil::db()->createCommand($sql, [
+        $res = AppUtil::db()->createCommand($sql, [
             ':y' => $year
         ])->queryAll();
+
+        return array_column($res, 'tTransOn');
     }
 
     /**

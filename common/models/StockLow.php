@@ -24,13 +24,16 @@ class StockLow extends \yii\db\ActiveRecord
         return 'im_stock_low';
     }
 
-
+    /**
+     * 批量添加 低位/突破 股票
+     * @time 2019.9.30
+     */
     public static function add_all()
     {
         $days = StockTurn::get_trans_days('2019');
         $conn = AppUtil::db();
         foreach ($days as $day) {
-            self::add_one_day($day['tTransOn'], $conn);
+            self::add_one_day($day, $conn);
         }
     }
 
@@ -74,7 +77,7 @@ class StockLow extends \yii\db\ActiveRecord
                 && $tClose < $avg_close_10
                 && $tClose < $avg_close_20
                 && $tClose < $avg_close_60
-                //&& !StockLow::findOne(['lTransOn' => $transOn, 'lStockId' => $stockId])
+                && !StockLow::findOne(['lTransOn' => $transOn, 'lStockId' => $stockId])
             ) {
                 $insert_low[] = ['lStockId' => $stockId, 'lTransOn' => $transOn];
             }
@@ -82,7 +85,7 @@ class StockLow extends \yii\db\ActiveRecord
             if ($tChangePercent > 200
                 && ($tTurnover > $avg_turn_10 || $tTurnover > $avg_turn_20)
                 && ($tClose > $avg_close_5 || $tClose > $avg_close_10 || $tClose > $avg_close_20 || $tClose > $avg_close_60)
-                //&& !StockBreakthrough::findOne(['bTransOn' => $transOn, 'bStockId' => $stockId])
+                && !StockBreakthrough::findOne(['bTransOn' => $transOn, 'bStockId' => $stockId])
             ) {
                 $insert_break[] = ['bStockId' => $stockId, 'bTransOn' => $transOn];
             }

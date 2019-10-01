@@ -22,27 +22,4 @@ class StockBreakthrough extends \yii\db\ActiveRecord
         return 'im_stock_breakthrough';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['bTransOn', 'bAddedOn'], 'safe'],
-            [['bStockId'], 'string', 'max' => 8],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'bId' => 'B ID',
-            'bStockId' => 'B Stock ID',
-            'bTransOn' => 'B Trans On',
-            'bAddedOn' => 'B Added On',
-        ];
-    }
 }
