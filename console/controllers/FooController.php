@@ -1522,8 +1522,8 @@ class FooController extends Controller
 
         // 按年度 批量更新 StockTurn
         //StockTurn::get_stime_etime_turnover_data('18','20180101', '20181231');
-        //StockTurn::get_stime_etime_turnover_data('17','20170101', '20171231');
-        //StockTurn::get_stime_etime_turnover_data('16','20160101', '20161231');
+        StockTurn::get_stime_etime_turnover_data('17','20170101', '20171231');
+        StockTurn::get_stime_etime_turnover_data('16','20160101', '20161231');
         //StockTurn::get_stime_etime_turnover_data('15','20150101', '20151231');
 
         // 按年度 计算平均换手率 平均收盘价
@@ -1546,7 +1546,6 @@ class FooController extends Controller
 
         //StockLow::add_all();
         //StockBack::cal_stock_back();
-        StockBack::download_excel();
 
         exit;
     }
