@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\ExcelUtil;
 use Yii;
 use yii\helpers\VarDumper;
 
@@ -69,7 +70,6 @@ class StockBack extends \yii\db\ActiveRecord
     }
 
     /**
-     *
      * 1.选择满足 “突破的” 的股票，进行回测
      * 2.成功标准：突破后5个交易日，涨幅超过3%
      * 3.成功标准：突破后10个交易日，涨幅超过3%
@@ -82,7 +82,7 @@ class StockBack extends \yii\db\ActiveRecord
         foreach ($days as $k => $day) {
             self::cal_stock_back_one($day, $conn);
             if ($k == 10) {
-               // break;
+                // break;
             }
         }
     }
@@ -147,4 +147,46 @@ class StockBack extends \yii\db\ActiveRecord
         }
     }
 
+    public static function download_excel()
+    {
+        $conn = AppUtil::db();
+        // 计算突破次数
+        $sql1 = "SELECT mStockName,bStockId,count(1) as co 
+                FROM `im_stock_breakthrough` as b
+                left join im_stock_menu as m on m.mStockId=b.bStockId
+                group by bStockId ";
+        // 计算 5日 10日 20日 均值涨幅
+        $sql2 = "SELECT mStockName,bStockId,bCat,count(1) as co,round(sum(bGrowth)/count(1),2) as growth 
+                FROM `im_stock_back` as b
+                left join im_stock_menu as m on m.mStockId=b.bStockId
+                group by bStockId,bCat";
+        $breaks = $conn->createCommand($sql1)->queryAll();
+        $avgs = $conn->createCommand($sql2)->queryAll();
+        $_avgs = [];
+        foreach ($avgs as $k => $v) {
+            $_avgs[$v['bStockId'] . '_' . $v['bCat']] = $v;
+        }
+        foreach ($breaks as $k1 => $v1) {
+            $avg = [
+                'avg5' => 0,
+                'avg5g' => 0,
+                'avg10' => 0,
+                'avg10g' => 0,
+                'avg20' => 0,
+                'avg20g' => 0,
+            ];
+            foreach (['5', '10', '20'] as $cat) {
+                $key = $v1['bStockId'] . '_' . $cat;
+                if (isset($_avgs[$key])) {
+                    $avg['avg' . $cat] = $_avgs[$key]['co'];
+                    $avg['avg' . $cat . 'g'] = $_avgs[$key]['growth'];
+                }
+            }
+            $breaks[$k1] = array_values(array_merge($v1, $avg));
+        }
+        //print_r($breaks);
+
+        $header = ['股票', '股票代码', '突破次数', '5日成功次数', '5日平均涨幅', '10日成功次数', '10日平均涨幅', '20日成功次数', '20日平均涨幅'];
+        ExcelUtil::getYZExcel('回测数据', $header, $breaks);
+    }
 }

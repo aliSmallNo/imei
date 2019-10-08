@@ -1545,7 +1545,8 @@ class FooController extends Controller
 //        }
 
         //StockLow::add_all();
-        StockBack::cal_stock_back();
+        //StockBack::cal_stock_back();
+        StockBack::download_excel();
 
         exit;
     }

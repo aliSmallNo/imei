@@ -10,6 +10,7 @@
 </style>
 <div class="row">
     <h4>股票列表 ({{$count}})
+        <a href="/stock/download-breaks" class="btn btn-primary btn-sm hidden">导出突破数据</a>
     </h4>
 </div>
 <div class="row">

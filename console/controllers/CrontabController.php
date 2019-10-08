@@ -156,7 +156,7 @@ class CrontabController extends Controller
 
         }
 
-        try {
+        /*try {
             TryPhone::put_logs_to_db('_' . date('Ymd', time() - 86400));
 //            TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
 //            TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
@@ -165,7 +165,7 @@ class CrontabController extends Controller
 //            TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time() - 86400), TryPhone::CAT_XIJINFA);
         } catch (\Exception $e) {
             Log::add(['oCategory' => Log::CAT_PHONE_SECTION_YES, 'oUId' => '1000', 'oAfter' => AppUtil::json_decode($e)]);
-        }
+        }*/
 
 
         try {
@@ -185,14 +185,14 @@ class CrontabController extends Controller
 
     public function actionTry_phone()
     {
-        if (date('H') % 4 == 0) {
+       /* if (date('H') % 4 == 0) {
             TryPhone::phone_section_1();
         }
 
 
         if (date('H') % 4 != 0) {
             TryPhone::phone_section_2();
-        }
+        }*/
 
     }
 
@@ -206,12 +206,12 @@ class CrontabController extends Controller
 
         }
 
-        try {
+        /*try {
             // 更新代理IP
             TryPhone::updateIPs();
         } catch (\Exception $e) {
 
-        }
+        }*/
 
         // 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
         //  StockOrder::send_msg_on_stock_price();

@@ -17,6 +17,7 @@ use common\models\Log;
 use common\models\LogStock;
 use common\models\StockAction;
 use common\models\StockActionChange;
+use common\models\StockBack;
 use common\models\StockOrder;
 use common\models\StockTurnStat;
 use common\models\StockUser;
@@ -1349,6 +1350,16 @@ class StockController extends BaseController
                 'avg60' => $avg60,
             ]
         );
+    }
+
+    /**
+     * 导出突破及突破后的统计数据
+     * @time 2019.10.8
+     */
+    public function actionDownloadBreaks()
+    {
+        StockBack::download_excel();
+        exit;
     }
 
 }
