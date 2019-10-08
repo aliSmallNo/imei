@@ -73,7 +73,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
         $insertData = [];
         foreach ($ids as $v) {
             $id = $v['mStockId'];
-            echo 'dt:' . $dt . ' mStockId' . $id . PHP_EOL;
+            echo 'stat dt:' . $dt . ' mStockId' . $id . PHP_EOL;
             if ($data = self::stat_one($id, $dt)) {
                 $insertData = array_merge($insertData, $data);
             }
@@ -95,15 +95,12 @@ class StockTurnStat extends \yii\db\ActiveRecord
         if (!$dt) {
             $dt = date("Y-m-d");
         }
-        $sql
-            = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
-        $res = AppUtil::db()->createCommand(
-            $sql, [
+        $sql = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
+        $res = AppUtil::db()->createCommand($sql, [
                 ':num' => 60,
                 ':stockId' => $stockId,
                 ':dt' => $dt,
-            ]
-        )->queryAll();
+            ])->queryAll();
         if (!$res) {
             return false;
         }
@@ -133,11 +130,8 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 'sCat' => $day,
                 'sRealCount' => $count_trunover,
                 'sStockId' => $stockId,
-                'sAvgTurnover' => $count_trunover > 0 ? round(
-                    $sum / $count_trunover
-                ) : 0,
-                'sAvgClose' => $count_close > 0 ? round($sum2 / $count_close)
-                    : 0,
+                'sAvgTurnover' => $count_trunover > 0 ? round($sum / $count_trunover) : 0,
+                'sAvgClose' => $count_close > 0 ? round($sum2 / $count_close) : 0,
                 'sStart' => $st,
                 'sEnd' => $et,
             ];
@@ -163,7 +157,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
         $stocks = StockMenu::get_valid_stocks();
         foreach ($stocks as $v) {
             $stock_id = $v['mStockId'];
-            echo '$dt:' . $dt . ' ' . $stock_id . PHP_EOL;
+            echo 'stat_to_turn $dt:' . $dt . ' ' . $stock_id . PHP_EOL;
             self::stat_to_turn_one($stock_id, $dt);
         }
     }
