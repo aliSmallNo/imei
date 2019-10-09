@@ -36,7 +36,7 @@ class StockBreakthrough extends \yii\db\ActiveRecord
         if (!$conn) {
             $conn = AppUtil::db();
         }
-        $sql = "SELECT bStockId,bTransOn FROM `im_stock_breakthrough` where bStockId=:bStockId  bTransOn BETWEEN :et and :st order by bTransOn asc";
+        $sql = "SELECT bStockId,bTransOn FROM `im_stock_breakthrough` where bStockId=:bStockId and bTransOn BETWEEN :et and :st order by bTransOn asc";
         return $conn->createCommand($sql, [':bStockId' => $stockId, ':st' => $st, ':et' => $et])->queryAll();
     }
 
