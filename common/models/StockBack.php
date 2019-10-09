@@ -232,6 +232,7 @@ class StockBack extends \yii\db\ActiveRecord
             $break_data[$stockId] = $break_data_item;
         }
         FileCache::set(FileCache::KEY_STOCK_BREAK_TIMES, $break_data);
+        file_put_contents("/data/logs/imei/cache_break_times.txt", AppUtil::json_encode($break_data));
     }
 
 }
