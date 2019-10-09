@@ -228,6 +228,7 @@ class StockBack extends \yii\db\ActiveRecord
                 if ($breaks) {
                     $break_data_item['co']++;
                 }
+
             }
             $break_data[$stockId] = $break_data_item;
         }
