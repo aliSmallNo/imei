@@ -25,6 +25,7 @@ use common\models\StockUserAdmin;
 use common\service\TrendStockService;
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
+use common\utils\FileCache;
 use common\utils\ImageUtil;
 use common\utils\TryPhone;
 use Yii;
@@ -1359,6 +1360,9 @@ class StockController extends BaseController
      */
     public function actionDownloadBreaks()
     {
+        FileCache::set(FileCache::KEY_STOCK_BREAK_TIMES, [['id' => '000001', 'name' => '平安银行', 'co' => 9]]);
+        echo FileCache::get(FileCache::KEY_STOCK_BREAK_TIMES);
+        exit;
         StockBack::download_excel();
         exit;
     }
