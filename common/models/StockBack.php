@@ -4,8 +4,10 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use common\utils\ExcelUtil;
+use common\utils\FileCache;
 use Yii;
 use yii\helpers\VarDumper;
+use yii\widgets\Menu;
 
 /**
  * This is the model class for table "im_stock_back".
@@ -75,7 +77,7 @@ class StockBack extends \yii\db\ActiveRecord
      * 3.成功标准：突破后10个交易日，涨幅超过3%
      * 4.成功标准：突破后20个交易日，涨幅超过3%
      */
-    public static function cal_stock_back($year="2019")
+    public static function cal_stock_back($year = "2019")
     {
         $days = StockTurn::get_trans_days($year);
         $conn = AppUtil::db();
@@ -147,6 +149,11 @@ class StockBack extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 低于4条均线，之后的突破，只计算1次，后面的突破就不计算了。除非再出现低于4条均线的情况，才再计算一次突破
+     * 此方法废弃
+     * @time 2019.10.1
+     */
     public static function download_excel()
     {
         $conn = AppUtil::db();
@@ -189,4 +196,42 @@ class StockBack extends \yii\db\ActiveRecord
         $header = ['股票', '股票代码', '突破次数', '5日成功次数', '5日平均涨幅', '10日成功次数', '10日平均涨幅', '20日成功次数', '20日平均涨幅'];
         ExcelUtil::getYZExcel('回测数据', $header, $breaks);
     }
+
+    /**
+     * 计算突破次数: 低于4条均线，之后的突破，只计算1次，后面的突破就不计算了。除非再出现低于4条均线的情况，才再计算一次突破
+     * @time 2019.10.9
+     */
+    public static function cache_break_times()
+    {
+        $conn = AppUtil::db();
+        $stocks = StockMenu::get_valid_stocks();
+
+        $break_data = [];
+        foreach ($stocks as $stock) {
+            $stockId = $stock['mStockId'];
+            $stockName = $stock['mStockName'];
+
+            echo 'cache_break_times ', $stockId . PHP_EOL;
+            $break_data_item = [
+                'id' => $stockId,
+                'name' => $stockName,
+                'co' => 0,
+            ];
+
+            // 获取一只股票的低位数据
+            $stock_lows = StockLow::get_one_low($stockId, $conn);
+            // 计算突破次数
+            foreach ($stock_lows as $k1 => $stock_low) {
+                $st = $stock_low['lTransOn'];
+                $et = isset($stock_lows[$k1 + 1]) ? $stock_lows[$k1 + 1]['lTransOn'] : date("Y-m-d 23:59");
+                $breaks = StockBreakthrough::get_one_stock_st_et($stockId, $st, $et);
+                if ($breaks) {
+                    $break_data_item['co']++;
+                }
+            }
+            $break_data[$stockId] = $break_data_item;
+        }
+        FileCache::set(FileCache::KEY_STOCK_BREAK_TIMES, $break_data);
+    }
+
 }

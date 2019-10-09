@@ -28,7 +28,7 @@ class StockLow extends \yii\db\ActiveRecord
      * 批量添加 低位/突破 股票
      * @time 2019.9.30
      */
-    public static function add_all($year='2019')
+    public static function add_all($year = '2019')
     {
         $days = StockTurn::get_trans_days($year);
         $conn = AppUtil::db();
@@ -100,6 +100,20 @@ class StockLow extends \yii\db\ActiveRecord
             $insert_break)->execute();
 
 
+    }
+
+    /**
+     * 获取一只股票的低位数据
+     * @time 2019.10.9
+     * @param $stockId
+     */
+    public static function get_one_low($stockId, $conn = '')
+    {
+        if (!$conn) {
+            $conn = AppUtil::db();
+        }
+        $sql = "select lStockId,lTransOn from im_stock_low where lStockId=:lStockId order by lTransOn asc ";
+        return $conn->createCommand($sql, [':lStockId' => $stockId])->queryAll();
     }
 
 }

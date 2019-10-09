@@ -1321,7 +1321,8 @@ class StockController extends BaseController
             $where .= ' and tTurnover<s' . $day . '.sAvgTurnover';
         }
 
-        $list = StockTurnStat::items($where, $day, $dt);
+        $list = [];
+        //$list = StockTurnStat::items($where, $day, $dt);
 
         //VarDumper::dump($list, 10, true);exit;
 

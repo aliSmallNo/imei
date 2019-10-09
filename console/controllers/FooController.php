@@ -1555,10 +1555,15 @@ class FooController extends Controller
             StockTurnStat::stat_to_turn($day);
         }*/
 
-        StockLow::add_all('2018');
-        StockLow::add_all('2017');
-        StockBack::cal_stock_back('2018');
-        StockBack::cal_stock_back('2017');
+        // 批量添加 低位/突破 股票
+        /*StockLow::add_all('2018');
+        StockLow::add_all('2017');*/
+        // 选择满足 “突破的” 的股票，进行回测
+        /*StockBack::cal_stock_back('2018');
+        StockBack::cal_stock_back('2017');*/
+
+
+        StockBack::cache_break_times();
 
         exit;
     }
