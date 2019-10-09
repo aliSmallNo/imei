@@ -1524,17 +1524,16 @@ class FooController extends Controller
         //StockTurn::get_stime_etime_turnover_data('18','20180101', '20181231');
         //StockTurn::get_stime_etime_turnover_data('17','20170101', '20171231');
         //StockTurn::get_stime_etime_turnover_data('16','20160101', '20161231');
-        //StockTurn::get_stime_etime_turnover_data('15','20150101', '20151231');
 
         // 按年度 计算平均换手率 平均收盘价
-        $days = StockTurn::get_trans_days('2018');
+        /*$days = StockTurn::get_trans_days('2018');
         foreach ($days as $day) {
             StockTurnStat::stat($day);
         }
         $days = StockTurn::get_trans_days('2017');
         foreach ($days as $day) {
             StockTurnStat::stat($day);
-        }
+        }*/
 
         // 每日任务
 //        $date = "2019-09-24";
@@ -1543,6 +1542,10 @@ class FooController extends Controller
 
         // 更新统计数据到 StockTurn
         // stat_to_turn
+        /*$days = StockTurn::get_trans_days('2019');
+        foreach ($days as $day) {
+            StockTurnStat::stat_to_turn($day);
+        }
         $days = StockTurn::get_trans_days('2018');
         foreach ($days as $day) {
             StockTurnStat::stat_to_turn($day);
@@ -1550,10 +1553,12 @@ class FooController extends Controller
         $days = StockTurn::get_trans_days('2017');
         foreach ($days as $day) {
             StockTurnStat::stat_to_turn($day);
-        }
+        }*/
 
-        //StockLow::add_all();
-        //StockBack::cal_stock_back();
+        StockLow::add_all('2018');
+        StockLow::add_all('2017');
+        StockBack::cal_stock_back('2018');
+        StockBack::cal_stock_back('2017');
 
         exit;
     }

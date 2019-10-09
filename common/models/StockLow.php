@@ -28,9 +28,9 @@ class StockLow extends \yii\db\ActiveRecord
      * 批量添加 低位/突破 股票
      * @time 2019.9.30
      */
-    public static function add_all()
+    public static function add_all($year='2019')
     {
-        $days = StockTurn::get_trans_days('2019');
+        $days = StockTurn::get_trans_days($year);
         $conn = AppUtil::db();
         foreach ($days as $day) {
             self::add_one_day($day, $conn);
@@ -50,7 +50,7 @@ class StockLow extends \yii\db\ActiveRecord
         if (!$conn) {
             $conn = AppUtil::db();
         }
-        echo '$dt:' . $dt . PHP_EOL;
+        echo 'add_one_day $dt:' . $dt . PHP_EOL;
         $sql = "select * from im_stock_turn where tTransOn=:dt ";
         $res = $conn->createCommand($sql, [':dt' => $dt])->queryAll();
         $insert_low = [];

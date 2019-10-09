@@ -75,9 +75,9 @@ class StockBack extends \yii\db\ActiveRecord
      * 3.成功标准：突破后10个交易日，涨幅超过3%
      * 4.成功标准：突破后20个交易日，涨幅超过3%
      */
-    public static function cal_stock_back()
+    public static function cal_stock_back($year="2019")
     {
-        $days = StockTurn::get_trans_days('2019');
+        $days = StockTurn::get_trans_days($year);
         $conn = AppUtil::db();
         foreach ($days as $k => $day) {
             self::cal_stock_back_one($day, $conn);
@@ -89,7 +89,7 @@ class StockBack extends \yii\db\ActiveRecord
 
     public static function cal_stock_back_one($day, $conn)
     {
-        echo '$dt:' . $day . PHP_EOL;
+        echo 'cal_stock_back_one $dt:' . $day . PHP_EOL;
         $breaks = StockBreakthrough::find()->where(['bTransOn' => $day])->asArray()->all();
         $_insert = [];
 
