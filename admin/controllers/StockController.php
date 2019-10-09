@@ -1360,8 +1360,11 @@ class StockController extends BaseController
      */
     public function actionDownloadBreaks()
     {
-        FileCache::set(FileCache::KEY_STOCK_BREAK_TIMES, file_get_contents('/data/logs/imei/cache_break_times.txt'));
-        echo FileCache::get(FileCache::KEY_STOCK_BREAK_TIMES);
+
+        //echo file_get_contents('/data/logs/imei/cache_break_times.txt');
+        echo file_get_contents('/data/logs/imei/cache_avg_growth.txt');
+
+
         exit;
         StockBack::download_excel();
         exit;

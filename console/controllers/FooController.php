@@ -1563,7 +1563,7 @@ class FooController extends Controller
         StockBack::cal_stock_back('2017');*/
 
 
-        StockBack::cache_break_times();
+        StockBack::cache_avg_growth();
 
         exit;
     }

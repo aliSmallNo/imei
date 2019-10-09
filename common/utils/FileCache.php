@@ -16,6 +16,8 @@ class FileCache
     const KEY_MID = "_";
 
     const KEY_STOCK_BREAK_TIMES = 'stock_break_times';
+    const KEY_STOCK_AVG_GROWTH = 'stock_avg_growth';
+
 
     public static function get_key($key)
     {

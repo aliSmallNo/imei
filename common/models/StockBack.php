@@ -236,4 +236,81 @@ class StockBack extends \yii\db\ActiveRecord
         file_put_contents("/data/logs/imei/cache_break_times.txt", AppUtil::json_encode($break_data));
     }
 
+    /**
+     * 计算 5日 10日 20日 均值涨幅
+     *
+     * 低于4条均线，之后的突破，只计算1次，后面的突破就不计算了。除非再出现低于4条均线的情况，才再计算一次突破
+     * 顺序是这样
+     *      1，低于4条均线
+     *      2，寻找最近一次突破
+     *      3，突破后的5个交易日得涨幅
+     * @time 2019.10.9
+     */
+    public static function cache_avg_growth()
+    {
+        $conn = AppUtil::db();
+        $stocks = StockMenu::get_valid_stocks();
+
+        $avg_data = [];
+        foreach ($stocks as $stock) {
+            $stockId = $stock['mStockId'];
+            $stockName = $stock['mStockName'];
+
+            echo 'cache_avg_growth ', $stockId . PHP_EOL;
+            $avg_data_item = [
+                'id' => $stockId,
+                'name' => $stockName,
+                'avg5' => 0,
+                'avg5g' => 0,
+                'avg10' => 0,
+                'avg10g' => 0,
+                'avg20' => 0,
+                'avg20g' => 0,
+            ];
+
+            // 获取一只股票的低位数据
+            $stock_lows = StockLow::get_one_low($stockId, $conn);
+            // 突破
+            $one_avg_5_back = $one_avg_10_back = $one_avg_20_back = [];
+            foreach ($stock_lows as $k1 => $stock_low) {
+                $st = $stock_low['lTransOn'];
+                $et = isset($stock_lows[$k1 + 1]) ? $stock_lows[$k1 + 1]['lTransOn'] : date("Y-m-d 23:59");
+                $breaks = StockBreakthrough::get_one_stock_st_et($stockId, $st, $et);
+                if ($breaks) {
+                    // 寻找最近一次突破
+                    $break = $breaks[0];
+                    $transOn = $break['bTransOn'];
+                    $sql = "select * from im_stock_back where bCat=:bCat and bStockId=:bStockId and bTransOn=:bTransOn ";
+
+                    $one_avg_5 = $conn->createCommand($sql, [':bCat' => 5, ':bStockId' => $stockId, ':bTransOn' => $transOn])->queryOne();
+                    $one_avg_10 = $conn->createCommand($sql, [':bCat' => 10, ':bStockId' => $stockId, ':bTransOn' => $transOn])->queryOne();
+                    $one_avg_20 = $conn->createCommand($sql, [':bCat' => 20, ':bStockId' => $stockId, ':bTransOn' => $transOn])->queryOne();
+                    if ($one_avg_5) {
+                        $one_avg_5_back[] = $one_avg_5;
+                    }
+                    if ($one_avg_10) {
+                        $one_avg_10_back[] = $one_avg_10;
+                    }
+                    if ($one_avg_20) {
+                        $one_avg_20_back[] = $one_avg_20;
+                    }
+                }
+            }
+
+            foreach ([5, 10, 20] as $cat) {
+                $var = 'one_avg_' . $cat . '_back';
+                $curr = $$var;
+                $co = count($curr);
+                $avg_data_item['avg' . $cat] = $co;
+                if ($co) {
+                    $avg_data_item['avg' . $cat . 'g'] = round(array_sum(array_column($curr, 'bGrowth')) / $co, 2);
+                }
+            }
+            $avg_data[] = $avg_data_item;
+        }
+
+        file_put_contents("/data/logs/imei/cache_avg_growth.txt", AppUtil::json_encode($avg_data));
+    }
+
+
 }
