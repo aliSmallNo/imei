@@ -1323,7 +1323,7 @@ class StockController extends BaseController
         }
 
         $list = [];
-        //$list = StockTurnStat::items($where, $day, $dt);
+        $list = StockTurnStat::items($where, $day, $dt);
 
         //VarDumper::dump($list, 10, true);exit;
 

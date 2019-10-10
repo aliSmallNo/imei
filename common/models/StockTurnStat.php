@@ -97,10 +97,10 @@ class StockTurnStat extends \yii\db\ActiveRecord
         }
         $sql = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
         $res = AppUtil::db()->createCommand($sql, [
-                ':num' => 60,
-                ':stockId' => $stockId,
-                ':dt' => $dt,
-            ])->queryAll();
+            ':num' => 60,
+            ':stockId' => $stockId,
+            ':dt' => $dt,
+        ])->queryAll();
         if (!$res) {
             return false;
         }
@@ -181,9 +181,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
 
     public static function items($where, $day, $dt)
     {
-
         $conn = AppUtil::db();
-
         $sql = "select 
                 mStockName,
                 t.*,
@@ -204,18 +202,29 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 where tTransOn=:dt and tChangePercent>200  $where
                 order by tChangePercent desc ";
         // and tClose<s5.sAvgClose and tClose<s10.sAvgClose and tClose<s20.sAvgClose and tClose<s60.sAvgClose and tClose<s15.sAvgClose and tClose<s30.sAvgClose
-        $res = $conn->createCommand($sql, [])->bindValues(
-            [
-                ':dt' => $dt,
-            ]
-        )->queryAll();
-        foreach ($res as $k => $v) {
-            // 当前平均换手率的值
-            $res[$k]['cur_turnover'] = $day ? $v['s' . $day . '_sAvgTurnover'] : 0;
 
+        $sql = "select * from im_stock_turn where tTransOn=:dt and tChangePercent>200 ";
+
+        $res = $conn->createCommand($sql)->bindValues([
+            ':dt' => $dt,
+        ])->queryAll();
+
+
+        foreach ($res as $k => $v) {
+            $stat = AppUtil::json_decode($v['tStat']);
+            foreach (['5', '10', '15', '20', '30', '60'] as $d) {
+                $res[$k]['s' . $d . '_sAvgTurnover'] = $stat[$d]['sAvgTurnover'];
+                $res[$k]['s' . $d . '_sAvgClose'] = $stat[$d]['sAvgClose'];
+            }
+
+            // 当前平均换手率的值
+            $res[$k]['cur_turnover'] = $day ? $res[$k]['s' . $day . '_sAvgTurnover'] : 0;
+            $res[$k]['mStockName'] = StockMenu::findOne(['mStockId' => $v['tStockId']])->mStockName;
         }
+
 
         return $res;
     }
+
 
 }
