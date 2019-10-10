@@ -216,9 +216,25 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 $res[$k]['s' . $d . '_sAvgTurnover'] = $stat[$d]['sAvgTurnover'];
                 $res[$k]['s' . $d . '_sAvgClose'] = $stat[$d]['sAvgClose'];
             }
+
             // 当前平均换手率的值
             $res[$k]['cur_turnover'] = $day ? $res[$k]['s' . $day . '_sAvgTurnover'] : 0;
             $res[$k]['mStockName'] = StockMenu::findOne(['mStockId' => $v['tStockId']])->mStockName;
+
+            // 过滤条件
+            if (strpos($where, "tTurnover<s' . $day . '.sAvgTurnover") !== false
+                && $v['tTurnover'] >= $stat[$day]['sAvgTurnover']) {
+                unset($res[$k]);
+                continue;
+            }
+            foreach (['5', '10', '15', '20', '30', '60'] as $int) {
+                if (strpos($where, "tClose<s" . $int . ".sAvgClose") !== false
+                    && $v['tClose'] >= $stat[$d]['sAvgClose']) {
+                    unset($res[$k]);
+                    break;
+                }
+            }
+
         }
 
 
