@@ -203,7 +203,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 order by tChangePercent desc ";
         // and tClose<s5.sAvgClose and tClose<s10.sAvgClose and tClose<s20.sAvgClose and tClose<s60.sAvgClose and tClose<s15.sAvgClose and tClose<s30.sAvgClose
 
-        $sql = "select * from im_stock_turn where tTransOn=:dt and tChangePercent>200 ";
+        $sql = "select * from im_stock_turn where tTransOn=:dt and tChangePercent>200 order by tChangePercent desc ";
 
         $res = $conn->createCommand($sql)->bindValues([
             ':dt' => $dt,
@@ -216,7 +216,6 @@ class StockTurnStat extends \yii\db\ActiveRecord
                 $res[$k]['s' . $d . '_sAvgTurnover'] = $stat[$d]['sAvgTurnover'];
                 $res[$k]['s' . $d . '_sAvgClose'] = $stat[$d]['sAvgClose'];
             }
-
             // 当前平均换手率的值
             $res[$k]['cur_turnover'] = $day ? $res[$k]['s' . $day . '_sAvgTurnover'] : 0;
             $res[$k]['mStockName'] = StockMenu::findOne(['mStockId' => $v['tStockId']])->mStockName;
