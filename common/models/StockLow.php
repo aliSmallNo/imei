@@ -16,6 +16,11 @@ use yii\helpers\VarDumper;
  */
 class StockLow extends \yii\db\ActiveRecord
 {
+    // 低位：收盘价低于4条均线（5日，10日，20日，60日）
+    const CAT_1 = 1;
+    // 低位：收盘价低于3条均线（5日，10日，20日），高于60日均线（这点和之前不同）
+    const CAT_2 = 2;
+
     /**
      * @inheritdoc
      */
@@ -73,33 +78,60 @@ class StockLow extends \yii\db\ActiveRecord
             $avg_turn_10 = $stat[10]['sAvgTurnover'];
             $avg_turn_20 = $stat[20]['sAvgTurnover'];
 
-            if ($tClose < $avg_close_5
-                && $tClose < $avg_close_10
-                && $tClose < $avg_close_20
-                && $tClose < $avg_close_60
-                && !StockLow::findOne(['lTransOn' => $transOn, 'lStockId' => $stockId])
-            ) {
-                $insert_low[] = ['lStockId' => $stockId, 'lTransOn' => $transOn];
+
+            //$insert_low_item=self::low_by_cat($tClose, $avg_close_5, $avg_close_10, $avg_close_20, $avg_close_60, $transOn, $stockId, self::CAT_1);
+            $insert_low_item = self::low_by_cat($tClose, $avg_close_5, $avg_close_10, $avg_close_20, $avg_close_60, $transOn, $stockId, self::CAT_2);
+            if ($insert_low_item) {
+                $insert_low[] = $insert_low_item;
             }
 
-            if ($tChangePercent > 200
+            /*if ($tChangePercent > 200
                 && ($tTurnover > $avg_turn_10 || $tTurnover > $avg_turn_20)
                 && ($tClose > $avg_close_5 || $tClose > $avg_close_10 || $tClose > $avg_close_20 || $tClose > $avg_close_60)
                 && !StockBreakthrough::findOne(['bTransOn' => $transOn, 'bStockId' => $stockId])
             ) {
                 $insert_break[] = ['bStockId' => $stockId, 'bTransOn' => $transOn];
-            }
+            }*/
         }
 
         $conn->createCommand()->batchInsert(StockLow::tableName(),
-            ["lStockId", "lTransOn"],
+            ["lStockId", "lTransOn", 'lCat'],
             $insert_low)->execute();
 
-        $conn->createCommand()->batchInsert(StockBreakthrough::tableName(),
+        /*$conn->createCommand()->batchInsert(StockBreakthrough::tableName(),
             ["bStockId", "bTransOn"],
-            $insert_break)->execute();
+            $insert_break)->execute();*/
+    }
 
+    public static function low_by_cat($tClose, $avg_close_5, $avg_close_10, $avg_close_20, $avg_close_60, $transOn, $stockId, $cat = 1)
+    {
+        $data = [];
+        switch ($cat) {
+            // 低位：收盘价低于4条均线（5日，10日，20日，60日）
+            case self::CAT_1;
+                if ($tClose < $avg_close_5
+                    && $tClose < $avg_close_10
+                    && $tClose < $avg_close_20
+                    && $tClose < $avg_close_60
+                    && !StockLow::findOne(['lTransOn' => $transOn, 'lStockId' => $stockId, 'lCat' => $cat])
+                ) {
+                    $data = ['lStockId' => $stockId, 'lTransOn' => $transOn, 'lCat' => $cat];
+                }
+                break;
+            // 低位：收盘价低于3条均线（5日，10日，20日），高于60日均线（这点和之前不同）
+            case self::CAT_2;
+                if ($tClose < $avg_close_5
+                    && $tClose < $avg_close_10
+                    && $tClose < $avg_close_20
+                    && $tClose > $avg_close_60
+                    && !StockLow::findOne(['lTransOn' => $transOn, 'lStockId' => $stockId, 'lCat' => $cat])
+                ) {
+                    $data = ['lStockId' => $stockId, 'lTransOn' => $transOn, 'lCat' => $cat];
+                }
+                break;
+        }
 
+        return $data;
     }
 
     /**
@@ -107,13 +139,13 @@ class StockLow extends \yii\db\ActiveRecord
      * @time 2019.10.9
      * @param $stockId
      */
-    public static function get_one_low($stockId, $conn = '')
+    public static function get_one_low($stockId, $conn = '', $cat = self::CAT_1)
     {
         if (!$conn) {
             $conn = AppUtil::db();
         }
-        $sql = "select lStockId,lTransOn from im_stock_low where lStockId=:lStockId order by lTransOn asc ";
-        return $conn->createCommand($sql, [':lStockId' => $stockId])->queryAll();
+        $sql = "select lStockId,lTransOn from im_stock_low where lStockId=:lStockId and lCat=:cat order by lTransOn asc ";
+        return $conn->createCommand($sql, [':lStockId' => $stockId, ':cat' => $cat])->queryAll();
     }
 
 }

@@ -1562,6 +1562,10 @@ class FooController extends Controller
         /*StockBack::cal_stock_back('2018');
         StockBack::cal_stock_back('2017');*/
 
+        StockLow::add_all('2019');
+        StockLow::add_all('2018');
+        StockLow::add_all('2017');
+
 
         //StockBack::cache_avg_growth();
 
