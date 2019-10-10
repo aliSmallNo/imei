@@ -229,7 +229,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
             }
             foreach (['5', '10', '15', '20', '30', '60'] as $int) {
                 if (strpos($where, "tClose<s" . $int . ".sAvgClose") !== false
-                    && $v['tClose'] >= $stat[$d]['sAvgClose']) {
+                    && $v['tClose'] >= $stat[$int]['sAvgClose']) {
                     unset($res[$k]);
                     break;
                 }
