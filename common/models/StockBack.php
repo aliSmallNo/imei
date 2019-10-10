@@ -221,7 +221,7 @@ class StockBack extends \yii\db\ActiveRecord
                 'avg20g' => 0,
             ];
             foreach (['5', '10', '20'] as $cat) {
-                $key = $v2['bStockId'];
+                $key = $v2['id'];
                 if (isset($_avgs[$key])) {
                     $avg['avg' . $cat] = $_avgs[$key]['avg' . $cat];
                     $avg['avg' . $cat . 'g'] = $_avgs[$key]['avg' . $cat . 'g'];
