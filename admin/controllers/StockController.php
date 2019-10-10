@@ -1362,11 +1362,9 @@ class StockController extends BaseController
     {
 
         //echo file_get_contents('/data/logs/imei/cache_break_times.txt');
-        echo file_get_contents('/data/logs/imei/cache_avg_growth.txt');
+        //echo file_get_contents('/data/logs/imei/cache_avg_growth.txt');
 
-
-        exit;
-        StockBack::download_excel();
+        StockBack::download_excel2();
         exit;
     }
 

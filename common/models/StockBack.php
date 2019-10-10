@@ -198,6 +198,43 @@ class StockBack extends \yii\db\ActiveRecord
     }
 
     /**
+     * 低于4条均线，之后的突破，只计算1次，后面的突破就不计算了。除非再出现低于4条均线的情况，才再计算一次突破
+     * @time 2019.10.10
+     */
+    public static function download_excel2()
+    {
+        $cache_break_times = file_get_contents('/data/logs/imei/cache_break_times.txt');
+        $cache_avg_growth = file_get_contents('/data/logs/imei/cache_avg_growth.txt');
+        $cache_break_times = AppUtil::json_decode($cache_break_times);
+        $cache_avg_growth = AppUtil::json_decode($cache_avg_growth);
+        $_avgs = [];
+        foreach ($cache_avg_growth as $k1 => $v1) {
+            $_avgs[$v1['id']] = $v1;
+        }
+        foreach ($cache_break_times as $k2 => $v2) {
+            $avg = [
+                'avg5' => 0,
+                'avg5g' => 0,
+                'avg10' => 0,
+                'avg10g' => 0,
+                'avg20' => 0,
+                'avg20g' => 0,
+            ];
+            foreach (['5', '10', '20'] as $cat) {
+                $key = $v2['bStockId'];
+                if (isset($_avgs[$key])) {
+                    $avg['avg' . $cat] = $_avgs[$key]['avg' . $cat];
+                    $avg['avg' . $cat . 'g'] = $_avgs[$key]['avg' . $cat . 'g'];
+                }
+            }
+            $cache_break_times[$k2] = array_values(array_merge($v2, $avg));
+        }
+
+        $header = ['股票代码', '股票', '突破次数', '5日成功次数', '5日平均涨幅', '10日成功次数', '10日平均涨幅', '20日成功次数', '20日平均涨幅'];
+        ExcelUtil::getYZExcel('回测数据', $header, $cache_break_times);
+    }
+
+    /**
      * 计算突破次数: 低于4条均线，之后的突破，只计算1次，后面的突破就不计算了。除非再出现低于4条均线的情况，才再计算一次突破
      * @time 2019.10.9
      */
