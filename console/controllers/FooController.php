@@ -1565,7 +1565,8 @@ class FooController extends Controller
 
         //StockBack::cache_avg_growth();
 
-        //$phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
+        // 标记手机号的 归属地
+        /*//$phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
         $phones = ExcelUtil::parseProduct("/data/code/imei/11926.xlsx");
         //$phones = ExcelUtil::parseProduct("/Users/b_tt/Downloads/15000.xlsx");
         $data = [];
@@ -1577,7 +1578,7 @@ class FooController extends Controller
                 $data[] = [$phone, $province, $city, $operator];
             }
         }
-        file_put_contents('/data/code/imei/cache_phones_11926.txt', AppUtil::json_encode($data));
+        file_put_contents('/data/code/imei/cache_phones_11926.txt', AppUtil::json_encode($data));*/
 
         exit;
     }
