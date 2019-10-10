@@ -1808,13 +1808,14 @@ class AppUtil
         $ret = AppUtil::httpGet($url);
         $ret = json_decode($ret, 1);
 
-        $city = $province = '';
+        $city = $province = $operator = '';
         if (isset($ret['response'][$phone]['detail'])) {
             $detail = $ret['response'][$phone]['detail'];
             $city = $detail['area'][0]['city'] ?? '';
             $province = $detail['province'] ?? '';
+            $operator = $detail['operator'] ?? '';// 联通、移动、电信
         }
-        return [$province, $city];
+        return [$province, $city, $operator];
     }
 
 

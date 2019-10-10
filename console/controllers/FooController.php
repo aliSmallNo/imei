@@ -1565,6 +1565,18 @@ class FooController extends Controller
 
         //StockBack::cache_avg_growth();
 
+        $phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
+        $data = [];
+        foreach ($phones as $k => $v) {
+            $phone = $v[0];
+            if (AppUtil::checkPhone($phone)) {
+                echo $k . ' : ' . $phone . PHP_EOL;
+                list($province, $city, $operator) = AppUtil::get_phone_location($phone);
+                $data[] = [$phone, $province, $city, $operator];
+            }
+        }
+        file_put_contents('/data/code/imei/cache_phones.txt', AppUtil::json_encode($data));
+
         exit;
     }
 
