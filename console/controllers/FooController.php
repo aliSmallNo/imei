@@ -1565,7 +1565,8 @@ class FooController extends Controller
 
         //StockBack::cache_avg_growth();
 
-        $phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
+        /*$phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
+        //$phones = ExcelUtil::parseProduct("/Users/b_tt/Downloads/15000.xlsx");
         $data = [];
         foreach ($phones as $k => $v) {
             $phone = $v[0];
@@ -1575,7 +1576,7 @@ class FooController extends Controller
                 $data[] = [$phone, $province, $city, $operator];
             }
         }
-        file_put_contents('/data/code/imei/cache_phones.txt', AppUtil::json_encode($data));
+        file_put_contents('/data/code/imei/cache_phones.txt', AppUtil::json_encode($data));*/
 
         exit;
     }
