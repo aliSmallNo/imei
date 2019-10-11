@@ -1802,7 +1802,7 @@ class AppUtil
     public static function get_phone_location($phone)
     {
         if (!self::checkPhone($phone)) {
-            return ['', ''];
+            return ['', '', ''];
         }
         $url = "http://mobsec-dianhua.baidu.com/dianhua_api/open/location?tel=" . $phone;
         $ret = AppUtil::httpGet($url);

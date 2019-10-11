@@ -1571,7 +1571,9 @@ class FooController extends Controller
 //        StockBack::cache_avg_growth(StockLow::CAT_2);
 
         // 标记手机号的 归属地
-        $phones = ExcelUtil::parseProduct("/data/code/imei/20191011.xlsx");
+        //$phones = ExcelUtil::parseProduct("/data/code/imei/20191011.xlsx");
+        $phones = file("/data/code/imei/20191011.txt");
+        //$phones = file("/Users/b_tt/Downloads/20191011.txt");
         $data = [];
         $get_phone_local = function ($phone) {
             $local = [];
@@ -1584,15 +1586,10 @@ class FooController extends Controller
             return $local;
         };
         foreach ($phones as $k => $v) {
-            foreach ([0, 1, 2, 3] as $i) {
-                $phone = $v[$i];
-                echo $k . ' : ' . $phone . PHP_EOL;
-                if ($local = $get_phone_local($phone)) {
-                    $data[] = $local;
-                }
-            }
-            if($k==3){
-                print_r($data);exit;
+            $phone = intval($v);
+            echo $k . ' : ' . $phone . PHP_EOL;
+            if ($local = $get_phone_local($phone)) {
+                $data[] = $local;
             }
         }
         file_put_contents('/data/code/imei/cache_phones_20191011.txt', AppUtil::json_encode($data));
