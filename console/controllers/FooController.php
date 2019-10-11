@@ -1591,6 +1591,9 @@ class FooController extends Controller
                     $data[] = $local;
                 }
             }
+            if($k==3){
+                print_r($data);exit;
+            }
         }
         file_put_contents('/data/code/imei/cache_phones_20191011.txt', AppUtil::json_encode($data));
 
