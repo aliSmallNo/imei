@@ -1363,7 +1363,7 @@ class StockController extends BaseController
 
         //echo file_get_contents('/data/logs/imei/cache_break_times.txt');
         //echo file_get_contents('/data/logs/imei/cache_avg_growth.txt');
-        // StockBack::download_excel2();
+         StockBack::download_excel2();
 
         /*
         // 导出标记的手机号 归属地

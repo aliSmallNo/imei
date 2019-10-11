@@ -203,8 +203,8 @@ class StockBack extends \yii\db\ActiveRecord
      */
     public static function download_excel2()
     {
-        $cache_break_times = file_get_contents('/data/logs/imei/cache_break_times.txt');
-        $cache_avg_growth = file_get_contents('/data/logs/imei/cache_avg_growth.txt');
+        $cache_break_times = file_get_contents('/data/logs/imei/cache_break_times_2.txt');
+        $cache_avg_growth = file_get_contents('/data/logs/imei/cache_avg_growth_2.txt');
         $cache_break_times = AppUtil::json_decode($cache_break_times);
         $cache_avg_growth = AppUtil::json_decode($cache_avg_growth);
         $_avgs = [];
