@@ -1567,23 +1567,32 @@ class FooController extends Controller
         StockLow::add_all('2017');*/
 
         // 缓存突破 回测数据
-        StockBack::cache_break_times(StockLow::CAT_2);
-        StockBack::cache_avg_growth(StockLow::CAT_2);
+//        StockBack::cache_break_times(StockLow::CAT_2);
+//        StockBack::cache_avg_growth(StockLow::CAT_2);
 
         // 标记手机号的 归属地
-        /*//$phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
-        $phones = ExcelUtil::parseProduct("/data/code/imei/11926.xlsx");
-        //$phones = ExcelUtil::parseProduct("/Users/b_tt/Downloads/15000.xlsx");
+        $phones = ExcelUtil::parseProduct("/data/code/imei/20191011.xlsx");
         $data = [];
+        $get_phone_local = function ($phone) {
+            $local = [];
+            if (AppUtil::checkPhone(intval($phone))) {
+                if (!CRMStockClient::findOne(['cPhone' => $phone])) {
+                    list($province, $city, $operator) = AppUtil::get_phone_location($phone);
+                    $local = [$phone, $province, $city, $operator];
+                }
+            }
+            return $local;
+        };
         foreach ($phones as $k => $v) {
-            $phone = $v[0];
-            if (AppUtil::checkPhone($phone)) {
+            foreach ([0, 1, 2, 3] as $i) {
+                $phone = $v[$i];
                 echo $k . ' : ' . $phone . PHP_EOL;
-                list($province, $city, $operator) = AppUtil::get_phone_location($phone);
-                $data[] = [$phone, $province, $city, $operator];
+                if ($local = $get_phone_local($phone)) {
+                    $data[] = $local;
+                }
             }
         }
-        file_put_contents('/data/code/imei/cache_phones_11926.txt', AppUtil::json_encode($data));*/
+        file_put_contents('/data/code/imei/cache_phones_20191011.txt', AppUtil::json_encode($data));
 
         exit;
     }
