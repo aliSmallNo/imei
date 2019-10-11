@@ -238,7 +238,7 @@ class StockBack extends \yii\db\ActiveRecord
      * 计算突破次数: 低于4条均线，之后的突破，只计算1次，后面的突破就不计算了。除非再出现低于4条均线的情况，才再计算一次突破
      * @time 2019.10.9
      */
-    public static function cache_break_times()
+    public static function cache_break_times($lcat = StockLow::CAT_1)
     {
         $conn = AppUtil::db();
         $stocks = StockMenu::get_valid_stocks();
@@ -256,7 +256,8 @@ class StockBack extends \yii\db\ActiveRecord
             ];
 
             // 获取一只股票的低位数据
-            $stock_lows = StockLow::get_one_low($stockId, $conn);
+            //$stock_lows = StockLow::get_one_low($stockId, $conn);
+            $stock_lows = StockLow::get_one_low($stockId, $conn, $lcat);
             // 计算突破次数
             foreach ($stock_lows as $k1 => $stock_low) {
                 $st = $stock_low['lTransOn'];
@@ -265,12 +266,12 @@ class StockBack extends \yii\db\ActiveRecord
                 if ($breaks) {
                     $break_data_item['co']++;
                 }
-
             }
             $break_data[$stockId] = $break_data_item;
         }
-        FileCache::set(FileCache::KEY_STOCK_BREAK_TIMES, $break_data);
-        file_put_contents("/data/logs/imei/cache_break_times.txt", AppUtil::json_encode($break_data));
+
+        //file_put_contents("/data/logs/imei/cache_break_times.txt", AppUtil::json_encode($break_data));
+        file_put_contents("/data/logs/imei/cache_break_times_" . $lcat . ".txt", AppUtil::json_encode($break_data));
     }
 
     /**
@@ -283,7 +284,7 @@ class StockBack extends \yii\db\ActiveRecord
      *      3，突破后的5个交易日得涨幅
      * @time 2019.10.9
      */
-    public static function cache_avg_growth()
+    public static function cache_avg_growth($lcat = StockLow::CAT_1)
     {
         $conn = AppUtil::db();
         $stocks = StockMenu::get_valid_stocks();
@@ -306,7 +307,8 @@ class StockBack extends \yii\db\ActiveRecord
             ];
 
             // 获取一只股票的低位数据
-            $stock_lows = StockLow::get_one_low($stockId, $conn);
+            //$stock_lows = StockLow::get_one_low($stockId, $conn);
+            $stock_lows = StockLow::get_one_low($stockId, $conn, $lcat);
             // 突破
             $one_avg_5_back = $one_avg_10_back = $one_avg_20_back = [];
             foreach ($stock_lows as $k1 => $stock_low) {
@@ -346,7 +348,8 @@ class StockBack extends \yii\db\ActiveRecord
             $avg_data[] = $avg_data_item;
         }
 
-        file_put_contents("/data/logs/imei/cache_avg_growth.txt", AppUtil::json_encode($avg_data));
+        //file_put_contents("/data/logs/imei/cache_avg_growth.txt", AppUtil::json_encode($avg_data));
+        file_put_contents("/data/logs/imei/cache_avg_growth_" . $lcat . ".txt", AppUtil::json_encode($avg_data));
     }
 
 

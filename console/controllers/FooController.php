@@ -1562,12 +1562,13 @@ class FooController extends Controller
         /*StockBack::cal_stock_back('2018');
         StockBack::cal_stock_back('2017');*/
 
-        StockLow::add_all('2019');
+        /*StockLow::add_all('2019');
         StockLow::add_all('2018');
-        StockLow::add_all('2017');
+        StockLow::add_all('2017');*/
 
-
-        //StockBack::cache_avg_growth();
+        // 缓存突破 回测数据
+        StockBack::cache_break_times(StockLow::CAT_2);
+        StockBack::cache_avg_growth(StockLow::CAT_2);
 
         // 标记手机号的 归属地
         /*//$phones = ExcelUtil::parseProduct("/data/code/imei/15000.xlsx");
