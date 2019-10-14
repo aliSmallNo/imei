@@ -1371,9 +1371,9 @@ class StockController extends BaseController
         //$data = file_get_contents('/data/code/imei/cache_phones_11926.txt');
         $data = file_get_contents('/data/code/imei/cache_phones_20191011.txt');
         $data = AppUtil::json_decode($data);
-        echo count($data);exit;
+        //echo count($data);exit;// 102093
         $header = ['手机号', '省', '市', 'type'];
-        ExcelUtil::getYZExcel('归属地' . date('Y-m-d'), $header, array_slice($data, 0, 10000));
+        ExcelUtil::getYZExcel('归属地' . date('Y-m-d'), $header, array_slice($data, 0, 20000));
 
         exit;
     }
