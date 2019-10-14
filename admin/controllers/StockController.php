@@ -1374,7 +1374,7 @@ class StockController extends BaseController
         //echo count($data);exit;// 102093
         $header = ['手机号', '省', '市', 'type'];
         $i = self::getParam("index", 1);
-        ExcelUtil::getYZExcel('归属地' . date('Y-m-d'), $header, array_slice($data, $i * 10000, 10000));
+        ExcelUtil::getYZExcel('归属地' . $i . '_' . date('Y-m-d'), $header, array_slice($data, $i * 10000, 10000));
 
         exit;
     }
