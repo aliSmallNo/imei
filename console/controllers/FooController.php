@@ -1512,10 +1512,11 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        /*$date = date('Y-m-d');
+        $date = date('Y-m-d', strtotime('2019-09-30'));
         $reset = 1;
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
         /*print_r($trends);*/
+
 
         // var_dump(WechatUtil::createWechatMenus());
 
@@ -1572,27 +1573,27 @@ class FooController extends Controller
 
         // 标记手机号的 归属地
         //$phones = ExcelUtil::parseProduct("/data/code/imei/20191011.xlsx");
-        $phones = file("/data/code/imei/20191011.txt");
-        //$phones = file("/Users/b_tt/Downloads/20191011.txt");
-        $data = [];
-        $get_phone_local = function ($phone) {
-            $local = [];
-            if (AppUtil::checkPhone(intval($phone))) {
-                if (!CRMStockClient::findOne(['cPhone' => $phone])) {
-                    list($province, $city, $operator) = AppUtil::get_phone_location($phone);
-                    $local = [$phone, $province, $city, $operator];
-                }
-            }
-            return $local;
-        };
-        foreach ($phones as $k => $v) {
-            $phone = intval($v);
-            echo $k . ' : ' . $phone . PHP_EOL;
-            if ($local = $get_phone_local($phone)) {
-                $data[] = $local;
-            }
-        }
-        file_put_contents('/data/code/imei/cache_phones_20191011.txt', AppUtil::json_encode($data));
+        /* $phones = file("/data/code/imei/20191011.txt");
+         //$phones = file("/Users/b_tt/Downloads/20191011.txt");
+         $data = [];
+         $get_phone_local = function ($phone) {
+             $local = [];
+             if (AppUtil::checkPhone(intval($phone))) {
+                 if (!CRMStockClient::findOne(['cPhone' => $phone])) {
+                     list($province, $city, $operator) = AppUtil::get_phone_location($phone);
+                     $local = [$phone, $province, $city, $operator];
+                 }
+             }
+             return $local;
+         };
+         foreach ($phones as $k => $v) {
+             $phone = intval($v);
+             echo $k . ' : ' . $phone . PHP_EOL;
+             if ($local = $get_phone_local($phone)) {
+                 $data[] = $local;
+             }
+         }
+         file_put_contents('/data/code/imei/cache_phones_20191011.txt', AppUtil::json_encode($data));*/
 
         exit;
     }
