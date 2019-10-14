@@ -1363,14 +1363,16 @@ class StockController extends BaseController
 
         //echo file_get_contents('/data/logs/imei/cache_break_times.txt');
         //echo file_get_contents('/data/logs/imei/cache_avg_growth.txt');
-         StockBack::download_excel2();
+        // 导出回测数据
+        // StockBack::download_excel2();
 
-        /*
+
         // 导出标记的手机号 归属地
-        $data = file_get_contents('/data/code/imei/cache_phones_11926.txt');
+        //$data = file_get_contents('/data/code/imei/cache_phones_11926.txt');
+        $data = file_get_contents('/data/code/imei/cache_phones_20191011.txt');
         $data = AppUtil::json_decode($data);
         $header = ['手机号', '省', '市', 'type'];
-        ExcelUtil::getYZExcel('归属地' . date('Y-m-d'), $header, $data);*/
+        ExcelUtil::getYZExcel('归属地' . date('Y-m-d'), $header, $data);
 
         exit;
     }
