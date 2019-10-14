@@ -1512,9 +1512,9 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        $date = date('Y-m-d', strtotime('2019-09-30'));
+        /*$date = date('Y-m-d', strtotime('2019-09-30'));
         $reset = 1;
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
         /*print_r($trends);*/
 
 
