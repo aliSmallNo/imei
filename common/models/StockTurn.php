@@ -344,11 +344,12 @@ class StockTurn extends \yii\db\ActiveRecord
         $select_2 = [];// 标准2
         foreach ($days_10 as $k => $trans_on) {
             list($stock_ids_1, $stock_ids_2) = self::select_from_171($k, $trans_on);
-            $select_1[$k + 1] = $stock_ids_1;
+            if ($k < 7) {
+                $select_1[$k + 1] = $stock_ids_1;
+            }
             if ($k == 7) {
                 $select_2[$k + 1] = $stock_ids_2;
             }
-
         }
         return [$select_1, $select_2];
     }
