@@ -519,8 +519,10 @@ class StockTurn extends \yii\db\ActiveRecord
     public static function select_from_171($k, $trans_on)
     {
         $stock_ids = [];
-
-        foreach (self::$stock_171 as $stock_id) {
+        $stock171 = StockMenu::find()->where(['mStockId' => self::$stock_171])->asArray()->all();
+        foreach ($stock171 as $item) {
+            $stock_id = $item['mStockId'];
+            $stock_name = $item['mStockName'];
             $turn = self::unique_one($stock_id, $trans_on);
             if (!$turn) {
                 continue;
@@ -534,22 +536,14 @@ class StockTurn extends \yii\db\ActiveRecord
             $avgprice20 = $stat[20]['sAvgClose'];
             $avgturnover20 = $stat[20]['sAvgTurnover'];
 
-            /* echo
-                 $close . '_' .
-                 $avgprice5 . '_' .
-                 $avgprice10 . '_' .
-                 $avgprice20 . '_______' .
-                 $turnover . '_' .
-                 $avgturnover20 . '_'.
-                 $change . '_';
-             exit;*/
+            $item_data = ['id' => $stock_id, 'name' => $stock_name];
             if ($k < 7) {
                 if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
-                    $stock_ids[] = $stock_id;
+                    $stock_ids[] = $item_data;
                 }
             } else {
                 if ($change > 200 && $turnover < $avgturnover20) {
-                    $stock_ids[] = $stock_id;
+                    $stock_ids[] = $item_data;
                 }
             }
         }

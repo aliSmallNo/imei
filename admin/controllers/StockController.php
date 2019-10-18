@@ -1391,7 +1391,7 @@ class StockController extends BaseController
     public function actionStock171()
     {
         $select = StockTurn::stock171();
-        VarDumper::dump($select);exit;
+
         return $this->renderPage("stock_171.tpl",
             [
                 'list' => $select,

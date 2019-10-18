@@ -25,7 +25,7 @@
       <tr>
         <td>
           {{foreach from=$items item=item}}
-            {{$item}}
+            {{$item.name}} {{$item.id}}
             <br>
           {{/foreach}}
         </td>
