@@ -52,14 +52,14 @@
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
-        {{foreach from=$list2 key=key item=items}}
-          <th>第{{$key}}天 ({{count($items)}})</th>
+        {{foreach from=$list2 key=key2 item=items}}
+          <th>第{{$key2}}天 ({{count($items)}})</th>
         {{/foreach}}
       </tr>
       </thead>
       <tbody>
       <tr>
-        {{foreach from=$list1 item=items}}
+        {{foreach from=$list2 item=items}}
           <td>
             {{foreach from=$items item=item}}
               <span class="st_one">{{$item.name}} {{$item.id}}</span>
