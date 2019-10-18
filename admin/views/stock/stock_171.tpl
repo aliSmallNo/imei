@@ -20,7 +20,7 @@
     <thead>
     <tr>
       {{foreach from=$list key=key item=items}}
-      <th>第{{$key}}天</th>
+      <th>第{{$key}}天 ({{count($items)}})</th>
       {{/foreach}}
     </tr>
     </thead>
