@@ -29,7 +29,7 @@
 
 <div class="row-divider"></div>
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-sm-12">
     <h4>标准1 <span class="title_span">(第1天-第7天收盘价低于5，10，20日均线股票)</span></h4>
     <table class="table table-striped table-bordered">
       <thead>
@@ -52,7 +52,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-sm-4">
+  <div class="col-sm-6">
     <h3>标准2 <span class="title_span">(最近3天，任何一天有突破的股票。突破定义如下。1.涨幅超过2%；2.换手率低于20日均线)</span></h3>
     <table class="table table-striped table-bordered">
       <thead>
