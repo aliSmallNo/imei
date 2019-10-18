@@ -338,14 +338,14 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt = date('Y-m-d');
         }
         // 近 10 天
-        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 7);
+        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 8);
 
         $select_1 = [];// 标准1
         $select_2 = [];// 标准2
         foreach ($days_10 as $k => $trans_on) {
             list($stock_ids_1, $stock_ids_2) = self::select_from_171($k, $trans_on);
             $select_1[$k + 1] = $stock_ids_1;
-            if ($k > 3) {
+            if ($k == 7) {
                 $select_2[$k + 1] = $stock_ids_2;
             }
 
@@ -548,10 +548,12 @@ class StockTurn extends \yii\db\ActiveRecord
 
             $item_data = ['id' => $stock_id, 'name' => $stock_name];
 
-            if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
-                $stock_ids_1[] = $item_data;
+            if ($k < 7) {
+                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
+                    $stock_ids_1[] = $item_data;
+                }
             }
-            if ($k > 3) {
+            if ($k == 7) {
                 if ($change > 200 && $turnover < $avgturnover20) {
                     $stock_ids_2[] = $item_data;
                 }
