@@ -52,7 +52,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-12">
     <h3>标准2 <span class="title_span">(最近3天，任何一天有突破的股票。突破定义如下。1.涨幅超过2%；2.换手率低于20日均线)</span></h3>
     <table class="table table-striped table-bordered">
       <thead>
