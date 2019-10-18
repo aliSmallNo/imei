@@ -3,11 +3,15 @@
 
 </style>
 <div class="row">
-  <h4>股票171列表
+  <h4>{{$dt}} 股票171列表
   </h4>
 </div>
 <div class="row">
-
+  <form action="/stock/stock_171" method="get" class="form-inline">
+    <input class="my-date-input form-control" name="dt" placeholder="日期" type="text" value="{{$dt}}">
+    <button class="btn btn-primary">查询</button>
+    <span class="space"></span>
+  </form>
 </div>
 
 <div class="row-divider"></div>
@@ -31,7 +35,6 @@
         </td>
         {{/foreach}}
       </tr>
-
     </tbody>
   </table>
 

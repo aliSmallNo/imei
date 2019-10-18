@@ -101,14 +101,14 @@ class StockTurn extends \yii\db\ActiveRecord
      * @return array
      * @time 2019.9.24
      */
-    public static function get_trans_days($year = '2019', $limit = 0)
+    public static function get_trans_days($year = '2019', $where = '', $limit = 0)
     {
         $limit_str = '';
         if ($limit) {
             $limit_str = " limit " . intval($limit);
         }
         $sql = "select DISTINCT tTransOn from im_stock_turn 
-                where date_format(tTransOn,'%Y')=:y 
+                where date_format(tTransOn,'%Y')=:y $where
                 order by tTransOn desc $limit_str ";
         $res = AppUtil::db()->createCommand($sql, [
             ':y' => $year
@@ -332,10 +332,13 @@ class StockTurn extends \yii\db\ActiveRecord
      *          1.涨幅超过2%；2.换手率低于20日均线
      * @time 2019.10.18
      */
-    public static function stock171()
+    public static function stock171($dt = '')
     {
+        if (!$dt) {
+            $dt = date('Y-m-d');
+        }
         // 近 10 天
-        $days_10 = self::get_trans_days('2019', 10);
+        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 10);
 
         $select = [];
         foreach ($days_10 as $k => $trans_on) {

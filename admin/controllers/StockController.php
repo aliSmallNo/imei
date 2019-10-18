@@ -1388,13 +1388,15 @@ class StockController extends BaseController
      *          1.涨幅超过2%；2.换手率低于20日均线
      * @time 2019.10.18
      */
-    public function actionStock171()
+    public function actionStock_171()
     {
-        $select = StockTurn::stock171();
+        $dt = self::getParam("dt", date('Y-m-d'));
+        $select = StockTurn::stock171($dt);
 
         return $this->renderPage("stock_171.tpl",
             [
                 'list' => $select,
+                'dt' => $dt,
             ]
         );
     }
