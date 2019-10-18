@@ -101,9 +101,15 @@ class StockTurn extends \yii\db\ActiveRecord
      * @return array
      * @time 2019.9.24
      */
-    public static function get_trans_days($year = '2019')
+    public static function get_trans_days($year = '2019', $limit = 0)
     {
-        $sql = "select DISTINCT tTransOn from im_stock_turn where date_format(tTransOn,'%Y')=:y order by tTransOn desc";
+        $limit_str = '';
+        if ($limit) {
+            $limit_str = " limit " . intval($limit);
+        }
+        $sql = "select DISTINCT tTransOn from im_stock_turn 
+                where date_format(tTransOn,'%Y')=:y 
+                order by tTransOn desc $limit_str ";
         $res = AppUtil::db()->createCommand($sql, [
             ':y' => $year
         ])->queryAll();
@@ -314,6 +320,240 @@ class StockTurn extends \yii\db\ActiveRecord
         return Yii::$app->db->createCommand()->batchInsert(StockTurn::tableName(),
             ['tStockId', 'tOpen', 'tClose', 'tHight', 'tLow', "tTransOn"],
             $insert)->execute();
+
+    }
+
+
+    /**
+     * 1. 我筛选了171只合适股票，见附件
+     * 2. 按照以下标准筛选出每天合适的股票
+     *      a) 标准1：第1天-第7天收盘价低于5，10，20日均线股票
+     *      b) 标准2：最近3天，任何一天有突破的股票。突破定义如下。
+     *          1.涨幅超过2%；2.换手率低于20日均线
+     * @time 2019.10.18
+     */
+    public static function stock171()
+    {
+        // 近 10 天
+        $days_10 = self::get_trans_days('2019', 10);
+
+        $select = [];
+        foreach ($days_10 as $k => $trans_on) {
+            $select[$k + 1] = self::select_from_171($k, $trans_on);
+        }
+        return $select;
+    }
+
+    static $stock_171 = [
+        '002951',
+        '603758',
+        '603709',
+        '603278',
+        '603236',
+        '603068',
+        '601975',
+        '601698',
+        '601236',
+        '300788',
+        '300785',
+        '300783',
+        '300771',
+        '000032',
+        '603817',
+        '300290',
+        '600763',
+        '000966',
+        '603587',
+        '600609',
+        '600592',
+        '300768',
+        '300152',
+        '002576',
+        '300015',
+        '002044',
+        '002507',
+        '002947',
+        '002788',
+        '002547',
+        '002543',
+        '002214',
+        '002158',
+        '000682',
+        '603590',
+        '603378',
+        '603345',
+        '603267',
+        '600862',
+        '600366',
+        '600277',
+        '600230',
+        '300777',
+        '300580',
+        '300359',
+        '002830',
+        '002690',
+        '603959',
+        '600872',
+        '002313',
+        '002058',
+        '600673',
+        '600389',
+        '002791',
+        '002341',
+        '000531',
+        '600770',
+        '600323',
+        '600125',
+        '002115',
+        '002439',
+        '002505',
+        '002479',
+        '002436',
+        '002218',
+        '002057',
+        '002054',
+        '001896',
+        '000503',
+        '000150',
+        '603899',
+        '603868',
+        '603595',
+        '603579',
+        '603505',
+        '603317',
+        '603003',
+        '601330',
+        '601066',
+        '600305',
+        '600146',
+        '300755',
+        '300718',
+        '300470',
+        '300334',
+        '300025',
+        '002957',
+        '000526',
+        '601838',
+        '300240',
+        '002787',
+        '603507',
+        '600239',
+        '002442',
+        '300703',
+        '600335',
+        '603856',
+        '300674',
+        '300125',
+        '603387',
+        '000038',
+        '000046',
+        '603790',
+        '603890',
+        '603386',
+        '002123',
+        '002241',
+        '300627',
+        '300354',
+        '002297',
+        '300085',
+        '601908',
+        '603978',
+        '600537',
+        '300705',
+        '000545',
+        '300538',
+        '300198',
+        '300466',
+        '002411',
+        '603712',
+        '601008',
+        '603717',
+        '002630',
+        '601949',
+        '300735',
+        '002798',
+        '600338',
+        '000655',
+        '603045',
+        '603628',
+        '300723',
+        '601155',
+        '002334',
+        '601989',
+        '002792',
+        '002596',
+        '600880',
+        '000586',
+        '600868',
+        '300289',
+        '601012',
+        '600330',
+        '002056',
+        '603969',
+        '300177',
+        '600708',
+        '600809',
+        '300700',
+        '300091',
+        '300347',
+        '603602',
+        '300512',
+        '002417',
+        '000592',
+        '002694',
+        '603118',
+        '300322',
+        '002910',
+        '002120',
+        '600507',
+        '601231',
+        '002938',
+        '002301',
+        '300030',
+        '603895',
+        '603214',
+        '600759',
+        '002357',
+        '000601',];
+
+    public static function select_from_171($k, $trans_on)
+    {
+        $stock_ids = [];
+
+        foreach (self::$stock_171 as $stock_id) {
+            $turn = self::unique_one($stock_id, $trans_on);
+            if (!$turn) {
+                continue;
+            }
+            $close = $turn->tClose;
+            $turnover = $turn->tTurnover;
+            $change = $turn->tChangePercent;
+            $stat = AppUtil::json_decode($turn->tStat);
+            $avgprice5 = $stat[5]['sAvgClose'];
+            $avgprice10 = $stat[10]['sAvgClose'];
+            $avgprice20 = $stat[20]['sAvgClose'];
+            $avgturnover20 = $stat[20]['sAvgTurnover'];
+
+            /* echo
+                 $close . '_' .
+                 $avgprice5 . '_' .
+                 $avgprice10 . '_' .
+                 $avgprice20 . '_______' .
+                 $turnover . '_' .
+                 $avgturnover20 . '_'.
+                 $change . '_';
+             exit;*/
+            if ($k < 7) {
+                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
+                    $stock_ids[] = $stock_id;
+                }
+            } else {
+                if ($change > 200 && $turnover < $avgturnover20) {
+                    $stock_ids[] = $stock_id;
+                }
+            }
+        }
+        return $stock_ids;
 
     }
 

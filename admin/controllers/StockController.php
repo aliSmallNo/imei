@@ -19,6 +19,7 @@ use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockBack;
 use common\models\StockOrder;
+use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
@@ -1379,4 +1380,22 @@ class StockController extends BaseController
         exit;
     }
 
+    /**
+     * 1. 我筛选了171只合适股票，见附件
+     * 2. 按照以下标准筛选出每天合适的股票
+     *      a) 标准1：第1天-第7天收盘价低于5，10，20日均线股票
+     *      b) 标准2：最近3天，任何一天有突破的股票。突破定义如下。
+     *          1.涨幅超过2%；2.换手率低于20日均线
+     * @time 2019.10.18
+     */
+    public function actionStock171()
+    {
+        $select = StockTurn::stock171();
+        VarDumper::dump($select);exit;
+        return $this->renderPage("stock_171.tpl",
+            [
+                'list' => $select,
+            ]
+        );
+    }
 }
