@@ -2,12 +2,17 @@
 <style>
   .st_one {
     display: inline-block;
-    font-size: 12px;
+    font-size: 10px;
+    white-space: nowrap;
+    background: #ccc;
+    padding: 3px 3px;
+    margin: 6px 0;
+    border-radius: 3px;
   }
 
   .title_span {
     font-size: 12px;
-    color: #eee;
+    color: #888;
   }
 </style>
 <div class="row">
@@ -24,8 +29,8 @@
 
 <div class="row-divider"></div>
 <div class="row">
-  <div class="col-sm-8">
-    <h3>标准1 <span class="title_span">第1天-第7天收盘价低于5，10，20日均线股票</span></h3>
+  <div class="col-sm-6">
+    <h4>标准1 <span class="title_span">(第1天-第7天收盘价低于5，10，20日均线股票)</span></h4>
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
@@ -48,7 +53,7 @@
     </table>
   </div>
   <div class="col-sm-4">
-    <h3>标准2 <span class="title_span">最近3天，任何一天有突破的股票。突破定义如下。1.涨幅超过2%；2.换手率低于20日均线</span></h3>
+    <h3>标准2 <span class="title_span">(最近3天，任何一天有突破的股票。突破定义如下。1.涨幅超过2%；2.换手率低于20日均线)</span></h3>
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
