@@ -338,13 +338,16 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt = date('Y-m-d');
         }
         // 近 10 天
-        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 10);
+        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 7);
 
-        $select = [];
+        $select_1 = [];// 标准1
+        $select_2 = [];// 标准2
         foreach ($days_10 as $k => $trans_on) {
-            $select[$k + 1] = self::select_from_171($k, $trans_on);
+            list($stock_ids_1, $stock_ids_2) = self::select_from_171($k, $trans_on);
+            $select_1[$k + 1] = $stock_ids_1;
+            $select_2[$k + 1] = $stock_ids_2;
         }
-        return $select;
+        return [$select_1, $select_2];
     }
 
     static $stock_171 = [
@@ -521,7 +524,8 @@ class StockTurn extends \yii\db\ActiveRecord
 
     public static function select_from_171($k, $trans_on)
     {
-        $stock_ids = [];
+        $stock_ids_1 = [];
+        $stock_ids_2 = [];
         $stock171 = StockMenu::find()->where(['mStockId' => self::$stock_171])->asArray()->all();
         foreach ($stock171 as $item) {
             $stock_id = $item['mStockId'];
@@ -540,17 +544,18 @@ class StockTurn extends \yii\db\ActiveRecord
             $avgturnover20 = $stat[20]['sAvgTurnover'];
 
             $item_data = ['id' => $stock_id, 'name' => $stock_name];
-            if ($k < 7) {
-                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
-                    $stock_ids[] = $item_data;
-                }
-            } else {
+
+            if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
+                $stock_ids_1[] = $item_data;
+            }
+            if ($k > 3) {
                 if ($change > 200 && $turnover < $avgturnover20) {
-                    $stock_ids[] = $item_data;
+                    $stock_ids_2[] = $item_data;
                 }
             }
+
         }
-        return $stock_ids;
+        return [$stock_ids_1, $stock_ids_2];
 
     }
 
