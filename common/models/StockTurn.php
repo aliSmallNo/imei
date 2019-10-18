@@ -338,7 +338,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt = date('Y-m-d');
         }
         // 近 10 天
-        $days_10 = self::get_trans_days('2019', " and tTransOn<='$dt' ", 8);
+        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 8);
 
         $select_1 = [];// 标准1
         $select_2 = [];// 标准2
@@ -557,6 +557,12 @@ class StockTurn extends \yii\db\ActiveRecord
             if ($k == 7) {
                 if ($change > 200 && $turnover > $avgturnover20) {
                     $stock_ids_2[] = $item_data;
+                }
+                if ($stock_id == '000966') {
+                    echo $change . '<br>';
+                    echo $turnover . '<br>';
+                    echo $avgturnover20 . '<br>';
+                    exit;
                 }
             }
 
