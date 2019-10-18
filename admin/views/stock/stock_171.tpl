@@ -21,16 +21,17 @@
     </tr>
     </thead>
     <tbody>
-    {{foreach from=$list item=items}}
       <tr>
+        {{foreach from=$list item=items}}
         <td>
           {{foreach from=$items item=item}}
             {{$item.name}} {{$item.id}}
             <br>
           {{/foreach}}
         </td>
+        {{/foreach}}
       </tr>
-    {{/foreach}}
+
     </tbody>
   </table>
 
