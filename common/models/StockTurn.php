@@ -555,7 +555,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 }
             }
             if ($k == 7) {
-                if ($change > 200 && $turnover < $avgturnover20) {
+                if ($change > 200 && $turnover > $avgturnover20) {
                     $stock_ids_2[] = $item_data;
                 }
             }
