@@ -338,7 +338,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt = date('Y-m-d');
         }
         // 近 10 天
-        $days_10 = self::get_trans_days('2019', " and tTransOn<'$dt' ", 8);
+        $days_10 = self::get_trans_days('2019', " and tTransOn<='$dt' ", 8);
 
         $select_1 = [];// 标准1
         $select_2 = [];// 标准2
