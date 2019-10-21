@@ -353,7 +353,7 @@ class StockTurn extends \yii\db\ActiveRecord
             }
         }
 
-        // 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
+        // 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
         foreach ($select_2[8] as $k => $item) {
             $ids1 = array_column($select_1[1], 'id');
             $ids2 = array_column($select_1[2], 'id');
@@ -549,10 +549,8 @@ class StockTurn extends \yii\db\ActiveRecord
         '000601',];
 
     /**
-     * @param $k
-     * @param $trans_on
-     * @return array
-     * 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
+     * 标准1：第1天-第7天收盘价低于5，10，20日均线股票
+     * 标准2：最近1天，任何一天有突破的股票。突破定义如下：1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
      * @time 2019.10.21 modify
      */
     public static function select_from_171($k, $trans_on)
