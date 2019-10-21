@@ -352,6 +352,27 @@ class StockTurn extends \yii\db\ActiveRecord
                 $select_2[$k + 1] = $stock_ids_2;
             }
         }
+
+        // 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
+        foreach ($select_2[8] as $k => $item) {
+            $ids1 = array_column($select_1[1], 'id');
+            $ids2 = array_column($select_1[2], 'id');
+            $ids3 = array_column($select_1[3], 'id');
+            $ids4 = array_column($select_1[4], 'id');
+            $ids5 = array_column($select_1[5], 'id');
+            $ids6 = array_column($select_1[6], 'id');
+            $ids7 = array_column($select_1[7], 'id');
+            if (!in_array($item['id'], $ids1)
+                || !in_array($item['id'], $ids2)
+                || !in_array($item['id'], $ids3)
+                || !in_array($item['id'], $ids4)
+                || !in_array($item['id'], $ids5)
+                || !in_array($item['id'], $ids6)
+                || !in_array($item['id'], $ids7)
+            ) {
+                unset($select_2[8][$k]);
+            }
+        }
         return [$select_1, $select_2];
     }
 
@@ -527,6 +548,13 @@ class StockTurn extends \yii\db\ActiveRecord
         '002357',
         '000601',];
 
+    /**
+     * @param $k
+     * @param $trans_on
+     * @return array
+     * 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
+     * @time 2019.10.21 modify
+     */
     public static function select_from_171($k, $trans_on)
     {
         $stock_ids_1 = [];
@@ -558,13 +586,10 @@ class StockTurn extends \yii\db\ActiveRecord
                 }
             }
             if ($k == 7) {
-                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20
-                    && $change > 200 && $turnover > $avgturnover20) {
+                if ($change > 200 && $turnover > $avgturnover20) {
                     $stock_ids_2[] = $item_data;
                 }
-
             }
-
         }
         return [$stock_ids_1, $stock_ids_2];
 

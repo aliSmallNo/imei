@@ -56,13 +56,13 @@
     </table>
   </div>
   <div class="col-sm-12">
-    <h3>标准2 <span class="title_span">(最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天收盘价低于5，10，20日均线股票 2.涨幅超过2%；2.换手率高于20日均线)</span></h3>
+    <h3>标准2 <span class="title_span">(最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线)</span></h3>
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
         {{foreach from=$list2 key=key2 item=items}}
           <th>第{{$key2}}天
-            <br><span class="title_span">{{$items[0].trans_on}}</span>
+            <br><span class="title_span">{{if isset($items[0])}}{{$items[0].trans_on}}{{/if}}</span>
             <br>({{count($items)}})</th>
         {{/foreach}}
       </tr>
