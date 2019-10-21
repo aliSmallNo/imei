@@ -363,12 +363,12 @@ class StockTurn extends \yii\db\ActiveRecord
             $ids6 = array_column($select_1[6], 'id');
             $ids7 = array_column($select_1[7], 'id');
             if (!in_array($item['id'], $ids1)
-                || !in_array($item['id'], $ids2)
-                || !in_array($item['id'], $ids3)
-                || !in_array($item['id'], $ids4)
-                || !in_array($item['id'], $ids5)
-                || !in_array($item['id'], $ids6)
-                || !in_array($item['id'], $ids7)
+                && !in_array($item['id'], $ids2)
+                && !in_array($item['id'], $ids3)
+                && !in_array($item['id'], $ids4)
+                && !in_array($item['id'], $ids5)
+                && !in_array($item['id'], $ids6)
+                && !in_array($item['id'], $ids7)
             ) {
                 unset($select_2[8][$k]);
             }
