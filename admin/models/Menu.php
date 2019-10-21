@@ -237,22 +237,24 @@ class Menu
 
                 ]
             ],
-            "name" => "大盘分析",
-            "id" => "stock_menu",
-            "icon" => "fa-users",
-            "staff" => 1,
-            "items" => [
-                [
-                    "name" => "换手率",
-                    "url" => "/stock/stock_turn",
-                    "revise" => 1,
-                    "level" => 827
-                ],
-                [
-                    "name" => "股票171",
-                    "url" => "/stock/stock_171",
-                    "revise" => 1,
-                    "level" => 827
+            [
+                "name" => "大盘分析",
+                "id" => "stock_menu",
+                "icon" => "fa-users",
+                "staff" => 1,
+                "items" => [
+                    [
+                        "name" => "换手率",
+                        "url" => "/stock/stock_turn",
+                        "revise" => 1,
+                        "level" => 827
+                    ],
+                    [
+                        "name" => "股票171",
+                        "url" => "/stock/stock_171",
+                        "revise" => 1,
+                        "level" => 827
+                    ],
                 ],
             ],
             [
