@@ -1391,7 +1391,7 @@ class StockController extends BaseController
     {
         $dt = self::getParam("dt", date('Y-m-d'));
         list($select1, $select2) = StockTurn::stock171($dt);
-        print_r($select2);
+
         return $this->renderPage("stock_171.tpl",
             [
                 'list1' => $select1,
