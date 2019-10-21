@@ -13,6 +13,7 @@
   .title_span {
     font-size: 12px;
     color: #888;
+    font-weight: 500;
   }
 </style>
 <div class="row">
@@ -35,7 +36,9 @@
       <thead>
       <tr>
         {{foreach from=$list1 key=key item=items}}
-          <th>第{{$key}}天 ({{count($items)}})</th>
+          <th>第{{$key}}天
+            <br><span class="title_span">{{$items[0].trans_on}}</span>
+            <br>({{count($items)}})</th>
         {{/foreach}}
       </tr>
       </thead>

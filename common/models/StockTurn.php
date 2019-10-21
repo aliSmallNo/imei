@@ -531,7 +531,9 @@ class StockTurn extends \yii\db\ActiveRecord
     {
         $stock_ids_1 = [];
         $stock_ids_2 = [];
-        $stock171 = StockMenu::find()->where(['mStockId' => self::$stock_171])->asArray()->all();
+        //$stock171 = StockMenu::find()->where(['mStockId' => self::$stock_171])->asArray()->all();
+        $stock171 = StockMenu::get_valid_stocks(" and mStockId in (" . implode(',', self::$stock_171) . ") ");
+
         foreach ($stock171 as $item) {
             $stock_id = $item['mStockId'];
             $stock_name = $item['mStockName'];
@@ -548,7 +550,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $avgprice20 = $stat[20]['sAvgClose'];
             $avgturnover20 = $stat[20]['sAvgTurnover'];
 
-            $item_data = ['id' => $stock_id, 'name' => $stock_name];
+            $item_data = ['id' => $stock_id, 'name' => $stock_name, 'trans_on' => $trans_on];
 
             if ($k < 7) {
                 if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
