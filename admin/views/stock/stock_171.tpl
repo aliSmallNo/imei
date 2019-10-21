@@ -63,7 +63,8 @@
         {{foreach from=$list2 key=key2 item=items}}
           <th>第{{$key2}}天
             <br><span class="title_span">{{if isset($items[0])}}{{$items[0].trans_on}}{{/if}}</span>
-            <br>({{count($items)}})</th>
+            <br>({{count($items)}})
+          </th>
         {{/foreach}}
       </tr>
       </thead>

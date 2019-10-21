@@ -373,6 +373,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 unset($select_2[8][$k]);
             }
         }
+        $select_2[8] = array_values($select_2[8]);
         return [$select_1, $select_2];
     }
 
