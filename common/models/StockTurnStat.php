@@ -69,6 +69,9 @@ class StockTurnStat extends \yii\db\ActiveRecord
      */
     public static function stat($dt = "")
     {
+        if (!$dt) {
+            $dt = date("Y-m-d");
+        }
         $ids = StockMenu::get_valid_stocks();
         $insertData = [];
         self::deleteAll(['sEnd' => $dt]);
@@ -91,11 +94,9 @@ class StockTurnStat extends \yii\db\ActiveRecord
         }
     }
 
-    public static function stat_one($stockId, $dt = "")
+    public static function stat_one($stockId, $dt)
     {
-        if (!$dt) {
-            $dt = date("Y-m-d");
-        }
+
         $sql = "select * from im_stock_turn where tStockId=:stockId and tTransOn<=:dt order by tTransOn desc limit :num";
         $res = AppUtil::db()->createCommand($sql, [
             ':num' => 60,
