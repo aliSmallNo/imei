@@ -38,7 +38,6 @@ class StockTurn extends \yii\db\ActiveRecord
         if (!$values) {
             return [false, false];
         }
-
         if ($entity = self::unique_one($values['tStockId'], $values['tTransOn'])) {
             if ($values['tTurnover'] != 0) {
                 return self::edit($entity->tId, $values);
@@ -255,7 +254,7 @@ class StockTurn extends \yii\db\ActiveRecord
             echo 'get_stime_etime_turnover_data:' . $stockId . PHP_EOL;
             list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $start, $end);
             if ($status == 0) {
-                $insertData = self::process_data($hqs, $stockId);
+                $insertData = self::batch_process_data($hqs, $stockId);
                 if ($insertData) {
                     Yii::$app->db->createCommand()->batchInsert(self::tableName(),
                         ["tStockId", "tTurnover", "tChangePercent", "tOpen", "tClose", "tHight", "tLow", "tTransOn"],
@@ -268,7 +267,7 @@ class StockTurn extends \yii\db\ActiveRecord
         return true;
     }
 
-    public static function process_data($hqs, $stockId)
+    public static function batch_process_data($hqs, $stockId)
     {
         $data = [];
         foreach ($hqs as $i => $hq) {
@@ -292,6 +291,33 @@ class StockTurn extends \yii\db\ActiveRecord
                     "tTransOn" => $trans_on,                    //交易日
                 ];
             }
+        }
+        return $data;
+    }
+
+    public static function process_data($hqs, $stockId)
+    {
+        $data = [];
+        foreach ($hqs as $i => $hq) {
+            $trans_on = $hq[0];
+            $open = floatval($hq[1]);
+            $close = floatval($hq[2]);
+            $change_percent = floatval(substr($hq[4], 0, -1));
+            $low = floatval($hq[5]);
+            $hight = floatval($hq[6]);
+            $turnover = floatval(substr($hq[9], 0, -1));
+
+            $data[] = [
+                "tStockId" => $stockId,
+                "tTurnover" => $turnover * 100,             //换手率
+                "tChangePercent" => $change_percent * 100,  //涨跌幅
+                "tOpen" => $open * 100,                     //开盘价
+                "tClose" => $close * 100,                   //收盘价
+                "tHight" => $hight * 100,                   //最高价
+                "tLow" => $low * 100,                       //最低价
+                "tTransOn" => $trans_on,                    //交易日
+            ];
+
         }
         return $data;
     }
@@ -375,12 +401,12 @@ class StockTurn extends \yii\db\ActiveRecord
             $stockId = $v['mStockId'];
             $mCat = $v['mCat'];
             echo 'complete_lose_data:' . $stockId . PHP_EOL;
-            $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0, 'tStockId' => '002576'])->asArray()->all();
+            $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0, 'tStockId' => '002576'])->asArray()->orderBy("tTransOn desc")->all();
 
             foreach ($lose_turn_list as $lose_turn) {
-                list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $lose_turn['tTransOn'], $lose_turn['tTransOn']);
+                list($status, $hqs, $stat) = self::get_stock_turnover($lose_turn['tStockId'], $lose_turn['tTransOn'], $lose_turn['tTransOn']);
                 if ($status == 0) {
-                    $insertData = self::process_data($hqs, $stockId);
+                    $insertData = self::process_data($hqs, $lose_turn['tStockId']);
                     if ($insertData) {
                         /*Yii::$app->db->createCommand()->batchInsert(self::tableName(),
                             ["tStockId", "tTurnover", "tChangePercent", "tOpen", "tClose", "tHight", "tLow", "tTransOn"],
@@ -389,7 +415,6 @@ class StockTurn extends \yii\db\ActiveRecord
                     }
                 }
             }
-            break;
         }
     }
 
