@@ -178,7 +178,7 @@ class CrontabController extends Controller
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'end']);
             }
         } catch (\Exception $e) {
-            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err1', 'oAfter' => $e->getMessage().';'.$e->getTrace().'; line'.$e->getLine()]);
+            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err1', 'oAfter' => $e->getMessage() . ';' . $e->getTrace() . '; line' . $e->getLine()]);
         }
 
     }

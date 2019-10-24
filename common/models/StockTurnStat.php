@@ -71,6 +71,7 @@ class StockTurnStat extends \yii\db\ActiveRecord
     {
         $ids = StockMenu::get_valid_stocks();
         $insertData = [];
+        self::deleteAll(['sEnd' => $dt]);
         foreach ($ids as $v) {
             $id = $v['mStockId'];
             echo 'stat dt:' . $dt . ' mStockId' . $id . PHP_EOL;
