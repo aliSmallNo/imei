@@ -44,6 +44,7 @@ use common\utils\COSUtil;
 use common\utils\ExcelUtil;
 use common\utils\IDOCR;
 use common\utils\ImageUtil;
+use common\utils\JoinQuant;
 use common\utils\NoticeUtil;
 use common\utils\Pinyin;
 use common\utils\PushUtil;
@@ -1512,6 +1513,8 @@ class FooController extends Controller
     public function actionZp()
     {
 
+        //StockTurn::get_stock_turnover_bak1('002249');
+
         /*$date = date('Y-m-d', strtotime('2019-09-30'));
         $reset = 1;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
@@ -1540,6 +1543,9 @@ class FooController extends Controller
 //        $date = "2019-09-24";
 //        StockTurn::update_current_day_all($date);
 //        StockTurnStat::stat($date);
+        StockTurn::update_current_day_all();
+        StockTurnStat::stat();
+        StockTurnStat::stat_to_turn();
 
         // 更新统计数据到 StockTurn
         // stat_to_turn

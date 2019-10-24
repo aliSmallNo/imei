@@ -38,7 +38,7 @@ use yii\db\Exception;
 
 class CrontabController extends Controller
 {
-    // 1 */4 * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/rank
+    // 30 */1 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/rank
     // 6 */12 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/exp
     // 8 1 */1 * *   /usr/local/php/bin/php /data/code/imei/yii crontab/refresh
     // 1 */3 * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/pool
@@ -170,7 +170,7 @@ class CrontabController extends Controller
 
         try {
             Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'out']);
-            if (date('H') == "20") {
+            if (in_array(date('H'), ['10', '11', '13', '14', '15', '16', '17', '18', '19', '20'])) {
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'start']);
                 StockTurn::update_current_day_all();
                 StockTurnStat::stat();
@@ -185,14 +185,14 @@ class CrontabController extends Controller
 
     public function actionTry_phone()
     {
-       /* if (date('H') % 4 == 0) {
-            TryPhone::phone_section_1();
-        }
+        /* if (date('H') % 4 == 0) {
+             TryPhone::phone_section_1();
+         }
 
 
-        if (date('H') % 4 != 0) {
-            TryPhone::phone_section_2();
-        }*/
+         if (date('H') % 4 != 0) {
+             TryPhone::phone_section_2();
+         }*/
 
     }
 

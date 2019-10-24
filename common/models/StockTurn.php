@@ -40,6 +40,9 @@ class StockTurn extends \yii\db\ActiveRecord
         }
 
         if ($entity = self::unique_one($values['tStockId'], $values['tTransOn'])) {
+            if ($entity->tTurnover == 0) {
+                return self::edit($entity->tId, $values);
+            }
             return [false, false];
         }
 
@@ -118,6 +121,40 @@ class StockTurn extends \yii\db\ActiveRecord
     }
 
     /**
+     * https://blog.csdn.net/USTBHacker/article/details/8365756
+     * 获取当天换手率 涨跌幅等数据
+     * @time 2019.10.23
+     */
+    public static function get_stock_turnover_bak1($stockId, $cat = 'sz')
+    {
+        $base_url = "http://qt.gtimg.cn/q=%s%s";
+        $ret = AppUtil::httpGet(sprintf($base_url, $cat, $stockId));
+        $ret = AppUtil::check_encode($ret);
+        $ret = explode('~', $ret);
+
+        $data = [];
+        if (is_array($ret) && count($ret) > 40) {
+            $dt = $ret[30];
+            $trans_on = substr($dt, 0, 4)
+                . '-' . substr($dt, 4, 2)
+                . '-' . substr($dt, 6, 2);
+
+            $data = [
+                "tStockId" => $stockId,
+                "tTurnover" => $ret[38] * 100,                  //换手率
+                "tChangePercent" => $ret[32] * 100,             //涨跌幅
+                "tOpen" => $ret[5] * 100,                       //开盘价
+                "tClose" => $ret[3] * 100,                      //收盘价
+                "tHight" => $ret[33] * 100,                     //最高价
+                "tLow" => $ret[34] * 100,                       //最低价
+                "tTransOn" => $trans_on,                        //交易日
+            ];
+        }
+
+        return $data;
+    }
+
+    /**
      * 获取换手率 涨跌幅等数据
      * @time 2019.9.23 modify
      */
@@ -169,8 +206,8 @@ class StockTurn extends \yii\db\ActiveRecord
             $cat = $v['mCat'];
             echo 'update_current_day_all:' . $stockId . PHP_EOL;
 
-            //用 sohu 接口添加换手率等信息
-            self::add_one_stock($stockId, $dt);
+            //用 sohu/腾讯 接口添加换手率等信息
+            self::add_one_stock($stockId, $dt, $cat);
             //用 kline接口 来补充遗漏
             StockKline::update_one_stock_kline($stockId, $cat, true, "19");
         }
@@ -180,7 +217,7 @@ class StockTurn extends \yii\db\ActiveRecord
      * 添加 指定日期 指定股票的换手率
      * @time 2019.9.23
      */
-    public static function add_one_stock($stockId, $dt = "")
+    public static function add_one_stock($stockId, $dt, $cat)
     {
         if (!$dt) {
             $dt1 = date("Ymd");
@@ -188,12 +225,16 @@ class StockTurn extends \yii\db\ActiveRecord
             $dt1 = date("Ymd", strtotime($dt));
         }
 
+        // 搜狐接口
         list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $dt1, $dt1);
         if ($status == 0) {
             $data = self::process_data($hqs, $stockId);
             if ($data) {
                 self::add($data[0]);
             }
+            // 腾讯接口
+        } elseif ($data = self::get_stock_turnover_bak1($stockId, $cat)) {
+            self::add($data);
         }
     }
 
