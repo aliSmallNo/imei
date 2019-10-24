@@ -40,7 +40,7 @@ class StockTurn extends \yii\db\ActiveRecord
         }
 
         if ($entity = self::unique_one($values['tStockId'], $values['tTransOn'])) {
-            if ($entity->tTurnover == 0) {
+            if ($values['tTurnover'] != 0) {
                 return self::edit($entity->tId, $values);
             }
             return [false, false];
