@@ -18,6 +18,8 @@
 </style>
 <div class="row">
   <h4>{{$dt}} 股票171列表
+    <span class="title_span">更新时间：{{$update_on}}</span>
+  <h4>
   </h4>
 </div>
 <div class="row">

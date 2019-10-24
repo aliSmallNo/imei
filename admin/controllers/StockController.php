@@ -1392,11 +1392,13 @@ class StockController extends BaseController
         $dt = self::getParam("dt", date('Y-m-d'));
         list($select1, $select2) = StockTurn::stock171($dt);
 
+        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
         return $this->renderPage("stock_171.tpl",
             [
                 'list1' => $select1,
                 'list2' => $select2,
                 'dt' => $dt,
+                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
         );
     }
