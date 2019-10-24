@@ -1512,8 +1512,9 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
-        //StockTurn::get_stock_turnover_bak1('002249');
+        //$ret=StockOrder::getStockPrice('300377');
+        $ret=StockOrder::getStockPrice('300377');
+        print_r($ret);
 
         /*$date = date('Y-m-d', strtotime('2019-09-30'));
         $reset = 1;
@@ -1530,11 +1531,11 @@ class FooController extends Controller
         //StockTurn::get_stime_etime_turnover_data('16','20160101', '20161231');
 
         // 按年度 计算平均换手率 平均收盘价
-        /*$days = StockTurn::get_trans_days('2018');
-        foreach ($days as $day) {
-            StockTurnStat::stat($day);
-        }
-        $days = StockTurn::get_trans_days('2017');
+//        $days = StockTurn::get_trans_days('2018');
+//        foreach ($days as $day) {
+//            StockTurnStat::stat($day);
+//        }
+        /*$days = StockTurn::get_trans_days('2017');
         foreach ($days as $day) {
             StockTurnStat::stat($day);
         }*/
@@ -1546,7 +1547,7 @@ class FooController extends Controller
 
 
         // 补全接口丢失数据
-        // StockTurn::complete_lose_data();
+//         StockTurn::complete_lose_data();
 
         // 更新统计数据到 StockTurn
         // stat_to_turn

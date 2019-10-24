@@ -255,17 +255,19 @@ class StockOrder extends ActiveRecord
 
         // https://blog.csdn.net/simon803/article/details/7784682
         $base_url = "http://hq.sinajs.cn/list=" . self::get_stock_prefix($stockId) . $stockId;
-        $ret = AppUtil::httpGet($base_url, ['Content-Type: application/javascript; charset=gbk']);
+        $ret = AppUtil::httpGet($base_url);
+        //echo $ret . PHP_EOL;;
         $pos = strpos($ret, "=");
         $ret = substr($ret, $pos + 2, -2);
 
-        if (!mb_check_encoding($ret, 'utf-8')) {
-            $ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'UTF-8', 'GB2312', 'GBK']);
-        }
+        $ret = AppUtil::check_encode($ret);
         //$ret = AppUtil::check_encode($ret);
-        //echo $ret . PHP_EOL;exit;
+        //echo $ret . PHP_EOL;;
         $ret = explode(",", $ret);
-        // unset($ret[0]);
+        // bug 2019-10-24
+        if ($stockId == '300377') {
+            $ret[0] = '赢时胜';
+        }
         return $ret;
 
     }

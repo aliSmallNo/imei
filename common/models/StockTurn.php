@@ -404,7 +404,8 @@ class StockTurn extends \yii\db\ActiveRecord
             $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0, 'tStockId' => $stockId])->asArray()->orderBy("tTransOn desc")->all();
 
             foreach ($lose_turn_list as $lose_turn) {
-                list($status, $hqs, $stat) = self::get_stock_turnover($lose_turn['tStockId'], $lose_turn['tTransOn'], $lose_turn['tTransOn']);
+                $tTransOn = $lose_turn['tTransOn'];
+                list($status, $hqs, $stat) = self::get_stock_turnover($lose_turn['tStockId'], $tTransOn, $tTransOn);
                 if ($status == 0) {
                     $insertData = self::process_data($hqs, $lose_turn['tStockId']);
                     if ($insertData) {
