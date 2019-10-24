@@ -375,8 +375,8 @@ class StockTurn extends \yii\db\ActiveRecord
             $stockId = $v['mStockId'];
             $mCat = $v['mCat'];
             echo 'complete_lose_data:' . $stockId . PHP_EOL;
-            $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0, 'tStockId' => $stockId])->asArray()->all();
-            print_r($lose_turn_list);
+            $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0, 'tStockId' => '002576'])->asArray()->all();
+
             foreach ($lose_turn_list as $lose_turn) {
                 list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $lose_turn['tTransOn'], $lose_turn['tTransOn']);
                 if ($status == 0) {
