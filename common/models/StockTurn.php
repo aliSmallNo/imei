@@ -364,6 +364,33 @@ class StockTurn extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * 补全数据
+     * @time 2019-10-24
+     */
+    public static function complete_lose_data()
+    {
+        $ids = StockMenu::get_valid_stocks();
+        foreach ($ids as $v) {
+            $stockId = $v['mStockId'];
+            $mCat = $v['mCat'];
+            echo 'complete_lose_data:' . $stockId . PHP_EOL;
+            $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0])->asArray()->all();
+            foreach ($lose_turn_list as $lose_turn) {
+                list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $lose_turn['tTransOn'], $lose_turn['tTransOn']);
+                if ($status == 0) {
+                    $insertData = self::process_data($hqs, $stockId);
+                    if ($insertData) {
+                        /*Yii::$app->db->createCommand()->batchInsert(self::tableName(),
+                            ["tStockId", "tTurnover", "tChangePercent", "tOpen", "tClose", "tHight", "tLow", "tTransOn"],
+                            $insertData)->execute();*/
+                        self::add($insertData[0]);
+                    }
+                }
+            }
+        }
+    }
+
 
     /**
      * 1. 我筛选了171只合适股票，见附件

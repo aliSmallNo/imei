@@ -1543,9 +1543,9 @@ class FooController extends Controller
 //        $date = "2019-09-24";
 //        StockTurn::update_current_day_all($date);
 //        StockTurnStat::stat($date);
-        StockTurn::update_current_day_all();
-        StockTurnStat::stat();
-        StockTurnStat::stat_to_turn();
+
+        // 补全接口丢失数据
+        StockTurn::complete_lose_data();
 
         // 更新统计数据到 StockTurn
         // stat_to_turn
