@@ -1513,8 +1513,6 @@ class FooController extends Controller
     public function actionZp()
     {
         //$ret=StockOrder::getStockPrice('300377');
-        $ret=StockOrder::getStockPrice('300377');
-        print_r($ret);
 
         /*$date = date('Y-m-d', strtotime('2019-09-30'));
         $reset = 1;
