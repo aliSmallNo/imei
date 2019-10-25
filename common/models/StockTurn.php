@@ -39,7 +39,7 @@ class StockTurn extends \yii\db\ActiveRecord
             return [false, false];
         }
         if ($entity = self::unique_one($values['tStockId'], $values['tTransOn'])) {
-            if (isset($values['tTurnover']) && $values['tTurnover']!= 0) {
+            if (isset($values['tTurnover']) && $values['tTurnover'] != 0) {
                 return self::edit($entity->tId, $values);
             }
             return [false, false];
@@ -428,19 +428,19 @@ class StockTurn extends \yii\db\ActiveRecord
      *          1.涨幅超过2%；2.换手率低于20日均线
      * @time 2019.10.18
      */
-    public static function stock171($dt = '')
+    public static function stock171($dt = '', $cat = 171)
     {
         if (!$dt) {
             $dt = date('Y-m-d');
         }
-        // 近 10 天
-        $days_10 = self::get_trans_days('2019', " and tTransOn<='$dt' ", 8);
-        $days_10 = array_reverse($days_10);
+        // 近 8 天
+        $days_8 = self::get_trans_days('2019', " and tTransOn<='$dt' ", 8);
+        $days_8 = array_reverse($days_8);
 
         $select_1 = [];// 标准1
         $select_2 = [];// 标准2
-        foreach ($days_10 as $k => $trans_on) {
-            list($stock_ids_1, $stock_ids_2) = self::select_from_171($k, $trans_on);
+        foreach ($days_8 as $k => $trans_on) {
+            list($stock_ids_1, $stock_ids_2) = self::select_from_171($k, $trans_on, $cat);
             if ($k < 7) {
                 $select_1[$k + 1] = $stock_ids_1;
             }
@@ -644,20 +644,79 @@ class StockTurn extends \yii\db\ActiveRecord
         '600759',
         '002357',
         '000601',];
+    static $stock_42 = [
+        '002945',
+        '300768',
+        '002886',
+        '002841',
+        '603386',
+        '300322',
+        '603501',
+        '600146',
+        '002916',
+        '300655',
+        '300595',
+        '300732',
+        '000049',
+        '002881',
+        '600745',
+        '300450',
+        '300760',
+        '300786',
+        '002956',
+        '002624',
+        '603638',
+        '002943',
+        '000968',
+        '300711',
+        '002011',
+        '603859',
+        '000790',
+        '300685',
+        '002465',
+        '600335',
+        '603160',
+        '002939',
+        '002792',
+        '300659',
+        '300663',
+        '601975',
+        '002626',
+        '300755',
+        '300773',
+        '603739',
+        '000540',
+    ];
+
+    public static function get_stocks_by_cat($cat = 171)
+    {
+        $stocks = [];
+
+        switch ($cat) {
+            case 171:
+                $stocks = self::$stock_171;
+                break;
+            case 42:
+                $stocks = self::$stock_42;
+                break;
+        }
+
+        return $stocks;
+    }
 
     /**
      * 标准1：第1天-第7天收盘价低于5，10，20日均线股票
      * 标准2：最近1天，任何一天有突破的股票。突破定义如下：1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过2%；2.换手率高于20日均线
      * @time 2019.10.21 modify
      */
-    public static function select_from_171($k, $trans_on)
+    public static function select_from_171($k, $trans_on, $cat = 171)
     {
         $stock_ids_1 = [];
         $stock_ids_2 = [];
-        //$stock171 = StockMenu::find()->where(['mStockId' => self::$stock_171])->asArray()->all();
-        $stock171 = StockMenu::get_valid_stocks(" and mStockId in (" . implode(',', self::$stock_171) . ") ");
+        $stocks = self::get_stocks_by_cat($cat);
+        $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (" . implode(',', $stocks) . ") ");
 
-        foreach ($stock171 as $item) {
+        foreach ($stock_menu_select as $item) {
             $stock_id = $item['mStockId'];
             $stock_name = $item['mStockName'];
             $turn = self::unique_one($stock_id, $trans_on);
@@ -671,13 +730,20 @@ class StockTurn extends \yii\db\ActiveRecord
             $avgprice5 = $stat[5]['sAvgClose'];
             $avgprice10 = $stat[10]['sAvgClose'];
             $avgprice20 = $stat[20]['sAvgClose'];
+            $avgprice60 = $stat[60]['sAvgClose'];
             $avgturnover20 = $stat[20]['sAvgTurnover'];
 
             $item_data = ['id' => $stock_id, 'name' => $stock_name, 'trans_on' => $trans_on];
 
             if ($k < 7) {
-                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
-                    $stock_ids_1[] = $item_data;
+                if ($cat == 171) {
+                    if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
+                        $stock_ids_1[] = $item_data;
+                    }
+                } elseif ($cat == 42) {
+                    if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20 && $close < $avgprice60) {
+                        $stock_ids_1[] = $item_data;
+                    }
                 }
             }
             if ($k == 7) {
@@ -689,5 +755,6 @@ class StockTurn extends \yii\db\ActiveRecord
         return [$stock_ids_1, $stock_ids_2];
 
     }
+
 
 }
