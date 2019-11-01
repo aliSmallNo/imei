@@ -203,7 +203,7 @@ class StockAction extends \yii\db\ActiveRecord
 			$strCriteria = ' AND ' . implode(' AND ', $criteria);
 		}
 
-		$cond = StockOrder::channel_condition();
+		$cond = StockOrder::channel_condition(0);
 
 		$sql = "select a.*,u.uName,c.cName
 				from im_stock_action as a

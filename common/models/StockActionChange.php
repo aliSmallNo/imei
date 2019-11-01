@@ -206,6 +206,9 @@ class StockActionChange extends \yii\db\ActiveRecord
 				order by  $order_str
 				limit $offset,$pageSize";
         $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
+        if (!$res) {
+            return [[], 0];
+        }
         foreach ($res as $k => $v) {
             $ids[] = $v["cId"];
         }

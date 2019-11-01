@@ -305,12 +305,18 @@ class StockOrder extends ActiveRecord
 
 
     // 渠道限制条件
-    public static function channel_condition()
+    public static function channel_condition($after_account_create = 1)
     {
         $cond = "";
         $phone = Admin::get_phone();
         if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
             $cond = " and u.uPtPhone=$phone ";
+            if ($after_account_create) {
+                // 只能看到账户创建后的订单信息
+                $aAddedOn = Admin::userInfo()['aAddedOn'];
+                $cond .= " and o.oAddedOn >'$aAddedOn' ";
+            }
+
         }
         return $cond;
     }
