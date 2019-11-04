@@ -312,9 +312,10 @@ class StockOrder extends ActiveRecord
         if (!Admin::isGroupUser(Admin::GROUP_STOCK_LEADER)) {
             $cond = " and u.uPtPhone=$phone ";
             if ($after_account_create) {
-                // 只能看到账户创建后的订单信息
+                // 只能看到账户创建后的[当月的]订单信息
                 $aAddedOn = Admin::userInfo()['aAddedOn'];
-                $cond .= " and o.oAddedOn >'$aAddedOn' ";
+                $dt = date('Y-m-01 00:00:00', strtotime($aAddedOn));
+                $cond .= " and o.oAddedOn >='$dt' ";
             }
 
         }
@@ -329,6 +330,7 @@ class StockOrder extends ActiveRecord
 				left join im_stock_user u on u.uPhone=o.oPhone
 				where o.oId>0 $cond
 				order by dt desc limit 10";
+        //echo AppUtil::db()->createCommand($sql)->getRawSql();exit;
         return array_column(AppUtil::db()->createCommand($sql)->queryAll(), 'dt');
     }
 
@@ -653,9 +655,19 @@ class StockOrder extends ActiveRecord
             $dt = date('Y-m-d');
         }
         $closed_days = [
-            '2019-06-07', '2019-06-08', '2019-06-09',//2019端午节
-            '2019-09-13', '2019-09-14', '2019-09-15',//2019中秋节
-            '2019-10-01', '2019-10-02', '2019-10-03', '2019-10-04', '2019-10-05', '2019-10-06', '2019-10-07',//2019国庆节
+            '2019-06-07',
+            '2019-06-08',
+            '2019-06-09',//2019端午节
+            '2019-09-13',
+            '2019-09-14',
+            '2019-09-15',//2019中秋节
+            '2019-10-01',
+            '2019-10-02',
+            '2019-10-03',
+            '2019-10-04',
+            '2019-10-05',
+            '2019-10-06',
+            '2019-10-07',//2019国庆节
         ];
         if (in_array($dt, $closed_days)) {
             return true;

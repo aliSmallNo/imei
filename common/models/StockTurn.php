@@ -401,7 +401,10 @@ class StockTurn extends \yii\db\ActiveRecord
             $stockId = $v['mStockId'];
             $mCat = $v['mCat'];
             echo 'complete_lose_data:' . $stockId . PHP_EOL;
-            $lose_turn_list = StockTurn::find()->where(['tTurnover' => 0, 'tStockId' => $stockId])->asArray()->orderBy("tTransOn desc")->all();
+            $lose_turn_list = StockTurn::find()->where([
+                'tTurnover' => 0,
+                'tStockId' => $stockId
+            ])->asArray()->orderBy("tTransOn desc")->all();
 
             foreach ($lose_turn_list as $lose_turn) {
                 $tTransOn = $lose_turn['tTransOn'];
@@ -643,7 +646,8 @@ class StockTurn extends \yii\db\ActiveRecord
         '603214',
         '600759',
         '002357',
-        '000601',];
+        '000601'
+    ];
     static $stock_42 = [
         '002945',
         '300768',

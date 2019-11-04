@@ -244,8 +244,16 @@ class Admin extends ActiveRecord
         $permissions = json_decode($userInfo['aPrivileges'], 1);
         $userInfo["permissions"] = $permissions;
 
-        $fields = ["aPrivileges", "aDeletedDate", "aDeletedBy",
-            "aUpdatedBy", "aUpdatedDate", "aAddedBy", "aAddedDate", "aExpire"];
+        $fields = [
+            "aPrivileges",
+            "aDeletedDate",
+            "aDeletedBy",
+            "aUpdatedBy",
+            "aUpdatedDate",
+            "aAddedBy",
+            "aAddedDate",
+            "aExpire"
+        ];
         foreach ($fields as $field) {
             unset($userInfo[$field]);
         }
