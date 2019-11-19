@@ -19,6 +19,7 @@ use common\models\StockAction;
 use common\models\StockBack;
 use common\models\StockKline;
 use common\models\StockLow;
+use common\models\StockMain;
 use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockTurn;
@@ -56,6 +57,7 @@ use common\utils\YouzanUtil;
 use console\utils\QueueUtil;
 use Gregwar\Image\Image;
 use SebastianBergmann\CodeCoverage\Report\PHP;
+use Yii;
 use yii\console\Controller;
 use yii\helpers\VarDumper;
 
@@ -1725,6 +1727,10 @@ class FooController extends Controller
 
     public function actionZp()
     {
+
+        StockMain::init_excel_data();
+        exit;
+
         //$ret=StockOrder::getStockPrice('300377');
 
         /*$date = date('Y-m-d', strtotime('2019-09-30'));
