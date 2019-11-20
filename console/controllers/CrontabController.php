@@ -15,6 +15,7 @@ use common\models\Log;
 use common\models\Stat;
 use common\models\StockAction;
 use common\models\StockKline;
+use common\models\StockMain;
 use common\models\StockOrder;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
@@ -178,7 +179,11 @@ class CrontabController extends Controller
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'end']);
             }
         } catch (\Exception $e) {
-            Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'err1', 'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()])]);
+            Log::add([
+                'oCategory' => Log::CAT_STOCK_MENU_UPDATE,
+                'oBefore' => 'err1',
+                'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()])
+            ]);
         }
 
     }
@@ -198,6 +203,14 @@ class CrontabController extends Controller
 
     public function actionAlert()
     {
+        try {
+            // 获取当天数据: 上证指数 深证指数 500ETF
+            if (date("H") > 13 && date("H") < 15) {
+                StockMain::update_curr_day();
+            }
+        } catch (\Exception $e) {
+
+        }
 
         try {
             // 发送短信
@@ -215,6 +228,7 @@ class CrontabController extends Controller
 
         // 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
         //  StockOrder::send_msg_on_stock_price();
+
 
     }
 

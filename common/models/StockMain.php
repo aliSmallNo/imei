@@ -18,7 +18,6 @@ use Yii;
  * @property integer $m_sum_turnover
  * @property string $m_cus_rate
  * @property string $m_trans_on
- * @property string $m_sh_change
  * @property string $m_added_on
  * @property string $m_update_on
  */
@@ -45,7 +44,6 @@ class StockMain extends \yii\db\ActiveRecord
             'm_sum_turnover' => '上证深证合计 成交量',
             'm_cus_rate' => '散户比例',
             'm_trans_on' => '交易日期',
-            'm_sh_change' => '上证 涨跌',
             'm_added_on' => '添加时间',
             'm_update_on' => '修改时间',
         ];
@@ -123,7 +121,6 @@ class StockMain extends \yii\db\ActiveRecord
                 "close" => $ret[3],                                 //收盘价
                 "m_trans_on" => $trans_on,                          //交易日
             ];
-
         }
 
         return $data;
@@ -156,6 +153,11 @@ class StockMain extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 插入数据 入口
+     *
+     * @time 2019-11-18 PM
+     */
     public static function pre_insert(
         $stf_turnover,
         $stf_close,
@@ -174,11 +176,40 @@ class StockMain extends \yii\db\ActiveRecord
             'm_sz_turnover' => $sz_turnover,
             'm_sz_close' => $sz_close,
             'm_sum_turnover' => $sum_turnover,
-            'm_cus_rate' => $sum_turnover > 0 ? $stf_close / $sum_turnover * 100000000 : 0,
+            'm_cus_rate' => $sum_turnover > 0 ? round($stf_close / $sum_turnover * 100000000, 3) : 0,
             'm_trans_on' => $trans_on,
-            //'m_sh_change' => '上证 涨跌',
         ];
-        self::add($insert);
+        list($res) = self::add($insert);
+
+        // 添加今天统计数据
+        if ($res && $trans_on == date('Y-m-d')) {
+            StockMainStat::cal($trans_on);
+        }
+
+    }
+
+    /**
+     * 初始化表格数据到 db
+     *
+     * @time 2019-11-18 PM
+     */
+    public static function init_excel_data()
+    {
+        foreach (self::$sz_trans as $k => $sz) {
+            $trans_on = date('Y-m-d', strtotime($k));
+            $etf = static::$etf500_data[$k] ?? 0;
+            $sh = static::$sh_trans[$k] ?? [];
+
+            self::pre_insert(
+                0,
+                $etf ?? 0,
+                $sh ? $sh[1] : 0,
+                $sh ? $sh[0] : 0,
+                $sz ?? 0,
+                0,
+                $trans_on);
+            echo $trans_on . PHP_EOL;
+        }
     }
 
     static $etf500_data = [
@@ -3532,24 +3563,5 @@ class StockMain extends \yii\db\ActiveRecord
         '2019/11/15' => [2891.34, 15257639],
         '2019/11/18' => [2909.20, 14467741],
     ];
-
-    public static function init_excel_data()
-    {
-        foreach (self::$sz_trans as $k => $sz) {
-            $trans_on = date('Y-m-d', strtotime($k));
-            $etf = static::$etf500_data[$k] ?? 0;
-            $sh = static::$sh_trans[$k] ?? [];
-
-            self::pre_insert(
-                0,
-                $etf ?? 0,
-                $sh ? $sh[1] : 0,
-                $sh ? $sh[0] : 0,
-                $sz ?? 0,
-                0,
-                $trans_on);
-            echo $trans_on . PHP_EOL;
-        }
-    }
 
 }

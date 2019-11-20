@@ -29,6 +29,7 @@ use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\StockActionChange;
+use common\models\StockMainRule;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
@@ -1000,10 +1001,29 @@ class ApiController extends Controller
                     }
                 }
                 $ft = [
-                    100 => ['cat' => 'mCategory', 'text_title' => 'title', 'text_intro' => 'subtext', 'topic' => 'mTopic', 'uid' => 'mUId'],
+                    100 => [
+                        'cat' => 'mCategory',
+                        'text_title' => 'title',
+                        'text_intro' => 'subtext',
+                        'topic' => 'mTopic',
+                        'uid' => 'mUId'
+                    ],
                     110 => ['cat' => 'mCategory', 'img_title' => 'title', 'topic' => 'mTopic', 'uid' => 'mUId'],
-                    120 => ['cat' => 'mCategory', 'voice_title' => 'title', 'voice_src' => 'other_url', 'topic' => 'mTopic', 'uid' => '用户'],
-                    130 => ['cat' => 'mCategory', 'article_title' => 'title', 'article_intro' => 'subtext', 'article_src' => 'other_url', 'topic' => 'mTopic', 'uid' => 'mUId']
+                    120 => [
+                        'cat' => 'mCategory',
+                        'voice_title' => 'title',
+                        'voice_src' => 'other_url',
+                        'topic' => 'mTopic',
+                        'uid' => '用户'
+                    ],
+                    130 => [
+                        'cat' => 'mCategory',
+                        'article_title' => 'title',
+                        'article_intro' => 'subtext',
+                        'article_src' => 'other_url',
+                        'topic' => 'mTopic',
+                        'uid' => 'mUId'
+                    ]
                 ];
 
                 switch ($sign) {
@@ -1377,6 +1397,46 @@ class ApiController extends Controller
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
+    public function actionStock_main()
+    {
+        $tag = self::postParam("tag");
+        $tag = strtolower($tag);
+        $id = self::postParam("id");
+        $adminId = Admin::getAdminId();
+        switch ($tag) {
+            case "edit":
+                $data = [
+                    'r_name' => trim(self::postParam("r_name")),
+                    'r_status' => trim(self::postParam("r_status")),
+                    'r_cat' => trim(self::postParam("r_cat")),
+                    'r_stocks_gt' => trim(self::postParam("r_stocks_gt")),
+                    'r_stocks_lt' => trim(self::postParam("r_stocks_lt")),
+                    'r_cus_gt' => trim(self::postParam("r_cus_gt")),
+                    'r_cus_lt' => trim(self::postParam("r_cus_lt")),
+                    'r_turnover_gt' => trim(self::postParam("r_turnover_gt")),
+                    'r_turnover_lt' => trim(self::postParam("r_turnover_lt")),
+                    'r_note' => trim(self::postParam("r_note")),
+                ];
+                foreach ($data as $k => $v) {
+                    if (in_array($k,
+                        ['r_stocks_gt', 'r_stocks_lt', 'r_cus_gt', 'r_cus_lt', 'r_turnover_gt', 'r_turnover_lt'])) {
+                        $data[$k] = floatval($v);
+                    }
+                }
+                if ($id) {
+                    list($res) = StockMainRule::edit($id, $data);
+                } else {
+                    list($res) = StockMainRule::add($data);
+                }
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！", $data);
+                } else {
+                    return self::renderAPI(129, '保存失败', $data);
+                }
+        }
+        return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
+    }
+
     public function actionStock_chart()
     {
         $tag = self::postParam("tag");
@@ -1394,8 +1454,10 @@ class ApiController extends Controller
                 $conn = AppUtil::db();
                 $funnelStat = CRMStockClient::funnelStat($category, $beginDate, $endDate, $id, $conn);
                 $srcStat = CRMStockClient::sourceStat($category, $beginDate, $endDate, $id, $conn);
-                list($clientSeries, $clientTitles) = CRMStockClient::clientStat($beginDate, $endDate, $category, $id, $conn);
-                list($donutInner, $donutOuter) = CRMStockClient::statusDonut($category, $beginDate, $endDate, $id, $conn);
+                list($clientSeries, $clientTitles) = CRMStockClient::clientStat($beginDate, $endDate, $category, $id,
+                    $conn);
+                list($donutInner, $donutOuter) = CRMStockClient::statusDonut($category, $beginDate, $endDate, $id,
+                    $conn);
                 $ret = [
                     "funnel" => $funnelStat,
                     "series" => $clientSeries,

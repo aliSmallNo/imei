@@ -18,6 +18,8 @@ use common\models\LogStock;
 use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockBack;
+use common\models\StockMainRule;
+use common\models\StockMainStat;
 use common\models\StockOrder;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
@@ -672,10 +674,40 @@ class StockController extends BaseController
         $high_level = Admin::get_level() == Admin::LEVEL_HIGH;
 
         $header = $content = [];
-        $header = ['客户名', '客户手机', 'ID', '交易数量', "借款金额", '状态', '交易日期', 'BD'
-            , '成本价', '开盘价', '收盘价', '均价', '收益', '收益率'];
-        $cloum_w = [12, 15, 12, 12, 12, 12, 12, 12
-            , 12, 12, 12, 12, 12, 12];
+        $header = [
+            '客户名',
+            '客户手机',
+            'ID',
+            '交易数量',
+            "借款金额",
+            '状态',
+            '交易日期',
+            'BD'
+            ,
+            '成本价',
+            '开盘价',
+            '收盘价',
+            '均价',
+            '收益',
+            '收益率'
+        ];
+        $cloum_w = [
+            12,
+            15,
+            12,
+            12,
+            12,
+            12,
+            12,
+            12
+            ,
+            12,
+            12,
+            12,
+            12,
+            12,
+            12
+        ];
         // 级别不够不让看手机号
         if (!$high_level) {
             unset($header[1]);
@@ -1142,7 +1174,9 @@ class StockController extends BaseController
         $temp = fopen($fdata["tmp_name"], "r+");
         $filedata = fread($temp, filesize($fdata["tmp_name"]));
         //将分段内容存放到新建的临时文件里面
-        if (file_exists($dir . "/" . $findex . ".tmp")) unlink($dir . "/" . $findex . ".tmp");
+        if (file_exists($dir . "/" . $findex . ".tmp")) {
+            unlink($dir . "/" . $findex . ".tmp");
+        }
         $tempFile = fopen($dir . "/" . $findex . ".tmp", "w+");
         fwrite($tempFile, $filedata);
         fclose($tempFile);
@@ -1150,7 +1184,9 @@ class StockController extends BaseController
         fclose($temp);
 
         if ($findex + 1 == $ftotal) {
-            if (file_exists($save)) @unlink($save);
+            if (file_exists($save)) {
+                @unlink($save);
+            }
             //循环读取临时文件并将其合并置入新文件里面
             for ($i = 0; $i < $ftotal; $i++) {
                 $readData = fopen($dir . "/" . $i . ".tmp", "r+");
@@ -1431,6 +1467,66 @@ class StockController extends BaseController
                 'list2' => $select2,
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+            ]
+        );
+    }
+
+    /**
+     * 上证，深证，500etf 列表
+     *
+     * @time 2019-11-20
+     */
+    public function actionStock_main()
+    {
+        $page = self::getParam("page", 1);
+        $cat = self::getParam("cat", StockMainStat::CAT_DAY_5);
+
+        $criteria = [];
+        $params = [];
+
+        if ($cat) {
+            $criteria[] = "  s.s_cat = :cat ";
+            $params[':cat'] = $cat;
+        }
+
+        list($list, $count) = StockMainStat::items($criteria, $params, $page);
+        $pagination = self::pagination($page, $count, 20);
+        return $this->renderPage("stock_main.tpl",
+            [
+                'cat' => $cat,
+                'pagination' => $pagination,
+                'list' => $list,
+                'cats' => StockMainStat::$cats,
+            ]
+        );
+    }
+
+    /**
+     * 上证，深证，500etf 策略列表
+     *
+     * @time 2019-11-20
+     */
+    public function actionStock_main_rule()
+    {
+        $page = self::getParam("page", 1);
+        $cat = self::getParam("cat", '');
+
+        $criteria = [];
+        $params = [];
+        if ($cat) {
+            $criteria[] = "  r.r_cat = :cat ";
+            $params[':cat'] = $cat;
+        }
+
+        list($list, $count) = StockMainRule::items($criteria, $params, $page);
+        $pagination = self::pagination($page, $count, 20);
+        return $this->renderPage("stock_main_rule.tpl",
+            [
+                'pagination' => $pagination,
+                'list' => $list,
+                'cats' => StockMainRule::$cats,
+                'sts' => StockMainRule::$stDict,
+                'cat' => $cat,
             ]
         );
     }

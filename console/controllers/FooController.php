@@ -20,6 +20,8 @@ use common\models\StockBack;
 use common\models\StockKline;
 use common\models\StockLow;
 use common\models\StockMain;
+use common\models\StockMainRule;
+use common\models\StockMainStat;
 use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockTurn;
@@ -1728,7 +1730,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMain::init_excel_data();
+        StockMain::update_curr_day();
         exit;
 
         //$ret=StockOrder::getStockPrice('300377');
