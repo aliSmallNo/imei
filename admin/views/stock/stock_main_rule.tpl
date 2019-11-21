@@ -66,6 +66,7 @@
         <!-- 上证指数均值比例小于 -->
         上证交易额小于
       </th>
+      <th>差值</th>
       <th>备注</th>
       <th>时间</th>
       <th>操作</th>
@@ -87,6 +88,7 @@
         <td>{{$item.r_turnover_lt}}</td>
         <td>{{$item.r_sh_turnover_gt}}</td>
         <td>{{$item.r_sh_turnover_lt}}</td>
+        <td>{{$item.r_diff}}</td>
         <td>{{$item.r_note}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>
