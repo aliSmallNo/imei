@@ -6,6 +6,11 @@
   th {
     max-width: 40px;
   }
+  .form_tip{
+    font-size: 10px;
+    color: #f80;
+    font-weight: 400;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -163,55 +168,55 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">大盘大于:</label>
+      <label class="col-sm-4 control-label">大盘大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_stocks_gt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">大盘小于:</label>
+      <label class="col-sm-4 control-label">大盘小于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_stocks_lt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">散户大于:</label>
+      <label class="col-sm-4 control-label">散户大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_cus_gt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">散户小于:</label>
+      <label class="col-sm-4 control-label">散户小于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_cus_lt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">交易额大于:</label>
+      <label class="col-sm-4 control-label">交易额大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_turnover_gt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">交易额小于:</label>
+      <label class="col-sm-4 control-label">交易额小于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_turnover_lt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证交易额大于:</label>
+      <label class="col-sm-4 control-label">上证交易额大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_sh_turnover_gt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证交易额小于:</label>
+      <label class="col-sm-4 control-label">上证交易额小于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_sh_turnover_lt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">差值:</label>
+      <label class="col-sm-4 control-label">差值: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_diff">
       </div>
