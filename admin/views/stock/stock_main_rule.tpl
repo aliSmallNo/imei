@@ -98,6 +98,7 @@
             data-r_cus_gt="{{$item.r_cus_gt}}" data-r_cus_lt="{{$item.r_cus_lt}}"
             data-r_turnover_gt="{{$item.r_turnover_gt}}" data-r_turnover_lt="{{$item.r_turnover_lt}}"
             data-r_sh_turnover_gt="{{$item.r_sh_turnover_gt}}" data-r_sh_turnover_lt="{{$item.r_sh_turnover_lt}}"
+            data-r_diff="{{$item.r_diff}}"
             data-r_note="{{$item.r_note}}">
           <a class="btnModify btn btn-xs btn-primary">修改策略</a>
         </td>
@@ -205,6 +206,12 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-sm-4 control-label">差值:</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control r_diff">
+      </div>
+    </div>
+    <div class="form-group">
       <label class="col-sm-4 control-label">备注:</label>
       <div class="col-sm-7">
         <textarea class="form-control r_note"></textarea>
@@ -248,6 +255,7 @@
                     r_turnover_lt: $.trim($('.r_turnover_lt').val()),
                     r_sh_turnover_gt: $.trim($('.r_sh_turnover_gt').val()),
                     r_sh_turnover_lt: $.trim($('.r_sh_turnover_lt').val()),
+                    r_diff: $.trim($('.r_diff').val()),
                     r_note: $.trim($('.r_note').val()),
                     id: self.attr("id")
                 };
@@ -298,6 +306,7 @@
         $('.r_turnover_lt').val(td.attr("data-r_turnover_lt"))
         $('.r_sh_turnover_gt').val(td.attr("data-r_sh_turnover_gt"))
         $('.r_sh_turnover_lt').val(td.attr("data-r_sh_turnover_lt"))
+        $('.r_diff').val(td.attr("data-r_diff"))
         $('.r_note').val(td.attr("data-r_note"))
         $('#modModal').modal('show');
 
