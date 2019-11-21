@@ -12,12 +12,14 @@ use Yii;
  * @property integer $r_cat
  * @property integer $r_status
  * @property string $r_name
- * @property string $r_stocks_gt
- * @property string $r_stocks_lt
- * @property string $r_cus_gt
- * @property string $r_cus_lt
- * @property string $r_turnover_gt
- * @property string $r_turnover_lt
+ * @property float $r_stocks_gt
+ * @property float $r_stocks_lt
+ * @property float $r_cus_gt
+ * @property float $r_cus_lt
+ * @property float $r_turnover_gt
+ * @property float $r_turnover_lt
+ * @property float $r_sh_turnover_gt
+ * @property float $r_sh_turnover_lt
  * @property string $r_note
  * @property string $r_added_on
  * @property string $r_update_on
@@ -42,6 +44,9 @@ class StockMainRule extends \yii\db\ActiveRecord
             'r_cus_lt' => '散户小于',
             'r_turnover_gt' => '交易额大于',
             'r_turnover_lt' => '交易额小于',
+            'r_sh_turnover_gt' => '上证交易额大于',
+            'r_sh_turnover_lt' => '上证交易额小于',
+            'r_diff' => '差值',
             'r_note' => '备注',
             'r_added_on' => 'add',
             'r_update_on' => 'update',
@@ -59,7 +64,7 @@ class StockMainRule extends \yii\db\ActiveRecord
     const ST_DEL = 9;
     static $stDict = [
         self::ST_ACTIVE => '使用',
-        self::ST_DEL => '删除',
+        self::ST_DEL => '禁用',
     ];
 
     public static function init_excel_data()

@@ -1415,11 +1415,22 @@ class ApiController extends Controller
                     'r_cus_lt' => trim(self::postParam("r_cus_lt")),
                     'r_turnover_gt' => trim(self::postParam("r_turnover_gt")),
                     'r_turnover_lt' => trim(self::postParam("r_turnover_lt")),
+                    'r_sh_turnover_gt' => trim(self::postParam("r_sh_turnover_gt")),
+                    'r_sh_turnover_lt' => trim(self::postParam("r_sh_turnover_lt")),
                     'r_note' => trim(self::postParam("r_note")),
                 ];
                 foreach ($data as $k => $v) {
                     if (in_array($k,
-                        ['r_stocks_gt', 'r_stocks_lt', 'r_cus_gt', 'r_cus_lt', 'r_turnover_gt', 'r_turnover_lt'])) {
+                        [
+                            'r_stocks_gt',
+                            'r_stocks_lt',
+                            'r_cus_gt',
+                            'r_cus_lt',
+                            'r_turnover_gt',
+                            'r_turnover_lt',
+                            'r_sh_turnover_gt',
+                            'r_sh_turnover_lt',
+                        ])) {
                         $data[$k] = floatval($v);
                     }
                 }

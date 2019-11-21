@@ -1,6 +1,8 @@
 {{include file="layouts/header.tpl"}}
 <style>
-
+  td, th {
+    font-size: 12px;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -38,6 +40,8 @@
       <th>散户小于</th>
       <th>交易额大于</th>
       <th>交易额小于</th>
+      <th>上证交易额大于</th>
+      <th>上证交易额小于</th>
       <th>备注</th>
       <th>时间</th>
       <th>操作</th>
@@ -47,7 +51,9 @@
     {{foreach from=$list item=item}}
       <tr>
         <td>{{$item.r_name}}</td>
-        <td>{{$item.r_status_t}}</td>
+        <td>
+          <a class="btn btn-xs btn-{{if $item.r_status==9}}danger{{else}}primary{{/if}}">{{$item.r_status_t}}</a>
+        </td>
         <td>{{$item.r_cat_t}}</td>
         <td>{{$item.r_stocks_gt}}</td>
         <td>{{$item.r_stocks_lt}}</td>
@@ -55,16 +61,20 @@
         <td>{{$item.r_cus_lt}}</td>
         <td>{{$item.r_turnover_gt}}</td>
         <td>{{$item.r_turnover_lt}}</td>
+        <td>{{$item.r_sh_turnover_gt}}</td>
+        <td>{{$item.r_sh_turnover_lt}}</td>
         <td>{{$item.r_note}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>
         </td>
-        <td data-id="{{$item.r_id}}" data-r_name="{{$item.r_name}}" data-r_status="{{$item.r_status}}"
-            data-r_cat="{{$item.r_cat}}" data-r_stocks_gt="{{$item.r_stocks_gt}}"
-            data-r_stocks_lt="{{$item.r_stocks_lt}}" data-r_cus_gt="{{$item.r_cus_gt}}"
-            data-r_cus_lt="{{$item.r_cus_lt}}" data-r_turnover_gt="{{$item.r_turnover_gt}}"
-            data-r_turnover_lt="{{$item.r_turnover_lt}}" data-r_note="{{$item.r_note}}"  >
+        <td data-id="{{$item.r_id}}" data-r_name="{{$item.r_name}}"
+            data-r_status="{{$item.r_status}}" data-r_cat="{{$item.r_cat}}"
+            data-r_stocks_gt="{{$item.r_stocks_gt}}" data-r_stocks_lt="{{$item.r_stocks_lt}}"
+            data-r_cus_gt="{{$item.r_cus_gt}}" data-r_cus_lt="{{$item.r_cus_lt}}"
+            data-r_turnover_gt="{{$item.r_turnover_gt}}" data-r_turnover_lt="{{$item.r_turnover_lt}}"
+            data-r_sh_turnover_gt="{{$item.r_sh_turnover_gt}}" data-r_sh_turnover_lt="{{$item.r_sh_turnover_lt}}"
+            data-r_note="{{$item.r_note}}">
           <a class="btnModify btn btn-xs btn-primary">修改策略</a>
         </td>
       </tr>
@@ -159,6 +169,18 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-sm-4 control-label">上证交易额大于:</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control r_sh_turnover_gt">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">上证交易额小于:</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control r_sh_turnover_lt">
+      </div>
+    </div>
+    <div class="form-group">
       <label class="col-sm-4 control-label">备注:</label>
       <div class="col-sm-7">
         <textarea class="form-control r_note"></textarea>
@@ -200,6 +222,8 @@
                     r_cus_lt: $.trim($('.r_cus_lt').val()),
                     r_turnover_gt: $.trim($('.r_turnover_gt').val()),
                     r_turnover_lt: $.trim($('.r_turnover_lt').val()),
+                    r_sh_turnover_gt: $.trim($('.r_sh_turnover_gt').val()),
+                    r_sh_turnover_lt: $.trim($('.r_sh_turnover_lt').val()),
                     r_note: $.trim($('.r_note').val()),
                     id: self.attr("id")
                 };
@@ -248,6 +272,8 @@
         $('.r_cus_lt').val(td.attr("data-r_cus_lt"))
         $('.r_turnover_gt').val(td.attr("data-r_turnover_gt"))
         $('.r_turnover_lt').val(td.attr("data-r_turnover_lt"))
+        $('.r_sh_turnover_gt').val(td.attr("data-r_sh_turnover_gt"))
+        $('.r_sh_turnover_lt').val(td.attr("data-r_sh_turnover_lt"))
         $('.r_note').val(td.attr("data-r_note"))
         $('#modModal').modal('show');
 
