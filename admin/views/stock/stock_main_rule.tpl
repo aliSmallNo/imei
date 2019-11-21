@@ -3,6 +3,9 @@
   td, th {
     font-size: 12px;
   }
+  th {
+    max-width: 40px;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
