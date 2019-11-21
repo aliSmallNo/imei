@@ -205,7 +205,7 @@ class CrontabController extends Controller
     {
         try {
             // 获取当天数据: 上证指数 深证指数 500ETF
-            if (date("H") > 13 && date("H") < 15) {
+            if (date("H") > 13 && date("H") < 16) {
                 StockMain::update_curr_day();
             }
         } catch (\Exception $e) {

@@ -167,6 +167,10 @@ class StockMain extends \yii\db\ActiveRecord
         $sz_close,
         $trans_on
     ) {
+        if ($trans_on != date('Y-m-d')) {
+            return false;
+        }
+
         $sum_turnover = $sh_turnover + $sz_turnover;
         $insert = [
             'm_etf_turnover' => $stf_turnover,
@@ -182,10 +186,22 @@ class StockMain extends \yii\db\ActiveRecord
         list($res) = self::add($insert);
 
         // 添加今天统计数据
-        if ($res && $trans_on == date('Y-m-d')) {
+        if ($res) {
             StockMainStat::cal($trans_on);
         }
 
+        return true;
+    }
+
+    /**
+     * 获取数据最新更新时间
+     *
+     * @time 2019-11-21 AM
+     */
+    public static function get_latest_update_on()
+    {
+        $latest_one = self::find()->where([])->asArray()->orderBy('m_trans_on desc')->limit(1)->one();
+        return $latest_one['m_update_on'];
     }
 
     /**

@@ -18,6 +18,7 @@ use common\models\LogStock;
 use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockBack;
+use common\models\StockMain;
 use common\models\StockMainRule;
 use common\models\StockMainStat;
 use common\models\StockOrder;
@@ -1497,6 +1498,7 @@ class StockController extends BaseController
                 'pagination' => $pagination,
                 'list' => $list,
                 'cats' => StockMainStat::$cats,
+                'update_on' => StockMain::get_latest_update_on(),
             ]
         );
     }

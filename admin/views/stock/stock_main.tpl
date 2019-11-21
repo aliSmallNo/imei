@@ -13,11 +13,15 @@
     color: #fff;
     margin: 1px 0;
   }
+
+  .span_upd {
+    font-size: 12px;
+    color: #666666;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
-    <h4>指数列表
-    </h4>
+    <h4>{{$cat}}日 指数列表 <span class="span_upd">数据更新：{{$update_on}}</span></h4>
   </div>
 </div>
 <div class="row">
@@ -40,6 +44,7 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
+      <th>交易日期</th>
       <th>500ETF</th>
       <th>上证指数</th>
       <th>上证交易额</th>
@@ -52,9 +57,8 @@
       <th>比例</th>
       <th>交易额</th>
       <th>比例</th>
-      <th>上证</th>
-      <th>比例</th>
-      <th>交易日期</th>
+      <th>上证均值</th>
+      <th>位置</th>
       <th>卖出</th>
       <th>买入</th>
     </tr>
@@ -62,21 +66,21 @@
     <tbody>
     {{foreach from=$list item=item}}
       <tr>
+        <td>{{$item.s_trans_on}}</td>
         <td>{{$item.m_etf_close}}</td>
         <td>{{$item.m_sh_close}}</td>
         <td>{{$item.m_sh_turnover}}</td>
         <td>{{$item.m_sz_turnover}}</td>
         <td>{{$item.m_sum_turnover}}</td>
-        <td>{{$item.m_cus_rate}}</td>
+        <td>{{$item.m_cus_rate}}%</td>
 
-        <td>{{$item.s_sh_change}}</td>
-        <td>{{$item.s_cus_rate_avg}}</td>
-        <td>{{$item.s_cus_rate_avg_scale}}</td>
+        <td>{{$item.s_sh_change}}%</td>
+        <td>{{$item.s_cus_rate_avg}}%</td>
+        <td>{{$item.s_cus_rate_avg_scale}}%</td>
         <td>{{$item.s_sum_turnover_avg}}</td>
-        <td>{{$item.s_sum_turnover_avg_scale}}</td>
+        <td>{{$item.s_sum_turnover_avg_scale}}%</td>
         <td>{{$item.s_sh_close_avg}}</td>
-        <td>{{$item.s_sh_close_avg_scale}}</td>
-        <td>{{$item.s_trans_on}}</td>
+        <td>{{$item.s_sh_close_avg_scale}}%</td>
         <td>
           {{foreach from=$item.buys item=buy}}
             <span class="span">{{$buy}}</span>
