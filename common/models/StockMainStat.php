@@ -175,6 +175,7 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         return true;
     }
+
     public static function items($criteria, $params, $page, $pageSize = 20)
     {
         $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
@@ -198,6 +199,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
             $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
             $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
+            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
 
             $buy_name = [];
             foreach ($buys as $buy) {
@@ -207,10 +209,14 @@ class StockMainStat extends \yii\db\ActiveRecord
                 $flag4 = floatval($buy['r_cus_lt']) ? $L_s_cus_rate_avg_scale < $buy['r_cus_lt'] : true;
                 $flag5 = floatval($buy['r_turnover_gt']) ? $N_s_sum_turnover_avg_scale > $buy['r_turnover_gt'] : true;
                 $flag6 = floatval($buy['r_turnover_lt']) ? $N_s_sum_turnover_avg_scale < $buy['r_turnover_lt'] : true;
+                $flag7 = floatval($buy['r_sh_turnover_gt']) ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_gt'] : true;
+                $flag8 = floatval($buy['r_sh_turnover_lt']) ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_lt'] : true;
+                $flag9 = floatval($buy['r_diff']) ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $buy['r_diff'] : true;
 
-                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6) {
+                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9) {
                     $buy_name[] = $buy['r_name'];
                 }
+
             }
 
             $sold_name = [];
@@ -221,7 +227,11 @@ class StockMainStat extends \yii\db\ActiveRecord
                 $flag4 = floatval($sold['r_cus_lt']) ? $L_s_cus_rate_avg_scale < $sold['r_cus_lt'] : true;
                 $flag5 = floatval($sold['r_turnover_gt']) ? $N_s_sum_turnover_avg_scale > $sold['r_turnover_gt'] : true;
                 $flag6 = floatval($sold['r_turnover_lt']) ? $N_s_sum_turnover_avg_scale < $sold['r_turnover_lt'] : true;
-                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6) {
+                $flag7 = floatval($sold['r_sh_turnover_gt']) ? $P_s_sh_close_avg_scale > $sold['r_sh_turnover_gt'] : true;
+                $flag8 = floatval($sold['r_sh_turnover_lt']) ? $P_s_sh_close_avg_scale < $sold['r_sh_turnover_lt'] : true;
+                $flag9 = floatval($buy['r_diff']) ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $buy['r_diff'] : true;
+
+                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9) {
                     $sold_name[] = $sold['r_name'];
                 }
             }

@@ -33,6 +33,14 @@ class StockMainRule extends \yii\db\ActiveRecord
 
     public function attributeLabels()
     {
+//        上证涨跌大于
+//        上证涨跌小于
+//        散户比值均值比例大于
+//        散户比值均值比例小于
+//        合计交易额均值比例大于
+//        合计交易额均值比例小于
+//        上证指数均值比例大于
+//        上证指数均值比例小于
         return [
             'r_id' => 'id',
             'r_name' => '买卖名称',
