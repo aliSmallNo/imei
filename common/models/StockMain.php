@@ -188,6 +188,7 @@ class StockMain extends \yii\db\ActiveRecord
         // 添加今天统计数据
         if ($res) {
             StockMainStat::cal($trans_on);
+            StockMainResult::cal_one($trans_on);
         }
 
         return true;

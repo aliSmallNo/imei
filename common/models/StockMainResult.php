@@ -45,6 +45,25 @@ class StockMainResult extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function add($values = [])
+    {
+        if (!$values) {
+            return [false, false];
+        }
+        if ($entity = self::findOne(['r_trans_on' => $values['r_trans_on']])) {
+            return self::edit($entity->r_id, $values);
+        }
+
+        $entity = new self();
+        foreach ($values as $key => $val) {
+            $entity->$key = $val;
+        }
+        $entity->r_added_on = date('Y-m-d H:i:s');
+        $res = $entity->save();
+
+        return [$res, $entity];
+    }
+
     public static function edit($id, $values = [])
     {
         if (!$values) {
@@ -151,12 +170,12 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         $data = [
             'r_trans_on' => $trans_on,
-            'r_buy5' => [],
-            'r_buy10' => [],
-            'r_buy20' => [],
-            'r_sold5' => [],
-            'r_sold10' => [],
-            'r_sold20' => [],
+            'r_buy5' => '',
+            'r_buy10' => '',
+            'r_buy20' => '',
+            'r_sold5' => '',
+            'r_sold10' => '',
+            'r_sold20' => '',
         ];
         if (!$res) {
             return $data;
@@ -173,6 +192,9 @@ class StockMainResult extends \yii\db\ActiveRecord
             $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
             $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
 
+            if (!$cat) {
+                continue;
+            }
             foreach ($buys as $buy) {
                 if (StockMainStat::get_buy_flag(
                     $J_s_sh_change,
@@ -180,7 +202,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $N_s_sum_turnover_avg_scale,
                     $P_s_sh_close_avg_scale,
                     $buy)) {
-                    $data['r_buy' . $cat][] = $buy['r_name'];
+                    $data['r_buy' . $cat] .= ',' . $buy['r_name'];
                 }
             }
 
@@ -191,13 +213,15 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $N_s_sum_turnover_avg_scale,
                     $P_s_sh_close_avg_scale,
                     $sold)) {
-                    $data['r_sold' . $cat][] = $sold['r_name'];
+                    $data['r_sold' . $cat] .= ',' . $sold['r_name'];
                 }
             }
 
         }
 
-        return $data;
+        self::add($data);
+
+        return true;
     }
 
     public static function items($criteria, $params, $page, $pageSize = 1000)

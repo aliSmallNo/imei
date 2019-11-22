@@ -134,9 +134,9 @@ class StockMainStat extends \yii\db\ActiveRecord
         $data_10 = array_slice($data, 0, 10);
         $data_20 = $data;
 
-        self::pre_insert($data_5, self::CAT_DAY_5);
-        self::pre_insert($data_10, self::CAT_DAY_10);
-        self::pre_insert($data_20, self::CAT_DAY_20);
+        self::pre_insert($trans_on, $data_5, self::CAT_DAY_5);
+        self::pre_insert($trans_on, $data_10, self::CAT_DAY_10);
+        self::pre_insert($trans_on, $data_20, self::CAT_DAY_20);
 
     }
 
@@ -145,7 +145,7 @@ class StockMainStat extends \yii\db\ActiveRecord
      *
      * @time 2019-11-19 PM
      */
-    public static function pre_insert($data, $cat)
+    public static function pre_insert($trans_on, $data, $cat)
     {
         if (count($data) != $cat) {
             return false;
@@ -170,7 +170,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sum_turnover_avg_scale' => $s_sum_turnover_avg_scale,
             's_sh_close_avg' => $s_sh_close_avg,
             's_sh_close_avg_scale' => $s_sh_close_avg_scale,
-            's_trans_on' => $curr['m_trans_on'],
+            's_trans_on' => $trans_on,
         ]);
 
         return true;
