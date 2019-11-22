@@ -1405,7 +1405,7 @@ class ApiController extends Controller
         $id = self::postParam("id");
         $adminId = Admin::getAdminId();
         switch ($tag) {
-            case "edit":
+            case "edit_main_rule":
                 $data = [
                     'r_name' => trim(self::postParam("r_name")),
                     'r_status' => trim(self::postParam("r_status")),
@@ -1419,6 +1419,7 @@ class ApiController extends Controller
                     'r_sh_turnover_gt' => trim(self::postParam("r_sh_turnover_gt")),
                     'r_sh_turnover_lt' => trim(self::postParam("r_sh_turnover_lt")),
                     'r_diff' => trim(self::postParam("r_diff")),
+                    'r_sh_close_avg' => trim(self::postParam("r_sh_close_avg")),
                     'r_note' => trim(self::postParam("r_note")),
                 ];
                 foreach ($data as $k => $v) {
@@ -1433,6 +1434,7 @@ class ApiController extends Controller
                             'r_sh_turnover_gt',
                             'r_sh_turnover_lt',
                             'r_diff',
+                            'r_sh_close_avg',
                         ])) {
                         $data[$k] = floatval($v);
                     }

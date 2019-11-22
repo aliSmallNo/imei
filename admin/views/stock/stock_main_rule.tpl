@@ -246,7 +246,7 @@
         $('div.modal-body').html(vHtml);
         $('#myModalLabel').html('添加策略');
         $('.btnSaveMod').attr({
-            tag: "edit",
+            tag: "edit_main_rule",
             id: "",
         });
         $('#modModal').modal('show');
@@ -259,7 +259,7 @@
         var url = '/api/stock_client';
         console.log(tag);
         switch (tag) {
-            case "edit":
+            case "edit_main_rule":
                 postData = {
                     tag: tag,
                     r_name: $.trim($('.r_name').val()),
@@ -310,7 +310,7 @@
         $('div.modal-body').html(vHtml);
         $('#myModalLabel').html('修改策略');
         $('.btnSaveMod').attr({
-            tag: "edit",
+            tag: "edit_main_rule",
             id: td.attr("data-id")
         });
 
