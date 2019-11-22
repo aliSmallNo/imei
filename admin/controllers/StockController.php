@@ -1491,7 +1491,7 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockMainStat::items($criteria, $params, $page);
+        list($list, $count) = StockMainStat::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
         return $this->renderPage("stock_main.tpl",
             [
@@ -1521,7 +1521,7 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockMainRule::items($criteria, $params, $page);
+        list($list, $count) = StockMainRule::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
         return $this->renderPage("stock_main_rule.tpl",
             [
@@ -1541,7 +1541,7 @@ class StockController extends BaseController
         $criteria = [];
         $params = [];
 
-        list($list, $count) = StockMainResult::items($criteria, $params, $page);
+        list($list, $count) = StockMainResult::items($criteria, $params, $page, 1000);
         $pagination = self::pagination($page, $count, 1000);
         return $this->renderPage("stock_main_result.tpl",
             [
