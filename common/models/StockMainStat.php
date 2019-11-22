@@ -176,8 +176,6 @@ class StockMainStat extends \yii\db\ActiveRecord
         return true;
     }
 
-    const IGNORE_VAL = 999.00;
-
     public static function items($criteria, $params, $page, $pageSize = 20)
     {
         $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
@@ -206,16 +204,16 @@ class StockMainStat extends \yii\db\ActiveRecord
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
-                if (self::get_buy_flag($J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale,
-                    $P_s_sh_close_avg_scale, $buy)) {
+                if (self::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale,
+                    $P_s_sh_close_avg_scale, $buy, self::TAG_BUY)) {
                     $buy_name[] = $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                if (self::get_sold_flag(
+                if (self::get_rule_flag(
                     $J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale, $P_s_sh_close_avg_scale,
-                    $sold)) {
+                    $sold, self::TAG_SOLD)) {
                     $sold_name[] = $sold['r_name'];
                 }
             }
@@ -231,71 +229,51 @@ class StockMainStat extends \yii\db\ActiveRecord
         return [$res, $count];
     }
 
+    const TAG_SOLD = 'sold';
+    const TAG_BUY = 'sold';
+    const IGNORE_VAL = 999.00;
+
+
     /**
-     * 判断是否符合买策略
+     * 判断是否符合买卖策略
      *
      * @time 2019-11-22
      */
-    public static function get_buy_flag(
+    public static function get_rule_flag(
         $J_s_sh_change,
         $L_s_cus_rate_avg_scale,
         $N_s_sum_turnover_avg_scale,
         $P_s_sh_close_avg_scale,
-        $buy
+        $rule,
+        $tag
     ) {
-        $buy_flag = false;
+        $flag = false;
 
-        $flag1 = floatval($buy['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $buy['r_stocks_gt'] : true;
-        $flag2 = floatval($buy['r_stocks_lt']) != self::IGNORE_VAL ? $J_s_sh_change < $buy['r_stocks_lt'] : true;
-        $flag3 = floatval($buy['r_cus_gt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $buy['r_cus_gt'] : true;
-        $flag4 = floatval($buy['r_cus_lt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $buy['r_cus_lt'] : true;
-        $flag5 = floatval($buy['r_turnover_gt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $buy['r_turnover_gt'] : true;
-        $flag6 = floatval($buy['r_turnover_lt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $buy['r_turnover_lt'] : true;
-        $flag7 = floatval($buy['r_sh_turnover_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_gt'] : true;
-        $flag8 = floatval($buy['r_sh_turnover_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_lt'] : true;
+        $flag1 = floatval($rule['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $rule['r_stocks_gt'] : true;
+        $flag2 = floatval($rule['r_stocks_lt']) != self::IGNORE_VAL ? $J_s_sh_change < $rule['r_stocks_lt'] : true;
+        $flag3 = floatval($rule['r_cus_gt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $rule['r_cus_gt'] : true;
+        $flag4 = floatval($rule['r_cus_lt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $rule['r_cus_lt'] : true;
+        $flag5 = floatval($rule['r_turnover_gt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $rule['r_turnover_gt'] : true;
+        $flag6 = floatval($rule['r_turnover_lt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $rule['r_turnover_lt'] : true;
+        $flag7 = floatval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_turnover_gt'] : true;
+        $flag8 = floatval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
-        $flag9 = floatval($buy['r_sh_close_avg']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_close_avg'] : true;
-        $flag10 = floatval($buy['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $buy['r_diff'] : true;
-
-        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10) {
-            $buy_flag = true;
+        switch ($tag) {
+            case self::TAG_BUY:
+                $flag9 = floatval($rule['r_sh_close_avg']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_close_avg'] : true;
+                $flag10 = floatval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $rule['r_diff'] : true;
+                break;
+            case self::TAG_SOLD:
+                $flag9 = floatval($rule['r_sh_close_avg']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_close_avg'] : true;
+                $flag10 = floatval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $rule['r_diff'] : true;
+                break;
         }
 
-        return $buy_flag;
-    }
-
-
-    /**
-     * 判断是否符合卖策略
-     *
-     * @time 2019-11-22
-     */
-    public static function get_sold_flag(
-        $J_s_sh_change,
-        $L_s_cus_rate_avg_scale,
-        $N_s_sum_turnover_avg_scale,
-        $P_s_sh_close_avg_scale,
-        $sold
-    ) {
-        $sold_flag = false;
-
-        $flag1 = floatval($sold['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $sold['r_stocks_gt'] : true;
-        $flag2 = floatval($sold['r_stocks_lt']) != self::IGNORE_VAL ? $J_s_sh_change < $sold['r_stocks_lt'] : true;
-        $flag3 = floatval($sold['r_cus_gt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $sold['r_cus_gt'] : true;
-        $flag4 = floatval($sold['r_cus_lt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $sold['r_cus_lt'] : true;
-        $flag5 = floatval($sold['r_turnover_gt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $sold['r_turnover_gt'] : true;
-        $flag6 = floatval($sold['r_turnover_lt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $sold['r_turnover_lt'] : true;
-        $flag7 = floatval($sold['r_sh_turnover_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $sold['r_sh_turnover_gt'] : true;
-        $flag8 = floatval($sold['r_sh_turnover_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $sold['r_sh_turnover_lt'] : true;
-
-        $flag9 = floatval($sold['r_sh_close_avg']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $sold['r_sh_close_avg'] : true;
-        $flag10 = floatval($sold['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $sold['r_diff'] : true;
-
         if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10) {
-            $sold_flag = true;
+            $flag = true;
         }
 
-        return $sold_flag;
+        return $flag;
     }
 
 }

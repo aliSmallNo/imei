@@ -4,7 +4,6 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use Yii;
-use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "im_stock_main_result".
@@ -127,17 +126,17 @@ class StockMainResult extends \yii\db\ActiveRecord
 
             if ($cat) {
                 foreach ($buys as $buy) {
-                    if (StockMainStat::get_buy_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
+                    if (StockMainStat::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
                         $N_s_sum_turnover_avg_scale,
-                        $P_s_sh_close_avg_scale, $buy)) {
+                        $P_s_sh_close_avg_scale, $buy, StockMainStat::TAG_BUY)) {
                         $ret[$trans_on]['r_buy' . $cat] .= ',' . $buy['r_name'];
                     }
                 }
 
                 foreach ($solds as $sold) {
-                    if (StockMainStat::get_sold_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
+                    if (StockMainStat::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
                         $N_s_sum_turnover_avg_scale,
-                        $P_s_sh_close_avg_scale, $sold)) {
+                        $P_s_sh_close_avg_scale, $sold, StockMainStat::TAG_SOLD)) {
                         $ret[$trans_on]['r_sold' . $cat] .= ',' . $sold['r_name'];
                     }
                 }
@@ -196,23 +195,23 @@ class StockMainResult extends \yii\db\ActiveRecord
                 continue;
             }
             foreach ($buys as $buy) {
-                if (StockMainStat::get_buy_flag(
+                if (StockMainStat::get_rule_flag(
                     $J_s_sh_change,
                     $L_s_cus_rate_avg_scale,
                     $N_s_sum_turnover_avg_scale,
                     $P_s_sh_close_avg_scale,
-                    $buy)) {
+                    $buy, StockMainStat::TAG_BUY)) {
                     $data['r_buy' . $cat] .= ',' . $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                if (StockMainStat::get_sold_flag(
+                if (StockMainStat::get_rule_flag(
                     $J_s_sh_change,
                     $L_s_cus_rate_avg_scale,
                     $N_s_sum_turnover_avg_scale,
                     $P_s_sh_close_avg_scale,
-                    $sold)) {
+                    $sold, StockMainStat::TAG_SOLD)) {
                     $data['r_sold' . $cat] .= ',' . $sold['r_name'];
                 }
             }

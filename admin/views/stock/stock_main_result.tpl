@@ -19,8 +19,8 @@
     <h4>策略结果列表
     </h4>
     <div>
-      <a class="reset_result btn btn-xs btn-primary">重置结果</a> <span
-              class="form_tip">重置结果会删除现有数据，然后根据当前策略重新计算结果，请谨慎操作</span>
+      <a class="reset_result btn btn-xs btn-primary">重置结果</a>
+      <span class="form_tip">重置结果会删除现有数据，然后根据当前策略重新计算结果，每次改变策略后应该重置结果</span>
     </div>
   </div>
 </div>

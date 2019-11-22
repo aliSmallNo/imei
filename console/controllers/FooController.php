@@ -1730,7 +1730,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMainResult::cal_one();
+        //StockMainResult::cal_one();
         exit;
 
         //$ret=StockOrder::getStockPrice('300377');
