@@ -45,7 +45,35 @@ class StockMainResult extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function items()
+    public static function edit($id, $values = [])
+    {
+        if (!$values) {
+            return [false, false];
+        }
+
+        $entity = self::findOne($id);
+
+        if (!$entity) {
+            return [false, false];
+        }
+
+        foreach ($values as $key => $val) {
+            if ($val) {
+                $entity->$key = $val;
+            }
+        }
+        $entity->r_update_on = date('Y-m-d H:i:s');
+        $res = $entity->save();
+
+        return [$res, $entity];
+    }
+
+    /**
+     * 重置表数据
+     *
+     * @time 2019-11-22
+     */
+    public static function reset()
     {
         $sql = "select m.*,s.*
 				from im_stock_main as m
@@ -59,67 +87,59 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
         foreach ($res as $k => $v) {
-
-            $trans_on = $v['s_trans_on'];                                   // 5 10,20
+            $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
             $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
             $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
             $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
             $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
 
-//            $ret[$trans_on] = [
-//                'r_buy5' => [],
-//                'r_buy10' => [],
-//                'r_buy20' => [],
-//                'r_sold5' => [],
-//                'r_sold10' => [],
-//                'r_sold20' => [],
-//            ];
-            foreach (['r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20'] as $f) {
-                if (!isset($ret[$trans_on][$f])) {
-                    $ret[$trans_on][$f] = [];
+            if (!isset($ret[$trans_on])) {
+                $ret[$trans_on] = [
+                    'r_trans_on' => $trans_on,
+                    'r_buy5' => '',
+                    'r_buy10' => '',
+                    'r_buy20' => '',
+                    'r_sold5' => '',
+                    'r_sold10' => '',
+                    'r_sold20' => '',
+                ];
+            }
+
+            if ($cat) {
+                foreach ($buys as $buy) {
+                    if (StockMainStat::get_buy_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
+                        $N_s_sum_turnover_avg_scale,
+                        $P_s_sh_close_avg_scale, $buy)) {
+                        $ret[$trans_on]['r_buy' . $cat] .= ',' . $buy['r_name'];
+                    }
+                }
+
+                foreach ($solds as $sold) {
+                    if (StockMainStat::get_sold_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
+                        $N_s_sum_turnover_avg_scale,
+                        $P_s_sh_close_avg_scale, $sold)) {
+                        $ret[$trans_on]['r_sold' . $cat] .= ',' . $sold['r_name'];
+                    }
                 }
             }
 
-            foreach ($buys as $buy) {
-                $flag1 = floatval($buy['r_stocks_gt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change > $buy['r_stocks_gt'] : true;
-                $flag2 = floatval($buy['r_stocks_lt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change < $buy['r_stocks_lt'] : true;
-                $flag3 = floatval($buy['r_cus_gt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $buy['r_cus_gt'] : true;
-                $flag4 = floatval($buy['r_cus_lt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $buy['r_cus_lt'] : true;
-                $flag5 = floatval($buy['r_turnover_gt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $buy['r_turnover_gt'] : true;
-                $flag6 = floatval($buy['r_turnover_lt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $buy['r_turnover_lt'] : true;
-                $flag7 = floatval($buy['r_sh_turnover_gt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_gt'] : true;
-                $flag8 = floatval($buy['r_sh_turnover_lt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_lt'] : true;
-                $flag9 = floatval($buy['r_diff']) != StockMainStat::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $buy['r_diff'] : true;
-
-                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9) {
-                    $ret[$trans_on]['r_buy' . $cat][] = $buy['r_name'];
-                }
-            }
-
-            foreach ($solds as $sold) {
-                $flag1 = floatval($sold['r_stocks_gt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change > $sold['r_stocks_gt'] : true;
-                $flag2 = floatval($sold['r_stocks_lt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change < $sold['r_stocks_lt'] : true;
-                $flag3 = floatval($sold['r_cus_gt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $sold['r_cus_gt'] : true;
-                $flag4 = floatval($sold['r_cus_lt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $sold['r_cus_lt'] : true;
-                $flag5 = floatval($sold['r_turnover_gt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $sold['r_turnover_gt'] : true;
-                $flag6 = floatval($sold['r_turnover_lt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $sold['r_turnover_lt'] : true;
-                $flag7 = floatval($sold['r_sh_turnover_gt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale > $sold['r_sh_turnover_gt'] : true;
-                $flag8 = floatval($sold['r_sh_turnover_lt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale < $sold['r_sh_turnover_lt'] : true;
-                $flag9 = floatval($buy['r_diff']) != StockMainStat::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $buy['r_diff'] : true;
-
-                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9) {
-                    $ret[$trans_on]['r_sold' . $cat][] = $sold['r_name'];
-                }
-            }
         }
 
-        print_r($ret);
-        exit;
-        return $ret;
+        self::deleteAll();
+
+        Yii::$app->db->createCommand()->batchInsert(self::tableName(),
+            ["r_trans_on", "r_buy5", "r_buy10", "r_buy20", "r_sold5", "r_sold10", "r_sold20"],
+            $ret)->execute();
+
     }
 
-    public static function cal_one_day($buys = [], $solds = [], $trans_on = '')
+    /**
+     * 跟新一条表数据
+     *
+     * @time 2019-11-22
+     */
+    public static function cal_one($trans_on = '')
     {
         $trans_on = $trans_on ? date('Y-m-d', strtotime($trans_on)) : date('Y-m-d');
         $sql = "select m.*,s.*
@@ -128,6 +148,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 				where m_trans_on=:m_trans_on  
 				order by m_trans_on desc  ";
         $res = AppUtil::db()->createCommand($sql)->bindValues([':m_trans_on' => $trans_on])->queryAll();
+
         $data = [
             'r_trans_on' => $trans_on,
             'r_buy5' => [],
@@ -141,8 +162,8 @@ class StockMainResult extends \yii\db\ActiveRecord
             return $data;
         }
 
-        $buys = $buys ? $buys : StockMainRule::get_rules(StockMainRule::CAT_BUY);
-        $solds = $solds ? $solds : StockMainRule::get_rules(StockMainRule::CAT_SOLD);
+        $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
+        $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
 
         foreach ($res as $k => $v) {
 
@@ -153,39 +174,60 @@ class StockMainResult extends \yii\db\ActiveRecord
             $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
 
             foreach ($buys as $buy) {
-                $flag1 = floatval($buy['r_stocks_gt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change > $buy['r_stocks_gt'] : true;
-                $flag2 = floatval($buy['r_stocks_lt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change < $buy['r_stocks_lt'] : true;
-                $flag3 = floatval($buy['r_cus_gt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $buy['r_cus_gt'] : true;
-                $flag4 = floatval($buy['r_cus_lt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $buy['r_cus_lt'] : true;
-                $flag5 = floatval($buy['r_turnover_gt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $buy['r_turnover_gt'] : true;
-                $flag6 = floatval($buy['r_turnover_lt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $buy['r_turnover_lt'] : true;
-                $flag7 = floatval($buy['r_sh_turnover_gt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_gt'] : true;
-                $flag8 = floatval($buy['r_sh_turnover_lt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale < $buy['r_sh_turnover_lt'] : true;
-                $flag9 = floatval($buy['r_diff']) != StockMainStat::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $buy['r_diff'] : true;
-
-                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9) {
-                    $data['r_buy' . $cat] .= ','.$buy['r_name'];
+                if (StockMainStat::get_buy_flag(
+                    $J_s_sh_change,
+                    $L_s_cus_rate_avg_scale,
+                    $N_s_sum_turnover_avg_scale,
+                    $P_s_sh_close_avg_scale,
+                    $buy)) {
+                    $data['r_buy' . $cat][] = $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                $flag1 = floatval($sold['r_stocks_gt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change > $sold['r_stocks_gt'] : true;
-                $flag2 = floatval($sold['r_stocks_lt']) != StockMainStat::IGNORE_VAL ? $J_s_sh_change < $sold['r_stocks_lt'] : true;
-                $flag3 = floatval($sold['r_cus_gt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $sold['r_cus_gt'] : true;
-                $flag4 = floatval($sold['r_cus_lt']) != StockMainStat::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $sold['r_cus_lt'] : true;
-                $flag5 = floatval($sold['r_turnover_gt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $sold['r_turnover_gt'] : true;
-                $flag6 = floatval($sold['r_turnover_lt']) != StockMainStat::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $sold['r_turnover_lt'] : true;
-                $flag7 = floatval($sold['r_sh_turnover_gt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale > $sold['r_sh_turnover_gt'] : true;
-                $flag8 = floatval($sold['r_sh_turnover_lt']) != StockMainStat::IGNORE_VAL ? $P_s_sh_close_avg_scale < $sold['r_sh_turnover_lt'] : true;
-                $flag9 = floatval($buy['r_diff']) != StockMainStat::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $buy['r_diff'] : true;
-
-                if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9) {
-                    $data['r_sold' . $cat] .= ',' . $sold['r_name'];
+                if (StockMainStat::get_sold_flag(
+                    $J_s_sh_change,
+                    $L_s_cus_rate_avg_scale,
+                    $N_s_sum_turnover_avg_scale,
+                    $P_s_sh_close_avg_scale,
+                    $sold)) {
+                    $data['r_sold' . $cat][] = $sold['r_name'];
                 }
             }
+
         }
 
         return $data;
     }
 
+    public static function items($criteria, $params, $page, $pageSize = 1000)
+    {
+        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+        }
+
+        $sql = "select r.*,m_etf_close
+				from im_stock_main_result as r
+				left join im_stock_main m on m.m_trans_on=r.r_trans_on
+				where r_id>0 $strCriteria 
+				order by r_trans_on desc 
+				$limit ";
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+
+        foreach ($res as $k => $v) {
+            foreach ($v as $f => $v1) {
+                if (in_array($f, ['r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20'])) {
+                    $res[$k][$f] = trim($res[$k][$f], ',');
+                }
+            }
+        }
+        $sql = "select count(1) as co
+				from im_stock_main_result as r
+				where r_id>0 $strCriteria  ";
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+        return [$res, $count];
+    }
 }

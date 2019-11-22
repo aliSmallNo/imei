@@ -287,6 +287,12 @@ class Menu
                         "revise" => 1,
                         "level" => 827
                     ],
+                    [
+                        "name" => "策略结果",
+                        "url" => "/stock/stock_main_result",
+                        "revise" => 1,
+                        "level" => 827
+                    ],
                 ],
             ],
             [

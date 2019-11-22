@@ -29,6 +29,7 @@ use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\StockActionChange;
+use common\models\StockMainResult;
 use common\models\StockMainRule;
 use common\models\StockOrder;
 use common\models\StockUser;
@@ -1446,6 +1447,21 @@ class ApiController extends Controller
                 } else {
                     return self::renderAPI(129, '保存失败', $data);
                 }
+            case "edit_main_result":
+                $data = [
+                    'r_note' => trim(self::postParam("r_note")),
+                ];
+                list($res) = StockMainResult::edit($id, $data);
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！", $data);
+                } else {
+                    return self::renderAPI(129, '保存失败', $data);
+                }
+                break;
+            case "reset_main_result":
+                StockMainResult::reset();
+                return self::renderAPI(0, "重置数据成功！");
+                break;
         }
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }

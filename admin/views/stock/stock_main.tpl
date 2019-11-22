@@ -48,6 +48,7 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
+      <th>#</th>
       <th>交易日期</th>
       <th>
         500ETF
@@ -100,8 +101,9 @@
     </tr>
     </thead>
     <tbody>
-    {{foreach from=$list item=item}}
+    {{foreach from=$list item=item key=key}}
       <tr>
+        <td>{{$key+1}}</td>
         <td>{{$item.s_trans_on}}</td>
         <td>{{$item.m_etf_close}}</td>
         <td>{{$item.m_sh_close}}</td>
