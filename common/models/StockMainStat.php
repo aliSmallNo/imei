@@ -127,7 +127,7 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         echo $trans_on . PHP_EOL;
 
-        $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 20';
+        $sql = 'select * from im_stock_main where m_trans_on < :m_trans_on order by m_trans_on desc limit 20';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();
 
         $data_5 = array_slice($data, 0, 5);

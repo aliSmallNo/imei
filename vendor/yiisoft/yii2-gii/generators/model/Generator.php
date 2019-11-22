@@ -247,7 +247,9 @@ class Generator extends \yii\gii\Generator
     {
         $labels = [];
         foreach ($table->columns as $column) {
-            if ($this->generateLabelsFromComments && !empty($column->comment)) {
+            // modify 2019-11-22
+            //if ($this->generateLabelsFromComments && !empty($column->comment)) {
+            if (1 && !empty($column->comment)) {
                 $labels[$column->name] = $column->comment;
             } elseif (!strcasecmp($column->name, 'id')) {
                 $labels[$column->name] = 'ID';

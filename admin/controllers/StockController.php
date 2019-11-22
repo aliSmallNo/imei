@@ -19,6 +19,7 @@ use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockBack;
 use common\models\StockMain;
+use common\models\StockMainResult;
 use common\models\StockMainRule;
 use common\models\StockMainStat;
 use common\models\StockOrder;
@@ -1531,5 +1532,10 @@ class StockController extends BaseController
                 'cat' => $cat,
             ]
         );
+    }
+
+    public function actionStock_main_result()
+    {
+        StockMainResult::items();
     }
 }
