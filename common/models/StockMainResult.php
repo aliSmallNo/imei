@@ -113,7 +113,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
             $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
 
-            if ($trans_on == date('Y-m-d') && !isset($ret[$trans_on])) {
+            if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
                     'r_trans_on' => $trans_on,
                     'r_buy5' => '',
@@ -150,6 +150,19 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         self::deleteAll();
+
+        foreach ($ret as $k => $v) {
+            if ($trans_on != date('Y-m-d')
+                && !$v['r_buy5']
+                && !$v['r_buy10']
+                && !$v['r_buy20']
+                && !$v['r_sold5']
+                && !$v['r_sold10']
+                && !$v['r_sold20']
+            ) {
+                unset($ret[$k]);
+            }
+        }
 
         Yii::$app->db->createCommand()->batchInsert(self::tableName(),
             ["r_trans_on", "r_buy5", "r_buy10", "r_buy20", "r_sold5", "r_sold10", "r_sold20"],
