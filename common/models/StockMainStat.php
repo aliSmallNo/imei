@@ -129,16 +129,19 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         echo $trans_on . PHP_EOL;
 
-        $sql = 'select * from im_stock_main where m_trans_on < :m_trans_on order by m_trans_on desc limit 20';
+        $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 21';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();
+
+        $curr = array_slice($data, 0, 1)[0];
+        $data = array_slice($data, 1, 20);
 
         $data_5 = array_slice($data, 0, 5);
         $data_10 = array_slice($data, 0, 10);
         $data_20 = $data;
 
-        self::pre_insert($trans_on, $data_5, self::CAT_DAY_5);
-        self::pre_insert($trans_on, $data_10, self::CAT_DAY_10);
-        self::pre_insert($trans_on, $data_20, self::CAT_DAY_20);
+        self::pre_insert($trans_on, $data_5, $curr, self::CAT_DAY_5);
+        self::pre_insert($trans_on, $data_10, $curr, self::CAT_DAY_10);
+        self::pre_insert($trans_on, $data_20, $curr, self::CAT_DAY_20);
 
     }
 
@@ -147,14 +150,13 @@ class StockMainStat extends \yii\db\ActiveRecord
      *
      * @time 2019-11-19 PM
      */
-    public static function pre_insert($trans_on, $data, $cat)
+    public static function pre_insert($trans_on, $data, $curr, $cat)
     {
         if (count($data) != $cat) {
             return false;
         }
-        $curr = $data[0];
 
-        $s_sh_change = round($curr['m_sh_close'] / $data[1]['m_sh_close'] - 1, 4) * 100;
+        $s_sh_change = round($curr['m_sh_close'] / $data[0]['m_sh_close'] - 1, 4) * 100;
         $s_cus_rate_avg = round(array_sum(array_column($data, 'm_cus_rate')) / $cat, 2);
         $s_cus_rate_avg_scale = ($curr['m_cus_rate'] / $s_cus_rate_avg - 1) * 100;
 
