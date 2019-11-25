@@ -271,10 +271,10 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         switch ($tag) {
             case self::TAG_BUY:
-                $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $rule['r_diff'] : true;
+                $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff'] : true;
                 break;
             case self::TAG_SOLD:
-                $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $rule['r_diff'] : true;
+                $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) < $rule['r_diff'] : true;
                 break;
         }
 
