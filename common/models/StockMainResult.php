@@ -173,7 +173,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
                 && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
             ) {
-                unset($ret[$k]);
+                //unset($ret[$k]);
             }
         }
 
@@ -279,13 +279,21 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $res[$k][$f] = trim($res[$k][$f], ',');
                 }
             }
+            $r_trans_on = $v['r_trans_on'];
+            if ($r_trans_on != date('Y-m-d')
+                && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
+                && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
+            ) {
+                unset($res[$k]);
+            }
         }
+
         $sql = "select count(1) as co
 				from im_stock_main_result as r
 				where r_id>0 $strCriteria  ";
         $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-        return [$res, $count];
+        return [array_values($res), $count];
     }
 
     /**
