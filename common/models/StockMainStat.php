@@ -161,6 +161,9 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_sh_close_avg = round(array_sum(array_column($data, 'm_sh_close')) / $cat, 2);
         $s_sh_close_avg_scale = ($curr['m_sh_close'] / $s_sh_close_avg - 1) * 100;
 
+        $s_sh_turnover_avg = round(array_sum(array_column($data, 'm_sh_turnover')) / $cat, 0);
+        $s_sh_turnover_avg_scale = ($curr['m_sh_turnover'] / $s_sh_turnover_avg - 1) * 100;
+
         self::add([
             's_cat' => $cat,
             's_sh_change' => $s_sh_change,
@@ -170,6 +173,8 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sum_turnover_avg_scale' => $s_sum_turnover_avg_scale,
             's_sh_close_avg' => $s_sh_close_avg,
             's_sh_close_avg_scale' => $s_sh_close_avg_scale,
+            's_sh_turnover_avg' => $s_sh_turnover_avg,
+            's_sh_turnover_avg_scale' => $s_sh_turnover_avg_scale,
             's_trans_on' => $trans_on,
         ]);
 
@@ -244,6 +249,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $L_s_cus_rate_avg_scale,
         $N_s_sum_turnover_avg_scale,
         $P_s_sh_close_avg_scale,
+        $R_s_sh_turnover_avg_scale,
         $rule,
         $tag
     ) {
@@ -255,21 +261,21 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag4 = floatval($rule['r_cus_lt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $rule['r_cus_lt'] : true;
         $flag5 = floatval($rule['r_turnover_gt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $rule['r_turnover_gt'] : true;
         $flag6 = floatval($rule['r_turnover_lt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $rule['r_turnover_lt'] : true;
-        $flag7 = floatval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_turnover_gt'] : true;
-        $flag8 = floatval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_turnover_lt'] : true;
+        $flag7 = floatval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_close_avg_gt'] : true;
+        $flag8 = floatval($rule['r_sh_close_avg_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_close_avg_lt'] : true;
+        $flag9 = floatval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale > $rule['r_sh_turnover_gt'] : true;
+        $flag10 = floatval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
         switch ($tag) {
             case self::TAG_BUY:
-                $flag9 = floatval($rule['r_sh_close_avg']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_close_avg'] : true;
-                $flag10 = floatval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $rule['r_diff'] : true;
+                $flag11 = floatval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) > $rule['r_diff'] : true;
                 break;
             case self::TAG_SOLD:
-                $flag9 = floatval($rule['r_sh_close_avg']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_close_avg'] : true;
-                $flag10 = floatval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $rule['r_diff'] : true;
+                $flag11 = floatval($rule['r_diff']) != self::IGNORE_VAL ? ($L_s_cus_rate_avg_scale - $N_s_sum_turnover_avg_scale) < $rule['r_diff'] : true;
                 break;
         }
 
-        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10) {
+        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10 && $flag11) {
             $flag = true;
         }
 

@@ -1419,7 +1419,8 @@ class ApiController extends Controller
                     'r_sh_turnover_gt' => trim(self::postParam("r_sh_turnover_gt")),
                     'r_sh_turnover_lt' => trim(self::postParam("r_sh_turnover_lt")),
                     'r_diff' => trim(self::postParam("r_diff")),
-                    'r_sh_close_avg' => trim(self::postParam("r_sh_close_avg")),
+                    'r_sh_close_avg_gt' => trim(self::postParam("r_sh_close_avg_gt")),
+                    'r_sh_close_avg_lt' => trim(self::postParam("r_sh_close_avg_lt")),
                     'r_note' => trim(self::postParam("r_note")),
                 ];
                 foreach ($data as $k => $v) {
@@ -1434,7 +1435,8 @@ class ApiController extends Controller
                             'r_sh_turnover_gt',
                             'r_sh_turnover_lt',
                             'r_diff',
-                            'r_sh_close_avg',
+                            'r_sh_close_avg_gt',
+                            'r_sh_close_avg_lt',
                         ])) {
                         $data[$k] = floatval($v);
                     }

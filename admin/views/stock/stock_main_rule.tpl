@@ -75,7 +75,8 @@
         上证交易额小于
       </th>
       <th>差值</th>
-      <th>上证指数均值</th>
+      <th>上证指数均值大于</th>
+      <th>上证指数均值小于</th>
       <th>备注</th>
       <th>时间</th>
       <th>操作</th>
@@ -98,7 +99,8 @@
         <td>{{$item.r_sh_turnover_gt}}</td>
         <td>{{$item.r_sh_turnover_lt}}</td>
         <td>{{$item.r_diff}}</td>
-        <td>{{$item.r_sh_close_avg}}</td>
+        <td>{{$item.r_sh_close_avg_gt}}</td>
+        <td>{{$item.r_sh_close_avg_lt}}</td>
         <td>{{$item.r_note}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>
@@ -110,7 +112,8 @@
             data-r_cus_gt="{{$item.r_cus_gt}}" data-r_cus_lt="{{$item.r_cus_lt}}"
             data-r_turnover_gt="{{$item.r_turnover_gt}}" data-r_turnover_lt="{{$item.r_turnover_lt}}"
             data-r_sh_turnover_gt="{{$item.r_sh_turnover_gt}}" data-r_sh_turnover_lt="{{$item.r_sh_turnover_lt}}"
-            data-r_diff="{{$item.r_diff}}" data-r_sh_close_avg="{{$item.r_sh_close_avg}}"
+            data-r_diff="{{$item.r_diff}}"
+            data-r_sh_close_avg_gt="{{$item.r_sh_close_avg_gt}}" data-r_sh_close_avg_lt="{{$item.r_sh_close_avg_lt}}"
             data-r_note="{{$item.r_note}}">
           <a class="btnModify btn btn-xs btn-primary">修改策略</a>
         </td>
@@ -224,9 +227,15 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证指数均值: <p class="form_tip">填 999 则忽略此条件</p></label>
+      <label class="col-sm-4 control-label">上证指数均值大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
-        <input type="text" class="form-control r_sh_close_avg">
+        <input type="text" class="form-control r_sh_close_avg_gt">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">上证指数均值小于: <p class="form_tip">填 999 则忽略此条件</p></label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control r_sh_close_avg_lt">
       </div>
     </div>
     <div class="form-group">
@@ -274,7 +283,8 @@
                     r_sh_turnover_gt: $.trim($('.r_sh_turnover_gt').val()),
                     r_sh_turnover_lt: $.trim($('.r_sh_turnover_lt').val()),
                     r_diff: $.trim($('.r_diff').val()),
-                    r_sh_close_avg: $.trim($('.r_sh_close_avg').val()),
+                    r_sh_close_avg_gt: $.trim($('.r_sh_close_avg_gt').val()),
+                    r_sh_close_avg_lt: $.trim($('.r_sh_close_avg_lt').val()),
                     r_note: $.trim($('.r_note').val()),
                     id: self.attr("id")
                 };
@@ -326,7 +336,8 @@
         $('.r_sh_turnover_gt').val(td.attr("data-r_sh_turnover_gt"))
         $('.r_sh_turnover_lt').val(td.attr("data-r_sh_turnover_lt"))
         $('.r_diff').val(td.attr("data-r_diff"))
-        $('.r_sh_close_avg').val(td.attr("data-r_sh_close_avg"))
+        $('.r_sh_close_avg_gt').val(td.attr("data-r_sh_close_avg_gt"))
+        $('.r_sh_close_avg_lt').val(td.attr("data-r_sh_close_avg_lt"))
         $('.r_note').val(td.attr("data-r_note"))
         $('#modModal').modal('show');
 

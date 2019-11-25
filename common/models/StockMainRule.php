@@ -21,7 +21,8 @@ use Yii;
  * @property float $r_sh_turnover_gt
  * @property float $r_sh_turnover_lt
  * @property float $r_diff
- * @property float $r_sh_close_avg
+ * @property float $r_sh_close_avg_gt
+ * @property float $r_sh_close_avg_lt
  * @property string $r_note
  * @property string $r_added_on
  * @property string $r_update_on
@@ -57,7 +58,8 @@ class StockMainRule extends \yii\db\ActiveRecord
             'r_sh_turnover_gt' => '上证交易额大于',
             'r_sh_turnover_lt' => '上证交易额小于',
             'r_diff' => '差值',
-            'r_sh_close_avg' => '上证指数均值',
+            'r_sh_close_avg_gt' => '上证指数均值大于',
+            'r_sh_close_avg_lt' => '上证指数均值小于',
             'r_note' => '备注',
             'r_added_on' => 'add',
             'r_update_on' => 'update',
