@@ -76,9 +76,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         foreach ($values as $key => $val) {
-            if ($val) {
-                $entity->$key = $val;
-            }
+            $entity->$key = $val;
         }
         $entity->r_update_on = date('Y-m-d H:i:s');
         $res = $entity->save();

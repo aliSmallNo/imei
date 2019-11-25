@@ -1730,6 +1730,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
+
         StockMainStat::init_excel_data();
         //StockMainStat::cal('2019-11-07');
         exit;
