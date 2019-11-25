@@ -36,6 +36,8 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sh_change' => '上证 涨跌',
             's_cus_rate_avg' => '散户比值 散户比值均值',
             's_cus_rate_avg_scale' => '比例 散户比值均值比例',
+            's_sh_turnover_avg' => '上证交易额均值',
+            's_sh_turnover_avg_scale' => '上证交易额均值比例',
             's_sum_turnover_avg' => '交易额 合计交易额均值',
             's_sum_turnover_avg_scale' => '比例 合计交易额均值比例',
             's_sh_close_avg' => '上证 上证指数均值',
@@ -205,12 +207,13 @@ class StockMainStat extends \yii\db\ActiveRecord
             $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
             $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
             $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
+            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];
 
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
                 if (self::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale,
-                    $P_s_sh_close_avg_scale, $buy, self::TAG_BUY)) {
+                    $P_s_sh_close_avg_scale, $R_s_sh_turnover_avg_scale, $buy, self::TAG_BUY)) {
                     $buy_name[] = $buy['r_name'];
                 }
             }
@@ -218,7 +221,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             foreach ($solds as $sold) {
                 if (self::get_rule_flag(
                     $J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale, $P_s_sh_close_avg_scale,
-                    $sold, self::TAG_SOLD)) {
+                    $R_s_sh_turnover_avg_scale, $sold, self::TAG_SOLD)) {
                     $sold_name[] = $sold['r_name'];
                 }
             }
