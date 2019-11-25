@@ -269,12 +269,14 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag9 = intval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale > $rule['r_sh_turnover_gt'] : true;
         $flag10 = intval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
+        $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff'] : true;
+
         switch ($tag) {
             case self::TAG_BUY:
-                $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff'] : true;
+
                 break;
             case self::TAG_SOLD:
-                $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) < $rule['r_diff'] : true;
+
                 break;
         }
 
