@@ -155,7 +155,6 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
         $s_sh_change = round($curr['m_sh_close'] / $data[0]['m_sh_close'] - 1, 4) * 100;
-        echo $s_sh_change;
         $s_cus_rate_avg = round(array_sum(array_column($data, 'm_cus_rate')) / $cat, 2);
         $s_cus_rate_avg_scale = ($curr['m_cus_rate'] / $s_cus_rate_avg - 1) * 100;
 
