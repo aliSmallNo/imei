@@ -1541,8 +1541,8 @@ class StockController extends BaseController
         $criteria = [];
         $params = [];
 
-        list($list, $count) = StockMainResult::items($criteria, $params, $page, 1000);
-        $pagination = self::pagination($page, $count, 1000);
+        list($list, $count) = StockMainResult::items($criteria, $params, $page, 10000);
+        $pagination = self::pagination($page, $count, 10000);
         return $this->renderPage("stock_main_result.tpl",
             [
                 'pagination' => $pagination,
