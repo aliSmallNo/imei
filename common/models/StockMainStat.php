@@ -269,7 +269,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag9 = intval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale > $rule['r_sh_turnover_gt'] : true;
         $flag10 = intval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
-        $flag11 = intval($rule['r_diff']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff'] : true;
+        $flag11 = intval($rule['r_diff_gt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_gt'] : true;
+        $flag12 = intval($rule['r_diff_lt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_lt'] : true;
 
         switch ($tag) {
             case self::TAG_BUY:
@@ -280,7 +281,7 @@ class StockMainStat extends \yii\db\ActiveRecord
                 break;
         }
 
-        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10 && $flag11) {
+        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10 && $flag11 && $flag12) {
             $flag = true;
         }
 
