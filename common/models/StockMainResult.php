@@ -169,6 +169,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($ret as $k => $v) {
             $r_trans_on = $v['r_trans_on'];
             $ret[$k]['r_note'] = isset($note[$r_trans_on]) ? $note[$r_trans_on] : '';
+
+            // 改到查询展示的时候 去掉没有买卖点的日期，这样方便存储note
             if ($r_trans_on != date('Y-m-d')
                 && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
                 && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
