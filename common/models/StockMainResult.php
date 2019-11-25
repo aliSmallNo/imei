@@ -153,12 +153,8 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         foreach ($ret as $k => $v) {
             if ($trans_on != date('Y-m-d')
-                && !$v['r_buy5']
-                && !$v['r_buy10']
-                && !$v['r_buy20']
-                && !$v['r_sold5']
-                && !$v['r_sold10']
-                && !$v['r_sold20']
+                && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
+                && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
             ) {
                 unset($ret[$k]);
             }
@@ -274,4 +270,26 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         return [$res, $count];
     }
+
+    /**
+     * 回测收益
+     *
+     * 买入日期    价格    买入类型    卖出日期    价格    卖出类型    收益率
+     *
+     * 备注
+     * 1.买入日期，是显示有买入时日期
+     * 2.买入类型，指买入策略的名称，如买1，买2
+     * 3.卖出日期，指离买入日期最近的一次卖出
+     * 4.卖出类型，指卖出策略的名称，如卖1，卖2
+     * 5.价格，指当天500ETF收盘价
+     * 6.收益率，指卖出时收益率，百分比
+     * 7.全部数据显示在一页
+     *
+     * @time 2019-11-25
+     */
+    public static function cal_back()
+    {
+
+    }
+
 }
