@@ -86,6 +86,19 @@ class StockMainResult extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
+    public static function get_all_note()
+    {
+        $data = self::find()->where([])->asArray()->all();
+
+        $ret = [];
+        foreach ($data as $v) {
+            if ($v['r_note']) {
+                $ret[$v['r_trans_on']] = $v['r_note'];
+            }
+        }
+        return $ret;
+    }
+
     /**
      * 重置表数据
      *
@@ -122,6 +135,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                     'r_sold5' => '',
                     'r_sold10' => '',
                     'r_sold20' => '',
+                    'r_note' => '',
                 ];
             }
 
@@ -149,10 +163,13 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         }
 
+        $note = self::get_all_note();
         self::deleteAll();
 
         foreach ($ret as $k => $v) {
-            if ($trans_on != date('Y-m-d')
+            $r_trans_on = $v['r_trans_on'];
+            $ret[$k]['r_note'] = isset($note[$r_trans_on]) ? $note[$r_trans_on] : '';
+            if ($r_trans_on != date('Y-m-d')
                 && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
                 && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
             ) {
@@ -161,7 +178,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         Yii::$app->db->createCommand()->batchInsert(self::tableName(),
-            ["r_trans_on", "r_buy5", "r_buy10", "r_buy20", "r_sold5", "r_sold10", "r_sold20"],
+            ["r_trans_on", "r_buy5", "r_buy10", "r_buy20", "r_sold5", "r_sold10", "r_sold20", 'r_note'],
             $ret)->execute();
 
     }
