@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "im_stock_main_result".
@@ -315,7 +316,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
             }
             ksort($buy_type);
-            $buy_price = StockMainPrice::get_price_by_type($price_type, $buy);
+            $buy_price = $buy[StockMainPrice::get_price_field($price_type)];
 
             foreach ([5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20'] as $k2 => $v2) {
                 if ($sold[$v2]) {
@@ -323,7 +324,10 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
             }
             ksort($sold_type);
-            $sold_price = StockMainPrice::get_price_by_type($price_type, $sold);
+            $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
+
+            // 找最高 最低卖点 及平均收益率
+            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
 
             $item = [
                 'buy_dt' => $buy_dt,
@@ -334,6 +338,10 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'sold_type' => $sold_type,
                 'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
                 'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0,
+
+                'rate_avg' => $rate_avg,
+                'high' => $high,
+                'low' => $low,
             ];
             $data[] = $item;
         }
@@ -365,7 +373,42 @@ class StockMainResult extends \yii\db\ActiveRecord
                 where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
+    }
 
+    /**
+     * 找最高 最低卖点 及平均收益率
+     *
+     * @time 2019-11-26
+     */
+    public static function get_high_low_point($buy_dt, $sold_dt, $price_type)
+    {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where r_trans_on BETWEEN :buy_dt and :sold_dt 
+                order by r_trans_on asc ";
+        $ret = AppUtil::db()->createCommand($sql, [':buy_dt' => $buy_dt, ':sold_dt' => $sold_dt])->queryAll();
+        $price_field = StockMainPrice::get_price_field($price_type);
+        // 购买价格
+        $buy_price = $ret[0][$price_field];
+
+        foreach ($ret as $k => $v) {
+            $curr_price = $v[$price_field];
+            $ret[$k]['curr_price'] = $v[$price_field];
+            $ret[$k]['rate'] = $buy_price > 0 ? round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
+        }
+
+        //$ret = array_column($ret, null, 'rate');
+        $ret = ArrayHelper::index($ret, 'rate');
+        ksort($ret);
+        $ret = array_values($ret);
+
+        $co = count($ret);
+        $rate_avg = $co > 1 ? round(array_sum(array_column($ret, 'rate')) / ($co - 1), 2) : 0;
+
+        $low = $ret[0];
+        $high = $ret[$co - 1];
+
+        return [$rate_avg, $high, $low];
     }
 
 }

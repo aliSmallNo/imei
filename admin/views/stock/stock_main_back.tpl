@@ -61,6 +61,10 @@
       <th>持有天数</th>
 
       <th>收益率</th>
+
+      <th>最高卖点</th>
+      <th>最低卖点</th>
+      <th>平均收益率</th>
     </tr>
     </thead>
     <tbody>
@@ -88,6 +92,18 @@
 
         <td>{{$item.hold_days}}</td>
         <td>{{$item.rate}}%</td>
+
+        <td>
+          <div>{{$item.high.r_trans_on}}</div>
+          <div>{{$item.high.curr_price}}</div>
+          <div>{{$item.high.rate}}%</div>
+        </td>
+        <td>
+          <div>{{$item.low.r_trans_on}}</div>
+          <div>{{$item.low.curr_price}}</div>
+          <div>{{$item.low.rate}}%</div>
+        </td>
+        <td>{{$item.rate_avg}}%</td>
 
       </tr>
     {{/foreach}}
