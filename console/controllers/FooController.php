@@ -20,6 +20,7 @@ use common\models\StockBack;
 use common\models\StockKline;
 use common\models\StockLow;
 use common\models\StockMain;
+use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
 use common\models\StockMainStat;
@@ -1731,8 +1732,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        var_dump(intval('2019-01-01'));
-        //StockMainStat::init_excel_data();
+        StockMainPrice::init_excel_data();
         //StockMainStat::cal('2019-11-07');
         exit;
 
