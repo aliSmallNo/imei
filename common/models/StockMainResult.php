@@ -308,6 +308,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
             $sold_dt = $sold['r_trans_on'];
 
+            $buy_type = $sold_type = [];
             foreach ([5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20'] as $k1 => $v1) {
                 if ($buy[$v1]) {
                     $buy_type[$k1] = trim($buy[$v1], ',');
