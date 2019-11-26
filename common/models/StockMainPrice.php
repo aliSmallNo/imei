@@ -75,6 +75,33 @@ class StockMainPrice extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
+    const TYPE_ETF_50 = 'etf_50';
+    const TYPE_ETF_300 = 'etf_300';
+    const TYPE_ETF_500 = 'etf_500';
+    static $types = [
+        self::TYPE_ETF_50 => '50ETF',
+        self::TYPE_ETF_300 => '100ETF',
+        self::TYPE_ETF_500 => '500ETF',
+    ];
+
+    public static function get_price_by_type($type, $data)
+    {
+        switch ($type) {
+            case self::TYPE_ETF_50:
+                $price = $data['p_etf50'];
+                break;
+            case self::TYPE_ETF_300:
+                $price = $data['p_etf300'];
+                break;
+            case self::TYPE_ETF_500:
+                $price = $data['p_etf500'];
+                break;
+            default:
+                $price = 0;
+        }
+        return $price;
+    }
+
     /**
      * 每日更新价格
      *

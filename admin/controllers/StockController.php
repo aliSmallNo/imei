@@ -19,6 +19,7 @@ use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockBack;
 use common\models\StockMain;
+use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
 use common\models\StockMainStat;
@@ -1564,13 +1565,15 @@ class StockController extends BaseController
      */
     public function actionStock_main_back()
     {
-        $page = self::getParam("page", 1);
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
 
-        $list = StockMainResult::cal_back();
+        $list = StockMainResult::cal_back($price_type);
 
         return $this->renderPage("stock_main_back.tpl",
             [
                 'list' => $list,
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
             ]
         );
     }

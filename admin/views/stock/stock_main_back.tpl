@@ -23,6 +23,20 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <form action="/stock/stock_main_price" method="get" class="form-inline">
+    <div class="form-group">
+      <select class="form-control" name="price_type">
+        {{foreach from=$price_types item=type key=key}}
+          <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$type}}</option>
+        {{/foreach}}
+      </select>
+    </div>
+
+    <button class="btn btn-primary">查询</button>
+    <span class="space"></span>
+  </form>
+</div>
 
 <div class="row-divider"></div>
 <div class="row">
