@@ -1,0 +1,67 @@
+{{include file="layouts/header.tpl"}}
+<style>
+  td, th {
+    font-size: 12px;
+  }
+
+  th {
+    max-width: 40px;
+  }
+
+  .form_tip {
+    font-size: 10px;
+    color: #f80;
+    font-weight: 400;
+  }
+</style>
+<div class="row">
+  <div class="col-sm-6">
+    <h4>策略结果回测
+    </h4>
+    <div>
+      <span class="form_tip"></span>
+    </div>
+  </div>
+</div>
+
+<div class="row-divider"></div>
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+
+      <th>#</th>
+      <th>买入日期</th>
+      <th>价格</th>
+      <th>买入类型</th>
+
+      <th>卖出日期</th>
+      <th>价格</th>
+      <th>卖出类型</th>
+
+      <th>收益率</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {{foreach from=$list item=item key=key}}
+      <tr>
+        <td>{{$key+1}}</td>
+        <td>{{$item.buy_dt}}</td>
+        <td>{{$item.buy_price}}</td>
+        <td>{{$item.buy_type}}</td>
+
+        <td>{{$item.sold_dt}}</td>
+        <td>{{$item.sold_price}}</td>
+        <td>{{$item.sold_type}}</td>
+
+        <td>{{$item.rate}}</td>
+
+      </tr>
+    {{/foreach}}
+    </tbody>
+  </table>
+
+</div>
+
+{{include file="layouts/footer.tpl"}}

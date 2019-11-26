@@ -279,19 +279,25 @@ class Menu
                         "name" => "指数列表",
                         "url" => "/stock/stock_main",
                         "revise" => 1,
-                        "level" => 827
+                        "level" => 830
                     ],
                     [
                         "name" => "策略列表",
                         "url" => "/stock/stock_main_rule",
                         "revise" => 1,
-                        "level" => 827
+                        "level" => 830
                     ],
                     [
                         "name" => "策略结果",
                         "url" => "/stock/stock_main_result",
                         "revise" => 1,
-                        "level" => 827
+                        "level" => 830
+                    ],
+                    [
+                        "name" => "策略回测",
+                        "url" => "/stock/stock_main_back",
+                        "revise" => 1,
+                        "level" => 830
                     ],
                 ],
             ],

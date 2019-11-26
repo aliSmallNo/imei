@@ -1535,6 +1535,11 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 上证，深证，500etf 策略结果列表
+     *
+     * @time 2019-11-25
+     */
     public function actionStock_main_result()
     {
         $page = self::getParam("page", 1);
@@ -1551,4 +1556,23 @@ class StockController extends BaseController
             ]
         );
     }
+
+    /**
+     * 上证，深证，500etf 策略结果回测列表
+     *
+     * @time 2019-11-25
+     */
+    public function actionStock_main_back()
+    {
+        $page = self::getParam("page", 1);
+
+        $list = StockMainResult::cal_back();
+
+        return $this->renderPage("stock_main_back.tpl",
+            [
+                'list' => $list,
+            ]
+        );
+    }
+
 }

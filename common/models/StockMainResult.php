@@ -294,6 +294,52 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function cal_back()
     {
+        $sql = "select m_etf_close,r.* from im_stock_main_result r
+                left join im_stock_main m on r.r_trans_on=m.m_trans_on
+                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 ";
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $data = [];
+        foreach ($ret as $v) {
+            $buy_dt = $v['r_trans_on'];
+            $sold = self::get_sold_point($buy_dt);
+            if (!$sold) {
+                continue;
+            }
+
+            $buy_type = trim($v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'], ',');
+            $buy_price = $v['m_etf_close'];
+
+            $sold_type = trim($sold['r_sold5'] . $sold['r_sold10'] . $sold['r_sold20'], ',');
+            $sold_price = $sold['m_etf_close'];
+
+            $item = [
+                'buy_dt' => $buy_dt,
+                'buy_price' => $buy_price,
+                'buy_type' => $buy_type,
+                'sold_dt' => $sold['r_trans_on'],
+                'sold_price' => $sold_price,
+                'sold_type' => $sold_type,
+                'rate' => round(($sold_price - $buy_price) / $buy_price, 4),
+            ];
+            $data[] = $item;
+        }
+        return $data;
+
+    }
+
+    /**
+     * 回测收益 获取卖点
+     *
+     * @time 2019-11-26
+     */
+    public static function get_sold_point($buy_dt)
+    {
+        $sql = "select m_etf_close,r.* from im_stock_main_result r
+                left join im_stock_main m on r.r_trans_on=m.m_trans_on
+                where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) and r_trans_on>:r_trans_on 
+                order by r_trans_on asc limit 1 ";
+        return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
 
     }
 
