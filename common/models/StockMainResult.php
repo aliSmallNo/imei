@@ -307,10 +307,22 @@ class StockMainResult extends \yii\db\ActiveRecord
                 continue;
             }
 
-            $buy_type = trim($v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'], ',');
+            foreach ([5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20'] as $k1 => $v1) {
+                if ($v[$v1]) {
+                    $buy_type[$k1] = trim($v[$v1], ',');
+                }
+            }
+            ksort($buy_type);
+            //$buy_type = trim($v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'], ',');
             $buy_price = $v['m_etf_close'];
 
-            $sold_type = trim($sold['r_sold5'] . $sold['r_sold10'] . $sold['r_sold20'], ',');
+            foreach ([5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20'] as $k2 => $v2) {
+                if ($sold[$v2]) {
+                    $sold_type[$k2] = trim($sold[$v2], ',');
+                }
+            }
+            ksort($sold_type);
+            //$sold_type = trim($sold['r_sold5'] . $sold['r_sold10'] . $sold['r_sold20'], ',');
             $sold_price = $sold['m_etf_close'];
 
             $item = [

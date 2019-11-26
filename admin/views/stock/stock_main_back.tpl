@@ -49,11 +49,19 @@
         <td>{{$key+1}}</td>
         <td>{{$item.buy_dt}}</td>
         <td>{{$item.buy_price}}</td>
-        <td>{{$item.buy_type}}</td>
+        <td>
+          {{foreach from=$item.buy_type item=types key=day}}
+            {{$day}}日: {{$types}}<br>
+          {{/foreach}}
+        </td>
 
         <td>{{$item.sold_dt}}</td>
         <td>{{$item.sold_price}}</td>
-        <td>{{$item.sold_type}}</td>
+        <td>
+          {{foreach from=$item.sold_type item=types key=day}}
+            {{$day}}日: {{$types}}<br>
+          {{/foreach}}
+        </td>
 
         <td>{{$item.rate}}</td>
 
