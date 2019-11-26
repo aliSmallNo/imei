@@ -203,25 +203,22 @@ class StockMainStat extends \yii\db\ActiveRecord
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
         foreach ($res as $k => $v) {
-            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
-            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
-            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
-            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
-            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];
+//            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
+//            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
+//            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
+//            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
+//            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];
 
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
-                if (self::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale,
-                    $P_s_sh_close_avg_scale, $R_s_sh_turnover_avg_scale, $buy, self::TAG_BUY)) {
+                if (self::get_rule_flag($v, $buy)) {
                     $buy_name[] = $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                if (self::get_rule_flag(
-                    $J_s_sh_change, $L_s_cus_rate_avg_scale, $N_s_sum_turnover_avg_scale, $P_s_sh_close_avg_scale,
-                    $R_s_sh_turnover_avg_scale, $sold, self::TAG_SOLD)) {
+                if (self::get_rule_flag($v, $sold)) {
                     $sold_name[] = $sold['r_name'];
                 }
             }
@@ -237,8 +234,6 @@ class StockMainStat extends \yii\db\ActiveRecord
         return [$res, $count];
     }
 
-    const TAG_SOLD = 'sold';
-    const TAG_BUY = 'sold';
     const IGNORE_VAL = 999;
 
 
@@ -247,15 +242,15 @@ class StockMainStat extends \yii\db\ActiveRecord
      *
      * @time 2019-11-22
      */
-    public static function get_rule_flag(
-        $J_s_sh_change,
-        $L_s_cus_rate_avg_scale,
-        $N_s_sum_turnover_avg_scale,
-        $P_s_sh_close_avg_scale,
-        $R_s_sh_turnover_avg_scale,
-        $rule,
-        $tag
-    ) {
+    public static function get_rule_flag($stat, $rule)
+    {
+        $J_s_sh_change = $stat['s_sh_change'];                             //'上证 涨跌'
+        $L_s_cus_rate_avg_scale = $stat['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
+        $N_s_sum_turnover_avg_scale = $stat['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
+        $P_s_sh_close_avg_scale = $stat['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
+        $R_s_sh_turnover_avg_scale = $stat['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
+        $s_trans_on = $stat['s_trans_on'];     // 上证交易额均值比例
+
         $flag = false;
 
         $flag1 = intval($rule['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $rule['r_stocks_gt'] : true;
@@ -272,16 +267,19 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag11 = intval($rule['r_diff_gt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_gt'] : true;
         $flag12 = intval($rule['r_diff_lt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_lt'] : true;
 
-        switch ($tag) {
-            case self::TAG_BUY:
+        $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= $rule['r_date_gt'] : true;
+        $flag14 = intval($rule['r_diff_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;
+
+        switch ($rule['r_cat']) {
+            case StockMainRule::CAT_BUY:
 
                 break;
-            case self::TAG_SOLD:
+            case StockMainRule::CAT_SOLD:
 
                 break;
         }
 
-        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10 && $flag11 && $flag12) {
+        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14) {
             $flag = true;
         }
 

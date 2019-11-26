@@ -24,6 +24,8 @@ use Yii;
  * @property float $r_diff_lt
  * @property float $r_sh_close_avg_gt
  * @property float $r_sh_close_avg_lt
+ * @property string $r_date_gt
+ * @property string $r_date_lt
  * @property string $r_note
  * @property string $r_added_on
  * @property string $r_update_on
@@ -62,6 +64,8 @@ class StockMainRule extends \yii\db\ActiveRecord
             'r_diff_lt' => '差值 合计交易额均值比例—散户比值均值比例 小于',
             'r_sh_close_avg_gt' => '上证指数均值大于',
             'r_sh_close_avg_lt' => '上证指数均值小于',
+            'r_date_gt' => '日期大于',
+            'r_date_lt' => '日期小于',
             'r_note' => '备注',
             'r_added_on' => 'add',
             'r_update_on' => 'update',

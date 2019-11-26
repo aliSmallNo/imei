@@ -118,11 +118,11 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
-            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
-            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
-            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
-            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
-            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
+//            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
+//            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
+//            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
+//            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
+//            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
 
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
@@ -139,21 +139,13 @@ class StockMainResult extends \yii\db\ActiveRecord
 
             if ($cat) {
                 foreach ($buys as $buy) {
-                    if (StockMainStat::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
-                        $N_s_sum_turnover_avg_scale,
-                        $P_s_sh_close_avg_scale,
-                        $R_s_sh_turnover_avg_scale,
-                        $buy, StockMainStat::TAG_BUY)) {
+                    if (StockMainStat::get_rule_flag($v, $buy)) {
                         $ret[$trans_on]['r_buy' . $cat] .= ',' . $buy['r_name'];
                     }
                 }
 
                 foreach ($solds as $sold) {
-                    if (StockMainStat::get_rule_flag($J_s_sh_change, $L_s_cus_rate_avg_scale,
-                        $N_s_sum_turnover_avg_scale,
-                        $P_s_sh_close_avg_scale,
-                        $R_s_sh_turnover_avg_scale,
-                        $sold, StockMainStat::TAG_SOLD)) {
+                    if (StockMainStat::get_rule_flag($v, $sold)) {
                         $ret[$trans_on]['r_sold' . $cat] .= ',' . $sold['r_name'];
                     }
                 }
@@ -217,35 +209,23 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
 
             $cat = $v['s_cat'];                                             // 5 10,20
-            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
-            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
-            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
-            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
-            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
+//            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
+//            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
+//            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
+//            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
+//            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
 
             if (!$cat) {
                 continue;
             }
             foreach ($buys as $buy) {
-                if (StockMainStat::get_rule_flag(
-                    $J_s_sh_change,
-                    $L_s_cus_rate_avg_scale,
-                    $N_s_sum_turnover_avg_scale,
-                    $P_s_sh_close_avg_scale,
-                    $R_s_sh_turnover_avg_scale,
-                    $buy, StockMainStat::TAG_BUY)) {
+                if (StockMainStat::get_rule_flag($v, $buy)) {
                     $data['r_buy' . $cat] .= ',' . $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                if (StockMainStat::get_rule_flag(
-                    $J_s_sh_change,
-                    $L_s_cus_rate_avg_scale,
-                    $N_s_sum_turnover_avg_scale,
-                    $P_s_sh_close_avg_scale,
-                    $R_s_sh_turnover_avg_scale,
-                    $sold, StockMainStat::TAG_SOLD)) {
+                if (StockMainStat::get_rule_flag($v, $sold)) {
                     $data['r_sold' . $cat] .= ',' . $sold['r_name'];
                 }
             }
