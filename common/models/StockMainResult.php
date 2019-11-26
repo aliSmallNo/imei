@@ -294,7 +294,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function cal_back($price_type = StockMainPrice::TYPE_ETF_500)
     {
-        $sql = "select m_etf_close,p.* from im_stock_main_result r
+        $sql = "select p.*,r.* from im_stock_main_result r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 ";
         $ret = AppUtil::db()->createCommand($sql)->queryAll();
