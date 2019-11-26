@@ -58,6 +58,7 @@
       <th>卖出日期</th>
       <th>价格</th>
       <th>卖出类型</th>
+      <th>持有天数</th>
 
       <th>收益率</th>
     </tr>
@@ -85,6 +86,7 @@
           {{/foreach}}
         </td>
 
+        <td>{{$item.hold_days}}/td>
         <td>{{$item.rate}}%</td>
 
       </tr>

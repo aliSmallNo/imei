@@ -287,17 +287,25 @@ class Menu
                         "revise" => 1,
                         "level" => 830
                     ],
+                ],
+            ],
+            [
+                "name" => "策略结果",
+                "id" => "stock_main_result",
+                "icon" => "fa-users",
+                "staff" => 1,
+                "items" => [
                     [
                         "name" => "策略结果",
                         "url" => "/stock/stock_main_result",
                         "revise" => 1,
-                        "level" => 830
+                        "level" => 820
                     ],
                     [
                         "name" => "策略回测",
                         "url" => "/stock/stock_main_back",
                         "revise" => 1,
-                        "level" => 830
+                        "level" => 820
                     ],
                 ],
             ],

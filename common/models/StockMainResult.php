@@ -306,6 +306,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             if (!$sold) {
                 continue;
             }
+            $sold_dt = $sold['r_trans_on'];
 
             foreach ([5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20'] as $k1 => $v1) {
                 if ($buy[$v1]) {
@@ -327,9 +328,10 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'buy_dt' => $buy_dt,
                 'buy_price' => $buy_price,
                 'buy_type' => $buy_type,
-                'sold_dt' => $sold['r_trans_on'],
+                'sold_dt' => $sold_dt,
                 'sold_price' => $sold_price,
                 'sold_type' => $sold_type,
+                'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
                 'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0,
             ];
             $data[] = $item;
