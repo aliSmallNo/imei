@@ -332,7 +332,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'sold_dt' => $sold['r_trans_on'],
                 'sold_price' => $sold_price,
                 'sold_type' => $sold_type,
-                'rate' => round(($sold_price - $buy_price) / $buy_price, 4),
+                'rate' => round(($sold_price - $buy_price) / $buy_price, 4) * 100,
             ];
             $data[] = $item;
         }

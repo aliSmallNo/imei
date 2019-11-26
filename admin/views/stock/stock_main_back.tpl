@@ -63,7 +63,7 @@
           {{/foreach}}
         </td>
 
-        <td>{{$item.rate}}</td>
+        <td>{{$item.rate}}%</td>
 
       </tr>
     {{/foreach}}
