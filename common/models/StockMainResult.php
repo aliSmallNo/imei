@@ -313,8 +313,6 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
             }
             ksort($buy_type);
-            //$buy_type = trim($buy['r_buy5'] . $buy['r_buy10'] . $buy['r_buy20'], ',');
-            //$buy_price = $buy['m_etf_close'];
             $buy_price = StockMainPrice::get_price_by_type($price_type, $buy);
 
             foreach ([5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20'] as $k2 => $v2) {
@@ -323,8 +321,6 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
             }
             ksort($sold_type);
-            //$sold_type = trim($sold['r_sold5'] . $sold['r_sold10'] . $sold['r_sold20'], ',');
-            //$sold_price = $sold['m_etf_close'];
             $sold_price = StockMainPrice::get_price_by_type($price_type, $sold);
 
             $item = [
@@ -338,7 +334,18 @@ class StockMainResult extends \yii\db\ActiveRecord
             ];
             $data[] = $item;
         }
-        return $data;
+
+        // 统计年度收益
+        $rate_year_sum = [];
+        foreach ($data as $v3) {
+            $year = date("Y", strtotime($v3['sold_dt']));
+            if (!isset($rate_year_sum[$year])) {
+                $rate_year_sum[$year] = 0;
+            }
+            $rate_year_sum[$year] += $v3['rate'];
+        }
+
+        return [$data, $rate_year_sum];
 
     }
 

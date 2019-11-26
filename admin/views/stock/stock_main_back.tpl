@@ -1,6 +1,6 @@
 {{include file="layouts/header.tpl"}}
 <style>
-  td, th {
+  td, th, .rate_year_sum {
     font-size: 12px;
   }
 
@@ -39,11 +39,17 @@
 </div>
 
 <div class="row-divider"></div>
+
+<div class="row">
+  {{foreach from=$rate_year_sum item=item key=year}}
+    <div class="rate_year_sum">{{$year}}年：总收益：{{$item}}%</div>
+  {{/foreach}}
+</div>
+<div class="row-divider"></div>
 <div class="row">
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
-
       <th>#</th>
       <th>买入日期</th>
       <th>价格</th>
@@ -65,7 +71,8 @@
         <td>{{$item.buy_price}}</td>
         <td>
           {{foreach from=$item.buy_type item=types key=day}}
-            {{$day}}日: {{$types}}<br>
+            {{$day}}日: {{$types}}
+            <br>
           {{/foreach}}
         </td>
 
@@ -73,7 +80,8 @@
         <td>{{$item.sold_price}}</td>
         <td>
           {{foreach from=$item.sold_type item=types key=day}}
-            {{$day}}日: {{$types}}<br>
+            {{$day}}日: {{$types}}
+            <br>
           {{/foreach}}
         </td>
 
