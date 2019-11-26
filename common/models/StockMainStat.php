@@ -255,12 +255,16 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         $flag1 = intval($rule['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $rule['r_stocks_gt'] : true;
         $flag2 = intval($rule['r_stocks_lt']) != self::IGNORE_VAL ? $J_s_sh_change < $rule['r_stocks_lt'] : true;
+
         $flag3 = intval($rule['r_cus_gt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $rule['r_cus_gt'] : true;
         $flag4 = intval($rule['r_cus_lt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $rule['r_cus_lt'] : true;
+
         $flag5 = intval($rule['r_turnover_gt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $rule['r_turnover_gt'] : true;
         $flag6 = intval($rule['r_turnover_lt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $rule['r_turnover_lt'] : true;
-        $flag7 = intval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_close_avg_gt'] : true;
+
+        $flag7 = intval($rule['r_sh_close_avg_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_close_avg_gt'] : true;
         $flag8 = intval($rule['r_sh_close_avg_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_close_avg_lt'] : true;
+
         $flag9 = intval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale > $rule['r_sh_turnover_gt'] : true;
         $flag10 = intval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
@@ -268,7 +272,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag12 = intval($rule['r_diff_lt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_lt'] : true;
 
         $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= $rule['r_date_gt'] : true;
-        $flag14 = intval($rule['r_diff_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;
+        $flag14 = intval($rule['r_date_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;
 
         switch ($rule['r_cat']) {
             case StockMainRule::CAT_BUY:

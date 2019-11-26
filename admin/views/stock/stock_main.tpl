@@ -22,6 +22,10 @@
     font-size: 12px;
     color: #666666;
   }
+
+  .border_r {
+    border-right: 2px solid #666 !important;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -65,7 +69,7 @@
       <th>
         合计交易额
       </th>
-      <th>
+      <th class="border_r">
         散户比值
       </th>
 
@@ -74,28 +78,23 @@
       </th>
       <th>
         <!-- 散户比值 -->
-        散户比值均值
-      </th>
-      <th>
         <!-- 比例 -->
-        散户比值均值比例
+        散户比值
       </th>
       <th>
         <!-- 交易额 -->
-        合计交易额均值
-      </th>
-      <th>
         <!-- 比例 -->
-        合计交易额均值比例
+        合计交易额
       </th>
       <th>
         <!-- 上证均值 -->
-        上证指数均值
+        <!-- 位置 -->
+        上证指数
       </th>
       <th>
-        <!-- 位置 -->
-        上证指数均值比例
+        上证交易额
       </th>
+
       <th>买入</th>
       <th>卖出</th>
     </tr>
@@ -110,15 +109,25 @@
         <td>{{$item.m_sh_turnover}}</td>
         <td>{{$item.m_sz_turnover}}</td>
         <td>{{$item.m_sum_turnover}}</td>
-        <td>{{$item.m_cus_rate}}%</td>
+        <td class="border_r">{{$item.m_cus_rate}}%</td>
 
         <td>{{$item.s_sh_change}}%</td>
-        <td>{{$item.s_cus_rate_avg}}%</td>
-        <td>{{$item.s_cus_rate_avg_scale}}%</td>
-        <td>{{$item.s_sum_turnover_avg}}</td>
-        <td>{{$item.s_sum_turnover_avg_scale}}%</td>
-        <td>{{$item.s_sh_close_avg}}</td>
-        <td>{{$item.s_sh_close_avg_scale}}%</td>
+        <td>
+          <div>均值 {{$item.s_cus_rate_avg}}%</div>
+          <div>均值比例 {{$item.s_cus_rate_avg_scale}}%</div>
+        </td>
+        <td>
+          <div>均值 {{$item.s_sum_turnover_avg}}</div>
+          <div>均值比例 {{$item.s_sum_turnover_avg_scale}}%</div>
+        </td>
+        <td>
+          <div>均值 {{$item.s_sh_close_avg}}</div>
+          <div>均值比例 {{$item.s_sh_close_avg_scale}}%</div>
+        </td>
+        <td>
+          <div>均值 {{$item.s_sh_turnover_avg}}</div>
+          <div>均值比例 {{$item.s_sh_turnover_avg_scale}}%</div>
+        </td>
         <td>
           {{foreach from=$item.buys item=buy}}
             <span class="span">{{$buy}}</span>
