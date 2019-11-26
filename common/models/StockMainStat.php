@@ -249,7 +249,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         $N_s_sum_turnover_avg_scale = $stat['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
         $P_s_sh_close_avg_scale = $stat['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
         $R_s_sh_turnover_avg_scale = $stat['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
-        $s_trans_on = $stat['s_trans_on'];     // 上证交易额均值比例
+        $s_trans_on = $stat['s_trans_on'];                                  //
+        $s_cat = $stat['s_cat'];                                            //
 
         $flag = false;
 
@@ -274,6 +275,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= $rule['r_date_gt'] : true;
         $flag14 = intval($rule['r_date_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;
 
+        $flag15 = intval($rule['r_scat']) ? $s_cat == $rule['r_scat'] : true;
+
         switch ($rule['r_cat']) {
             case StockMainRule::CAT_BUY:
 
@@ -283,7 +286,8 @@ class StockMainStat extends \yii\db\ActiveRecord
                 break;
         }
 
-        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8 && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14) {
+        if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8
+            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15) {
             $flag = true;
         }
 

@@ -3,10 +3,12 @@
   td, th {
     font-size: 12px;
   }
+
   th {
     max-width: 40px;
   }
-  .form_tip{
+
+  .form_tip {
     font-size: 10px;
     color: #f80;
     font-weight: 400;
@@ -65,6 +67,7 @@
       <th>差值</th>
       <th>上证指数均值</th>
       <th>日期</th>
+      <th>DAY</th>
       <th>备注</th>
       <th>时间</th>
       <th>操作</th>
@@ -106,6 +109,7 @@
           <div>>{{$item.r_date_gt}}</div>
           <div><{{$item.r_date_lt}}</div>
         </td>
+        <td>{{$item.r_scat}}</td>
         <td class="col-sm-1">{{$item.r_note}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>
@@ -120,7 +124,9 @@
             data-r_diff_gt="{{$item.r_diff_gt}}" data-r_diff_lt="{{$item.r_diff_lt}}"
             data-r_sh_close_avg_gt="{{$item.r_sh_close_avg_gt}}" data-r_sh_close_avg_lt="{{$item.r_sh_close_avg_lt}}"
             data-r_date_gt="{{$item.r_date_gt}}" data-r_date_lt="{{$item.r_date_lt}}"
-            data-r_note="{{$item.r_note}}">
+            data-r_scat="{{$item.r_scat}}"
+            data-r_note="{{$item.r_note}}"
+        >
           <a class="btnModify btn btn-xs btn-primary">修改策略</a>
         </td>
       </tr>
@@ -263,11 +269,23 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-sm-4 control-label">day类型: <p class="form_tip">不填 则忽略此条件</p></label>
+      <div class="col-sm-7">
+        <select class="form-control r_scat">
+          <option value="0">-=请选择=-</option>
+          {{foreach from=$scat item=item key=key}}
+            <option value="{{$key}}">{{$item}}</option>
+          {{/foreach}}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="col-sm-4 control-label">备注:</label>
       <div class="col-sm-7">
         <textarea class="form-control r_note"></textarea>
       </div>
     </div>
+
   </div>
 </script>
 <script>
@@ -312,6 +330,7 @@
                     r_sh_close_avg_lt: $.trim($('.r_sh_close_avg_lt').val()),
                     r_date_gt: $.trim($('.r_date_gt').val()),
                     r_date_lt: $.trim($('.r_date_lt').val()),
+                    r_scat: $.trim($('.r_scat').val()),
                     r_note: $.trim($('.r_note').val()),
                     id: self.attr("id")
                 };
@@ -368,6 +387,7 @@
         $('.r_sh_close_avg_lt').val(td.attr("data-r_sh_close_avg_lt"))
         $('.r_date_gt').val(td.attr("data-r_date_gt"))
         $('.r_date_lt').val(td.attr("data-r_date_lt"))
+        $('.r_scat').val(td.attr("data-r_scat"))
         $('.r_note').val(td.attr("data-r_note"))
         $('#modModal').modal('show');
 

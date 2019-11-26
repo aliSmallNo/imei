@@ -26,6 +26,7 @@ use Yii;
  * @property float $r_sh_close_avg_lt
  * @property string $r_date_gt
  * @property string $r_date_lt
+ * @property string $r_scat
  * @property string $r_note
  * @property string $r_added_on
  * @property string $r_update_on
@@ -66,6 +67,7 @@ class StockMainRule extends \yii\db\ActiveRecord
             'r_sh_close_avg_lt' => '上证指数均值小于',
             'r_date_gt' => '日期大于',
             'r_date_lt' => '日期小于',
+            'r_scat' => 'day类型 5日，10日，20日',
             'r_note' => '备注',
             'r_added_on' => 'add',
             'r_update_on' => 'update',
@@ -85,36 +87,6 @@ class StockMainRule extends \yii\db\ActiveRecord
         self::ST_ACTIVE => '使用',
         self::ST_DEL => '禁用',
     ];
-
-    public static function init_excel_data()
-    {
-        $data = [
-            self::CAT_BUY => [
-                [0, -0.90, -9.00, 9.00, 10.00, 0],
-                [0, -0.90, 0, 9.00, 10.00, 0],
-            ],
-            self::CAT_SOLD => [
-                [0.90, 0, 0, -9.00, 10.00, -10.00],
-                [0.90, 0, 9.00, 0, 10.00, 0],
-            ],
-        ];
-        foreach ($data as $cat => $v1) {
-            foreach ($v1 as $k => $v2) {
-                continue;
-                self::add([
-                    'r_name' => self::$cats[$cat] . ($k + 1),
-                    'r_cat' => $cat,
-                    'r_status' => self::ST_ACTIVE,
-                    'r_stocks_gt' => $v2[0],
-                    'r_stocks_lt' => $v2[1],
-                    'r_cus_gt' => $v2[2],
-                    'r_cus_lt' => $v2[3],
-                    'r_turnover_gt' => $v2[4],
-                    'r_turnover_lt' => $v2[5],
-                ]);
-            }
-        }
-    }
 
     public static function add($values = [])
     {
