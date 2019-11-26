@@ -1731,8 +1731,8 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
-        StockMainPrice::init_excel_data();
+        StockMainPrice::update_curr_day();
+        // StockMainPrice::init_excel_data();
         //StockMainStat::cal('2019-11-07');
         exit;
 

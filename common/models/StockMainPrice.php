@@ -40,7 +40,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
         if (!$values) {
             return [false, false];
         }
-        if ($entity = self::findOne(['p_trans_on' => $values['r_trans_on']])) {
+        if ($entity = self::findOne(['p_trans_on' => $values['p_trans_on']])) {
             return self::edit($entity->p_id, $values);
         }
 
@@ -75,17 +75,28 @@ class StockMainPrice extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
-    public static function get_all_note()
+    /**
+     * 每日更新价格
+     *
+     * @time 2019-11-26
+     */
+    public static function update_curr_day()
     {
-        $data = self::find()->where([])->asArray()->all();
-
-        $ret = [];
-        foreach ($data as $v) {
-            if ($v['r_note']) {
-                $ret[$v['r_trans_on']] = $v['r_note'];
-            }
+        $data1 = StockMain::get_stock_data('510500', 'sh');
+        $data2 = StockMain::get_stock_data('510300', 'sh');
+        $data3 = StockMain::get_stock_data('510050', 'sh');
+        if ($data1
+            && $data2
+            && $data3
+            && $data1['m_trans_on'] == $data2['m_trans_on']
+            && $data1['m_trans_on'] == $data3['m_trans_on']) {
+            self::add([
+                'p_etf500' => $data1['close'],
+                'p_etf300' => $data2['close'],
+                'p_etf50' => $data3['close'],
+                'p_trans_on' => date('Y-m-d', strtotime($data1['m_trans_on'])),
+            ]);
         }
-        return $ret;
     }
 
     public static function init_excel_data()
