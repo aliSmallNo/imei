@@ -86,7 +86,7 @@
           {{/foreach}}
         </td>
 
-        <td>{{$item.hold_days}}/td>
+        <td>{{$item.hold_days}}</td>
         <td>{{$item.rate}}%</td>
 
       </tr>
