@@ -80,7 +80,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
     const TYPE_ETF_500 = 'etf_500';
     static $types = [
         self::TYPE_ETF_50 => '50ETF',
-        self::TYPE_ETF_300 => '100ETF',
+        self::TYPE_ETF_300 => '300ETF',
         self::TYPE_ETF_500 => '500ETF',
     ];
 
