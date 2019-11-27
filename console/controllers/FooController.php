@@ -1731,7 +1731,11 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        var_dump(StockMainResult::send_sms());
+        $res = AppUtil::sendTXSMS([17611629667], AppUtil::SMS_NORMAL, ["params" => [strval('123456'), strval(10)]]);
+        //$res = AppUtil::sendSMS('17611629667', 'hello zp', '100001', 'yx');
+        var_dump($res);
+
+        //var_dump(StockMainResult::send_sms());
         // StockMainPrice::init_excel_data();
         //StockMainStat::cal('2019-11-07');
         exit;
