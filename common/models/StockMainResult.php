@@ -119,11 +119,6 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
-//            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
-//            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
-//            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
-//            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
-//            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
 
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
@@ -210,11 +205,6 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
 
             $cat = $v['s_cat'];                                             // 5 10,20
-//            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
-//            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
-//            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
-//            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
-//            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];     // 上证交易额均值比例
 
             if (!$cat) {
                 continue;
@@ -253,7 +243,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-        //$ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
+//        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
         if (!$ret) {
             return 1;
         }
@@ -289,7 +279,15 @@ class StockMainResult extends \yii\db\ActiveRecord
             17611629667,// zp
         ];
         foreach ($phones as $phone) {
+            // 发送短信
             $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
+            // 推送公众号 微信消息
+            $users = User::find()->where(['uPhone' => $phone])->asArray()->all();
+            if ($users) {
+                foreach ($users as $user) {
+                    UserWechat::sendMsg($user['uOpenId'], $sms_content, 1);
+                }
+            }
         }
         return true;
 

@@ -1732,8 +1732,8 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        $res = AppUtil::sendSMS(17611629667, '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5', '100001', 'yx', AppUtil::getSMSLeft());
-        var_dump($res);
+        //$res = AppUtil::sendSMS(17611629667, '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5', '100001', 'yx', AppUtil::getSMSLeft());
+        //var_dump($res);
 
         //var_dump(StockMainResult::send_sms());
         // StockMainPrice::init_excel_data();
