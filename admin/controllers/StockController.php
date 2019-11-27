@@ -1544,9 +1544,16 @@ class StockController extends BaseController
     public function actionStock_main_result()
     {
         $page = self::getParam("page", 1);
+        $name = self::getParam("name", '');
 
         $criteria = [];
         $params = [];
+
+        if ($name) {
+            // 'r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20'
+            $criteria[] = "  (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name ) ";
+            $params[':name'] = "%$name%";
+        }
 
         list($list, $count) = StockMainResult::items($criteria, $params, $page, 10000);
         $pagination = self::pagination($page, $count, 10000);
@@ -1554,6 +1561,7 @@ class StockController extends BaseController
             [
                 'pagination' => $pagination,
                 'list' => $list,
+                'name' => $name,
             ]
         );
     }
