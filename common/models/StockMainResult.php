@@ -252,44 +252,42 @@ class StockMainResult extends \yii\db\ActiveRecord
             //return false;
         }
 
-        $phones = [
-            //18513655687,// 小刀
-            //18910531223,// 于辉
-            17611629667,// zp
-        ];
-
         //$ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
         $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
         if (!$ret) {
-            return false;
+            return 1;
         }
 
         $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
         $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
-        if (!$buy_type || !$sold_type) {
-            return false;
+        if (!$buy_type && !$sold_type) {
+            return 2;
         }
 
         if ($left_count = AppUtil::getSMSLeft() < 100) {
-            return false;
+            return 3;
         }
 
         $sms_content = '今日【' . date('Y-m-d H:i:s') . "】策略结果\n";
         if ($buy_type) {
             $sms_content .= ' 买点: ';
-            foreach ($sms_content as $day => $v) {
+            foreach ($buy_type as $day => $v) {
                 $sms_content .= $day . '日：' . $v . ';';
             }
             $sms_content .= "\n";
         }
         if ($sold_type) {
             $sms_content .= ' 卖点: ';
-            foreach ($sms_content as $day => $v) {
+            foreach ($sold_type as $day => $v) {
                 $sms_content .= $day . '日：' . $v . ';';
             }
-            $sms_content .= "\n";
         }
 
+        $phones = [
+            //18513655687,// 小刀
+            //18910531223,// 于辉
+            17611629667,// zp
+        ];
         foreach ($phones as $phone) {
             $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
         }
