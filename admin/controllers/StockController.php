@@ -1587,4 +1587,20 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 上证，深证，500etf 策略结果 统计
+     *
+     * @time 2019-11-27
+     */
+    public function actionStock_result_stat()
+    {
+        $list = StockMainResult::result_stat();
+
+        return $this->renderPage("stock_main_result_stat.tpl",
+            [
+                'list' => $list,
+            ]
+        );
+    }
+
 }

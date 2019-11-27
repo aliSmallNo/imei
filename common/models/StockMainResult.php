@@ -489,4 +489,104 @@ class StockMainResult extends \yii\db\ActiveRecord
         return [$rate_avg, $high, $low];
     }
 
+    /**
+     * 每个策略的正确率
+     * 我在结果表中，标注了每个日期策略的正确与否。名称为：对，错，中性
+     * 能否按照下图，有个单独页面，展示下每个策略的正确率。
+     *
+     * @time 2019-11-27
+     */
+    public static function result_stat()
+    {
+        $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
+        $results = StockMainResult::find()->where([])->asArray()->all();
+
+        $data = [];
+        foreach ($rules as $rule) {
+            $item = [];
+            $rule_name = $rule['r_name'];
+            $item[$rule_name] = [
+                5 => [
+                    'times' => 0,
+                    'times_yes' => 0,
+                    'times_no' => 0,
+                    'times_mid' => 0,
+                ],
+                10 => [
+                    'times' => 0,
+                    'times_yes' => 0,
+                    'times_no' => 0,
+                    'times_mid' => 0,
+                ],
+                20 => [
+                    'times' => 0,
+                    'times_yes' => 0,
+                    'times_no' => 0,
+                    'times_mid' => 0,
+                ],
+                'SUM' => [
+                    'times' => 0,
+                    'times_yes' => 0,
+                    'times_no' => 0,
+                    'times_mid' => 0,
+                ],
+            ];
+            $count = function ($item, $result, $day, $rule_name) {
+                $item[$rule_name]['SUM']['times'] += 1;
+                $item[$rule_name][$day]['times'] += 1;
+                if ($result['r_note'] == '对') {
+                    $item[$rule_name][$day]['times_yes'] += 1;
+                    $item[$rule_name]['SUM']['times_yes'] += 1;
+                }
+                if ($result['r_note'] == '错') {
+                    $item[$rule_name][$day]['times_no'] += 1;
+                    $item[$rule_name]['SUM']['times_no'] += 1;
+                }
+                if ($result['r_note'] == '中性') {
+                    $item[$rule_name][$day]['times_mid'] += 1;
+                    $item[$rule_name]['SUM']['times_mid'] += 1;
+                }
+                return $item;
+            };
+            foreach ($results as $result) {
+                if (strpos($result['r_buy5'], $rule_name) !== false) {
+                    $item = $count($item, $result, 5, $rule_name);
+                }
+                if (strpos($result['r_sold5'], $rule_name) !== false) {
+                    $item = $count($item, $result, 5, $rule_name);
+                }
+                if (strpos($result['r_buy10'], $rule_name) !== false) {
+                    $item = $count($item, $result, 10, $rule_name);
+                }
+                if (strpos($result['r_sold10'], $rule_name) !== false) {
+                    $item = $count($item, $result, 10, $rule_name);
+                }
+                if (strpos($result['r_buy20'], $rule_name) !== false) {
+                    $item = $count($item, $result, 20, $rule_name);
+                }
+                if (strpos($result['r_sold20'], $rule_name) !== false) {
+                    $item = $count($item, $result, 20, $rule_name);
+                }
+            }
+            $data[] = $item;
+        }
+        // print_r($data);exit;
+        foreach ($data as $k1 => $v1) {
+            foreach ($v1 as $rule_name => $v2) {
+                foreach ($v2 as $day => $v3) {
+                    $times = $v3['times'];
+                    $times_yes = $v3['times_yes'];
+                    $times_no = $v3['times_no'];
+                    $times_mid = $v3['times_mid'];
+                    $data[$k1][$rule_name][$day]['times_yes_rate'] = $times ? round($times_yes / $times, 4) * 100 : 0;
+                    $data[$k1][$rule_name][$day]['times_no_rate'] = $times ? round($times_no / $times, 4) * 100 : 0;
+                    $data[$k1][$rule_name][$day]['times_mid_rate'] = $times ? round($times_mid / $times, 4) * 100 : 0;
+                }
+            }
+        }
+        //print_r($data);exit;
+        return $data;
+    }
+
+
 }
