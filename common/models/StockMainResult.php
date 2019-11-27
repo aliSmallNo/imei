@@ -238,6 +238,65 @@ class StockMainResult extends \yii\db\ActiveRecord
         return true;
     }
 
+    /**
+     * 14:30后，5分钟一次，有就提醒，没有就不提醒
+     *
+     * @time 2019-11-27
+     */
+    public static function send_sms()
+    {
+        $start = strtotime(date('Y-m-d 14:30:00'));
+        $end = strtotime(date('Y-m-d 15:00:00'));
+        $curr = time();
+        if ($curr < $start || $curr > $end) {
+            //return false;
+        }
+
+        $phones = [
+            //18513655687,// 小刀
+            //18910531223,// 于辉
+            17611629667,// zp
+        ];
+
+        //$ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
+        if (!$ret) {
+            return false;
+        }
+
+        $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
+        $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
+        if (!$buy_type || !$sold_type) {
+            return false;
+        }
+
+        if ($left_count = AppUtil::getSMSLeft() < 100) {
+            return false;
+        }
+
+        $sms_content = '今日【' . date('Y-m-d H:i:s') . "】策略结果\n";
+        if ($buy_type) {
+            $sms_content .= ' 买点: ';
+            foreach ($sms_content as $day => $v) {
+                $sms_content .= $day . '日：' . $v . ';';
+            }
+            $sms_content .= "\n";
+        }
+        if ($sold_type) {
+            $sms_content .= ' 卖点: ';
+            foreach ($sms_content as $day => $v) {
+                $sms_content .= $day . '日：' . $v . ';';
+            }
+            $sms_content .= "\n";
+        }
+
+        foreach ($phones as $phone) {
+            $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
+        }
+        return true;
+
+    }
+
     public static function items($criteria, $params, $page, $pageSize = 1000)
     {
         $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
@@ -277,6 +336,40 @@ class StockMainResult extends \yii\db\ActiveRecord
         return [array_values($res), $count];
     }
 
+    const TAG_BUY = 'tag_buy';
+    const TAG_SOLD = 'tag_sold';
+
+    /**
+     * 获取买卖点的结果
+     *
+     * @time 2019-11-27
+     */
+    public static function get_buy_sold_item($data, $cat = self::TAG_BUY)
+    {
+        switch ($cat) {
+            case self::TAG_BUY:
+                $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20'];
+                break;
+            case self::TAG_SOLD:
+                $arr = [5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20'];
+                break;
+            default:
+                $arr = [];
+        }
+
+        $types = [];
+
+        foreach ($arr as $k1 => $v1) {
+            if ($data[$v1]) {
+                $types[$k1] = trim($data[$v1], ',');
+            }
+        }
+
+        ksort($types);
+
+        return $types;
+    }
+
     /**
      * 回测收益
      *
@@ -309,21 +402,10 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
             $sold_dt = $sold['r_trans_on'];
 
-            $buy_type = $sold_type = [];
-            foreach ([5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20'] as $k1 => $v1) {
-                if ($buy[$v1]) {
-                    $buy_type[$k1] = trim($buy[$v1], ',');
-                }
-            }
-            ksort($buy_type);
+            $buy_type = self::get_buy_sold_item($buy, self::TAG_BUY);
             $buy_price = $buy[StockMainPrice::get_price_field($price_type)];
 
-            foreach ([5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20'] as $k2 => $v2) {
-                if ($sold[$v2]) {
-                    $sold_type[$k2] = trim($sold[$v2], ',');
-                }
-            }
-            ksort($sold_type);
+            $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
             $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
 
             // 找最高 最低卖点 及平均收益率

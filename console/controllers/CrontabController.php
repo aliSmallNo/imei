@@ -17,6 +17,7 @@ use common\models\StockAction;
 use common\models\StockKline;
 use common\models\StockMain;
 use common\models\StockMainPrice;
+use common\models\StockMainResult;
 use common\models\StockOrder;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
@@ -205,10 +206,15 @@ class CrontabController extends Controller
     public function actionAlert()
     {
         try {
-            // 获取当天数据: 上证指数 深证指数 500ETF
-            if (date("H") > 13 && date("H") < 16) {
+
+            if (date("H") > 13 && date("H") < 16 && StockMain::is_trans_date()) {
+                // 获取当天数据: 上证指数 深证指数 500ETF
                 StockMain::update_curr_day();
+                //
                 StockMainPrice::update_curr_day();
+                // 来短信提醒指定用户是否有买点、卖点
+                StockMainResult::send_sms();
+
             }
         } catch (\Exception $e) {
 

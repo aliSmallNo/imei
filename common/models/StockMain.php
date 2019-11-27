@@ -127,6 +127,17 @@ class StockMain extends \yii\db\ActiveRecord
     }
 
     /**
+     * 今天是否是交易日
+     *
+     * @time 2019.11.27
+     */
+    public static function is_trans_date()
+    {
+        $data1 = self::get_stock_data('510500', 'sh');
+        return date('Y-m-d') == date('Y-m-d', strtotime($data1['m_trans_on']));
+    }
+
+    /**
      * 获取当天数据
      *
      * 000001 => 上证指数

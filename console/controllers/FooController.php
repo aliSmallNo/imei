@@ -1731,7 +1731,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMainResult::get_high_low_point('2019-08-27', '2019-09-16', StockMainPrice::TYPE_ETF_500);
+        var_dump(StockMainResult::send_sms());
         // StockMainPrice::init_excel_data();
         //StockMainStat::cal('2019-11-07');
         exit;
