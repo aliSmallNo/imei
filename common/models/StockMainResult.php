@@ -249,11 +249,11 @@ class StockMainResult extends \yii\db\ActiveRecord
         $end = strtotime(date('Y-m-d 15:00:00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
-            //return false;
+            return false;
         }
 
-        //$ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
+        $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+        //$ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
         if (!$ret) {
             return 1;
         }
@@ -284,8 +284,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         $phones = [
-            //18513655687,// 小刀
-            //18910531223,// 于辉
+            18513655687,// 小刀
+            18910531223,// 于辉
             17611629667,// zp
         ];
         foreach ($phones as $phone) {

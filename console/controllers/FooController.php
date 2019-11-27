@@ -1731,8 +1731,8 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        $res = AppUtil::sendTXSMS([17611629667], AppUtil::SMS_NORMAL, ["params" => [strval('123456'), strval(10)]]);
-        //$res = AppUtil::sendSMS('17611629667', 'hello zp', '100001', 'yx');
+
+        $res = AppUtil::sendSMS(17611629667, '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5', '100001', 'yx', AppUtil::getSMSLeft());
         var_dump($res);
 
         //var_dump(StockMainResult::send_sms());
