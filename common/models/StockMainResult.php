@@ -454,6 +454,20 @@ class StockMainResult extends \yii\db\ActiveRecord
     }
 
     /**
+     * 回测收益 获取反向卖点
+     *
+     * @time 2019-11-26
+     */
+    public static function get_sold_point_r($buy_dt)
+    {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0) and r_trans_on>:r_trans_on 
+                order by r_trans_on asc limit 1 ";
+        return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
+    }
+
+    /**
      * 找最高 最低卖点 及平均收益率
      *
      * @time 2019-11-26
@@ -475,7 +489,6 @@ class StockMainResult extends \yii\db\ActiveRecord
             $ret[$k]['rate'] = $buy_price > 0 ? round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
         }
 
-        //$ret = array_column($ret, null, 'rate');
         $ret = ArrayHelper::index($ret, 'rate');
         ksort($ret);
         $ret = array_values($ret);
@@ -490,9 +503,7 @@ class StockMainResult extends \yii\db\ActiveRecord
     }
 
     /**
-     * 麻烦做一个“卖空回测结果表”，单独表
-     *
-     * 卖空指股票下跌可以挣钱（和买入挣钱，是反向的），如下方的结果，卖空结果如右图
+     * 麻烦做一个“卖空回测结果表”，单独表: 把策略结果列表的 买点作为卖点 卖点作为买点 计算
      *
      * 回测收益
      *
@@ -511,7 +522,57 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function cal_back_r($price_type = StockMainPrice::TYPE_ETF_500)
     {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
 
+        $data = [];
+        foreach ($ret as $buy) {
+            $buy_dt = $buy['r_trans_on'];
+            $sold = self::get_sold_point_r($buy_dt);
+            if (!$sold) {
+                continue;
+            }
+            $sold_dt = $sold['r_trans_on'];
+
+            $buy_type = self::get_buy_sold_item($buy, self::TAG_SOLD);
+            $buy_price = $buy[StockMainPrice::get_price_field($price_type)];
+
+            $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
+            $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
+
+            // 找最高 最低卖点 及平均收益率
+            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
+
+            $item = [
+                'buy_dt' => $buy_dt,
+                'buy_price' => $buy_price,
+                'buy_type' => $buy_type,
+                'sold_dt' => $sold_dt,
+                'sold_price' => $sold_price,
+                'sold_type' => $sold_type,
+                'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
+                'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0,
+
+                'rate_avg' => $rate_avg,
+                'high' => $high,
+                'low' => $low,
+            ];
+            $data[] = $item;
+        }
+
+        // 统计年度收益
+        $rate_year_sum = [];
+        foreach ($data as $v3) {
+            $year = date("Y", strtotime($v3['sold_dt']));
+            if (!isset($rate_year_sum[$year])) {
+                $rate_year_sum[$year] = 0;
+            }
+            $rate_year_sum[$year] += $v3['rate'];
+        }
+
+        return [$data, $rate_year_sum];
     }
 
     /**

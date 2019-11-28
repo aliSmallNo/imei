@@ -308,6 +308,12 @@ class Menu
                         "level" => 820
                     ],
                     [
+                        "name" => "卖空回测",
+                        "url" => "/stock/stock_main_back_r",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
                         "name" => "结果统计",
                         "url" => "/stock/stock_result_stat",
                         "revise" => 1,

@@ -1588,6 +1588,27 @@ class StockController extends BaseController
     }
 
     /**
+     * 上证，深证，500etf 策略结果回测列表
+     *
+     * @time 2019-11-25
+     */
+    public function actionStock_main_back_r()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+
+        list($list,$rate_year_sum) = StockMainResult::cal_back_r($price_type);
+
+        return $this->renderPage("stock_main_back_r.tpl",
+            [
+                'list' => $list,
+                'rate_year_sum' => $rate_year_sum,
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+            ]
+        );
+    }
+
+    /**
      * 上证，深证，500etf 策略结果 统计
      *
      * @time 2019-11-27
