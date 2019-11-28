@@ -115,6 +115,15 @@ class StockMainStat extends \yii\db\ActiveRecord
         self::CAT_DAY_10 => '10日',
         self::CAT_DAY_20 => '20日',
     ];
+    static $cats_map = [
+        self::CAT_DAY_5 => '5日',
+        self::CAT_DAY_10 => '10日',
+        self::CAT_DAY_20 => '20日',
+        '5,10' => '5日,10日',
+        '5,20' => '5日,20日',
+        '10,20' => '10日,20日',
+        '5,10,20' => '5日,10日,20日',
+    ];
 
     /**
      * 按日期计算 统计数据
@@ -275,7 +284,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= $rule['r_date_gt'] : true;
         $flag14 = intval($rule['r_date_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;
 
-        $flag15 = intval($rule['r_scat']) ? $s_cat == $rule['r_scat'] : true;
+        //$flag15 = intval($rule['r_scat']) ? $s_cat == $rule['r_scat'] : true;
+        $flag15 = intval($rule['r_scat']) ? in_array($s_cat, explode(',', $rule['r_scat'])) : true;
 
         switch ($rule['r_cat']) {
             case StockMainRule::CAT_BUY:

@@ -1424,7 +1424,7 @@ class ApiController extends Controller
                     'r_sh_close_avg_lt' => trim(self::postParam("r_sh_close_avg_lt")),
                     'r_date_gt' => trim(self::postParam("r_date_gt")),
                     'r_date_lt' => trim(self::postParam("r_date_lt")),
-                    'r_scat' => intval(trim(self::postParam("r_scat"))),
+                    'r_scat' => trim(self::postParam("r_scat")),
                     'r_note' => trim(self::postParam("r_note")),
                 ];
                 foreach ($data as $k => $v) {

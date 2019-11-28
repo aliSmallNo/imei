@@ -1531,7 +1531,7 @@ class StockController extends BaseController
                 'cats' => StockMainRule::$cats,
                 'sts' => StockMainRule::$stDict,
                 'cat' => $cat,
-                'scat' => StockMainStat::$cats,
+                'scat' => StockMainStat::$cats_map,
             ]
         );
     }
