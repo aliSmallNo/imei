@@ -1588,9 +1588,9 @@ class StockController extends BaseController
     }
 
     /**
-     * 上证，深证，500etf 策略结果回测列表
+     * 上证，深证，500etf 策略结果 卖空回测列表
      *
-     * @time 2019-11-25
+     * @time 2019-11-28
      */
     public function actionStock_main_back_r()
     {

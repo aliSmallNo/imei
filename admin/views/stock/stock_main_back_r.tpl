@@ -16,7 +16,7 @@
 </style>
 <div class="row">
   <div class="col-sm-6">
-    <h4>策略结果回测
+    <h4>策略结果 卖空回测
     </h4>
     <div>
       <span class="form_tip"></span>
