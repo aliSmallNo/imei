@@ -146,10 +146,21 @@ class StockMainResult extends \yii\db\ActiveRecord
                     }
                 }
             }
-
         }
 
-        $note = self::get_all_note();
+        foreach ($ret as $v) {
+            self::add([
+                'r_buy5' => $v['r_buy5'],
+                'r_buy10' => $v['r_buy10'],
+                'r_buy20' => $v['r_buy20'],
+                'r_sold5' => $v['r_sold5'],
+                'r_sold10' => $v['r_sold10'],
+                'r_sold20' => $v['r_sold20'],
+                'r_trans_on' => $v['r_trans_on'],
+            ]);
+        }
+
+        /*$note = self::get_all_note();
         self::deleteAll();
 
         foreach ($ret as $k => $v) {
@@ -168,6 +179,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         Yii::$app->db->createCommand()->batchInsert(self::tableName(),
             ["r_trans_on", "r_buy5", "r_buy10", "r_buy20", "r_sold5", "r_sold10", "r_sold20", 'r_note'],
             $ret)->execute();
+        */
 
     }
 
