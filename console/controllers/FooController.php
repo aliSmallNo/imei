@@ -1737,7 +1737,7 @@ class FooController extends Controller
 
         //var_dump(StockMainResult::send_sms());
         // StockMainPrice::init_excel_data();
-        //StockMainStat::cal('2019-11-07');
+        StockMainStat::init_excel_data();
         exit;
 
         //$ret=StockOrder::getStockPrice('300377');

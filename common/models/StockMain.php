@@ -86,9 +86,7 @@ class StockMain extends \yii\db\ActiveRecord
         }
 
         foreach ($values as $key => $val) {
-            if ($val) {
-                $entity->$key = $val;
-            }
+            $entity->$key = $val;
         }
         $entity->m_update_on = date('Y-m-d H:i:s');
         $res = $entity->save();
@@ -225,7 +223,7 @@ class StockMain extends \yii\db\ActiveRecord
     {
         foreach (self::$sz_trans as $k => $sz) {
             $trans_on = date('Y-m-d', strtotime($k));
-            if (strtotime($k) > strtotime('2016/07/04 23:59')) {
+            if ($trans_on != '2015-04-14') {
                 continue;
             }
             $etf = static::$etf500_data[$k] ?? 0;
@@ -240,7 +238,6 @@ class StockMain extends \yii\db\ActiveRecord
                 0,
                 $trans_on);
             echo $trans_on . PHP_EOL;
-
         }
     }
 
@@ -384,6 +381,7 @@ class StockMain extends \yii\db\ActiveRecord
         '2015/04/09' => 7.762,
         '2015/04/10' => 8.001,
         '2015/04/13' => 8.001,
+        '2015/04/14' => 8.001,
         '2015/04/15' => 7.818,
         '2015/04/16' => 7.887,
         '2015/04/17' => 7.941,
