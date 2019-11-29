@@ -1574,8 +1574,8 @@ class StockController extends BaseController
     public function actionStock_main_back()
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
-        $buy_times = self::getParam("buy_times", 2);
-        $stop_rate = self::getParam("stop_rate", -20);
+        $buy_times = self::getParam("buy_times", 0);
+        $stop_rate = self::getParam("stop_rate", 0);
 
         //list($list,$rate_year_sum) = StockMainResult::cal_back_old($price_type);
         list($list, $rate_year_sum) = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
