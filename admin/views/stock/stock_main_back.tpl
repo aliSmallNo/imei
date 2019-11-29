@@ -65,7 +65,7 @@
         <td>{{$item.sum_rate|round:2}}%</td>
         <td>{{$item.success_times}}</td>
         <td>{{$item.fail_times}}</td>
-        <td>{{($item.success_times/($item.success_times+$item.fail_times))|round:2}}%</td>
+        <td>{{($item.success_times/($item.success_times+$item.fail_times))|round:2}}</td>
       </tr>
     {{/foreach}}
   </table>
