@@ -15,7 +15,7 @@
   }
 
   .width240 {
-    width: 240px;
+    width: 240px !important;
   }
 </style>
 <div class="row">
