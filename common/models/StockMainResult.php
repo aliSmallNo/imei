@@ -534,17 +534,27 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
                 return $co;
             };
-            $buy_co = 0;// 买次数
-            foreach ($data as $k1 => $v1) {
-                $buy_co++;
-                $sold_co = $sold_cal($v1['buy_dt'], $data);
+            $data = ArrayHelper::index($data, 'buy_dt');
+            ksort($data);
 
-                $real_buy = $buy_co - $sold_co;
-                if ($real_buy > $buy_times) {
+            $buy_co = 0;// 买次数
+            $dataTmp = $data;
+            foreach ($data as $k1 => $v1) {
+                $sold_co = $sold_cal($v1['buy_dt'], $dataTmp);
+
+                $real_buy = $buy_co - $sold_co;// 持有
+                //echo $v1['buy_dt'] .':   '. $buy_co . ',' . $sold_co . '   ==   ' . $real_buy . '>' . $buy_times . '<br>';
+                if ($real_buy >= $buy_times) {
                     unset($data[$k1]);
                 }
+                $buy_co++;
             }
+
+            krsort($data);
+            //print_r($data);exit;
+            $data = array_values($data);
         }
+        //exit;
 
 
         // 统计年度收益
