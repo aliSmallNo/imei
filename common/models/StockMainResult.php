@@ -372,7 +372,7 @@ class StockMainResult extends \yii\db\ActiveRecord
     /**
      * 回测收益
      *
-     * 买入日期    价格    买入类型    卖出日期    价格    卖出类型    收益率
+     * 买入日期 价格 买入类型 卖出日期 价格 卖出类型 收益率 持有天数 收益率 最高卖点 最低卖点 平均收益率
      *
      * 备注
      * 1.买入日期，是显示有买入时日期
@@ -385,7 +385,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-11-25
      */
-    public static function cal_back($price_type = StockMainPrice::TYPE_ETF_500)
+    public static function cal_back_old($price_type = StockMainPrice::TYPE_ETF_500)
     {
         $sql = "select p.*,r.* from im_stock_main_result r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
@@ -411,18 +411,17 @@ class StockMainResult extends \yii\db\ActiveRecord
             list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
 
             $item = [
-                'buy_dt' => $buy_dt,
-                'buy_price' => $buy_price,
-                'buy_type' => $buy_type,
-                'sold_dt' => $sold_dt,
-                'sold_price' => $sold_price,
-                'sold_type' => $sold_type,
-                'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
-                'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0,
-
-                'rate_avg' => $rate_avg,
-                'high' => $high,
-                'low' => $low,
+                'buy_dt' => $buy_dt,            // 买入日期
+                'buy_price' => $buy_price,      // 买入日期 价格
+                'buy_type' => $buy_type,        //  买入类型
+                'sold_dt' => $sold_dt,          //  卖出日期
+                'sold_price' => $sold_price,    //  卖出日期 价格
+                'sold_type' => $sold_type,      //  卖出类型
+                'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),                        //  持有天数
+                'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0, //  收益率
+                'rate_avg' => $rate_avg,        // 平均收益率
+                'high' => $high,                // 最高卖点
+                'low' => $low,                  // 最低卖点
             ];
             $data[] = $item;
         }
@@ -435,6 +434,137 @@ class StockMainResult extends \yii\db\ActiveRecord
                 $rate_year_sum[$year] = 0;
             }
             $rate_year_sum[$year] += $v3['rate'];
+        }
+
+        return [$data, $rate_year_sum];
+
+    }
+
+    /**
+     * 回测收益
+     *
+     * 买入日期 价格 买入类型 卖出日期 价格 卖出类型 收益率 持有天数 收益率 最高卖点 最低卖点 平均收益率
+     *
+     * 备注
+     * 1.买入日期，是显示有买入时日期
+     * 2.买入类型，指买入策略的名称，如买1，买2
+     * 3.卖出日期，指离买入日期最近的一次卖出
+     * 4.卖出类型，指卖出策略的名称，如卖1，卖2
+     * 5.价格，指当天500ETF收盘价
+     * 6.收益率，指卖出时收益率，百分比
+     * 7.全部数据显示在一页
+     *
+     * 买入次数
+     * 下图是4个策略在同一个天卖出，实际操作中，资金不可能是无限的，一般会设定好买入次数：如2次，每次买入50%
+     * 请做一个“买入次数”下拉框：设定为1次，2次，3次，4次，不限。
+     * 如设定为2次的话，那么后面2次的收益率就不计算了。
+     *
+     * 止损比例
+     * 我们有些策略，亏损会很多，如下图的-23%
+     * 我们需要设定一个“止损点”，即低于这个点，我们就止损卖出，损失不会继续扩大。
+     * 如我们设定止损点为-1.5%，那么第二张图中，最低卖点-1.79%低于-1.5%，我们收益率为-1.5%
+     * 第三张图中，最低点为-7.37%，假设止损点为-1.5%，那么收益率就不是0.81%，而是-1.5%
+     * 止损比例：做个输入框，我们可以灵活输入止损点，看哪个止损点效果更好。
+     *
+     * @time 2019-11-29 PM
+     */
+    public static function cal_back($price_type, $buy_times, $stop_rate)
+    {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 ";
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $data = [];
+        foreach ($ret as $buy) {
+            $buy_dt = $buy['r_trans_on'];
+            $sold = self::get_sold_point($buy_dt);
+            if (!$sold) {
+                continue;
+            }
+
+            $sold_dt = $sold['r_trans_on'];
+
+            $buy_type = self::get_buy_sold_item($buy, self::TAG_BUY);
+            $buy_price = $buy[StockMainPrice::get_price_field($price_type)];
+
+            $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+            $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
+            $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+            $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+
+            // 低于止损比例 获取新的卖点
+            if ($stop_rate && $rate < $stop_rate) {
+                $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
+
+                $sold_dt = $sold['r_trans_on'];
+                $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
+                $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+                $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+            }
+
+            // 找最高 最低卖点 及平均收益率
+            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
+
+            $item = [
+                'buy_dt' => $buy_dt,            // 买入日期
+                'buy_price' => $buy_price,      // 买入日期 价格
+                'buy_type' => $buy_type,        //  买入类型
+                'sold_dt' => $sold_dt,          //  卖出日期
+                'sold_price' => $sold_price,    //  卖出日期 价格
+                'sold_type' => $sold_type,      //  卖出类型
+                'hold_days' => $hold_days,      //  持有天数
+                'rate' => $rate,                //  收益率
+                'rate_avg' => $rate_avg,        // 平均收益率
+                'high' => $high,                // 最高卖点
+                'low' => $low,                  // 最低卖点
+            ];
+            $data[] = $item;
+        }
+
+        // 去掉大于买入次数的买点
+        if (intval($buy_times) > 0) {
+            $sold_cal = function ($curr_buy_dt, $data) {
+                $co = 0;
+                foreach ($data as $v) {
+                    if (strtotime($v['sold_dt']) < strtotime($curr_buy_dt)) {
+                        $co++;
+                    }
+                }
+                return $co;
+            };
+            $buy_co = 0;// 买次数
+            foreach ($data as $k1 => $v1) {
+                $buy_co++;
+                $sold_co = $sold_cal($v1['buy_dt'], $data);
+
+                $real_buy = $buy_co - $sold_co;
+                if ($real_buy > $buy_times) {
+                    unset($data[$k1]);
+                }
+            }
+        }
+
+
+        // 统计年度收益
+        $rate_year_sum = [];
+        foreach ($data as $v3) {
+            $year = date("Y", strtotime($v3['sold_dt']));
+            if (!isset($rate_year_sum[$year])) {
+                $rate_year_sum[$year] = [
+                    'sum_rate' => 0,
+                    'success_times' => 0,
+                    'fail_times' => 0,
+                    'success_rate' => 0,
+                ];
+            }
+            $rate_year_sum[$year]['sum_rate'] += $v3['rate'];
+            if ($v3['rate'] > 0) {
+                $rate_year_sum[$year]['success_times']++;
+            } else {
+                $rate_year_sum[$year]['fail_times']++;
+            }
         }
 
         return [$data, $rate_year_sum];
@@ -454,6 +584,34 @@ class StockMainResult extends \yii\db\ActiveRecord
                 where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
+    }
+
+    /**
+     * 回测收益 获取低于止损点的卖点
+     *
+     * @time 2019-11-29
+     */
+    public static function _get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate)
+    {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where r_trans_on BETWEEN :buy_dt and :sold_dt 
+                order by r_trans_on asc ";
+        $ret = AppUtil::db()->createCommand($sql, [':buy_dt' => $buy_dt, ':sold_dt' => $sold_dt])->queryAll();
+        $price_field = StockMainPrice::get_price_field($price_type);
+        // 购买价格
+        $buy_price = $ret[0][$price_field];
+
+        foreach ($ret as $k => $v) {
+            $curr_price = $v[$price_field];
+            $ret[$k]['curr_price'] = $v[$price_field];
+            $ret[$k]['rate'] = $buy_price > 0 ? round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
+            if ($ret[$k]['rate'] < $stop_rate) {
+                return $ret[$k];
+            }
+        }
+
+        return $ret[0];
     }
 
     /**

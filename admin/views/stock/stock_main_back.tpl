@@ -13,6 +13,10 @@
     color: #f80;
     font-weight: 400;
   }
+
+  .width240 {
+    width: 240px;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -31,6 +35,10 @@
           <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$type}}</option>
         {{/foreach}}
       </select>
+      <input class="form-control" name="buy_times" placeholder="买入次数" type="text" value="{{$buy_times}}">
+      <input class="form-control width240" name="stop_rate" placeholder="止损比例: 如-20% 则填写-20" type="text"
+             value="{{$stop_rate}}">
+
     </div>
 
     <button class="btn btn-primary">查询</button>
@@ -41,9 +49,26 @@
 <div class="row-divider"></div>
 
 <div class="row">
-  {{foreach from=$rate_year_sum item=item key=year}}
-    <div class="rate_year_sum">{{$year}}年：总收益：{{$item}}%</div>
-  {{/foreach}}
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>总收益</th>
+      <th>成功次数</th>
+      <th>失败次数</th>
+      <th>成功率</th>
+    </tr>
+    </thead>
+    {{foreach from=$rate_year_sum item=item key=year}}
+      <tr>
+        <td>{{$year}}</td>
+        <td>{{$item.sum_rate|round:2}}%</td>
+        <td>{{$item.success_times}}</td>
+        <td>{{$item.fail_times}}</td>
+        <td>{{($item.success_times/($item.success_times+$item.fail_times))|round:2}}%</td>
+      </tr>
+    {{/foreach}}
+  </table>
 </div>
 <div class="row-divider"></div>
 <div class="row">

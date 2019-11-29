@@ -1574,8 +1574,11 @@ class StockController extends BaseController
     public function actionStock_main_back()
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $buy_times = self::getParam("buy_times", 2);
+        $stop_rate = self::getParam("stop_rate", -20);
 
-        list($list,$rate_year_sum) = StockMainResult::cal_back($price_type);
+        //list($list,$rate_year_sum) = StockMainResult::cal_back_old($price_type);
+        list($list, $rate_year_sum) = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
 
         return $this->renderPage("stock_main_back.tpl",
             [
@@ -1583,6 +1586,8 @@ class StockController extends BaseController
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
+                'buy_times' => $buy_times,
+                'stop_rate' => $stop_rate,
             ]
         );
     }
@@ -1596,7 +1601,7 @@ class StockController extends BaseController
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
 
-        list($list,$rate_year_sum) = StockMainResult::cal_back_r($price_type);
+        list($list, $rate_year_sum) = StockMainResult::cal_back_r($price_type);
 
         return $this->renderPage("stock_main_back_r.tpl",
             [
@@ -1615,7 +1620,7 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat()
     {
-        list($list_buy,$list_sold) = StockMainResult::result_stat();
+        list($list_buy, $list_sold) = StockMainResult::result_stat();
 
         return $this->renderPage("stock_main_result_stat.tpl",
             [
