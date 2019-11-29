@@ -587,9 +587,24 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function result_stat()
     {
-        $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
+        $rules_buys = StockMainRule::find()->where([
+            'r_cat' => StockMainRule::CAT_BUY,
+            'r_status' => StockMainRule::ST_ACTIVE
+        ])->asArray()->all();
+        $rules_solds = StockMainRule::find()->where([
+            'r_cat' => StockMainRule::CAT_SOLD,
+            'r_status' => StockMainRule::ST_ACTIVE
+        ])->asArray()->all();
         $results = StockMainResult::find()->where([])->asArray()->all();
 
+        $list_buy = self::result_stat_item($rules_buys, $results);
+        $list_sold = self::result_stat_item($rules_solds, $results);
+
+        return [$list_buy, $list_sold];
+    }
+
+    public static function result_stat_item($rules, $results)
+    {
         $data = [];
         foreach ($rules as $rule) {
             $item = [];

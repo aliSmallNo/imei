@@ -22,8 +22,38 @@
 </div>
 <div class="row-divider"></div>
 <div class="row">
-  {{foreach from=$list item=item key=key}}
-    <div class="col-sm-6">
+  <div class="col-sm-6">
+    {{foreach from=$list_buy item=item key=key}}
+      <div class="col-sm-12">
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>DAY</th>
+            <th>对</th>
+            <th>错</th>
+            <th>中性</th>
+          </tr>
+          </thead>
+          <tbody>
+          {{foreach from=$item item=it1 key=rule_name}}
+            {{$rule_name}}
+            {{foreach from=$it1 item=it key=day}}
+              <tr>
+                <td>{{$day}}</td>
+                <td>{{$it.times_yes}}次 - {{$it.times_yes_rate}}%</td>
+                <td>{{$it.times_no}}次 - {{$it.times_no_rate}}%</td>
+                <td>{{$it.times_mid}}次 - {{$it.times_mid_rate}}%</td>
+              </tr>
+            {{/foreach}}
+          {{/foreach}}
+          </tbody>
+        </table>
+      </div>
+    {{/foreach}}
+  </div>
+  <div class="col-sm-6">
+    {{foreach from=$list_sold item=item key=key}}
+    <div class="col-sm-12">
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -48,7 +78,9 @@
         </tbody>
       </table>
     </div>
-  {{/foreach}}
+    {{/foreach}}
+  </div>
+
 </div>
 
 <div class="modal fade" id="modModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
