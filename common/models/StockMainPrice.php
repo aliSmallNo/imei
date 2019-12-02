@@ -168,8 +168,6 @@ class StockMainPrice extends \yii\db\ActiveRecord
         foreach ($dts as $dt) {
             $data[] = self::get_5day_after_rate_item($dt, $price_type, $conn);
         }
-        print_r($data);
-        exit;
         return $data;
     }
 
