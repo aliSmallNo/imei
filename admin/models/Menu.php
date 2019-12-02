@@ -319,6 +319,18 @@ class Menu
                         "revise" => 1,
                         "level" => 820
                     ],
+                    [
+                        "name" => "结果统计2018",
+                        "url" => "/stock/stock_result_stat2018",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
+                        "name" => "结果统计2019",
+                        "url" => "/stock/stock_result_stat2019",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
                 ],
             ],
             [

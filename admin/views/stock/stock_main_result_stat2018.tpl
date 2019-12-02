@@ -16,7 +16,7 @@
 </style>
 <div class="row">
   <div class="col-sm-6">
-    <h4>策略结果列表 统计
+    <h4>2018策略结果列表 统计
     </h4>
   </div>
 </div>
@@ -82,6 +82,5 @@
   </div>
 
 </div>
-
 
 {{include file="layouts/footer.tpl"}}

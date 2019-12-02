@@ -753,7 +753,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-11-27
      */
-    public static function result_stat()
+    public static function result_stat($year = '')
     {
         $rules_buys = StockMainRule::find()->where([
             'r_cat' => StockMainRule::CAT_BUY,
@@ -763,7 +763,11 @@ class StockMainResult extends \yii\db\ActiveRecord
             'r_cat' => StockMainRule::CAT_SOLD,
             'r_status' => StockMainRule::ST_ACTIVE
         ])->asArray()->all();
-        $results = StockMainResult::find()->where([])->asArray()->all();
+
+        $year_begin = $year . '-01-01';
+        $year_end = $year . '-12-31';
+        $where = $year ? ['between', 'r_trans_on', $year_begin, $year_end] : [];
+        $results = StockMainResult::find()->where($where)->asArray()->all();
 
         $list_buy = self::result_stat_item($rules_buys, $results);
         $list_sold = self::result_stat_item($rules_solds, $results);

@@ -1630,4 +1630,38 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 2018年 策略结果 统计
+     *
+     * @time 2019-11-27
+     */
+    public function actionStock_result_stat2018()
+    {
+        list($list_buy, $list_sold) = StockMainResult::result_stat('2018');
+
+        return $this->renderPage("stock_main_result_stat2018.tpl",
+            [
+                'list_buy' => $list_buy,
+                'list_sold' => $list_sold,
+            ]
+        );
+    }
+
+    /**
+     * 2019年 策略结果 统计
+     *
+     * @time 2019-11-27
+     */
+    public function actionStock_result_stat2019()
+    {
+        list($list_buy, $list_sold) = StockMainResult::result_stat('2019');
+
+        return $this->renderPage("stock_main_result_stat2019.tpl",
+            [
+                'list_buy' => $list_buy,
+                'list_sold' => $list_sold,
+            ]
+        );
+    }
+
 }
