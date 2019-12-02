@@ -168,6 +168,8 @@ class StockMainPrice extends \yii\db\ActiveRecord
         foreach ($dts as $dt) {
             $data[] = self::get_5day_after_rate_item($dt, $price_type, $conn);
         }
+        print_r($data);
+        exit;
         return $data;
     }
 
@@ -181,8 +183,16 @@ class StockMainPrice extends \yii\db\ActiveRecord
         $today = array_shift($res);
         $price = $today[$price_type];
         $data['dt'] = $dt;
-        foreach ($res as $v) {
-            $data[] = round($v[$price_type] / $price - 1, 5) * 100;
+        $data = [
+            'dt' => $dt,
+            '0' => 0,
+            '1' => 0,
+            '2' => 0,
+            '3' => 0,
+            '4' => 0,
+        ];
+        foreach ($res as $k => $v) {
+            $data[$k] = round($v[$price_type] / $price - 1, 5) * 100;
         }
         return $data;
     }
