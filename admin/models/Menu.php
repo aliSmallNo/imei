@@ -331,6 +331,12 @@ class Menu
                         "revise" => 1,
                         "level" => 820
                     ],
+                    [
+                        "name" => "买点后收益率",
+                        "url" => "/stock/rate_5day_after",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
                 ],
             ],
             [

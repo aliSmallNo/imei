@@ -1601,7 +1601,7 @@ class StockController extends BaseController
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
 
-        list($list, $rate_year_sum) = StockMainResult::cal_back_r($price_type);
+        list($list, $rate_year_sum) = StockMainResult::cal_back_r_old($price_type);
 
         return $this->renderPage("stock_main_back_r.tpl",
             [
@@ -1660,6 +1660,26 @@ class StockController extends BaseController
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
+            ]
+        );
+    }
+
+    /**
+     * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
+     *
+     * @time 2019-12-02
+     */
+    public function actionRate_5day_after()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+
+        $list = StockMainPrice::get_5day_after_rate($price_type);
+
+        return $this->renderPage("stock_main_rate_5day_rate.tpl",
+            [
+                'list' => array_reverse($list),
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
             ]
         );
     }

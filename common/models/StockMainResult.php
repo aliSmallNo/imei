@@ -678,7 +678,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * 回测收益
      *
-     * 买入日期    价格    买入类型    卖出日期    价格    卖出类型    收益率
+     * 买入日期 价格 买入类型 卖出日期 价格 卖出类型 收益率 持有天数 收益率 最高卖点 最低卖点 平均收益率
      *
      * 备注
      * 1.买入日期，是显示有买入时日期
@@ -691,7 +691,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-11-28
      */
-    public static function cal_back_r($price_type = StockMainPrice::TYPE_ETF_500)
+    public static function cal_back_r_old($price_type)
     {
         $sql = "select p.*,r.* from im_stock_main_result r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
@@ -726,6 +726,79 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
                 'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0,
 
+                'rate_avg' => $rate_avg,
+                'high' => $high,
+                'low' => $low,
+            ];
+            $data[] = $item;
+        }
+
+        // 统计年度收益
+        $rate_year_sum = [];
+        foreach ($data as $v3) {
+            $year = date("Y", strtotime($v3['sold_dt']));
+            if (!isset($rate_year_sum[$year])) {
+                $rate_year_sum[$year] = 0;
+            }
+            $rate_year_sum[$year] += $v3['rate'];
+        }
+
+        return [$data, $rate_year_sum];
+    }
+
+    /**
+     * 卖空回测结果表 => 单独表: 把策略结果列表的 买点作为卖点 卖点作为买点 计算
+     *
+     * 买入日期 价格 买入类型 卖出日期 价格 卖出类型 收益率 持有天数 收益率 最高卖点 最低卖点 平均收益率
+     *
+     * @time 2019-12-02
+     */
+    public static function cal_back_r($price_type, $buy_times, $stop_rate)
+    {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $data = [];
+        foreach ($ret as $buy) {
+            $buy_dt = $buy['r_trans_on'];
+            $sold = self::get_sold_point_r($buy_dt);
+            if (!$sold) {
+                continue;
+            }
+            $sold_dt = $sold['r_trans_on'];
+
+            $buy_type = self::get_buy_sold_item($buy, self::TAG_SOLD);
+            $buy_price = $buy[StockMainPrice::get_price_field($price_type)];
+
+            $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
+            $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
+            $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+            $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+            // 找最高 最低卖点 及平均收益率
+            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
+
+            // 低于止损比例 获取新的卖点
+            /*if ($stop_rate && $rate < $stop_rate) {
+                $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
+
+                $sold_dt = $sold['r_trans_on'];
+                $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                $sold_price = $sold[StockMainPrice::get_price_field($price_type)];
+                $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+                $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+            }*/
+
+            $item = [
+                'buy_dt' => $buy_dt,
+                'buy_price' => $buy_price,
+                'buy_type' => $buy_type,
+                'sold_dt' => $sold_dt,
+                'sold_price' => $sold_price,
+                'sold_type' => $sold_type,
+                'hold_days' => $hold_days,
+                'rate' => $rate,
                 'rate_avg' => $rate_avg,
                 'high' => $high,
                 'low' => $low,
