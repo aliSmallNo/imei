@@ -82,29 +82,13 @@ class StockMainPrice extends \yii\db\ActiveRecord
     const TYPE_ETF_50 = 'etf_50';
     const TYPE_ETF_300 = 'etf_300';
     const TYPE_ETF_500 = 'etf_500';
+    const TYPE_IC_FUTURES = 'ic_futures';
     static $types = [
         self::TYPE_ETF_50 => '50ETF',
         self::TYPE_ETF_300 => '300ETF',
         self::TYPE_ETF_500 => '500ETF',
+        self::TYPE_IC_FUTURES => 'IC_FUTURES',
     ];
-
-    public static function get_price_by_type($type, $data)
-    {
-        switch ($type) {
-            case self::TYPE_ETF_50:
-                $price = $data['p_etf50'];
-                break;
-            case self::TYPE_ETF_300:
-                $price = $data['p_etf300'];
-                break;
-            case self::TYPE_ETF_500:
-                $price = $data['p_etf500'];
-                break;
-            default:
-                $price = 0;
-        }
-        return $price;
-    }
 
     public static function get_price_field($price_type)
     {
@@ -117,6 +101,9 @@ class StockMainPrice extends \yii\db\ActiveRecord
                 break;
             case self::TYPE_ETF_500:
                 $price_field = 'p_etf500';
+                break;
+            case self::TYPE_IC_FUTURES:
+                $price_field = 'p_ic_futures';
                 break;
             default:
                 $price_field = '';
