@@ -1567,7 +1567,7 @@ class StockController extends BaseController
     }
 
     /**
-     * 上证，深证，500etf 策略结果回测列表
+     * 策略结果回测列表
      *
      * @time 2019-11-25
      */
@@ -1577,7 +1577,6 @@ class StockController extends BaseController
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
 
-        //list($list,$rate_year_sum) = StockMainResult::cal_back_old($price_type);
         list($list, $rate_year_sum) = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
 
         return $this->renderPage("stock_main_back.tpl",
@@ -1593,15 +1592,19 @@ class StockController extends BaseController
     }
 
     /**
-     * 上证，深证，500etf 策略结果 卖空回测列表
+     * 策略结果 卖空回测列表
      *
      * @time 2019-11-28
      */
     public function actionStock_main_back_r()
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $buy_times = self::getParam("buy_times", 0);
+        $stop_rate = self::getParam("stop_rate", 0);
 
-        list($list, $rate_year_sum) = StockMainResult::cal_back_r_old($price_type);
+        //list($list, $rate_year_sum) = StockMainResult::cal_back_r_old($price_type);
+        list($list, $rate_year_sum) = StockMainResult::cal_back_r($price_type, $buy_times, $stop_rate);
+
 
         return $this->renderPage("stock_main_back_r.tpl",
             [
@@ -1609,6 +1612,8 @@ class StockController extends BaseController
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
+                'buy_times' => $buy_times,
+                'stop_rate' => $stop_rate,
             ]
         );
     }
@@ -1633,11 +1638,11 @@ class StockController extends BaseController
     /**
      * 2018年 策略结果 统计
      *
-     * @time 2019-11-27
+     * @time 2019-12-02
      */
     public function actionStock_result_stat2018()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat('2018');
+        list($list_buy, $list_sold) = StockMainResult::result_stat('2018', '2018');
 
         return $this->renderPage("stock_main_result_stat2018.tpl",
             [
@@ -1650,13 +1655,30 @@ class StockController extends BaseController
     /**
      * 2019年 策略结果 统计
      *
-     * @time 2019-11-27
+     * @time 2019-12-02
      */
     public function actionStock_result_stat2019()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat('2019');
+        list($list_buy, $list_sold) = StockMainResult::result_stat('2019', '2019');
 
         return $this->renderPage("stock_main_result_stat2019.tpl",
+            [
+                'list_buy' => $list_buy,
+                'list_sold' => $list_sold,
+            ]
+        );
+    }
+
+    /**
+     * 2018、2019年 策略结果 统计
+     *
+     * @time 2019-12-03 AM
+     */
+    public function actionStock_result_stat1819()
+    {
+        list($list_buy, $list_sold) = StockMainResult::result_stat('2018', '2019');
+
+        return $this->renderPage("stock_main_result_stat1819.tpl",
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
@@ -1673,13 +1695,14 @@ class StockController extends BaseController
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
 
-        $list = StockMainPrice::get_5day_after_rate($price_type);
+        list($list, $avgs) = StockMainPrice::get_5day_after_rate($price_type);
 
         return $this->renderPage("stock_main_rate_5day_rate.tpl",
             [
                 'list' => array_reverse($list),
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
+                'avgs' => $avgs,
             ]
         );
     }

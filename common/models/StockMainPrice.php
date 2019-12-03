@@ -79,10 +79,10 @@ class StockMainPrice extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
-    const TYPE_ETF_50 = 'etf_50';
-    const TYPE_ETF_300 = 'etf_300';
-    const TYPE_ETF_500 = 'etf_500';
-    const TYPE_IC_FUTURES = 'ic_futures';
+    const TYPE_ETF_50 = 'p_etf50';
+    const TYPE_ETF_300 = 'p_etf300';
+    const TYPE_ETF_500 = 'p_etf500';
+    const TYPE_IC_FUTURES = 'p_ic_futures';
     static $types = [
         self::TYPE_ETF_50 => '50ETF',
         self::TYPE_ETF_300 => '300ETF',
@@ -155,12 +155,25 @@ class StockMainPrice extends \yii\db\ActiveRecord
         foreach ($dts as $dt) {
             $data[] = self::get_5day_after_rate_item($dt, $price_type, $conn);
         }
-        return $data;
+        $co = count($data);
+        $avgs = [
+            0 => round(array_sum(array_column($data, 0)) / $co, 3),
+            1 => round(array_sum(array_column($data, 1)) / $co, 3),
+            2 => round(array_sum(array_column($data, 2)) / $co, 3),
+            3 => round(array_sum(array_column($data, 3)) / $co, 3),
+            4 => round(array_sum(array_column($data, 4)) / $co, 3),
+        ];
+
+        return [$data, $avgs];
     }
 
+    /**
+     * 买点出现后5天的收益率
+     *
+     * @time 2019-12-02 PM
+     */
     public static function get_5day_after_rate_item($dt, $price_type, $conn)
     {
-        $price_type = self::get_price_field($price_type);
         $conn = $conn ? $conn : AppUtil::db();
         $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 6";
         $res = $conn->createCommand($sql, [':dt' => $dt])->queryAll();
@@ -177,7 +190,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
             '4' => 0,
         ];
         foreach ($res as $k => $v) {
-            $data[$k] = round($v[$price_type] / $price - 1, 5) * 100;
+            $data[$k] = $price > 0 ? round($v[$price_type] / $price - 1, 5) * 100 : 0;
         }
         return $data;
     }
