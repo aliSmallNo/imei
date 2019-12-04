@@ -936,5 +936,4 @@ class StockMainResult extends \yii\db\ActiveRecord
         return $data;
     }
 
-
 }
