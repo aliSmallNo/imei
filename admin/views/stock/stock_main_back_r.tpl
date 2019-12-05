@@ -63,7 +63,7 @@
         <td>{{$item.fail_times}}</td>
         <td>
           {{if $item.success_times+$item.fail_times>0}}
-            {{($item.success_times/($item.success_times+$item.fail_times))|round:2}}
+            {{(($item.success_times/($item.success_times+$item.fail_times))|round:4)*100}}%
           {{else}}0{{/if}}
         </td>
       </tr>
