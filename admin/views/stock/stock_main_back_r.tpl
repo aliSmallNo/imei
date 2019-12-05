@@ -61,7 +61,11 @@
         <td>{{$item.sum_rate|round:2}}%</td>
         <td>{{$item.success_times}}</td>
         <td>{{$item.fail_times}}</td>
-        <td>{{if $item.success_times+$item.fail_times>0}}{{($item.success_times/($item.success_times+$item.fail_times))|round:2}}{{else}}0{{/if}}</td>
+        <td>
+          {{if $item.success_times+$item.fail_times>0}}
+            {{($item.success_times/($item.success_times+$item.fail_times))|round:2}}
+          {{else}}0{{/if}}
+        </td>
       </tr>
     {{/foreach}}
   </table>
@@ -111,17 +115,17 @@
         </td>
 
         <td>{{$item.hold_days}}</td>
-        <td>{{-$item.rate}}%</td>
+        <td>{{$item.rate}}%</td>
 
         <td>
           <div>{{$item.high.r_trans_on}}</div>
           <div>{{$item.high.curr_price}}</div>
-          <div>{{-$item.high.rate}}%</div>
+          <div>{{$item.high.rate}}%</div>
         </td>
         <td>
           <div>{{$item.low.r_trans_on}}</div>
           <div>{{$item.low.curr_price}}</div>
-          <div>{{-$item.low.rate}}%</div>
+          <div>{{$item.low.rate}}%</div>
         </td>
         <td>{{$item.rate_avg}}%</td>
 
