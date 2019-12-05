@@ -52,7 +52,9 @@
       <th>总收益</th>
       <th>成功次数</th>
       <th>失败次数</th>
-      <th>成功率</th>
+      <th>
+        成功率(失败次数/sum)
+      </th>
     </tr>
     </thead>
     {{foreach from=$rate_year_sum item=item key=year}}
@@ -63,7 +65,7 @@
         <td>{{$item.fail_times}}</td>
         <td>
           {{if $item.success_times+$item.fail_times>0}}
-            {{(($item.success_times/($item.success_times+$item.fail_times))|round:4)*100}}%
+            {{(($item.fail_times/($item.success_times+$item.fail_times))|round:4)*100}}%
           {{else}}0{{/if}}
         </td>
       </tr>
