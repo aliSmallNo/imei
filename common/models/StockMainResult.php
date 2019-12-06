@@ -676,7 +676,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                     continue;
                 }
                 $sold_dt = $sold['r_trans_on'];
-                $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
                 $sold_price = $sold[$price_type];
                 $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
                 $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
