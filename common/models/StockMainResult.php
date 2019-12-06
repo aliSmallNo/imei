@@ -425,7 +425,9 @@ class StockMainResult extends \yii\db\ActiveRecord
             // 低于止损比例 获取新的卖点
             if ($stop_rate && $rate < $stop_rate) {
                 $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
-
+                if (!$sold) {
+                    continue;
+                }
                 $sold_dt = $sold['r_trans_on'];
                 $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
                 $sold_price = $sold[$price_type];
@@ -542,6 +544,9 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buy_price = $ret[0][$price_field];
 
         foreach ($ret as $k => $v) {
+            if ($k == 0) {
+                continue;
+            }
             $curr_price = $v[$price_field];
             $ret[$k]['curr_price'] = $v[$price_field];
             $ret[$k]['rate'] = $buy_price > 0 ? round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
@@ -550,7 +555,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
         }
 
-        return $ret[0];
+        return [];
     }
 
     /**
@@ -584,6 +589,9 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buy_price = $ret[0][$price_field];
 
         foreach ($ret as $k => $v) {
+            if ($k == 0) {
+                continue;
+            }
             $curr_price = $v[$price_field];
             $ret[$k]['curr_price'] = $v[$price_field];
             $ret[$k]['rate'] = $buy_price > 0 ? round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
@@ -592,7 +600,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
         }
 
-        return $ret[0];
+        return [];
     }
 
     /**
@@ -664,7 +672,9 @@ class StockMainResult extends \yii\db\ActiveRecord
             // 低于止损比例 获取新的卖点
             if ($stop_rate && $rate < $stop_rate) {
                 $sold = self::_get_sold_point_r($buy_dt, $sold_dt, $price_type, $stop_rate);
-
+                if (!$sold) {
+                    continue;
+                }
                 $sold_dt = $sold['r_trans_on'];
                 $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
                 $sold_price = $sold[$price_type];
