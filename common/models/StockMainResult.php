@@ -701,7 +701,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $data[] = $item;
         }
 
-        // 去掉大于买入次数的买点
+        // 去掉大于买入次数的买点 从2015开始买往现在推的
         if (intval($buy_times) > 0) {
             $sold_cal = function ($curr_buy_dt, $data) {
                 $co = 0;
