@@ -1577,7 +1577,7 @@ class StockController extends BaseController
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
 
-        list($list, $rate_year_sum) = StockMainResult::cal_back($price_type, $buy_times, trim($stop_rate,'%'));
+        list($list, $rate_year_sum) = StockMainResult::cal_back($price_type, $buy_times, trim($stop_rate, '%'));
 
         return $this->renderPage("stock_main_back.tpl",
             [
@@ -1704,6 +1704,18 @@ class StockController extends BaseController
                 'avgs' => $avgs,
             ]
         );
+    }
+
+    /**
+     * 有没有可能做一个随机的买点和卖点，然后来验一下我们这个模型。
+     * 是不是比随机的要好一些，就比如什么意思呢，就是比如说六月份出来一个买点和一个卖点，我们交易了一次。
+     * 然后呢，六月份你随机模拟一个买点和卖点。然后这样整体算下来看，一年下来，我们的这种。策略是比谁机要更强一些。
+     *
+     * @time 2019-12-09
+     */
+    public function actionRand_rate()
+    {
+
     }
 
 }
