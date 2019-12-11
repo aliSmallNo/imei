@@ -1699,9 +1699,9 @@ class AppUtil
         $file_name = "send_msg_"
     ) {
         $formatMsg = $msg;
-//		if (mb_strpos($msg, '【奔跑到家】') == false) {
-//			$formatMsg = '【奔跑到家】' . $msg;
-//		}
+		if (mb_strpos($msg, '【准点信息】') == false) {
+			$formatMsg = '【准点信息】' . $msg;
+		}
         $openId = "benpao";
         $openPwd = "bpbHD2015";
         if ($type != 'real') {
@@ -1709,7 +1709,7 @@ class AppUtil
             $openPwd = "Cv3F_ClN";
         }
         $msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
-        $url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8&sign=" . '准点信息';
+        $url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
         $res = file_get_contents($url);
         @file_put_contents("/data/logs/imei/$file_name" . date("Y-m-d") . ".log",
             date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
