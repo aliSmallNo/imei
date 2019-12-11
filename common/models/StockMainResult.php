@@ -261,7 +261,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             return 3;
         }
 
-        $sms_content = '今日【' . date('Y-m-d H:i:s') . "】策略结果\n";
+        $sms_content = '今日[' . date('Y-m-d H:i:s') . "]策略结果\n";
         if ($buy_type) {
             $sms_content .= ' 买点: ';
             foreach ($buy_type as $day => $v) {
