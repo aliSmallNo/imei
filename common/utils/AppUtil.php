@@ -500,20 +500,31 @@ class AppUtil
 
     public static function getIP()
     {
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) && $_SERVER["HTTP_X_FORWARDED_FOR"])
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]) && $_SERVER["HTTP_X_FORWARDED_FOR"]) {
             $ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-        else if (isset($_SERVER["HTTP_CLIENT_IP"]) && $_SERVER["HTTP_CLIENT_IP"])
-            $ip = $_SERVER["HTTP_CLIENT_IP"];
-        else if (isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"])
-            $ip = $_SERVER["REMOTE_ADDR"];
-        else if (@getenv("HTTP_X_FORWARDED_FOR"))
-            $ip = getenv("HTTP_X_FORWARDED_FOR");
-        else if (@getenv("HTTP_CLIENT_IP"))
-            $ip = getenv("HTTP_CLIENT_IP");
-        else if (@getenv("REMOTE_ADDR"))
-            $ip = getenv("REMOTE_ADDR");
-        else
-            $ip = "unknown";
+        } else {
+            if (isset($_SERVER["HTTP_CLIENT_IP"]) && $_SERVER["HTTP_CLIENT_IP"]) {
+                $ip = $_SERVER["HTTP_CLIENT_IP"];
+            } else {
+                if (isset($_SERVER["REMOTE_ADDR"]) && $_SERVER["REMOTE_ADDR"]) {
+                    $ip = $_SERVER["REMOTE_ADDR"];
+                } else {
+                    if (@getenv("HTTP_X_FORWARDED_FOR")) {
+                        $ip = getenv("HTTP_X_FORWARDED_FOR");
+                    } else {
+                        if (@getenv("HTTP_CLIENT_IP")) {
+                            $ip = getenv("HTTP_CLIENT_IP");
+                        } else {
+                            if (@getenv("REMOTE_ADDR")) {
+                                $ip = getenv("REMOTE_ADDR");
+                            } else {
+                                $ip = "unknown";
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return $ip;
     }
 
@@ -602,7 +613,7 @@ class AppUtil
 
         $ch = curl_init($api);
         if (class_exists("\CURLFile")) {
-            curl_setopt($ch, CURLOPT_SAFE_UPLOAD, TRUE);
+            curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
             $data = ["media" => new \CURLFile($file_url)];
         } else {
             if (defined("CURLOPT_SAFE_UPLOAD")) {
@@ -927,7 +938,8 @@ class AppUtil
             if ($info['error'] == UPLOAD_ERR_OK) {
                 $tmp_name = $info["tmp_name"];
                 $key = RedisUtil::getImageSeq();
-                $ext = pathinfo($_FILES[$fieldName]['tmp_name'] . '/' . $_FILES[$fieldName]['name'], PATHINFO_EXTENSION);
+                $ext = pathinfo($_FILES[$fieldName]['tmp_name'] . '/' . $_FILES[$fieldName]['name'],
+                    PATHINFO_EXTENSION);
                 //$name = $key . '.xls';
                 $name = $key . '.' . $ext;
                 $filePath = "$uploads_dir/$name";
@@ -1212,7 +1224,8 @@ class AppUtil
             $postData["msg"] = $params["msg"];
         }
         $randNum = rand(100000, 999999);
-        $wholeUrl = sprintf("https://yun.tim.qq.com/v3/tlssmssvr/%s?sdkappid=%s&random=%s", $action, $sdkAppId, $randNum);
+        $wholeUrl = sprintf("https://yun.tim.qq.com/v3/tlssmssvr/%s?sdkappid=%s&random=%s", $action, $sdkAppId,
+            $randNum);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $wholeUrl);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -1288,7 +1301,8 @@ class AppUtil
 
         $msg = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
 
-        @file_put_contents($file, date('Ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL . $msg . PHP_EOL . PHP_EOL, FILE_APPEND);
+        @file_put_contents($file,
+            date('Ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL . $msg . PHP_EOL . PHP_EOL, FILE_APPEND);
 
     }
 
@@ -1605,11 +1619,13 @@ class AppUtil
         function genTree9($items)
         {
             $tree = array(); //格式化好的树
-            foreach ($items as $item)
-                if (isset($items[$item['pid']]))
+            foreach ($items as $item) {
+                if (isset($items[$item['pid']])) {
                     $items[$item['pid']]['_child'][] = &$items[$item['id']];
-                else
+                } else {
                     $tree[] = &$items[$item['id']];
+                }
+            }
             return $tree;
         }
 
@@ -1628,19 +1644,22 @@ class AppUtil
     {
         function genTree5($items)
         {
-            foreach ($items as $item)
+            foreach ($items as $item) {
                 $items[$item['pid']]['son'][$item['id']] = &$items[$item['id']];
+            }
             return isset($items[0]['son']) ? $items[0]['son'] : array();
         }
 
         function genTree9($items)
         {
             $tree = array(); //格式化好的树
-            foreach ($items as $item)
-                if (isset($items[$item['pid']]))
+            foreach ($items as $item) {
+                if (isset($items[$item['pid']])) {
                     $items[$item['pid']]['son'][] = &$items[$item['id']];
-                else
+                } else {
                     $tree[] = &$items[$item['id']];
+                }
+            }
             return $tree;
         }
 
@@ -1671,8 +1690,14 @@ class AppUtil
     }
 
     // 发送短信息
-    public static function sendSMS($phone, $msg, $appendId = '1234', $type = 'real', $left_count = 0, $file_name = "send_msg_")
-    {
+    public static function sendSMS(
+        $phone,
+        $msg,
+        $appendId = '1234',
+        $type = 'real',
+        $left_count = 0,
+        $file_name = "send_msg_"
+    ) {
         $formatMsg = $msg;
 //		if (mb_strpos($msg, '【奔跑到家】') == false) {
 //			$formatMsg = '【奔跑到家】' . $msg;
@@ -1684,9 +1709,11 @@ class AppUtil
             $openPwd = "Cv3F_ClN";
         }
         $msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
-        $url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
+        $url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8&sign=" . '准点信息';
         $res = file_get_contents($url);
-        @file_put_contents("/data/logs/imei/$file_name" . date("Y-m-d") . ".log", date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL, FILE_APPEND);
+        @file_put_contents("/data/logs/imei/$file_name" . date("Y-m-d") . ".log",
+            date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
+            FILE_APPEND);
         return $res;
     }
 
@@ -1782,7 +1809,8 @@ class AppUtil
             $res = AppUtil::sendSMS($phone, $content, '100001', 'yx', $left_count);
             $res = self::xml_to_data($res);
 
-            Log::add(['oCategory' => $cat_sms_phone,
+            Log::add([
+                'oCategory' => $cat_sms_phone,
                 'oBefore' => $content,
                 'oOpenId' => $phone,
                 'oAfter' => $res,
