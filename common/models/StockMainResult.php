@@ -281,6 +281,8 @@ class StockMainResult extends \yii\db\ActiveRecord
             18910531223,// 于辉
             17611629667,// zp
             13701162677,
+            13910502331,
+            13701162677,
         ];
         foreach ($phones as $phone) {
             // 发送短信
