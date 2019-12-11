@@ -1735,7 +1735,7 @@ class FooController extends Controller
         //$res = AppUtil::sendSMS(17611629667, '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5', '100001', 'yx', AppUtil::getSMSLeft());
         //var_dump($res);
 
-        var_dump(AppUtil::sendSMS(17611629667, 'Are you OK man?', '100001', 'yx', AppUtil::getSMSLeft()));
+        var_dump(AppUtil::sendSMS(18515217175, 'Are you OK man?', '100001', 'yx', AppUtil::getSMSLeft()));
         //StockMainResult::cal_back_r(StockMainPrice::TYPE_ETF_500,2,1);
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
