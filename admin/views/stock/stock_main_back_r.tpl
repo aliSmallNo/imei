@@ -8,10 +8,8 @@
     max-width: 40px;
   }
 
-  .form_tip {
-    font-size: 10px;
-    color: #f80;
-    font-weight: 400;
+  .tip {
+    color: red;
   }
 </style>
 <div class="row">
@@ -19,7 +17,7 @@
     <h4>策略结果 卖空回测
     </h4>
     <div>
-      <span class="form_tip"></span>
+      <span class="tip"></span>
     </div>
   </div>
 </div>
@@ -122,7 +120,7 @@
 
         <td>{{$item.rule_rate}}%</td>
         <td>{{$item.set_rate}}%</td>
-        <td>{{$item.rate}}%</td>
+        <td class="{{if $stop_rate==$item.rate}}tip{{/if}}">{{$item.rate}}%</td>
 
         <td>
           <div>{{$item.high.r_trans_on}}</div>
