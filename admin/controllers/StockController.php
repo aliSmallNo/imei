@@ -926,6 +926,29 @@ class StockController extends BaseController
             ]);
     }
 
+    /**
+     *
+     * @time 2019-12-11 PM
+     */
+    public function actionTrend_new()
+    {
+        Admin::staffOnly();
+
+        $date = self::getParam('dt', date('Y-m-d'));
+        $reset = self::getParam('reset', 0);
+        if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
+            //$reset = 1;
+        }
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+//		print_r($trends);exit;
+        return $this->renderPage('stock_trend_new.tpl',
+            [
+                'today' => date('Y年n月j日', time()),
+                'trends' => json_encode($trends),
+                'date' => $date
+            ]);
+    }
+
     public function actionPhones()
     {
         Admin::staffOnly();
