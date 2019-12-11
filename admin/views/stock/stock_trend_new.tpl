@@ -459,6 +459,7 @@
                 names.push(cPartner[name]);
             }
         }
+        console.log(cat, [fields, names]);
         return [fields, names];
     }
 
