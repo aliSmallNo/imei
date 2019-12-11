@@ -293,7 +293,7 @@
                 ];
 
                 fields = [
-                    'lose_curr_last_month_user__total',
+                    'lose_curr_last_month_user_total',
                     'lose_curr_last_month_user_ZuoDanLei_18513655687',
                     'lose_curr_last_month_user_JinZhiXin_18600649492',
                     'lose_curr_last_month_user_XuFang_13910838055',
