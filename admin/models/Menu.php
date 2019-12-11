@@ -358,6 +358,12 @@ class Menu
                         "level" => 827
                     ],
                     [
+                        "name" => "多点统计(新)",
+                        "url" => "/stock/trend_new",
+                        "revise" => 1,
+                        "level" => 827
+                    ],
+                    [
                         "name" => '短信提醒',
                         "url" => "/stock/msg_tip",
                         "revise" => 1,

@@ -1731,9 +1731,9 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        $date =date('Y-m-d');
+        /*$date =date('Y-m-d');
         $reset = 1;
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
 
         //$res = AppUtil::sendSMS(17611629667, '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5', '100001', 'yx', AppUtil::getSMSLeft());
         //var_dump($res);
