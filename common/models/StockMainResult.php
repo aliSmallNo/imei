@@ -421,19 +421,22 @@ class StockMainResult extends \yii\db\ActiveRecord
             $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
             $sold_price = $sold[$price_type];
             $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+            $rule_rate = $rate;
+            $set_rate = 0;
             $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
 
             // 低于止损比例 获取新的卖点
-            if ($stop_rate && $rate < $stop_rate) {
+            //if ($stop_rate && $rate < $stop_rate) {
+            if ($stop_rate) {
                 $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
-                if (!$sold) {
-                    continue;
+                if ($sold) {
+                    $sold_dt = $sold['r_trans_on'];
+                    $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                    $sold_price = $sold[$price_type];
+                    $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;;
+                    $rate = $stop_rate;;
+                    $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
                 }
-                $sold_dt = $sold['r_trans_on'];
-                $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
-                $sold_price = $sold[$price_type];
-                $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
-                $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
             }
 
             // 找最高 最低卖点 及平均收益率
@@ -448,6 +451,8 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'sold_type' => $sold_type,      //  卖出类型
                 'hold_days' => $hold_days,      //  持有天数
                 'rate' => $rate,                //  收益率
+                'rule_rate' => $rule_rate,
+                'set_rate' => $set_rate,
                 'rate_avg' => $rate_avg,        // 平均收益率
                 'high' => $high,                // 最高卖点
                 'low' => $low,                  // 最低卖点
@@ -457,39 +462,89 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         // 去掉大于买入次数的买点
         if (intval($buy_times) > 0) {
-            $sold_cal = function ($curr_buy_dt, $data) {
-                $co = 0;
-                foreach ($data as $v) {
-                    if (strtotime($v['sold_dt']) < strtotime($curr_buy_dt)) {
-                        $co++;
-                    }
-                }
-                return $co;
-            };
-            $data = ArrayHelper::index($data, 'buy_dt');
-            ksort($data);
-
-            $buy_co = 0;// 买次数
-            $dataTmp = $data;
-            foreach ($data as $k1 => $v1) {
-                $sold_co = $sold_cal($v1['buy_dt'], $dataTmp);
-
-                $real_buy = $buy_co - $sold_co;// 持有
-                //echo $v1['buy_dt'] .':   '. $buy_co . ',' . $sold_co . '   ==   ' . $real_buy . '>' . $buy_times . '<br>';
-                if ($real_buy >= $buy_times) {
-                    unset($data[$k1]);
-                }
-                $buy_co++;
-            }
-
-            krsort($data);
-            //print_r($data);exit;
-            $data = array_values($data);
+            $data = self::pop_by_times($buy_times, $data);
         }
-        //exit;
-
 
         // 统计年度收益
+        $rate_year_sum = self::get_year_data($data);
+
+        return [$data, $rate_year_sum];
+
+    }
+
+    /**
+     * 根据【最多购买次数】剔除数据
+     * @param string $buy_times 最多购买次数
+     * @param array $data 数据
+     * @return array
+     *
+     * @time 2019-12-10
+     */
+    public static function pop_by_times($buy_times, $data)
+    {
+        $data_all = [];
+        foreach ($data as $v) {
+            $year = date("Y", strtotime($v['sold_dt']));
+            $data_all[$year][] = $v;
+        }
+        //print_r($data_all);exit;
+        $data = [];
+        foreach (['2019', '2018', '2017', '2016', '2015', '2014', '2013', '2012'] as $year) {
+            if (isset($data_all[$year])) {
+                $data1 = self::pop_by_times_item($buy_times, $data_all[$year]);
+                $data = array_merge($data, $data1);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * 根据【最多购买次数】剔除数据
+     * @param string $buy_times 最多购买次数
+     * @param array $data 年度数据
+     * @return array
+     *
+     * @time 2019-12-10
+     */
+    public static function pop_by_times_item($buy_times, $data)
+    {
+        $sold_cal = function ($curr_buy_dt, $data) {
+            $co = 0;
+            foreach ($data as $v) {
+                if (strtotime($v['sold_dt']) < strtotime($curr_buy_dt)) {
+                    $co++;
+                }
+            }
+            return $co;
+        };
+        $data = ArrayHelper::index($data, 'buy_dt');
+        ksort($data);
+
+        $buy_co = 0;// 买次数
+        $dataTmp = $data;
+        foreach ($data as $k1 => $v1) {
+            $sold_co = $sold_cal($v1['buy_dt'], $dataTmp);
+            $real_buy = $buy_co - $sold_co;// 持有
+            //echo $v1['buy_dt'] .':   '. $buy_co . ',' . $sold_co . '   ==   ' . $real_buy . '>' . $buy_times . '<br>';
+            if ($real_buy >= $buy_times) {
+                unset($data[$k1]);
+            }
+            $buy_co++;
+        }
+
+        krsort($data);
+        //print_r($data);exit;
+        return array_values($data);
+    }
+
+    /**
+     * 获取年度数据
+     *
+     * @time 2019-12-10
+     */
+    public static function get_year_data($data)
+    {
         $rate_year_sum = [];
         foreach ($data as $v3) {
             $year = date("Y", strtotime($v3['sold_dt']));
@@ -508,11 +563,8 @@ class StockMainResult extends \yii\db\ActiveRecord
                 $rate_year_sum[$year]['fail_times']++;
             }
         }
-
-        return [$data, $rate_year_sum];
-
+        return $rate_year_sum;
     }
-
 
     /**
      * 回测收益 获取卖点
@@ -596,7 +648,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $curr_price = $v[$price_field];
             $ret[$k]['curr_price'] = $v[$price_field];
             $ret[$k]['rate'] = $buy_price > 0 ? round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
-            if ($ret[$k]['rate'] < $stop_rate) {
+            if ($ret[$k]['rate'] > $stop_rate) {
                 return $ret[$k];
             }
         }
@@ -668,19 +720,22 @@ class StockMainResult extends \yii\db\ActiveRecord
             $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
             $sold_price = $sold[$price_type];
             $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+            $rule_rate = $rate;
+            $set_rate = 0;
             $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
 
             // 低于止损比例 获取新的卖点
-            if ($stop_rate && $rate > $stop_rate) {
+            //if ($stop_rate && $rate > $stop_rate) {
+            if ($stop_rate) {
                 $sold = self::_get_sold_point_r($buy_dt, $sold_dt, $price_type, $stop_rate);
-                if (!$sold) {
-                    continue;
+                if ($sold) {
+                    $sold_dt = $sold['r_trans_on'];
+                    $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
+                    $sold_price = $sold[$price_type];
+                    $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+                    $rate = $stop_rate;
+                    $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
                 }
-                $sold_dt = $sold['r_trans_on'];
-                $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
-                $sold_price = $sold[$price_type];
-                $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
-                $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
             }
 
             // 找最高 最低卖点 及平均收益率
@@ -694,6 +749,8 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'sold_price' => $sold_price,
                 'sold_type' => $sold_type,
                 'hold_days' => $hold_days,
+                'rule_rate' => $rule_rate,
+                'set_rate' => $set_rate,
                 'rate' => $rate,
                 'rate_avg' => $rate_avg,
                 'high' => $high,
@@ -704,56 +761,12 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         // 去掉大于买入次数的买点 从2015开始买往现在推的
         if (intval($buy_times) > 0) {
-            $sold_cal = function ($curr_buy_dt, $data) {
-                $co = 0;
-                foreach ($data as $v) {
-                    if (strtotime($v['sold_dt']) < strtotime($curr_buy_dt)) {
-                        $co++;
-                    }
-                }
-                return $co;
-            };
-            $data = ArrayHelper::index($data, 'buy_dt');
-            ksort($data);
-
-            $buy_co = 0;// 买次数
-            $dataTmp = $data;
-            foreach ($data as $k1 => $v1) {
-                $sold_co = $sold_cal($v1['buy_dt'], $dataTmp);
-
-                $real_buy = $buy_co - $sold_co;// 持有
-                //echo $v1['buy_dt'] .':   '. $buy_co . ',' . $sold_co . '   ==   ' . $real_buy . '>' . $buy_times . '<br>';
-                if ($real_buy >= $buy_times) {
-                    unset($data[$k1]);
-                }
-                $buy_co++;
-            }
-
-            krsort($data);
-            //print_r($data);exit;
-            $data = array_values($data);
+            $data = self::pop_by_times($buy_times, $data);
         }
         //exit;
 
         // 统计年度收益
-        $rate_year_sum = [];
-        foreach ($data as $v3) {
-            $year = date("Y", strtotime($v3['sold_dt']));
-            if (!isset($rate_year_sum[$year])) {
-                $rate_year_sum[$year] = [
-                    'sum_rate' => 0,
-                    'success_times' => 0,
-                    'fail_times' => 0,
-                    'success_rate' => 0,
-                ];
-            }
-            $rate_year_sum[$year]['sum_rate'] += $v3['rate'];
-            if ($v3['rate'] > 0) {
-                $rate_year_sum[$year]['success_times']++;
-            } else {
-                $rate_year_sum[$year]['fail_times']++;
-            }
-        }
+        $rate_year_sum = self::get_year_data($data);
 
         return [$data, $rate_year_sum];
     }

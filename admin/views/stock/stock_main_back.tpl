@@ -78,13 +78,15 @@
       <th>#</th>
       <th>买入日期</th>
       <th>价格</th>
-      <th>买入类型</th>
+      <th class="col-sm-2">买入类型</th>
 
       <th>卖出日期</th>
       <th>价格</th>
-      <th>卖出类型</th>
+      <th class="col-sm-2">卖出类型</th>
       <th>持有天数</th>
 
+      <th>策略收益率</th>
+      <th>set收益率</th>
       <th>收益率</th>
 
       <th>最高卖点</th>
@@ -116,6 +118,8 @@
         </td>
 
         <td>{{$item.hold_days}}</td>
+        <td>{{$item.rule_rate}}%</td>
+        <td>{{$item.set_rate}}%</td>
         <td>{{$item.rate}}%</td>
 
         <td>
