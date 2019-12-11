@@ -151,19 +151,19 @@
                     '王丽',
                 ];// "谢硕硕", "生佳豪", "周攀", "罗文燕", "曹嘉义","王毅龙","于辉","吴淑霞"
                 fields = [
-                    'sum_loan_total',
-                    'sum_loan_ZuoDanLei_18513655687', 'sum_loan_JinZhiXin_18600649492',
-                    'sum_loan_XuFang_13910838055', 'sum_loan_FengLin_18131243333',
-                    'sum_loan_SongFuCheng_18611794484', 'sum_loan_FengXiaoQiang_13643225272',
-                    'sum_loan_ChaJun_13381081778', 'sum_loan_SunQingHai_13701269919',
-                    'sum_loan_YuHui_13910838033', 'sum_loan_WuShuXia_18911781586',
-                    'sum_loan_SunQingHai_13501299927',
-                    'sum_loan_DaLinTai_13910502331',
-                    'sum_loan_SunPeng_13838067113',
-                    'sum_loan_LiangShan_13533578570',
-                    'sum_loan_WangLi_13601088874',
+                    'loan_sum_total',
+                    'loan_sum_ZuoDanLei_18513655687', 'loan_sum_JinZhiXin_18600649492',
+                    'loan_sum_XuFang_13910838055', 'loan_sum_FengLin_18131243333',
+                    'loan_sum_SongFuCheng_18611794484', 'loan_sum_FengXiaoQiang_13643225272',
+                    'loan_sum_ChaJun_13381081778', 'loan_sum_SunQingHai_13701269919',
+                    'loan_sum_YuHui_13910838033', 'loan_sum_WuShuXia_18911781586',
+                    'loan_sum_SunQingHai_13501299927',
+                    'loan_sum_DaLinTai_13910502331',
+                    'loan_sum_SunPeng_13838067113',
+                    'loan_sum_LiangShan_13533578570',
+                    'loan_sum_WangLi_13601088874',
                 ];
-                var data = get_items(mTrend, 'sum_loan_', 2);
+                var data = get_items(mTrend, 'loan_sum_', 2);
                 fields = data[0];
                 names = data[1];
                 break;
