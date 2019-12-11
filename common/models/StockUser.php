@@ -4,7 +4,9 @@ namespace common\models;
 
 use admin\models\Admin;
 use common\utils\AppUtil;
+use common\utils\Pinyin;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "im_stock_user".
@@ -225,6 +227,29 @@ class StockUser extends \yii\db\ActiveRecord
                 "uLastOptOId" => $oid,
             ]);
         }
+    }
+
+    /**
+     *
+     * @time 2019-12-11 PM
+     */
+    public static function get_partners()
+    {
+        $type = StockUser::TYPE_PARTNER;
+        $sql = "select uName,uPhone from im_stock_user where uType=$type";
+        $salers = AppUtil::db()->createCommand($sql)->queryAll();
+
+        foreach ($salers as $k => $v) {
+            $name = Pinyin::encode($v['uName'], 'all');
+            $name = str_replace(" ", '', ucwords($name));
+            $salers[$k]['pinyin_name'] = $name;
+        }
+
+        $partners = ArrayHelper::map($salers, 'pinyin_name', 'uName');
+        $partners['total'] = '合计';
+
+        return $partners;
+
     }
 
 }

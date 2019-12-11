@@ -93,11 +93,17 @@
 <script type="text/html" id="cTrendsTmp">
   {{$trends}}
 </script>
+<script type="text/html" id="cPartner">
+  {{$partners}}
+</script>
+
 <script src="/js/highcharts/highcharts.js"></script>
 <script>
 
     var mTrends = $.parseJSON($('#cTrendsTmp').html());
-    console.log(mTrends);
+    var trends = $.parseJSON($('#cPartner').html());
+    console.log('mTrends: ', mTrends);
+    console.log('trends:', trends);
     var mTrend = null;
     var mDate = $('.queryDate');
 
@@ -157,7 +163,9 @@
                     'sum_loan_LiangShan_13533578570',
                     'sum_loan_WangLi_13601088874',
                 ];
-                fields2
+                var data = get_items(mTrend, 'sum_loan_', 2);
+                fields = data[0];
+                names = data[1];
                 break;
             case 'users':
                 names = [

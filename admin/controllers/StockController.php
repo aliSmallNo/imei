@@ -945,7 +945,8 @@ class StockController extends BaseController
             [
                 'today' => date('Y年n月j日', time()),
                 'trends' => json_encode($trends),
-                'date' => $date
+                'date' => $date,
+                'partners' => json_encode(StockUser::get_partners(), JSON_UNESCAPED_UNICODE),
             ]);
     }
 
