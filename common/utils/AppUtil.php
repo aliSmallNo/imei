@@ -1699,8 +1699,8 @@ class AppUtil
         $file_name = "send_msg_"
     ) {
         $formatMsg = $msg;
-		if (mb_strpos($msg, '【准时信息】') == false) {
-			$formatMsg = '【准时信息】' . $msg;
+		if (mb_strpos($msg, '【准点买】') == false) {
+			$formatMsg = '【准点买】' . $msg;
 		}
         $openId = "benpao";
         $openPwd = "bpbHD2015";
