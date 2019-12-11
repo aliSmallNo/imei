@@ -188,12 +188,10 @@
                     'sum_loan_users_LiangShan_13533578570',
                     'sum_loan_users_WangLi_13601088874',
                 ];
-                for (var key in mTrend) {
-                    if (key.indexOf('sum_loan_users_') == 0) {
-                        fields2.push(key);
-                    }
-                }
-                console.log('fields2:',fields2);
+
+                var data = get_items(mTrend, 'sum_loan_users_', 3);
+                fields = data[0];
+                names = data[1];
                 break;
             case 'follow':
                 names = [
@@ -219,7 +217,8 @@
                 ];
 
                 fields = [
-                    'new_users_total', 'new_users_ZuoDanLei_18513655687', 'new_users_JinZhiXin_18600649492',
+                    'new_users_total',
+                    'new_users_ZuoDanLei_18513655687', 'new_users_JinZhiXin_18600649492',
                     'new_users_XuFang_13910838055', 'new_users_FengLin_18131243333',
                     'new_users_SongFuCheng_18611794484', 'new_users_FengXiaoQiang_13643225272',
                     'new_users_ChaJun_13381081778', 'new_users_SunQingHai_13701269919',
@@ -230,6 +229,9 @@
                     'new_users_LiangShan_13533578570',
                     'new_users_WangLi_13601088874',
                 ];
+                var data = get_items(mTrend, 'new_users_', 2);
+                fields = data[0];
+                names = data[1];
                 break;
             case 'new_loan':
                 names = [
@@ -241,7 +243,6 @@
                     '梁颢珊',
                     '王丽',
                 ];
-
                 fields = [
                     'new_loan_total', 'new_loan_ZuoDanLei_18513655687', 'new_loan_JinZhiXin_18600649492',
                     'new_loan_XuFang_13910838055', 'new_loan_FengLin_18131243333',
@@ -254,6 +255,9 @@
                     'new_loan_LiangShan_13533578570',
                     'new_loan_WangLi_13601088874',
                 ];
+                var data = get_items(mTrend, 'new_loan_', 2);
+                fields = data[0];
+                names = data[1];
                 break;
             case 'new_curr_month_loan':
                 names = [
@@ -265,7 +269,6 @@
                     '梁颢珊',
                     '王丽',
                 ];
-
                 fields = [
                     'new_curr_month_loan_total',
                     'new_curr_month_loan_ZuoDanLei_18513655687',
@@ -284,10 +287,9 @@
                     'new_curr_month_loan_LiangShan_13533578570',
                     'new_curr_month_loan_WangLi_13601088874',
                 ];
-                /**
-                 [new_curr_month_loan_XieShuoShuo_18101390540] => 0
-                 [new_curr_month_loan_Huang_13552591660] => 0
-                 */
+                var data = get_items(mTrend, 'new_curr_month_loan_', 4);
+                fields = data[0];
+                names = data[1];
                 break;
             case "lose_curr_last_month_user":
                 names = [
@@ -299,7 +301,6 @@
                     '梁颢珊',
                     '王丽',
                 ];
-
                 fields = [
                     'lose_curr_last_month_user_total',
                     'lose_curr_last_month_user_ZuoDanLei_18513655687',
@@ -318,6 +319,9 @@
                     'lose_curr_last_month_user_LiangShan_13533578570',
                     'lose_curr_last_month_user_WangLi_13601088874',
                 ];
+                var data = get_items(mTrend, 'lose_curr_last_month_user_', 5);
+                fields = data[0];
+                names = data[1];
                 break;
         }
         if (names) {
@@ -429,6 +433,20 @@
             },
             series: items,
         });
+    }
+
+    function get_items(mTrend, cat, index) {
+        var fields = [];
+        var names = [];
+        for (var key1 in mTrend) {
+            if (key1.indexOf(cat) == 0) {
+                fields.push(key1);
+            }
+        }
+        for (var key2 in fields) {
+            names.push(fields[key2].split('_')[index]);
+        }
+        return [fields, names];
     }
 
     $(function () {
