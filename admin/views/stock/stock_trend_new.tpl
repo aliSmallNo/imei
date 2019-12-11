@@ -101,9 +101,9 @@
 <script>
 
     var mTrends = $.parseJSON($('#cTrendsTmp').html());
-    var trends = $.parseJSON($('#cPartner').html());
+    var cPartner = $.parseJSON($('#cPartner').html());
     console.log('mTrends: ', mTrends);
-    console.log('trends:', trends);
+    console.log('cPartner:', cPartner);
     var mTrend = null;
     var mDate = $('.queryDate');
 
@@ -452,7 +452,12 @@
             }
         }
         for (var key2 in fields) {
-            names.push(fields[key2].split('_')[index]);
+            var name = fields[key2].split('_')[index];
+            if (cPartner[name] == undefined) {
+                names.push(name);
+            } else {
+                names.push(cPartner[name]);
+            }
         }
         return [fields, names];
     }
