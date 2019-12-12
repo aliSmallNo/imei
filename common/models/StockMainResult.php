@@ -325,6 +325,13 @@ class StockMainResult extends \yii\db\ActiveRecord
         if (!$buy_type && !$sold_type) {
             return 2;
         }
+        $prefix = '6';
+        if ($buy_type) {
+            $prefix = "8";
+        }
+        if ($sold_type) {
+            $prefix = "7";
+        }
 
         $phones = [
             18513655687,// 小刀
@@ -336,7 +343,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         ];
         foreach ($phones as $phone) {
             // 发送短信
-            $code = strval('8' . mt_rand(1000, 9999) . '8');
+            $code = strval($prefix . mt_rand(1000, 9999) . '8');
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
 
             @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
