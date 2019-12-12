@@ -337,8 +337,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($phones as $phone) {
             // 发送短信
             $code = strval('8' . mt_rand(1000, 9999) . '8');
-            $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL,
-                ["params" => [$code, strval(10)]]);
+            $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
+
             @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
                 date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . PHP_EOL,
                 FILE_APPEND);
