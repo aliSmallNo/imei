@@ -213,7 +213,7 @@ class CrontabController extends Controller
                 //
                 StockMainPrice::update_curr_day();
                 // 来短信提醒指定用户是否有买点、卖点
-                StockMainResult::send_sms();
+                StockMainResult::send_sms2();
 
             }
         } catch (\Exception $e) {

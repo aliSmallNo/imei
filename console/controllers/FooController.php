@@ -1735,7 +1735,7 @@ class FooController extends Controller
         $reset = 1;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
 
-        //StockMainResult::cal_back_r(StockMainPrice::TYPE_ETF_500,2,1);
+        StockMainResult::send_sms2();
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
         exit;

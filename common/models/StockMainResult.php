@@ -286,25 +286,64 @@ class StockMainResult extends \yii\db\ActiveRecord
         ];
         foreach ($phones as $phone) {
             // 发送短信
-            // $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
+            $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
 
+            // 推送公众号 微信消息
+            $users = User::find()->where(['uPhone' => $phone])->asArray()->all();
+            if ($users) {
+                foreach ($users as $user) {
+                    UserWechat::sendMsg($user['uOpenId'], $sms_content, 1);
+                }
+            }
+        }
+        return true;
+
+    }
+
+    /**
+     * 14:30后，5分钟一次，有就提醒，没有就不提醒 => 替代上边的方法 self::send_sms()
+     *
+     * @time 2019-12-12 AM
+     */
+    public static function send_sms2()
+    {
+        $start = strtotime(date('Y-m-d 14:30:00'));
+        $end = strtotime(date('Y-m-d 15:00:00'));
+        $curr = time();
+        if ($curr < $start || $curr > $end) {
+            return false;
+        }
+
+        $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
+        if (!$ret) {
+            return 1;
+        }
+
+        $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
+        $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
+        if (!$buy_type && !$sold_type) {
+            return 2;
+        }
+
+        $phones = [
+//            18513655687,// 小刀
+//            18910531223,// 于辉
+            17611629667,// zp
+//            13701162677,
+//            13910502331,
+//            13701162677,
+        ];
+        foreach ($phones as $phone) {
+            // 发送短信
             $code = strval('8' . mt_rand(1000, 9999) . '8');
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL,
                 ["params" => [$code, strval(10)]]);
             @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
                 date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
                 FILE_APPEND);
-
-            // 推送公众号 微信消息
-            /*$users = User::find()->where(['uPhone' => $phone])->asArray()->all();
-            if ($users) {
-                foreach ($users as $user) {
-                    UserWechat::sendMsg($user['uOpenId'], $sms_content, 1);
-                }
-            }*/
         }
         return true;
-
     }
 
     public static function items($criteria, $params, $page, $pageSize = 1000)
