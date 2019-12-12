@@ -311,7 +311,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         $end = strtotime(date('Y-m-d 15:00:00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
-            return false;
+            //return false;
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
