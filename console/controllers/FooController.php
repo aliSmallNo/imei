@@ -1735,11 +1735,8 @@ class FooController extends Controller
         $reset = 1;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
 
-        //$res = AppUtil::sendSMS(17611629667, '成功预测，今日盘中发生暴跌，想继续免费预订，请加V：bpbwma5', '100001', 'yx', AppUtil::getSMSLeft());
-        //var_dump($res);
-
-        //$content = '今日[' . date('Y-m-d H:i:s') . ']准点信息：买点: 20日：买T4-20-WD-SX;卖点: 5日：卖T2-WD-SX';
-        //var_dump(AppUtil::sendSMS(17611629667, $content, '100001', 'yx'));
+        $content = '今日[' . date('Y-m-d H:i:s') . ']准点信息：买点: 20日：买T4-20-WD-SX;卖点: 5日：卖T2-WD-SX';
+        var_dump(AppUtil::sendSMS(17611629667, $content, '100001', 'yx'));
         //StockMainResult::cal_back_r(StockMainPrice::TYPE_ETF_500,2,1);
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
