@@ -286,14 +286,22 @@ class StockMainResult extends \yii\db\ActiveRecord
         ];
         foreach ($phones as $phone) {
             // 发送短信
-            $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
+            // $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
+
+            $code = strval('8' . mt_rand(1000, 9999) . '8');
+            $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL,
+                ["params" => [$code, strval(10)]]);
+            @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
+                date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
+                FILE_APPEND);
+
             // 推送公众号 微信消息
-            $users = User::find()->where(['uPhone' => $phone])->asArray()->all();
+            /*$users = User::find()->where(['uPhone' => $phone])->asArray()->all();
             if ($users) {
                 foreach ($users as $user) {
                     UserWechat::sendMsg($user['uOpenId'], $sms_content, 1);
                 }
-            }
+            }*/
         }
         return true;
 
