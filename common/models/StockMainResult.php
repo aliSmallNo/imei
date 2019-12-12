@@ -311,7 +311,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         $end = strtotime(date('Y-m-d 15:00:00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
-            //return false;
+            return false;
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
@@ -327,12 +327,12 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         $phones = [
-//            18513655687,// 小刀
-//            18910531223,// 于辉
+            18513655687,// 小刀
+            18910531223,// 于辉
             17611629667,// zp
-//            13701162677,
-//            13910502331,
-//            13701162677,
+            13701162677,
+            13910502331,
+            13701162677,
         ];
         foreach ($phones as $phone) {
             // 发送短信
@@ -343,7 +343,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
                 FILE_APPEND);
         }
-        return true;
+        return 100;
     }
 
     public static function items($criteria, $params, $page, $pageSize = 1000)
