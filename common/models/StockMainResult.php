@@ -315,7 +315,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
+        //$ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
         if (!$ret) {
             return 1;
         }
