@@ -1708,8 +1708,13 @@ class AppUtil
             $openId = "benpaoyx";
             $openPwd = "Cv3F_ClN";
         }
+        // 221.179.172.68
+        // 124.251.7.68
+
         $msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
-        $url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
+        //$url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
+        $url = "http://124.251.7.68:8100/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
+
         $res = file_get_contents($url);
         @file_put_contents("/data/logs/imei/$file_name" . date("Y-m-d") . ".log",
             date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
@@ -1747,6 +1752,8 @@ class AppUtil
     public static function getSMSLeft()
     {
         $ret = AppUtil::httpGet('http://221.179.180.158:8081/QxtSms_surplus/surplus?OperID=benpaoyx&OperPass=Cv3F_ClN');
+        //$ret = AppUtil::httpGet('http://124.251.7.68:8100/QxtSms_surplus/surplus?OperID=benpaoyx&OperPass=Cv3F_ClN');
+
         $ret = self::xml_to_data($ret);
         if (is_array($ret) && isset($ret['rcode']) && $ret['rcode']) {
             return intval($ret['rcode']);

@@ -1736,7 +1736,8 @@ class FooController extends Controller
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
 
         $content = '今日[' . date('Y-m-d H:i:s') . ']准点信息：买点: 20日：买T4-20-WD-SX;卖点: 5日：卖T2-WD-SX';
-        var_dump(AppUtil::sendSMS(18515217175, $content, '100001', 'yx'));
+        var_dump(AppUtil::sendSMS(17611629667, $content, '100001', 'yx'));
+
         //StockMainResult::cal_back_r(StockMainPrice::TYPE_ETF_500,2,1);
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
