@@ -1713,7 +1713,8 @@ class AppUtil
 
         $msg = urlencode(iconv("UTF-8", "gbk//TRANSLIT", $formatMsg));
         //$url = "http://221.179.180.158:9007/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
-        $url = "http://124.251.7.68:8000/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
+        //$url = "http://124.251.7.68:8000/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
+        $url = "http://221.179.172.68:8000/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
 
         $res = file_get_contents($url);
         @file_put_contents("/data/logs/imei/$file_name" . date("Y-m-d") . ".log",
