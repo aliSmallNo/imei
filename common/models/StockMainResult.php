@@ -340,7 +340,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL,
                 ["params" => [$code, strval(10)]]);
             @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
-                date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
+                date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . PHP_EOL,
                 FILE_APPEND);
         }
         return 100;
