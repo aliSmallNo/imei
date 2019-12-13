@@ -70,6 +70,45 @@
     {{/foreach}}
   </table>
 </div>
+
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>正确率</th>
+      <th colspan="3">正确次数</th>
+      <th colspan="3">错误次数</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>策略</th>
+      <th>5日</th>
+      <th>10日</th>
+      <th>20日</th>
+      <th>5日</th>
+      <th>10日</th>
+      <th>20日</th>
+      <th>总次数</th>
+      <th>准确率</th>
+    </tr>
+    </thead>
+    {{foreach from=$stat_rule_right_rate item=item key=name}}
+      <tr>
+        <td>{{$name}}</td>
+        <td>{{$item.yes5}}</td>
+        <td>{{$item.yes10}}</td>
+        <td>{{$item.yes20}}</td>
+        <td>{{$item.no5}}</td>
+        <td>{{$item.no10}}</td>
+        <td>{{$item.no20}}</td>
+        <td>{{$item.sum}}</td>
+        <td>{{$item.right_rate}}%</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+
 <div class="row-divider"></div>
 <div class="row">
   <table class="table table-striped table-bordered">

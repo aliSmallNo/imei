@@ -521,11 +521,84 @@ class StockMainResult extends \yii\db\ActiveRecord
             $data = self::pop_by_times($buy_times, $data);
         }
 
+        // 回测表中加一个“正确率” 2019-12-12 PM
+        $stat_rule_right_rate = self::stat_rule_right_rate($data);
+
         // 统计年度收益
         $rate_year_sum = self::get_year_data($data);
 
-        return [$data, $rate_year_sum];
+        return [$data, $rate_year_sum, $stat_rule_right_rate];
 
+    }
+
+    /**
+     * 回测表中加一个“正确率”
+     *
+     * @time 2019-12-12 PM
+     */
+    public static function stat_rule_right_rate($data)
+    {
+        $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->orderBy('r_cat')->all();
+        $ret = ArrayHelper::map($rules, 'r_name', 0);
+        foreach ($ret as $k => $v) {
+            $ret[$k] = [
+                'yes5' => 0,
+                'yes10' => 0,
+                'yes20' => 0,
+                'no5' => 0,
+                'no10' => 0,
+                'no20' => 0,
+                'sum' => 0,
+            ];
+        }
+        foreach ($data as $v1) {
+            /**
+             * $buy_type
+             *
+             * [buy_type] => Array
+             * (
+             *  [5] => 买Z6-CG
+             *  [10] => 买Z5-SHX-HD,买Z6-CG
+             * )
+             */
+
+            $buy_type = $v1['buy_type'];
+            $sold_type = $v1['sold_type'];
+
+            $trans = function ($buy_type, $ret) {
+                foreach ($buy_type as $buy_day_cat => $buy_rule_names) {
+                    $buy_rule_names = trim($buy_rule_names, ',');
+                    if (strpos($buy_rule_names, ',') === false) {
+                        $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
+                    } else {
+                        foreach (explode(',', $buy_rule_names) as $buy_rule_name) {
+                            $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
+                        }
+                    }
+                }
+                return $ret;
+            };
+            $ret = $trans($buy_type, $ret);
+            $ret = $trans($sold_type, $ret);
+        }
+
+        // 算出总计，错误数
+        $co_rule = count($rules);
+        $co_data = count($data);
+        foreach ($ret as $k3 => $v3) {
+            $sum = $co_data * 3;
+            $yes5 = $ret[$k3]['yes5'];
+            $yes10 = $ret[$k3]['yes10'];
+            $yes20 = $ret[$k3]['yes20'];
+
+            $ret[$k3]['sum'] = $sum;
+            $ret[$k3]['no5'] = $co_data - $yes5;
+            $ret[$k3]['no10'] = $co_data - $yes10;
+            $ret[$k3]['no20'] = $co_data - $yes20;
+            $ret[$k3]['right_rate'] = round(($yes5 + $yes10 + $yes20) / $sum, 4) * 100;
+        }
+
+        return $ret;
     }
 
     /**
@@ -819,12 +892,14 @@ class StockMainResult extends \yii\db\ActiveRecord
         if (intval($buy_times) > 0) {
             $data = self::pop_by_times($buy_times, $data);
         }
-        //exit;
+
+        // 回测表中加一个“正确率” 2019-12-12 PM
+        $stat_rule_right_rate = self::stat_rule_right_rate($data);
 
         // 统计年度收益
         $rate_year_sum = self::get_year_data($data);
 
-        return [$data, $rate_year_sum];
+        return [$data, $rate_year_sum, $stat_rule_right_rate];
     }
 
     /**
