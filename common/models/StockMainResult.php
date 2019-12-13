@@ -340,6 +340,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             13701162677,
             13910502331,
             13701162677,
+            13910502331,
         ];
         foreach ($phones as $phone) {
             // 发送短信
