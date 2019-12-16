@@ -1731,7 +1731,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMainResult::stat_rule_rught_rate([]);
+
         /*$date =date('Y-m-d');
         $reset = 1;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/

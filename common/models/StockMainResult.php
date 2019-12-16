@@ -535,7 +535,7 @@ class StockMainResult extends \yii\db\ActiveRecord
     /**
      * 回测表中加一个“正确率”
      *
-     * @time 2019-12-12 PM
+     * @time 2019-12-16 AM
      */
     public static function stat_rule_right_rate($data)
     {
@@ -565,38 +565,50 @@ class StockMainResult extends \yii\db\ActiveRecord
 
             $buy_type = $v1['buy_type'];
             $sold_type = $v1['sold_type'];
+            $rate_f = $v1['rate'] > 0;      // >0则为正确 否则为错误
 
-            $trans = function ($buy_type, $ret) {
+            $trans = function ($buy_type, $ret, $rate_f) {
                 foreach ($buy_type as $buy_day_cat => $buy_rule_names) {
                     $buy_rule_names = trim($buy_rule_names, ',');
                     if (strpos($buy_rule_names, ',') === false) {
-                        $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
+                        if ($rate_f) {
+                            $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
+                        } else {
+                            $ret[$buy_rule_names]['no' . $buy_day_cat]++;
+                        }
                     } else {
                         foreach (explode(',', $buy_rule_names) as $buy_rule_name) {
-                            $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
+                            if ($rate_f) {
+                                $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
+                            } else {
+                                $ret[$buy_rule_name]['no' . $buy_day_cat]++;
+                            }
                         }
                     }
                 }
                 return $ret;
             };
-            $ret = $trans($buy_type, $ret);
-            $ret = $trans($sold_type, $ret);
+            $ret = $trans($buy_type, $ret, $rate_f);
+            $ret = $trans($sold_type, $ret, $rate_f);
         }
 
-        // 算出总计，错误数
-        $co_rule = count($rules);
-        $co_data = count($data);
+        // 算出总计，正确率
         foreach ($ret as $k3 => $v3) {
-            $sum = $co_data * 3;
+
             $yes5 = $ret[$k3]['yes5'];
             $yes10 = $ret[$k3]['yes10'];
             $yes20 = $ret[$k3]['yes20'];
+            $yes = $yes5 + $yes10 + $yes20;
 
+            $no5 = $ret[$k3]['no5'];
+            $no10 = $ret[$k3]['no10'];
+            $no20 = $ret[$k3]['no20'];
+            $no = $no5 + $no10 + $no20;
+
+            $sum = $yes + $no;
             $ret[$k3]['sum'] = $sum;
-            $ret[$k3]['no5'] = $co_data - $yes5;
-            $ret[$k3]['no10'] = $co_data - $yes10;
-            $ret[$k3]['no20'] = $co_data - $yes20;
-            $ret[$k3]['right_rate'] = round(($yes5 + $yes10 + $yes20) / $sum, 4) * 100;
+
+            $ret[$k3]['right_rate'] = $sum > 0 ? round($yes / $sum, 4) * 100 : 0;
         }
 
         return $ret;
