@@ -1744,7 +1744,7 @@ class StockController extends BaseController
      */
     public function actionRandom_rate()
     {
-        $max_hold_days = self::getParam("max_hold_days", 30);
+        $max_hold_days = self::getParam("max_hold_days", 10);
 
         list($list, $rate_year_sum) = StockMainResult::random_buy_rate($max_hold_days);
 
