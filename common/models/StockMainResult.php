@@ -1065,7 +1065,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $res = static::random_dts_from_month($month, $num, $hold_max);
             $ret = array_merge($ret, $res);
         }
-        ArrayHelper::multisort($ret, 'buy_dt', 'SORT_DESC');
+        ArrayHelper::multisort($ret, 'buy_dt', SORT_DESC);
 
 
         // 统计年度收益
