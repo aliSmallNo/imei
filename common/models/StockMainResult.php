@@ -1044,7 +1044,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function rand_buy_rate()
+    public static function random_buy_rate()
     {
         $price_type = StockMainPrice::TYPE_ETF_500;
 
@@ -1061,8 +1061,62 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         }
 
-        print_r($buy_plans);
+        //print_r($buy_plans);
 
+        $ret = [];
+        foreach ($buy_plans as $month => $num) {
+            $res = static::random_dts_from_month($month, $num);
+            $ret = array_merge($ret, $res);
+        }
+        ArrayHelper::multisort($ret, 'buy_dt');
+
+        print_r($ret);
+    }
+
+    /**
+     * 从一个月中随机得到$num个日期作为买入日期
+     *
+     * @time 2019-12-17 PM
+     */
+    public static function random_dts_from_month($month, $num)
+    {
+        $sql = "select m_trans_on,m_etf_close from im_stock_main where DATE_FORMAT(m_trans_on,'%Y-%m')=:dt ";
+        $res = AppUtil::db()->createCommand($sql, [':dt' => $month])->queryAll();
+
+        shuffle($res);
+        $res = array_slice($res, 0, $num);
+
+        $ret = [];
+        foreach ($res as $v) {
+            $buy_dt = $v['m_trans_on'];
+            $buy_price = $v['m_etf_close'];
+            $sold_point = static::get_random_sold_dt($buy_dt);
+            $sold_price = $sold_point['m_etf_close'];
+            $ret[] = [
+                'buy_dt' => $buy_dt,
+                'buy_price' => $buy_price,
+                'solde_dt' => $sold_point['m_etf_close'],
+                'sold_price' => $sold_price,
+                'rate' => round(($sold_price - $buy_price) / $buy_price, 4) * 100,
+            ];
+        }
+        return $ret;
+    }
+
+    /**
+     * 随机得到一个卖点
+     *
+     * @time 2019-12-17 PM
+     */
+    public static function get_random_sold_dt($buy_dt)
+    {
+        $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt limit 30";
+        $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt])->queryAll();
+
+        shuffle($res);
+        $res = array_slice($res, 0, 1);
+
+        return $res[0];
     }
 
 }
