@@ -1113,8 +1113,8 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function get_random_sold_dt($buy_dt, $hold_max = 30)
     {
-        $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt limit :hold_max";
-        $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt, ':hold_max' => $hold_max])->queryAll();
+        $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt order by m_trans_on asc limit $hold_max";
+        $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt])->queryAll();
 
         shuffle($res);
         $res = array_slice($res, 0, 1);
