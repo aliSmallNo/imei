@@ -343,6 +343,12 @@ class Menu
                         "revise" => 1,
                         "level" => 820
                     ],
+                    [
+                        "name" => "随机收益率",
+                        "url" => "/stock/random_rate",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
                 ],
             ],
             [
