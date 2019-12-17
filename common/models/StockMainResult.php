@@ -1044,7 +1044,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function random_buy_rate()
+    public static function random_buy_rate($hold_max = 30)
     {
         $price_type = StockMainPrice::TYPE_ETF_500;
 
@@ -1052,25 +1052,26 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buy_plans = [];
         foreach ($data as $v) {
             $dt = date('Y-m', strtotime($v['buy_dt']));
-
             if (!isset($buy_plans[$dt])) {
                 $buy_plans[$dt] = 1;
             } else {
                 $buy_plans[$dt]++;
             }
-
         }
-
         //print_r($buy_plans);
 
         $ret = [];
         foreach ($buy_plans as $month => $num) {
-            $res = static::random_dts_from_month($month, $num);
+            $res = static::random_dts_from_month($month, $num, $hold_max);
             $ret = array_merge($ret, $res);
         }
-        ArrayHelper::multisort($ret, 'buy_dt');
+        ArrayHelper::multisort($ret, 'buy_dt', 'SORT_DESC');
 
-        print_r($ret);
+
+        // 统计年度收益
+        $rate_year_sum = self::get_year_data($ret);
+
+        return [$ret, $rate_year_sum];
     }
 
     /**
@@ -1078,7 +1079,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function random_dts_from_month($month, $num)
+    public static function random_dts_from_month($month, $num, $hold_max)
     {
         $sql = "select m_trans_on,m_etf_close from im_stock_main where DATE_FORMAT(m_trans_on,'%Y-%m')=:dt ";
         $res = AppUtil::db()->createCommand($sql, [':dt' => $month])->queryAll();
@@ -1090,13 +1091,15 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($res as $v) {
             $buy_dt = $v['m_trans_on'];
             $buy_price = $v['m_etf_close'];
-            $sold_point = static::get_random_sold_dt($buy_dt);
+            $sold_point = static::get_random_sold_dt($buy_dt, $hold_max);
             $sold_price = $sold_point['m_etf_close'];
+            $sold_dt = $sold_point['m_trans_on'];
             $ret[] = [
                 'buy_dt' => $buy_dt,
                 'buy_price' => $buy_price,
-                'solde_dt' => $sold_point['m_trans_on'],
+                'solde_dt' => $sold_dt,
                 'sold_price' => $sold_price,
+                'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
                 'rate' => round(($sold_price - $buy_price) / $buy_price, 4) * 100,
             ];
         }
@@ -1108,10 +1111,10 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function get_random_sold_dt($buy_dt)
+    public static function get_random_sold_dt($buy_dt, $hold_max = 30)
     {
-        $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt limit 30";
-        $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt])->queryAll();
+        $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt limit :hold_max";
+        $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt, ':hold_max' => $hold_max])->queryAll();
 
         shuffle($res);
         $res = array_slice($res, 0, 1);
