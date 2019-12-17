@@ -1732,9 +1732,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        /*$date =date('Y-m-d');
-        $reset = 1;
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);*/
+        StockMainResult::rand_buy_rate();
 
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();

@@ -456,7 +456,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-11-29 PM
      */
-    public static function cal_back($price_type, $buy_times, $stop_rate)
+    public static function cal_back($price_type, $buy_times = 0, $stop_rate = 0)
     {
         $sql = "select p.*,r.* from im_stock_main_result r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
@@ -535,7 +535,8 @@ class StockMainResult extends \yii\db\ActiveRecord
 
     /**
      * 回测表中加一个“正确率”
-     *     * @time 2019-12-16 AM
+     *
+     * @time 2019-12-16 AM
      */
     public static function stat_rule_right_rate($data)
     {
@@ -1038,5 +1039,30 @@ class StockMainResult extends \yii\db\ActiveRecord
         return $data;
     }
 
+    /**
+     * 随机买入计算收益率
+     *
+     * @time 2019-12-17 PM
+     */
+    public static function rand_buy_rate()
+    {
+        $price_type = StockMainPrice::TYPE_ETF_500;
+
+        list($data) = static::cal_back($price_type);
+        $buy_plans = [];
+        foreach ($data as $v) {
+            $dt = date('Y-m', strtotime($v['buy_dt']));
+
+            if (!isset($buy_plans[$dt])) {
+                $buy_plans[$dt] = 1;
+            } else {
+                $buy_plans[$dt]++;
+            }
+
+        }
+
+        print_r($buy_plans);
+
+    }
 
 }

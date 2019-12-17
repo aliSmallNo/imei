@@ -1602,8 +1602,8 @@ class StockController extends BaseController
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back($price_type, $buy_times,
-            $stop_rate);
+        list($list, $rate_year_sum, $stat_rule_right_rate)
+            = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
 
         return $this->renderPage("stock_main_back.tpl",
             [
@@ -1630,7 +1630,8 @@ class StockController extends BaseController
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum,$stat_rule_right_rate) = StockMainResult::cal_back_r($price_type, $buy_times, $stop_rate);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back_r($price_type, $buy_times,
+            $stop_rate);
 
         return $this->renderPage("stock_main_back_r.tpl",
             [
