@@ -1732,7 +1732,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMainResult::rand_buy_rate();
+        StockMainResult::random_buy_rate();
 
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
