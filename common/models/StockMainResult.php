@@ -535,8 +535,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 
     /**
      * 回测表中加一个“正确率”
-     *
-     * @time 2019-12-16 AM
+     *     * @time 2019-12-16 AM
      */
     public static function stat_rule_right_rate($data)
     {
@@ -551,6 +550,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'no10' => 0,
                 'no20' => 0,
                 'sum' => 0,
+                'sum_rate' => 0,
             ];
         }
         foreach ($data as $v1) {
@@ -559,38 +559,41 @@ class StockMainResult extends \yii\db\ActiveRecord
              *
              * [buy_type] => Array
              * (
-             *  [5] => 买Z6-CG
-             *  [10] => 买Z5-SHX-HD,买Z6-CG
+             *  [5] => 买Z4-SHZ-HD,买Z6-CG
+             *  [10] => 买Z6-CG
+             *  [20] => 买Z4-SHZ-HD,买Z6-CG
              * )
              */
 
             $buy_type = $v1['buy_type'];
             $sold_type = $v1['sold_type'];
-            $rate_f = $v1['rate'] > 0;      // >0则为正确 否则为错误
+            $rate = $v1['rate'];      // >0则为正确 否则为错误
 
-            $trans = function ($buy_type, $ret, $rate_f) {
+            $trans = function ($buy_type, $ret, $rate) {
                 foreach ($buy_type as $buy_day_cat => $buy_rule_names) {
                     $buy_rule_names = trim($buy_rule_names, ',');
                     if (strpos($buy_rule_names, ',') === false) {
-                        if ($rate_f) {
+                        if ($rate > 0) {
                             $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
                         } else {
                             $ret[$buy_rule_names]['no' . $buy_day_cat]++;
                         }
+                        $ret[$buy_rule_names]['sum_rate'] += $rate;
                     } else {
                         foreach (explode(',', $buy_rule_names) as $buy_rule_name) {
-                            if ($rate_f) {
+                            if ($rate > 0) {
                                 $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
                             } else {
                                 $ret[$buy_rule_name]['no' . $buy_day_cat]++;
                             }
+                            $ret[$buy_rule_name]['sum_rate'] += $rate;
                         }
                     }
                 }
                 return $ret;
             };
-            $ret = $trans($buy_type, $ret, $rate_f);
-            $ret = $trans($sold_type, $ret, $rate_f);
+            $ret = $trans($buy_type, $ret, $rate);
+            $ret = $trans($sold_type, $ret, $rate);
         }
 
         // 算出总计，正确率
@@ -609,7 +612,10 @@ class StockMainResult extends \yii\db\ActiveRecord
             $sum = $yes + $no;
             $ret[$k3]['sum'] = $sum;
 
+            $sum_rate = $ret[$k3]['sum_rate'];
+
             $ret[$k3]['right_rate'] = $sum > 0 ? round($yes / $sum, 4) * 100 : 0;
+            $ret[$k3]['avg_rate'] = $sum > 0 ? round($sum_rate / $sum, 2) : 0;
         }
 
         return $ret;

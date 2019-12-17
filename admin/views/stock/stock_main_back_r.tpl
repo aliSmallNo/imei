@@ -80,6 +80,7 @@
       <th colspan="3">错误次数</th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
     <tr>
       <th>策略</th>
@@ -91,6 +92,7 @@
       <th>20日</th>
       <th>总次数</th>
       <th>准确率</th>
+      <th>平均收益率</th>
     </tr>
     </thead>
     {{foreach from=$stat_rule_right_rate item=item key=name}}
@@ -104,6 +106,7 @@
         <td>{{$item.no20}}</td>
         <td>{{$item.sum}}</td>
         <td>{{$item.right_rate}}%</td>
+        <td>{{$item.avg_rate}}%</td>
       </tr>
     {{/foreach}}
   </table>
