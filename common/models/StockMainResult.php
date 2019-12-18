@@ -238,7 +238,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function send_sms()
     {
-        $start = strtotime(date('Y-m-d 14:30:00'));
+       /* $start = strtotime(date('Y-m-d 14:30:00'));
         $end = strtotime(date('Y-m-d 15:00:00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
@@ -296,7 +296,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
             }
         }
-        return true;
+        return true;*/
 
     }
 
@@ -342,6 +342,8 @@ class StockMainResult extends \yii\db\ActiveRecord
             13701162677,
             13910502331,
             13666014229,
+            13518798716,
+            13911041699,
         ];
         foreach ($phones as $phone) {
             // 发送短信
