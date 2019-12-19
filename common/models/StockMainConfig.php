@@ -102,7 +102,6 @@ class StockMainConfig extends \yii\db\ActiveRecord
     {
         $ret = static::find()->where([
             'c_cat' => $cat,
-            'c_status' => static::ST_ACTIVE,
         ])->asArray()->orderBy('c_update_on desc,c_id desc')->all();
 
         return $ret;
@@ -124,7 +123,8 @@ class StockMainConfig extends \yii\db\ActiveRecord
         $phones = [];
         foreach ($ret as $v) {
             $phone = trim($v['c_content']);
-            if (AppUtil::checkPhone($phone)) {
+            $status = trim($v['c_status']);
+            if (AppUtil::checkPhone($phone) && $status == self::ST_ACTIVE) {
                 $phones[] = $phone;
             }
         }
