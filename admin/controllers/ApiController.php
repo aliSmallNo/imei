@@ -1468,7 +1468,7 @@ class ApiController extends Controller
                     return self::renderAPI(129, '保存失败', $data);
                 }
                 break;
-            case "edit_main_config":
+            case "edit_main_config_phone":
                 $msg = '';
                 $phone = trim(self::postParam("c_content"));
                 $data = [
@@ -1492,6 +1492,23 @@ class ApiController extends Controller
                     return self::renderAPI(0, "保存成功！", $data);
                 } else {
                     return self::renderAPI(129, '保存失败' . $msg, $data);
+                }
+                break;
+            case 'edit_main_config_sms_time':
+                $msg = '';
+                $sms_s_time = trim(self::postParam("sms_s_time"));
+                $sms_e_time = trim(self::postParam("sms_e_time"));
+
+                $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
+                $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
+
+                list($res1) = StockMainConfig::edit($model1['c_id'], ['c_content' => $sms_s_time]);
+                list($res2) = StockMainConfig::edit($model2['c_id'], ['c_content' => $sms_e_time]);
+
+                if ($res1 && $res2) {
+                    return self::renderAPI(0, "保存成功！");
+                } else {
+                    return self::renderAPI(129, '保存失败' . $msg);
                 }
                 break;
             case "reset_main_result":

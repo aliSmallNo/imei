@@ -1764,13 +1764,14 @@ class StockController extends BaseController
      */
     public function actionStock_main_config()
     {
-
         $list = StockMainConfig::get_items_by_cat();
 
         return $this->renderPage("stock_main_config.tpl",
             [
                 'list' => $list,
                 'stDict' => StockMainConfig::$stDict,
+                'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
+                'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
             ]);
     }
 

@@ -12,7 +12,7 @@
 
 <div class="row-divider"></div>
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-sm-7">
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
@@ -44,6 +44,41 @@
       {{/foreach}}
       </tbody>
     </table>
+  </div>
+  <div class="col-sm-5">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-cog fa-fw"></i> 设置推送短信开始时间和结束时间
+        <div class="pull-right">
+          <a href="javascript:;" class="btnSaveSmsTime btn btn-primary btn-xs" tag="openCloseSetting">确定保存</a>
+        </div>
+      </div>
+      <div class="panel-body" tag="openCloseSetting">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">开始时间</label>
+            <div class="col-sm-7">
+              <input date-fmt="HH:mm" class="my-date-input form-control sms_s_time" value="{{$sms_st.c_content}}"
+                     placeholder="请输入开始时间"
+                     type="text"
+                     name="startTime" autocomplete="off">
+              <p class="help-block">推送短信开始时间</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-4 control-label">结束时间</label>
+            <div class="col-sm-7">
+              <input date-fmt="HH:mm" class="my-date-input form-control sms_e_time" value="{{$sms_et.c_content}}"
+                     placeholder="请输入结束时间"
+                     type="text"
+                     name="endTime" autocomplete="off">
+              <p class="help-block">推送短信结束时间</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -91,6 +126,7 @@
     </div>
   </div>
 </script>
+
 <script>
     var $sls = {
         load_flag: false,
@@ -103,7 +139,7 @@
         var url = '/api/stock_main';
         console.log(tag);
         switch (tag) {
-            case "edit_main_config":
+            case "edit_main_config_phone":
                 postData = {
                     tag: tag,
                     c_note: $.trim($('.c_note').val()),
@@ -139,7 +175,7 @@
         $('div.modal-body').html(vHtml);
         $('#myModalLabel').html('修改' + td.attr('data-c_content'));
         $('.btnSaveMod').attr({
-            tag: "edit_main_config",
+            tag: "edit_main_config_phone",
             id: td.attr("data-id")
         });
 
@@ -154,12 +190,38 @@
         $('div.modal-body').html(vHtml);
         $('#myModalLabel').html('添加手机号');
         $('.btnSaveMod').attr({
-            tag: "edit_main_config",
+            tag: "edit_main_config_phone",
             id: ''
         });
         $('.c_note').val('');
         $('.c_content').val('');
         $('#modModal').modal('show');
+    });
+
+    $(document).on('click', '.btnSaveSmsTime', function () {
+        var url = '/api/stock_main';
+        var postData = {
+            tag: 'edit_main_config_sms_time',
+            sms_s_time: $.trim($('.sms_s_time').val()),
+            sms_e_time: $.trim($('.sms_e_time').val()),
+        };
+        console.log(postData);
+        if (!postData["sms_s_time"] || !postData["sms_e_time"]) {
+            layer.msg("时间不能为空！");
+            return;
+        }
+        if (postData) {
+            layer.load();
+            $.post(url, postData, function (resp) {
+                layer.closeAll();
+                layer.msg(resp.msg);
+                if (resp.code == 0) {
+                    setTimeout(function () {
+                        //location.reload();
+                    }, 800);
+                }
+            }, 'json');
+        }
     });
 
 
