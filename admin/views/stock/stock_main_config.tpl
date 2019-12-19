@@ -17,7 +17,7 @@
       <thead>
       <tr>
         <th>#</th>
-        <th>手机号</th>
+        <th>推送短信手机号</th>
         <th>状态</th>
         <th>备注</th>
         <th>时间</th>
