@@ -88,11 +88,14 @@ class StockMainRule extends \yii\db\ActiveRecord
         self::ST_DEL => '禁用',
     ];
 
+    const CAT_MAIN_RULE = 'main_rule';
+
     public static function add($values = [])
     {
         if (!$values) {
             return [false, false];
         }
+        $before = '';
 
         $entity = new self();
         foreach ($values as $key => $val) {
@@ -100,6 +103,14 @@ class StockMainRule extends \yii\db\ActiveRecord
         }
         $entity->r_added_on = date('Y-m-d H:i:s');
         $res = $entity->save();
+
+        // 记录ADD 日志 2019-12-19 AM
+        Log::add([
+            "oCategory" => self::CAT_MAIN_RULE,
+            "oOpenId" => $entity->r_id,
+            "oBefore" => $before,
+            "oAfter" => static::find()->where(['r_id' => $entity->r_id])->asArray()->one(),
+        ]);
 
         return [$res, $entity];
     }
@@ -111,6 +122,7 @@ class StockMainRule extends \yii\db\ActiveRecord
         }
 
         $entity = self::findOne($id);
+        $before = static::find()->where(['r_id' => $entity->r_id])->asArray()->one();
 
         if (!$entity) {
             return [false, false];
@@ -123,6 +135,14 @@ class StockMainRule extends \yii\db\ActiveRecord
         }
         $entity->r_update_on = date('Y-m-d H:i:s');
         $res = $entity->save();
+
+        // 记录修改 日志 2019-12-19 AM
+        Log::add([
+            "oCategory" => self::CAT_MAIN_RULE,
+            "oOpenId" => $entity->r_id,
+            "oBefore" => $before,
+            "oAfter" => static::find()->where(['r_id' => $entity->r_id])->asArray()->one(),
+        ]);
 
         return [$res, $entity];
     }
