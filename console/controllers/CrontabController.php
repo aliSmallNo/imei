@@ -8,36 +8,20 @@ namespace console\controllers;
  * Date: 11/5/2017
  * Time: 2:11 PM
  */
-use common\models\ChatMsg;
-use common\models\ChatRoom;
 use common\models\CRMStockClient;
 use common\models\Log;
-use common\models\Stat;
 use common\models\StockAction;
-use common\models\StockKline;
 use common\models\StockMain;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
-use common\models\StockOrder;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
-use common\models\UserMsg;
-use common\models\UserNet;
-use common\models\UserTag;
 use common\models\UserWechat;
-use common\models\YzGoods;
-use common\models\YzOrders;
-use common\models\YzRefund;
-use common\models\YzUser;
 use common\service\TrendService;
 use common\service\TrendStockService;
 use common\utils\AppUtil;
-use common\utils\TryPhone;
-use common\utils\WechatUtil;
-use common\utils\YouzanUtil;
 use yii\console\Controller;
-use yii\db\Exception;
 
 class CrontabController extends Controller
 {
@@ -206,18 +190,29 @@ class CrontabController extends Controller
     public function actionAlert()
     {
         try {
-
+            Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'out']);
             if (date("H") > 13 && date("H") < 16 && StockMain::is_trans_date()) {
+                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 1']);
                 // 获取当天数据: 上证指数 深证指数 500ETF
                 StockMain::update_curr_day();
+                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 2']);
                 //
                 StockMainPrice::update_curr_day();
+                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 3']);
                 // 来短信提醒指定用户是否有买点、卖点
                 StockMainResult::send_sms2();
-
+                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 4']);
             }
         } catch (\Exception $e) {
-
+            Log::add([
+                'oCategory' => 'stock_main_update',
+                'oBefore' => 'exception',
+                'oAfter' => [
+                    $e->getMessage(),
+                    $e->getLine(),
+                    $e->getTrace(),
+                ]
+            ]);
         }
 
         try {
