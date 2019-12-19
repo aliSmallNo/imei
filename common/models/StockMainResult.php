@@ -307,7 +307,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function send_sms2()
     {
-        $start = strtotime(date('Y-m-d 13:30:00'));
+        $start = strtotime(date('Y-m-d 14:30:00'));
         $end = strtotime(date('Y-m-d 15:00:00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {

@@ -191,14 +191,18 @@ class CrontabController extends Controller
     {
         try {
             Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'out']);
-            if (date("H") > 13 && date("H") < 16 && StockMain::is_trans_date()) {
+
+            if (date("H") >= 13 && date("H") < 16 && StockMain::is_trans_date()) {
                 Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 1']);
+
                 // 获取当天数据: 上证指数 深证指数 500ETF
                 StockMain::update_curr_day();
                 Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 2']);
+
                 //
                 StockMainPrice::update_curr_day();
                 Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 3']);
+
                 // 来短信提醒指定用户是否有买点、卖点
                 StockMainResult::send_sms2();
                 Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 4']);
