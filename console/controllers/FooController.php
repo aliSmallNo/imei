@@ -1731,8 +1731,13 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
-        StockMainResult::random_buy_rate();
+        StockMain::update_curr_day();
+        echo '1----------------end ' . PHP_EOL;
+        StockMainPrice::update_curr_day();
+        echo '2----------------end ' . PHP_EOL;
+        // 来短信提醒指定用户是否有买点、卖点
+        StockMainResult::send_sms2();
+        echo '3----------------end ' . PHP_EOL;
 
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
