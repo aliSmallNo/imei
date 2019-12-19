@@ -287,6 +287,12 @@ class Menu
                         "revise" => 1,
                         "level" => 830
                     ],
+                    [
+                        "name" => "配置项",
+                        "url" => "/stock/stock_main_config",
+                        "revise" => 1,
+                        "level" => 830
+                    ],
                 ],
             ],
             [

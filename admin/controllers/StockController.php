@@ -19,6 +19,7 @@ use common\models\StockAction;
 use common\models\StockActionChange;
 use common\models\StockBack;
 use common\models\StockMain;
+use common\models\StockMainConfig;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
@@ -1753,6 +1754,23 @@ class StockController extends BaseController
                 'list' => $list,
                 'rate_year_sum' => $rate_year_sum,
                 'max_hold_days' => $max_hold_days,
+            ]);
+    }
+
+    /**
+     * 配置项
+     *
+     * @time 2019-12-19 PM
+     */
+    public function actionStock_main_config()
+    {
+
+        $list = StockMainConfig::get_items_by_cat();
+
+        return $this->renderPage("stock_main_config.tpl",
+            [
+                'list' => $list,
+                'stDict' => StockMainConfig::$stDict,
             ]);
     }
 

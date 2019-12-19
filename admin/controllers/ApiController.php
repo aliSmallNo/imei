@@ -29,6 +29,7 @@ use common\models\MomentTopic;
 use common\models\QuestionGroup;
 use common\models\QuestionSea;
 use common\models\StockActionChange;
+use common\models\StockMainConfig;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
 use common\models\StockOrder;
@@ -1465,6 +1466,32 @@ class ApiController extends Controller
                     return self::renderAPI(0, "保存成功！", $data);
                 } else {
                     return self::renderAPI(129, '保存失败', $data);
+                }
+                break;
+            case "edit_main_config":
+                $msg = '';
+                $phone = trim(self::postParam("c_content"));
+                $data = [
+                    'c_note' => trim(self::postParam("c_note")),
+                    'c_status' => trim(self::postParam("c_status")),
+                    'c_content' => $phone,
+                    'c_cat' => StockMainConfig::CAT_PHONE,
+                ];
+                $model = StockMainConfig::findOne(['c_content' => $phone, 'c_cat' => StockMainConfig::CAT_PHONE,]);
+                if ($id) {
+                    list($res) = StockMainConfig::edit($id, $data);
+                } else {
+                    if (!$model) {
+                        list($res) = StockMainConfig::add($data);
+                    } else {
+                        $res = false;
+                        $msg = '手机号已存在';
+                    }
+                }
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！", $data);
+                } else {
+                    return self::renderAPI(129, '保存失败' . $msg, $data);
                 }
                 break;
             case "reset_main_result":

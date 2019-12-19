@@ -20,6 +20,7 @@ use common\models\StockBack;
 use common\models\StockKline;
 use common\models\StockLow;
 use common\models\StockMain;
+use common\models\StockMainConfig;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
@@ -1731,13 +1732,6 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMain::update_curr_day();
-        echo '1----------------end ' . PHP_EOL;
-        StockMainPrice::update_curr_day();
-        echo '2----------------end ' . PHP_EOL;
-        // 来短信提醒指定用户是否有买点、卖点
-        StockMainResult::send_sms2();
-        echo '3----------------end ' . PHP_EOL;
 
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
