@@ -238,65 +238,65 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function send_sms()
     {
-       /* $start = strtotime(date('Y-m-d 14:30:00'));
-        $end = strtotime(date('Y-m-d 15:00:00'));
-        $curr = time();
-        if ($curr < $start || $curr > $end) {
-            return false;
-        }
+        /* $start = strtotime(date('Y-m-d 14:30:00'));
+         $end = strtotime(date('Y-m-d 15:00:00'));
+         $curr = time();
+         if ($curr < $start || $curr > $end) {
+             return false;
+         }
 
-        $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-//        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
-        if (!$ret) {
-            return 1;
-        }
+         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+ //        $ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
+         if (!$ret) {
+             return 1;
+         }
 
-        $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
-        $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
-        if (!$buy_type && !$sold_type) {
-            return 2;
-        }
+         $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
+         $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
+         if (!$buy_type && !$sold_type) {
+             return 2;
+         }
 
-        if ($left_count = AppUtil::getSMSLeft() < 100) {
-            return 3;
-        }
+         if ($left_count = AppUtil::getSMSLeft() < 100) {
+             return 3;
+         }
 
-        $sms_content = '今日[' . date('Y-m-d H:i:s') . "]策略结果\n";
-        if ($buy_type) {
-            $sms_content .= ' 买点: ';
-            foreach ($buy_type as $day => $v) {
-                $sms_content .= $day . '日：' . $v . ';';
-            }
-            $sms_content .= "\n";
-        }
-        if ($sold_type) {
-            $sms_content .= ' 卖点: ';
-            foreach ($sold_type as $day => $v) {
-                $sms_content .= $day . '日：' . $v . ';';
-            }
-        }
+         $sms_content = '今日[' . date('Y-m-d H:i:s') . "]策略结果\n";
+         if ($buy_type) {
+             $sms_content .= ' 买点: ';
+             foreach ($buy_type as $day => $v) {
+                 $sms_content .= $day . '日：' . $v . ';';
+             }
+             $sms_content .= "\n";
+         }
+         if ($sold_type) {
+             $sms_content .= ' 卖点: ';
+             foreach ($sold_type as $day => $v) {
+                 $sms_content .= $day . '日：' . $v . ';';
+             }
+         }
 
-        $phones = [
-            18513655687,// 小刀
-            18910531223,// 于辉
-            17611629667,// zp
-            13701162677,
-            13910502331,
-            13701162677,
-        ];
-        foreach ($phones as $phone) {
-            // 发送短信
-            $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
+         $phones = [
+             18513655687,// 小刀
+             18910531223,// 于辉
+             17611629667,// zp
+             13701162677,
+             13910502331,
+             13701162677,
+         ];
+         foreach ($phones as $phone) {
+             // 发送短信
+             $res = AppUtil::sendSMS($phone, $sms_content, '100001', 'yx', $left_count);
 
-            // 推送公众号 微信消息
-            $users = User::find()->where(['uPhone' => $phone])->asArray()->all();
-            if ($users) {
-                foreach ($users as $user) {
-                    UserWechat::sendMsg($user['uOpenId'], $sms_content, 1);
-                }
-            }
-        }
-        return true;*/
+             // 推送公众号 微信消息
+             $users = User::find()->where(['uPhone' => $phone])->asArray()->all();
+             if ($users) {
+                 foreach ($users as $user) {
+                     UserWechat::sendMsg($user['uOpenId'], $sms_content, 1);
+                 }
+             }
+         }
+         return true;*/
 
     }
 
@@ -333,16 +333,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $prefix = "7";
         }
 
-        $phones = [
-            18513655687,// 小刀
-            18910531223,// 于辉
-            17611629667,// zp
-            13701162677,
-            13910502331,
-            13666014229,
-            13518798716,
-            13911041699,
-        ];
+        $phones = StockMainConfig::get_sms_phone();
         foreach ($phones as $phone) {
             // 发送短信
             $code = strval($prefix . mt_rand(1000, 9999) . '8');
