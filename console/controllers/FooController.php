@@ -1733,6 +1733,8 @@ class FooController extends Controller
     public function actionZp()
     {
 
+        print_r(StockMainConfig::get_sms_phone());
+
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
         exit;
