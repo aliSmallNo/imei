@@ -494,7 +494,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 
             if ($buy_times) {
                 if (isset($get_first_buys[$buy_dt])) {
-                    $has_buy_times = 0;
+                    $has_buy_times = 1;
                 }
                 //echo $has_buy_times . '______' . $buy_dt . "<br>\n";
                 if ($has_buy_times > $buy_times) {
