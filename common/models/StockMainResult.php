@@ -422,6 +422,11 @@ class StockMainResult extends \yii\db\ActiveRecord
         return $types;
     }
 
+    /**
+     * 获取卖点后首次买点时间
+     *
+     * @time 2019-12-23 PM
+     */
     public static function get_first_buys()
     {
         list($list) = self::items([], [], 1, 10000);
@@ -443,6 +448,34 @@ class StockMainResult extends \yii\db\ActiveRecord
         $first_buys = array_flip(array_column($first_buys, 'r_trans_on'));
         return $first_buys;
     }
+
+    /**
+     * 获取买点后首次卖点时间
+     *
+     * @time 2019-12-23 PM
+     */
+    public static function get_first_buys_r()
+    {
+        list($list) = self::items([], [], 1, 10000);
+        $list = array_reverse($list);
+
+        $first_buys = [];
+        $add_flag = 1;
+        foreach ($list as $v) {
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
+            if ($sold && $add_flag) {
+                $first_buys[] = $v;
+                $add_flag = 0;
+            }
+            if ($buy) {
+                $add_flag = 1;
+            }
+        }
+        $first_buys = array_flip(array_column($first_buys, 'r_trans_on'));
+        return $first_buys;
+    }
+
 
     /**
      * 回测收益
@@ -496,7 +529,6 @@ class StockMainResult extends \yii\db\ActiveRecord
                 if (isset($get_first_buys[$buy_dt])) {
                     $has_buy_times = 1;
                 }
-                //echo $has_buy_times . '______' . $buy_dt . "<br>\n";
                 if ($has_buy_times > $buy_times) {
                     continue;
                 }
@@ -961,6 +993,10 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function cal_back_r($price_type, $buy_times, $stop_rate)
     {
+        if ($buy_times) {
+            $get_first_buys = self::get_first_buys_r();
+            //print_r($get_first_buys);exit;
+        }
         $sql = "select p.*,r.* from im_stock_main_result r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
@@ -969,6 +1005,17 @@ class StockMainResult extends \yii\db\ActiveRecord
         $data = [];
         foreach ($ret as $buy) {
             $buy_dt = $buy['r_trans_on'];
+
+            if ($buy_times) {
+                if (isset($get_first_buys[$buy_dt])) {
+                    $has_buy_times = 1;
+                }
+                if ($has_buy_times > $buy_times) {
+                    continue;
+                }
+                $has_buy_times++;
+            }
+
             $sold = self::get_sold_point_r($buy_dt);
             if (!$sold) {
                 continue;
