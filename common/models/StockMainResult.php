@@ -1072,7 +1072,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         // 去掉大于买入次数的买点 从2015开始买往现在推的
         if (intval($buy_times) > 0) {
-            $data = self::pop_by_times($buy_times, $data);
+            //$data = self::pop_by_times($buy_times, $data);
         }
 
         // 回测表中加一个“正确率” 2019-12-12 PM
