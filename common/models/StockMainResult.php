@@ -422,6 +422,28 @@ class StockMainResult extends \yii\db\ActiveRecord
         return $types;
     }
 
+    public static function get_first_buys()
+    {
+        list($list) = self::items([], [], 1, 10000);
+        $list = array_reverse($list);
+
+        $first_buys = [];
+        $add_flag = 1;
+        foreach ($list as $v) {
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
+            if ($buy && $add_flag) {
+                $first_buys[] = $v;
+                $add_flag = 0;
+            }
+            if ($sold) {
+                $add_flag = 1;
+            }
+        }
+        $first_buys = array_flip(array_column($first_buys, 'r_trans_on'));
+        return $first_buys;
+    }
+
     /**
      * 回测收益
      *
@@ -451,6 +473,100 @@ class StockMainResult extends \yii\db\ActiveRecord
      * @time 2019-11-29 PM
      */
     public static function cal_back($price_type, $buy_times = 0, $stop_rate = 0)
+    {
+        if ($buy_times) {
+            $get_first_buys = self::get_first_buys();
+            //print_r($get_first_buys);exit;
+        }
+
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 order by r_trans_on asc";
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $data = [];
+        foreach ($ret as $buy) {
+            $buy_dt = $buy['r_trans_on'];
+            $sold = self::get_sold_point($buy_dt);
+            if (!$sold) {
+                continue;
+            }
+
+            if ($buy_times) {
+                if (isset($get_first_buys[$buy_dt])) {
+                    $has_buy_times = 0;
+                }
+                //echo $has_buy_times . '______' . $buy_dt . "<br>\n";
+                if ($has_buy_times > $buy_times) {
+                    continue;
+                }
+                $has_buy_times++;
+            }
+
+            $sold_dt = $sold['r_trans_on'];
+
+            $buy_type = self::get_buy_sold_item($buy, self::TAG_BUY);
+            $buy_price = $buy[$price_type];
+
+            $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+            $sold_price = $sold[$price_type];
+            $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+            $rule_rate = $rate;
+            $set_rate = 0;
+            $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+
+            // 低于止损比例 获取新的卖点
+            //if ($stop_rate && $rate < $stop_rate) {
+            if ($stop_rate) {
+                $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
+                if ($sold) {
+                    $sold_dt = $sold['r_trans_on'];
+                    $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                    $sold_price = $sold[$price_type];
+                    $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;;
+                    $rate = $stop_rate;;
+                    $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+                }
+            }
+
+            // 找最高 最低卖点 及平均收益率
+            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
+
+            $item = [
+                'buy_dt' => $buy_dt,            // 买入日期
+                'buy_price' => $buy_price,      // 买入日期 价格
+                'buy_type' => $buy_type,        //  买入类型
+                'sold_dt' => $sold_dt,          //  卖出日期
+                'sold_price' => $sold_price,    //  卖出日期 价格
+                'sold_type' => $sold_type,      //  卖出类型
+                'hold_days' => $hold_days,      //  持有天数
+                'rate' => $rate,                //  收益率
+                'rule_rate' => $rule_rate,
+                'set_rate' => $set_rate,
+                'rate_avg' => $rate_avg,        // 平均收益率
+                'high' => $high,                // 最高卖点
+                'low' => $low,                  // 最低卖点
+            ];
+            $data[] = $item;
+        }
+        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
+
+        // 去掉大于买入次数的买点
+        if (intval($buy_times) > 0) {
+            //$data = self::pop_by_times($buy_times, $data);
+        }
+
+        // 回测表中加一个“正确率” 2019-12-12 PM
+        $stat_rule_right_rate = self::stat_rule_right_rate($data);
+
+        // 统计年度收益
+        $rate_year_sum = self::get_year_data($data);
+
+        return [$data, $rate_year_sum, $stat_rule_right_rate];
+
+    }
+
+    public static function cal_back_bak($price_type, $buy_times = 0, $stop_rate = 0)
     {
         $sql = "select p.*,r.* from im_stock_main_result r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
