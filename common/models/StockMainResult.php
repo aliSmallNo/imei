@@ -511,6 +511,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             ];
             $data[] = $item;
         }
+        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
 
         // 去掉大于买入次数的买点
         if (intval($buy_times) > 0) {
@@ -902,6 +903,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             ];
             $data[] = $item;
         }
+        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
 
         // 去掉大于买入次数的买点 从2015开始买往现在推的
         if (intval($buy_times) > 0) {
