@@ -520,11 +520,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         $data = [];
         foreach ($ret as $buy) {
             $buy_dt = $buy['r_trans_on'];
-            $sold = self::get_sold_point($buy_dt);
-            if (!$sold) {
-                continue;
-            }
 
+            // 2019-12-23 add
             if ($buy_times) {
                 if (isset($get_first_buys[$buy_dt])) {
                     $has_buy_times = 1;
@@ -535,6 +532,10 @@ class StockMainResult extends \yii\db\ActiveRecord
                 $has_buy_times++;
             }
 
+            $sold = self::get_sold_point($buy_dt);
+            if (!$sold) {
+                continue;
+            }
             $sold_dt = $sold['r_trans_on'];
 
             $buy_type = self::get_buy_sold_item($buy, self::TAG_BUY);
@@ -1006,6 +1007,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($ret as $buy) {
             $buy_dt = $buy['r_trans_on'];
 
+            // 2019-12-23 add
             if ($buy_times) {
                 if (isset($get_first_buys[$buy_dt])) {
                     $has_buy_times = 1;
