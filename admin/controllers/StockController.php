@@ -1688,8 +1688,6 @@ class StockController extends BaseController
 
         $list = array_merge($list1, $list2);
 
-        echo count($list1).'__'.count($list2).'__'.count($list);exit;
-
         return $this->renderPage("stock_main_back_r.tpl", [
                 'list' => $list,
                 'rate_year_sum1' => $rate_year_sum1,
