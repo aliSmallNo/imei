@@ -1685,6 +1685,7 @@ class StockController extends BaseController
         // 卖空回测
         list($list2, $rate_year_sum2, $stat_rule_right_rate2)
             = StockMainResult::cal_back_r($price_type, $buy_times, $stop_rate);
+        print_r($list2);exit;
 
         $list = array_merge($list1, $list2);
 

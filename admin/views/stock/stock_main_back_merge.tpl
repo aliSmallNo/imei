@@ -87,12 +87,13 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr class="back_dir_1">
-      <td colspan="5">正常回测</td>
+      <td colspan="10">正常回测</td>
     </tr>
     <tr>
       <th>正确率</th>
       <th colspan="3">正确次数</th>
       <th colspan="3">错误次数</th>
+      <th></th>
       <th></th>
       <th></th>
     </tr>
@@ -160,12 +161,13 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr class="back_dir_2">
-      <td colspan="5">卖空回测</td>
+      <td colspan="10">卖空回测</td>
     </tr>
     <tr>
       <th>正确率</th>
       <th colspan="3">正确次数</th>
       <th colspan="3">错误次数</th>
+      <th></th>
       <th></th>
       <th></th>
     </tr>
