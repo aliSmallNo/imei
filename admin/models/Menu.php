@@ -314,6 +314,12 @@ class Menu
                         "level" => 820
                     ],
                     [
+                        "name" => "回测合并",
+                        "url" => "/stock/stock_main_back_merge",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
                         "name" => "卖空回测",
                         "url" => "/stock/stock_main_back_r",
                         "revise" => 1,
