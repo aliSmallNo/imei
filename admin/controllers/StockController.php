@@ -36,6 +36,7 @@ use common\utils\FileCache;
 use common\utils\ImageUtil;
 use common\utils\TryPhone;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
 class StockController extends BaseController
@@ -1685,9 +1686,9 @@ class StockController extends BaseController
         // 卖空回测
         list($list2, $rate_year_sum2, $stat_rule_right_rate2)
             = StockMainResult::cal_back_r($price_type, $buy_times, $stop_rate);
-        print_r($list2);exit;
 
         $list = array_merge($list1, $list2);
+        ArrayHelper::multisort($list, 'buy_dt', SORT_DESC);
 
         return $this->renderPage("stock_main_back_merge.tpl", [
                 'list' => $list,
