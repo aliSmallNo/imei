@@ -1688,7 +1688,7 @@ class StockController extends BaseController
 
         $list = array_merge($list1, $list2);
 
-        return $this->renderPage("stock_main_back_r.tpl", [
+        return $this->renderPage("stock_main_back_merge.tpl", [
                 'list' => $list,
                 'rate_year_sum1' => $rate_year_sum1,
                 'rate_year_sum2' => $rate_year_sum2,
