@@ -95,6 +95,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 $ret[$v['r_trans_on']] = $v['r_note'];
             }
         }
+
         return $ret;
     }
 
@@ -136,13 +137,13 @@ class StockMainResult extends \yii\db\ActiveRecord
             if ($cat) {
                 foreach ($buys as $buy) {
                     if (StockMainStat::get_rule_flag($v, $buy)) {
-                        $ret[$trans_on]['r_buy' . $cat] .= ',' . $buy['r_name'];
+                        $ret[$trans_on]['r_buy'.$cat] .= ','.$buy['r_name'];
                     }
                 }
 
                 foreach ($solds as $sold) {
                     if (StockMainStat::get_rule_flag($v, $sold)) {
-                        $ret[$trans_on]['r_sold' . $cat] .= ',' . $sold['r_name'];
+                        $ret[$trans_on]['r_sold'.$cat] .= ','.$sold['r_name'];
                     }
                 }
             }
@@ -214,13 +215,13 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
             foreach ($buys as $buy) {
                 if (StockMainStat::get_rule_flag($v, $buy)) {
-                    $data['r_buy' . $cat] .= ',' . $buy['r_name'];
+                    $data['r_buy'.$cat] .= ','.$buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
                 if (StockMainStat::get_rule_flag($v, $sold)) {
-                    $data['r_sold' . $cat] .= ',' . $sold['r_name'];
+                    $data['r_sold'.$cat] .= ','.$sold['r_name'];
                 }
             }
 
@@ -310,8 +311,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
-        $start = strtotime(date('Y-m-d ' . $model1['c_content'] . ':00'));
-        $end = strtotime(date('Y-m-d ' . $model2['c_content'] . ':00'));
+        $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
+        $end = strtotime(date('Y-m-d '.$model2['c_content'].':00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
             return false;
@@ -339,22 +340,23 @@ class StockMainResult extends \yii\db\ActiveRecord
         $phones = StockMainConfig::get_sms_phone();
         foreach ($phones as $phone) {
             // 发送短信
-            $code = strval($prefix . mt_rand(1000, 9999) . '8');
+            $code = strval($prefix.mt_rand(1000, 9999).'8');
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
 
-            @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
-                date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . PHP_EOL,
+            @file_put_contents("/data/logs/imei/tencent_sms_".date("Y-m-d").".log",
+                date(" [Y-m-d H:i:s] ").$phone." - ".$code." >>>>>> ".$res.PHP_EOL,
                 FILE_APPEND);
         }
+
         return 100;
     }
 
     public static function items($criteria, $params, $page, $pageSize = 1000)
     {
-        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
+        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
 
         $sql = "select r.*,m_etf_close
@@ -435,8 +437,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
-            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
+            $buy = $v['r_buy5'].$v['r_buy10'].$v['r_buy20'];
+            $sold = $v['r_sold5'].$v['r_sold10'].$v['r_sold20'];
             if ($buy && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -446,6 +448,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
         }
         $first_buys = array_flip(array_column($first_buys, 'r_trans_on'));
+
         return $first_buys;
     }
 
@@ -462,8 +465,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
-            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
+            $buy = $v['r_buy5'].$v['r_buy10'].$v['r_buy20'];
+            $sold = $v['r_sold5'].$v['r_sold10'].$v['r_sold20'];
             if ($sold && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -473,9 +476,17 @@ class StockMainResult extends \yii\db\ActiveRecord
             }
         }
         $first_buys = array_flip(array_column($first_buys, 'r_trans_on'));
+
         return $first_buys;
     }
 
+
+    const BACK_DIR_1 = 1;
+    const BACK_DIR_2 = 2;
+    static $back_dit_dict = [
+        self::BACK_DIR_1 => '正常回测',
+        self::BACK_DIR_2 => '做空回测',
+    ];
 
     /**
      * 回测收益
@@ -579,6 +590,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'rate_avg' => $rate_avg,        // 平均收益率
                 'high' => $high,                // 最高卖点
                 'low' => $low,                  // 最低卖点
+                'back_dir' => self::BACK_DIR_1, // 正常回测
             ];
             $data[] = $item;
         }
@@ -587,84 +599,6 @@ class StockMainResult extends \yii\db\ActiveRecord
         // 去掉大于买入次数的买点
         if (intval($buy_times) > 0) {
             //$data = self::pop_by_times($buy_times, $data);
-        }
-
-        // 回测表中加一个“正确率” 2019-12-12 PM
-        $stat_rule_right_rate = self::stat_rule_right_rate($data);
-
-        // 统计年度收益
-        $rate_year_sum = self::get_year_data($data);
-
-        return [$data, $rate_year_sum, $stat_rule_right_rate];
-
-    }
-
-    public static function cal_back_bak($price_type, $buy_times = 0, $stop_rate = 0)
-    {
-        $sql = "select p.*,r.* from im_stock_main_result r
-                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 ";
-        $ret = AppUtil::db()->createCommand($sql)->queryAll();
-
-        $data = [];
-        foreach ($ret as $buy) {
-            $buy_dt = $buy['r_trans_on'];
-            $sold = self::get_sold_point($buy_dt);
-            if (!$sold) {
-                continue;
-            }
-
-            $sold_dt = $sold['r_trans_on'];
-
-            $buy_type = self::get_buy_sold_item($buy, self::TAG_BUY);
-            $buy_price = $buy[$price_type];
-
-            $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
-            $sold_price = $sold[$price_type];
-            $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
-            $rule_rate = $rate;
-            $set_rate = 0;
-            $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
-
-            // 低于止损比例 获取新的卖点
-            //if ($stop_rate && $rate < $stop_rate) {
-            if ($stop_rate) {
-                $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
-                if ($sold) {
-                    $sold_dt = $sold['r_trans_on'];
-                    $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
-                    $sold_price = $sold[$price_type];
-                    $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;;
-                    $rate = $stop_rate;;
-                    $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
-                }
-            }
-
-            // 找最高 最低卖点 及平均收益率
-            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
-
-            $item = [
-                'buy_dt' => $buy_dt,            // 买入日期
-                'buy_price' => $buy_price,      // 买入日期 价格
-                'buy_type' => $buy_type,        //  买入类型
-                'sold_dt' => $sold_dt,          //  卖出日期
-                'sold_price' => $sold_price,    //  卖出日期 价格
-                'sold_type' => $sold_type,      //  卖出类型
-                'hold_days' => $hold_days,      //  持有天数
-                'rate' => $rate,                //  收益率
-                'rule_rate' => $rule_rate,
-                'set_rate' => $set_rate,
-                'rate_avg' => $rate_avg,        // 平均收益率
-                'high' => $high,                // 最高卖点
-                'low' => $low,                  // 最低卖点
-            ];
-            $data[] = $item;
-        }
-        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
-
-        // 去掉大于买入次数的买点
-        if (intval($buy_times) > 0) {
-            $data = self::pop_by_times($buy_times, $data);
         }
 
         // 回测表中加一个“正确率” 2019-12-12 PM
@@ -719,22 +653,23 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $buy_rule_names = trim($buy_rule_names, ',');
                     if (strpos($buy_rule_names, ',') === false) {
                         if ($rate > 0) {
-                            $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
+                            $ret[$buy_rule_names]['yes'.$buy_day_cat]++;
                         } else {
-                            $ret[$buy_rule_names]['no' . $buy_day_cat]++;
+                            $ret[$buy_rule_names]['no'.$buy_day_cat]++;
                         }
                         $ret[$buy_rule_names]['sum_rate'] += $rate;
                     } else {
                         foreach (explode(',', $buy_rule_names) as $buy_rule_name) {
                             if ($rate > 0) {
-                                $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
+                                $ret[$buy_rule_name]['yes'.$buy_day_cat]++;
                             } else {
-                                $ret[$buy_rule_name]['no' . $buy_day_cat]++;
+                                $ret[$buy_rule_name]['no'.$buy_day_cat]++;
                             }
                             $ret[$buy_rule_name]['sum_rate'] += $rate;
                         }
                     }
                 }
+
                 return $ret;
             };
             $ret = $trans($buy_type, $ret, $rate);
@@ -810,6 +745,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $co++;
                 }
             }
+
             return $co;
         };
         $data = ArrayHelper::index($data, 'buy_dt');
@@ -828,6 +764,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
 
         krsort($data);
+
         //print_r($data);exit;
         return array_values($data);
     }
@@ -857,6 +794,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 $rate_year_sum[$year]['fail_times']++;
             }
         }
+
         return $rate_year_sum;
     }
 
@@ -871,6 +809,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
+
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
     }
 
@@ -916,6 +855,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0) and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
+
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
     }
 
@@ -1065,6 +1005,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'rate_avg' => $rate_avg,
                 'high' => $high,
                 'low' => $low,
+                'back_dir' => self::BACK_DIR_2, // 做空回测
             ];
             $data[] = $item;
         }
@@ -1095,14 +1036,14 @@ class StockMainResult extends \yii\db\ActiveRecord
     {
         $rules_buys = StockMainRule::find()->where([
             'r_cat' => StockMainRule::CAT_BUY,
-            'r_status' => StockMainRule::ST_ACTIVE
+            'r_status' => StockMainRule::ST_ACTIVE,
         ])->asArray()->all();
         $rules_solds = StockMainRule::find()->where([
             'r_cat' => StockMainRule::CAT_SOLD,
-            'r_status' => StockMainRule::ST_ACTIVE
+            'r_status' => StockMainRule::ST_ACTIVE,
         ])->asArray()->all();
 
-        $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1 . '-01-01', $year2 . '-12-31'] : [];
+        $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1.'-01-01', $year2.'-12-31'] : [];
         $results = StockMainResult::find()->where($where)->asArray()->all();
 
         $list_buy = self::result_stat_item($rules_buys, $results);
@@ -1158,6 +1099,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $item[$rule_name][$day]['times_mid'] += 1;
                     $item[$rule_name]['SUM']['times_mid'] += 1;
                 }
+
                 return $item;
             };
             foreach ($results as $result) {
@@ -1196,6 +1138,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 }
             }
         }
+
         //print_r($data);exit;
         return $data;
     }
@@ -1264,6 +1207,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'rate' => round(($sold_price - $buy_price) / $buy_price, 4) * 100,
             ];
         }
+
         return $ret;
     }
 
