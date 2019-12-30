@@ -17,11 +17,11 @@
   }
 
   .back_dir_1 {
-    background: #eed3de;
+    background: #f8eff3 !important;
   }
 
   .back_dir_2 {
-    background: #c4eed1;
+    background: #e8f4eb !important;
   }
 </style>
 <div class="row">
