@@ -104,7 +104,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-11-22
      */
-    public static function reset()
+    public static function reset($flag = 0)
     {
         $sql = "select m.*,s.*
 				from im_stock_main as m
@@ -121,6 +121,9 @@ class StockMainResult extends \yii\db\ActiveRecord
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
 
+            if ($flag) {
+                echo 'dt '.$trans_on.' cat'.$cat.PHP_EOL;
+            }
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
                     'r_trans_on' => $trans_on,
