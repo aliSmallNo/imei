@@ -111,8 +111,8 @@ class StockMain extends \yii\db\ActiveRecord
         if (is_array($ret) && count($ret) > 40) {
             $dt = $ret[30];
             $trans_on = substr($dt, 0, 4)
-                . '-' . substr($dt, 4, 2)
-                . '-' . substr($dt, 6, 2);
+                .'-'.substr($dt, 4, 2)
+                .'-'.substr($dt, 6, 2);
 
             $data = [
                 "turnover" => $ret[37],                             //交易量(单位：万)
@@ -132,6 +132,7 @@ class StockMain extends \yii\db\ActiveRecord
     public static function is_trans_date()
     {
         $data1 = self::get_stock_data('510500', 'sh');
+
         return date('Y-m-d') == date('Y-m-d', strtotime($data1['m_trans_on']));
     }
 
@@ -211,6 +212,7 @@ class StockMain extends \yii\db\ActiveRecord
     public static function get_latest_update_on()
     {
         $latest_one = self::find()->where([])->asArray()->orderBy('m_trans_on desc')->limit(1)->one();
+
         return $latest_one['m_update_on'];
     }
 
@@ -237,7 +239,7 @@ class StockMain extends \yii\db\ActiveRecord
                 $sz ?? 0,
                 0,
                 $trans_on);
-            echo $trans_on . PHP_EOL;
+            echo $trans_on.PHP_EOL;
         }
     }
 
@@ -4029,5 +4031,6 @@ class StockMain extends \yii\db\ActiveRecord
         '2019/11/15' => [2891.34, 15257639],
         '2019/11/18' => [2909.20, 14467741],
     ];
+
 
 }
