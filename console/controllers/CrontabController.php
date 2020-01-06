@@ -32,7 +32,7 @@ class CrontabController extends Controller
     // */5 * * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/alert
 
     // 1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/try_phone
-
+    // */1 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/every_second
 
     public function actionRefresh($openId = '')
     {
@@ -168,7 +168,7 @@ class CrontabController extends Controller
             Log::add([
                 'oCategory' => Log::CAT_STOCK_MENU_UPDATE,
                 'oBefore' => 'err1',
-                'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()])
+                'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()]),
             ]);
         }
 
@@ -215,7 +215,7 @@ class CrontabController extends Controller
                     $e->getMessage(),
                     $e->getLine(),
                     $e->getTrace(),
-                ]
+                ],
             ]);
         }
 
@@ -269,6 +269,12 @@ class CrontabController extends Controller
         }
 //		AppUtil::logByFile('uid:' . 0 . ' === ' . ' cnt:' . 0, 'massmsg', __FUNCTION__, __LINE__);
 //		ChatMsg::massmsg();
+
+    }
+
+    public function actionEvery_second()
+    {
+        Log::add(['oCategory' => 'stock_main_update_test', 'oBefore' => 'test']);
 
     }
 
