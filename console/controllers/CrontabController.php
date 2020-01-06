@@ -249,20 +249,20 @@ class CrontabController extends Controller
             Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'out']);
 
             $H = date("H");
-            $m = date("m");
+            $m = date("i");
             if ($H >= 13 && $H < 16 && StockMain::is_trans_date()) {
                 Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 0']);
                 // 14:50到15:00 每一分钟更新下数据 其余时间段每5分钟更新下数据
-                /*if (in_array($H, [13, 15])) {
-                    if ($m % 5 != 0) {
+                if (in_array($H, [13, 15])) {
+                    if (($m % 5) != 0) {
                         return false;
                     }
                 } else {
                     // $H == 14
-                    if ($m < 50 && $m % 5 != 0) {
+                    if ($m < 50 && ($m % 5) != 0) {
                         return false;
                     }
-                }*/
+                }
                 Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 1']);
                 // 获取当天数据: 上证指数 深证指数 500ETF
                 StockMain::update_curr_day();
