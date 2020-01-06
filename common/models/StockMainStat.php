@@ -263,7 +263,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_trans_on = $stat['s_trans_on'];                                  //
         $s_cat = $stat['s_cat'];                                            //
 
-        //$sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
+        $sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
 
         $flag = false;
 
@@ -290,11 +290,10 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         $flag15 = intval($rule['r_scat']) ? in_array($s_cat, explode(',', $rule['r_scat'])) : true;
 
-        $flag16 = $flag17 = true;
-//        $flag16 = intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
-//            ? $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'] : true;
-//        $flag17 = intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
-//            ? $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'] : true;
+        $flag16 = intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
+            ? $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'] : true;
+        $flag17 = intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
+            ? $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'] : true;
 
 
         switch ($rule['r_cat']) {
