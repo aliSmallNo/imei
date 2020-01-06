@@ -199,6 +199,7 @@ class StockMain extends \yii\db\ActiveRecord
         if ($res) {
             StockMainStat::cal($trans_on);
             StockMainResult::cal_one($trans_on);
+            StockMainTmp0::cal_sh_close_60_avg($trans_on);
         }
 
         return true;
@@ -223,6 +224,8 @@ class StockMain extends \yii\db\ActiveRecord
      */
     public static function init_excel_data()
     {
+        return false;
+
         foreach (self::$sz_trans as $k => $sz) {
             $trans_on = date('Y-m-d', strtotime($k));
             if ($trans_on != '2015-04-14') {

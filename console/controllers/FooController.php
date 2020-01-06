@@ -1738,10 +1738,9 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMainTmp0::init_tmp0_data();
 
         // StockMainPrice::init_excel_data();
-        //StockMainStat::init_excel_data();
+        // StockMainStat::init_excel_data();
         exit;
 
         //$ret=StockOrder::getStockPrice('300377');

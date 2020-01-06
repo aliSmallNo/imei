@@ -130,6 +130,8 @@ class StockMainTmp0 extends \yii\db\ActiveRecord
      */
     public static function init_tmp0_data()
     {
+        return false;
+
         $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on asc';
         $dts = AppUtil::db()->createCommand($sql)->queryAll();
         foreach (array_column($dts, 'm_trans_on') as $dt) {

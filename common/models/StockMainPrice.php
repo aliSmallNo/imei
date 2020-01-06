@@ -197,6 +197,8 @@ class StockMainPrice extends \yii\db\ActiveRecord
 
     public static function init_excel_data()
     {
+        return false;
+
         foreach (self::$ic_futures as $dt => $ic_price) {
             echo $dt . PHP_EOL;
             self::add([
