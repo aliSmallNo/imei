@@ -16,7 +16,7 @@
 </style>
 <div class="row">
   <div class="col-sm-6">
-    <h4>2018、2019策略结果列表 统计
+    <h4>2018、2019、2020策略结果列表 统计
     </h4>
   </div>
 </div>
