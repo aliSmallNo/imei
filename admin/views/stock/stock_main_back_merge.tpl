@@ -252,7 +252,9 @@
         <td>{{$item.hold_days}}</td>
         <td>{{$item.rule_rate}}%</td>
         <td>{{$item.set_rate}}%</td>
-        <td class="{{if $stop_rate==$item.rate}}tip{{/if}}">{{$item.rate}}%</td>
+        <td class="{{if $item.back_dir==1 && $stop_rate==$item.rate}}tip{{/if}}{{if $item.back_dir==2 && -$stop_rate==$item.rate}}tip{{/if}}">
+          {{$item.rate}}%
+        </td>
 
         <td>
           <div>{{$item.high.r_trans_on}}</div>
