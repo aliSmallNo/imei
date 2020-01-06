@@ -34,7 +34,7 @@
   </div>
 </div>
 <div class="row">
-  <form action="/stock/stock_main_back" method="get" class="form-inline">
+  <form action="/stock/stock_main_back_merge" method="get" class="form-inline">
     <div class="form-group">
       <select class="form-control" name="price_type">
         {{foreach from=$price_types item=type key=key}}
