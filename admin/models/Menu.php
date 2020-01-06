@@ -344,8 +344,8 @@ class Menu
                         "level" => 820
                     ],
                     [
-                        "name" => "结果统计1819",
-                        "url" => "/stock/stock_result_stat1819",
+                        "name" => "结果统计1820",
+                        "url" => "/stock/stock_result_stat1820",
                         "revise" => 1,
                         "level" => 820
                     ],

@@ -40,14 +40,6 @@ class StockMainRule extends \yii\db\ActiveRecord
 
     public function attributeLabels()
     {
-//        上证涨跌大于
-//        上证涨跌小于
-//        散户比值均值比例大于
-//        散户比值均值比例小于
-//        合计交易额均值比例大于
-//        合计交易额均值比例小于
-//        上证指数均值比例大于
-//        上证指数均值比例小于
         return [
             'r_id' => 'id',
             'r_name' => '买卖名称',
@@ -65,6 +57,8 @@ class StockMainRule extends \yii\db\ActiveRecord
             'r_diff_lt' => '差值 合计交易额均值比例—散户比值均值比例 小于',
             'r_sh_close_avg_gt' => '上证指数均值大于',
             'r_sh_close_avg_lt' => '上证指数均值小于',
+            'r_sh_close_60avg_10avg_offset_gt' => '差值 上证指数60日均值-上证指数10日均值 大于',
+            'r_sh_close_60avg_10avg_offset_lt' => '差值 上证指数60日均值-上证指数10日均值 小于',
             'r_date_gt' => '日期大于',
             'r_date_lt' => '日期小于',
             'r_scat' => 'day类型 5日，10日，20日',

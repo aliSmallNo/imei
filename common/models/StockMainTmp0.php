@@ -124,6 +124,29 @@ class StockMainTmp0 extends \yii\db\ActiveRecord
     }
 
     /**
+     * 按日期计算 上证指数60日均值-上证指数10日均值 差值
+     *
+     * @time 2020-01-06 PM
+     */
+    public static function sh_close_60avg_10avg_offset($trans_on = '')
+    {
+        $trans_on = $trans_on ? date('Y-m-d', strtotime($trans_on)) : date('Y-m-d');
+
+        $model60 = self::findOne(['o_trans_on' => $trans_on]);
+        $model10 = StockMainStat::findOne([
+            's_trans_on' => $trans_on,
+            's_cat' => StockMainStat::CAT_DAY_10,
+        ]);
+
+        if ($model60 && $model10) {
+            return $model60->o_sh_close_avg - $model10->s_sh_close_avg;
+        }
+
+        return 999;
+    }
+
+
+    /**
      * 初始化数据：计算上证指数 60日均值
      *
      * @time 2020-01-06 PM

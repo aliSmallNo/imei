@@ -136,7 +136,7 @@ class StockMainStat extends \yii\db\ActiveRecord
     {
         $trans_on = $trans_on ? date('Y-m-d', strtotime($trans_on)) : date('Y-m-d');
 
-        echo $trans_on . PHP_EOL;
+        echo $trans_on.PHP_EOL;
 
         $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 21';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();
@@ -196,10 +196,10 @@ class StockMainStat extends \yii\db\ActiveRecord
 
     public static function items($criteria, $params, $page, $pageSize = 20)
     {
-        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
+        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
 
         $sql = "select m.*,s.*
@@ -263,6 +263,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_trans_on = $stat['s_trans_on'];                                  //
         $s_cat = $stat['s_cat'];                                            //
 
+        $sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
+
         $flag = false;
 
         $flag1 = intval($rule['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $rule['r_stocks_gt'] : true;
@@ -286,8 +288,12 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= $rule['r_date_gt'] : true;
         $flag14 = intval($rule['r_date_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;
 
-        //$flag15 = intval($rule['r_scat']) ? $s_cat == $rule['r_scat'] : true;
         $flag15 = intval($rule['r_scat']) ? in_array($s_cat, explode(',', $rule['r_scat'])) : true;
+
+        $flag16 = intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
+            ? $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'] : true;
+        $flag17 = intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
+            ? $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'] : true;
 
         switch ($rule['r_cat']) {
             case StockMainRule::CAT_BUY:
@@ -299,7 +305,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
         if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8
-            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15) {
+            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15 && $flag16 && $flag17) {
             $flag = true;
         }
 

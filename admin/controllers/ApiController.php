@@ -1423,6 +1423,8 @@ class ApiController extends Controller
                     'r_diff_lt' => trim(self::postParam("r_diff_lt")),
                     'r_sh_close_avg_gt' => trim(self::postParam("r_sh_close_avg_gt")),
                     'r_sh_close_avg_lt' => trim(self::postParam("r_sh_close_avg_lt")),
+                    'r_sh_close_60avg_10avg_offset_gt' => trim(self::postParam("r_sh_close_60avg_10avg_offset_gt")),
+                    'r_sh_close_60avg_10avg_offset_lt' => trim(self::postParam("r_sh_close_60avg_10avg_offset_lt")),
                     'r_date_gt' => trim(self::postParam("r_date_gt")),
                     'r_date_lt' => trim(self::postParam("r_date_lt")),
                     'r_scat' => trim(self::postParam("r_scat")),
@@ -1443,6 +1445,8 @@ class ApiController extends Controller
                             'r_diff_lt',
                             'r_sh_close_avg_gt',
                             'r_sh_close_avg_lt',
+                            'r_sh_close_60avg_10avg_offset_gt',
+                            'r_sh_close_60avg_10avg_offset_lt',
                         ])) {
                         $data[$k] = floatval($v);
                     }
