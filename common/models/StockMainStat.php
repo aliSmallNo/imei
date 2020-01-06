@@ -304,4 +304,5 @@ class StockMainStat extends \yii\db\ActiveRecord
         return $flag;
     }
 
+
 }

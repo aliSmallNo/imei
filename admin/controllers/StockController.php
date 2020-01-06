@@ -1711,7 +1711,7 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat();
+        list($list_buy, $list_sold) = StockMainResult::result_stat('2020', '2020');
 
         return $this->renderPage("stock_main_result_stat.tpl",
             [

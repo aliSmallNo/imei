@@ -25,6 +25,7 @@ use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
 use common\models\StockMainStat;
+use common\models\StockMainTmp0;
 use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockTurn;
@@ -1737,36 +1738,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
-        $H = date("H");
-        $m = date("i");
-        echo (1 % 5).'=1 '.$m.PHP_EOL;
-        echo (2 % 5).'=2'.PHP_EOL;
-        echo (3 % 5).'=3'.PHP_EOL;
-        echo (4 % 5).'=4'.PHP_EOL;
-        echo (5 % 5).'=5'.PHP_EOL;
-
-        if ($H >= 13 && $H < 16 && StockMain::is_trans_date()) {
-            Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 0']);
-            // 14:50到15:00 每一分钟更新下数据 其余时间段每5分钟更新下数据
-            if (in_array($H, [13, 15])) {
-                echo '————————1'.PHP_EOL;
-                if (($m % 5) != 0) {
-                    echo '————————1.1'.PHP_EOL;
-
-                    return false;
-                }
-            } else {
-                echo '————————2'.PHP_EOL;
-                // $H == 14
-                if ($m < 50 && ($m % 5) != 0) {
-                    echo '————————2.1'.PHP_EOL;
-
-                    return false;
-                }
-            }
-            echo 'OK';
-        }
+        StockMainTmp0::init_tmp0_data();
 
         // StockMainPrice::init_excel_data();
         //StockMainStat::init_excel_data();
