@@ -1652,7 +1652,7 @@ class StockController extends BaseController
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back_r($price_type, $buy_times,
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back_r_new($price_type, $buy_times,
             $stop_rate);
 
         return $this->renderPage("stock_main_back_r.tpl",
@@ -1685,7 +1685,7 @@ class StockController extends BaseController
             = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
         // 卖空回测
         list($list2, $rate_year_sum2, $stat_rule_right_rate2)
-            = StockMainResult::cal_back_r($price_type, $buy_times, $stop_rate);
+            = StockMainResult::cal_back_r_new($price_type, $buy_times, $stop_rate);
 
         $list = array_merge($list1, $list2);
         ArrayHelper::multisort($list, 'buy_dt', SORT_DESC);

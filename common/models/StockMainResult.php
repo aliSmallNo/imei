@@ -894,6 +894,40 @@ class StockMainResult extends \yii\db\ActiveRecord
     }
 
     /**
+     * 回测收益 获取低于止损点的反向卖点
+     *
+     * @time 2020-01-08 AM
+     */
+    public static function _get_sold_point_r_new($buy_dt, $sold_dt, $price_type, $stop_rate)
+    {
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where r_trans_on BETWEEN :buy_dt and :sold_dt 
+                order by r_trans_on asc ";
+        $ret = AppUtil::db()->createCommand($sql, [':buy_dt' => $buy_dt, ':sold_dt' => $sold_dt])->queryAll();
+
+        $price_field = $price_type;
+        // 购买价格
+        $buy_price = $ret[0][$price_field];
+
+        foreach ($ret as $k => $v) {
+            if ($k == 0) {
+                continue;
+            }
+            $curr_price = $v[$price_field];
+            $ret[$k]['curr_price'] = $v[$price_field];
+            // -- 取反 ---
+            $ret[$k]['rate'] = $buy_price > 0 ? -round(($curr_price / $buy_price) - 1, 4) * 100 : 0;
+            // 判断修改 > 改为 <
+            if ($ret[$k]['rate'] < $stop_rate) {
+                return $ret[$k];
+            }
+        }
+
+        return [];
+    }
+
+    /**
      * 找最高 最低卖点 及平均收益率
      *
      * @time 2019-11-26
@@ -986,6 +1020,102 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
                     $sold_price = $sold[$price_type];
                     $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+                    $rate = $stop_rate;
+                    $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+                }
+            }
+
+            // 找最高 最低卖点 及平均收益率
+            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
+
+            $item = [
+                'buy_dt' => $buy_dt,
+                'buy_price' => $buy_price,
+                'buy_type' => $buy_type,
+                'sold_dt' => $sold_dt,
+                'sold_price' => $sold_price,
+                'sold_type' => $sold_type,
+                'hold_days' => $hold_days,
+                'rule_rate' => $rule_rate,
+                'set_rate' => $set_rate,
+                'rate' => $rate,
+                'rate_avg' => $rate_avg,
+                'high' => $high,
+                'low' => $low,
+                'back_dir' => self::BACK_DIR_2, // 做空回测
+            ];
+            $data[] = $item;
+        }
+        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
+
+        // 去掉大于买入次数的买点 从2015开始买往现在推的
+        if (intval($buy_times) > 0) {
+            //$data = self::pop_by_times($buy_times, $data);
+        }
+
+        // 回测表中加一个“正确率” 2019-12-12 PM
+        $stat_rule_right_rate = self::stat_rule_right_rate($data);
+
+        // 统计年度收益
+        $rate_year_sum = self::get_year_data($data);
+
+        return [$data, $rate_year_sum, $stat_rule_right_rate];
+    }
+
+    public static function cal_back_r_new($price_type, $buy_times, $stop_rate)
+    {
+        if ($buy_times) {
+            $get_first_buys = self::get_first_buys_r();
+            //print_r($get_first_buys);exit;
+        }
+        $sql = "select p.*,r.* from im_stock_main_result r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $data = [];
+        foreach ($ret as $buy) {
+            $buy_dt = $buy['r_trans_on'];
+
+            // 2019-12-23 add
+            if ($buy_times) {
+                if (isset($get_first_buys[$buy_dt])) {
+                    $has_buy_times = 1;
+                }
+                if ($has_buy_times > $buy_times) {
+                    continue;
+                }
+                $has_buy_times++;
+            }
+
+            $sold = self::get_sold_point_r($buy_dt);
+            if (!$sold) {
+                continue;
+            }
+            $sold_dt = $sold['r_trans_on'];
+
+            $buy_type = self::get_buy_sold_item($buy, self::TAG_SOLD);
+            $buy_price = $buy[$price_type];
+
+            $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
+            $sold_price = $sold[$price_type];
+            // -- 取反 -----
+            $rate = $buy_price != 0 ? -round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+            $rule_rate = $rate;
+            $set_rate = 0;
+            $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+
+            // 低于止损比例 获取新的卖点
+            //if ($stop_rate && $rate > $stop_rate) {
+            if ($stop_rate) {
+                $sold = self::_get_sold_point_r_new($buy_dt, $sold_dt, $price_type, $stop_rate);
+                if ($sold) {
+                    $sold_dt = $sold['r_trans_on'];
+                    $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
+                    $sold_price = $sold[$price_type];
+                    // -- 取反 -----
+                    $set_rate = $buy_price != 0 ? -round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+                    // -- 未取反 -----
                     $rate = $stop_rate;
                     $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
                 }

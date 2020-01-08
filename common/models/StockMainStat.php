@@ -288,6 +288,7 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         $flag15 = intval($rule['r_scat']) ? in_array($s_cat, explode(',', $rule['r_scat'])) : true;
 
+        // 这样 会导致重置很慢
 //        $flag16 = intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
 //            ? $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'] : true;
 //        $flag17 = intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL
