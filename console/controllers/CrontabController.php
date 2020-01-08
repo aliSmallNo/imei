@@ -243,10 +243,15 @@ class CrontabController extends Controller
 
     }
 
+    /**
+     * 每分钟执行
+     *
+     * @time 2020-01-06 PM
+     */
     public function actionEvery_second()
     {
         try {
-            Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'out']);
+            //Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'out']);
 
             $H = date("H");
             $m = date("i");
