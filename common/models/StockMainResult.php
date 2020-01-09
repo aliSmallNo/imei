@@ -394,7 +394,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         foreach ($res as $k => $v) {
             foreach ($v as $f => $v1) {
-                if (in_array($f, ['r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20'])) {
+                if (in_array($f, ['r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20','r_warn5', 'r_warn10', 'r_warn20'])) {
                     $res[$k][$f] = trim($res[$k][$f], ',');
                 }
             }
@@ -402,6 +402,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             if ($r_trans_on != date('Y-m-d')
                 && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
                 && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
+                && !$v['r_warn5'] && !$v['r_warn10'] && !$v['r_warn20']
             ) {
                 unset($res[$k]);
             }

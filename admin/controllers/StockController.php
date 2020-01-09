@@ -1596,7 +1596,9 @@ class StockController extends BaseController
 
         if ($name) {
             // 'r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20'
-            $criteria[] = "  (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name ) ";
+            $criteria[] = "  (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
+            or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name 
+            or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name ) ";
             $params[':name'] = "%$name%";
         }
 

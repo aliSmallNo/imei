@@ -13,6 +13,10 @@
     color: #f80;
     font-weight: 400;
   }
+
+  .bot_line div {
+    border-bottom: 1px solid #aaa;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -42,12 +46,9 @@
       <th>交易日期</th>
 
       <th>500etf</th>
-      <th>5日买入</th>
-      <th>10日买入</th>
-      <th>20日买入</th>
-      <th>5日卖出</th>
-      <th>10日卖出</th>
-      <th>20日卖出</th>
+      <th class="col-sm-3">买入</th>
+      <th class="col-sm-3">卖出</th>
+      <th class="col-sm-3">预警</th>
 
       <th>备注</th>
       <th>时间</th>
@@ -61,13 +62,30 @@
         <td>{{$key+1}}</td>
         <td>{{$item.r_trans_on}}</td>
         <td>{{$item.m_etf_close}}</td>
-
-        <td>{{$item.r_buy5}}</td>
-        <td>{{$item.r_buy10}}</td>
-        <td>{{$item.r_buy20}}</td>
-        <td>{{$item.r_sold5}}</td>
-        <td>{{$item.r_sold10}}</td>
-        <td>{{$item.r_sold20}}</td>
+        <td class="bot_line">
+          {{if $item.r_buy5}}
+            <div>5日:{{$item.r_buy5}}</div>{{/if}}
+          {{if $item.r_buy10}}
+            <div>10日:{{$item.r_buy10}}</div>{{/if}}
+          {{if $item.r_buy20}}
+            <div>20日:{{$item.r_buy20}}</div>{{/if}}
+        </td>
+        <td class="bot_line">
+          {{if $item.r_sold5}}
+            <div>5日:{{$item.r_sold5}}</div>{{/if}}
+          {{if $item.r_sold10}}
+            <div>10日:{{$item.r_sold10}}</div>{{/if}}
+          {{if $item.r_sold20}}
+            <div>20日:{{$item.r_sold20}}</div>{{/if}}
+        </td>
+        <td class="bot_line">
+          {{if $item.r_warn5}}
+            <div>5日:{{$item.r_warn5}}</div>{{/if}}
+          {{if $item.r_warn10}}
+            <div>10日:{{$item.r_warn10}}</div>{{/if}}
+          {{if $item.r_warn20}}
+            <div>20日:{{$item.r_warn20}}</div>{{/if}}
+        </td>
 
         <td>{{$item.r_note}}</td>
         <td>
