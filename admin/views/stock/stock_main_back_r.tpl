@@ -11,6 +11,13 @@
   .tip {
     color: red;
   }
+  .sold_color_1 {
+    background: #99CCFF;
+  }
+
+  .sold_color_2 {
+    background: #99CCCC;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -149,7 +156,7 @@
           {{/foreach}}
         </td>
 
-        <td>{{$item.sold_dt}}</td>
+        <td class="{{$item.sold_color}}">{{$item.sold_dt}}</td>
         <td>{{$item.sold_price}}</td>
         <td>
           {{foreach from=$item.sold_type item=types key=day}}

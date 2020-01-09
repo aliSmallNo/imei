@@ -70,9 +70,11 @@ class StockMainRule extends \yii\db\ActiveRecord
 
     const CAT_BUY = 1;
     const CAT_SOLD = 2;
+    const CAT_WARN = 3;
     static $cats = [
         self::CAT_BUY => '买入',
         self::CAT_SOLD => '卖出',
+        self::CAT_WARN => '预警',
     ];
 
     const ST_ACTIVE = 1;

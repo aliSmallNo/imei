@@ -16,6 +16,9 @@ use yii\helpers\ArrayHelper;
  * @property string $r_sold5
  * @property string $r_sold10
  * @property string $r_sold20
+ * @property string $r_warn5
+ * @property string $r_warn10
+ * @property string $r_warn20
  * @property string $r_trans_on
  * @property string $r_note
  * @property string $r_added_on
@@ -38,6 +41,9 @@ class StockMainResult extends \yii\db\ActiveRecord
             'r_sold5' => '5日卖出',
             'r_sold10' => '10日卖出',
             'r_sold20' => '20日卖出',
+            'r_warn5' => '5日预警',
+            'r_warn10' => '10日预警',
+            'r_warn20' => '20日预警',
             'r_trans_on' => '交易日期',
             'r_note' => '备注',
             'r_added_on' => 'add时间',
@@ -117,6 +123,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         // 策略
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
+        $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
         foreach ($res as $k => $v) {
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
@@ -133,6 +140,9 @@ class StockMainResult extends \yii\db\ActiveRecord
                     'r_sold5' => '',
                     'r_sold10' => '',
                     'r_sold20' => '',
+                    'r_warn5' => '',
+                    'r_warn10' => '',
+                    'r_warn20' => '',
                     'r_note' => '',
                 ];
             }
@@ -149,6 +159,11 @@ class StockMainResult extends \yii\db\ActiveRecord
                         $ret[$trans_on]['r_sold'.$cat] .= ','.$sold['r_name'];
                     }
                 }
+                foreach ($warns as $warn) {
+                    if (StockMainStat::get_rule_flag($v, $warn)) {
+                        $ret[$trans_on]['r_warn'.$cat] .= ','.$warn['r_name'];
+                    }
+                }
             }
         }
 
@@ -160,6 +175,9 @@ class StockMainResult extends \yii\db\ActiveRecord
                 'r_sold5' => $v['r_sold5'],
                 'r_sold10' => $v['r_sold10'],
                 'r_sold20' => $v['r_sold20'],
+                'r_warn5' => $v['r_warn5'],
+                'r_warn10' => $v['r_warn10'],
+                'r_warn20' => $v['r_warn20'],
                 'r_trans_on' => $v['r_trans_on'],
             ]);
         }
@@ -201,6 +219,9 @@ class StockMainResult extends \yii\db\ActiveRecord
             'r_sold5' => '',
             'r_sold10' => '',
             'r_sold20' => '',
+            'r_warn5' => '',
+            'r_warn10' => '',
+            'r_warn20' => '',
         ];
         if (!$res) {
             return $data;
@@ -208,11 +229,10 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
+        $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
 
         foreach ($res as $k => $v) {
-
             $cat = $v['s_cat'];                                             // 5 10,20
-
             if (!$cat) {
                 continue;
             }
@@ -221,15 +241,17 @@ class StockMainResult extends \yii\db\ActiveRecord
                     $data['r_buy'.$cat] .= ','.$buy['r_name'];
                 }
             }
-
             foreach ($solds as $sold) {
                 if (StockMainStat::get_rule_flag($v, $sold)) {
                     $data['r_sold'.$cat] .= ','.$sold['r_name'];
                 }
             }
-
+            foreach ($warns as $warn) {
+                if (StockMainStat::get_rule_flag($v, $warn)) {
+                    $data['r_warn'.$cat] .= ','.$warn['r_name'];
+                }
+            }
         }
-
         self::add($data);
 
         return true;
@@ -612,6 +634,37 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         return [$data, $rate_year_sum, $stat_rule_right_rate];
 
+    }
+
+    /**
+     * 相邻的卖出日期相同 背景颜色一致
+     *
+     * @time 2020-01-09 PM
+     */
+    public static function change_color_diff_sold_dt($data)
+    {
+        $cls1 = 'sold_color_1';
+        $cls2 = 'sold_color_2';
+        $sold_dt = '';
+        $curr_sold_color = '';
+
+        foreach ($data as $k => $v) {
+            if (!$sold_dt) {
+                $data[$k]['sold_color'] = $cls1;
+                $sold_dt = $v['sold_dt'];
+                $curr_sold_color = $cls1;
+                continue;
+            }
+            if ($sold_dt == $v['sold_dt']) {
+                $data[$k]['sold_color'] = $curr_sold_color;
+            } else {
+                $sold_dt = $v['sold_dt'];
+                $curr_sold_color = $curr_sold_color == $cls1 ? $cls2 : $cls1;
+                $data[$k]['sold_color'] = $curr_sold_color;
+            }
+        }
+
+        return $data;
     }
 
     /**
