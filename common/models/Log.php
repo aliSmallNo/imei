@@ -19,222 +19,231 @@ use yii\db\ActiveRecord;
 
 class Log extends ActiveRecord
 {
-	const CAT_QUESTION = 1000;
-	const CAT_SPREAD = 2000;// 推广活动
-	const CAT_SOURCE = 3000;// 官网过来用户
-	const CAT_USER_MODIFY = 800;//用户更改
-	const CAT_SECURITY_CENTER = 4000; //用户安全中心
+    const CAT_QUESTION = 1000;
+    const CAT_SPREAD = 2000;// 推广活动
+    const CAT_SOURCE = 3000;// 官网过来用户
+    const CAT_USER_MODIFY = 800;//用户更改
+    const CAT_SECURITY_CENTER = 4000; //用户安全中心
 
-	const SPREAD_PART = 500;//测试的你另一半长相
-	const SPREAD_IP8 = 510;//0元抽iphone8Plus
-	const SPREAD_LOT2 = 520;//抽奖活动
-	const SPREAD_RED = 600;//口令红包
+    const SPREAD_PART = 500;//测试的你另一半长相
+    const SPREAD_IP8 = 510;//0元抽iphone8Plus
+    const SPREAD_LOT2 = 520;//抽奖活动
+    const SPREAD_RED = 600;//口令红包
 
-	const CAT_SANTA = 5000; // 双旦活动
-	const SANTA_SUGAR = 100; //糖果
-	const SANTA_HAT = 200;  //帽子
-	const SANTA_SOCK = 300; //袜子
-	const SANTA_OLAF = 400; //雪人
-	const SANTA_TREE = 500; //圣诞树
+    const CAT_SANTA = 5000; // 双旦活动
+    const SANTA_SUGAR = 100; //糖果
+    const SANTA_HAT = 200;  //帽子
+    const SANTA_SOCK = 300; //袜子
+    const SANTA_OLAF = 400; //雪人
+    const SANTA_TREE = 500; //圣诞树
 
-	const CAT_EVERYDAY_REDPACKET = 6000;// 每日红包推广: wxController::actionEveryredpacket()
-	const EVERY_TIMES = 100;
-	const EVERY_MONEY = 200;
+    const CAT_EVERYDAY_REDPACKET = 6000;// 每日红包推广: wxController::actionEveryredpacket()
+    const EVERY_TIMES = 100;
+    const EVERY_MONEY = 200;
 
-	const CAT_JASMINE = 7000;// 茉莉推广
-	const JASMINE_DEFAULT = 100;
+    const CAT_JASMINE = 7000;// 茉莉推广
+    const JASMINE_DEFAULT = 100;
 
-	const CAT_SPRING_FESTIVAL = 8000; // 春节红包
-	const SF_KEY_REDPACKET = 100;    // 红包
-	const SF_KEY_RANDOM = 300;    // 每天的随机红包
-	const SF_GRAB_LIMIT = 5;    //每天抢红包上限次数
-	const SF_SEND_LIMIT = 15;   //每天发红包上限次数
-	const SF_SEND_MAX = 200;    //每天发送总千寻币数
+    const CAT_SPRING_FESTIVAL = 8000; // 春节红包
+    const SF_KEY_REDPACKET = 100;    // 红包
+    const SF_KEY_RANDOM = 300;    // 每天的随机红包
+    const SF_GRAB_LIMIT = 5;    //每天抢红包上限次数
+    const SF_SEND_LIMIT = 15;   //每天发红包上限次数
+    const SF_SEND_MAX = 200;    //每天发送总千寻币数
 
-	const SC_SHIELD = 100;
-	const SC_NOCERT_DES = 200;
-	const SC_NOCERT_CHAT = 210;
-	const SC_NOCERT_DATE = 220;
+    const SC_SHIELD = 100;
+    const SC_NOCERT_DES = 200;
+    const SC_NOCERT_CHAT = 210;
+    const SC_NOCERT_DATE = 220;
 
-	const SC_DATA_DES = 300;
-	const SC_DATA_CHAT = 310;
-	const SC_DATA_DATE = 320;
+    const SC_DATA_DES = 300;
+    const SC_DATA_CHAT = 310;
+    const SC_DATA_DATE = 320;
 
-	const SC_BLOCK_DES = 400;
-	const SC_BLOCK_CHAT = 410;
-	const SC_BLOCK_DATE = 420;
+    const SC_BLOCK_DES = 400;
+    const SC_BLOCK_CHAT = 410;
+    const SC_BLOCK_DATE = 420;
 
-	const SC_WAY_BODY = 500;
-	const SC_WAY_MONEY = 510;
-	const SC_WAY_LOCATION = 520;
+    const SC_WAY_BODY = 500;
+    const SC_WAY_MONEY = 510;
+    const SC_WAY_LOCATION = 520;
 
-	const SC_HIDE_NO = 600;
-	const SC_HIDE_YES = 610;
+    const SC_HIDE_NO = 600;
+    const SC_HIDE_YES = 610;
 
 
-	static $securityCenter = [
-		self::SC_SHIELD => '屏蔽平台熟悉人',
-		self::SC_NOCERT_DES => '未认证的用户,不能看我的详细信息',
-		self::SC_NOCERT_CHAT => '未认证的用户,不能与我聊天',
-		self::SC_NOCERT_DATE => '未认证的用户,不能与我约会',
+    static $securityCenter = [
+        self::SC_SHIELD => '屏蔽平台熟悉人',
+        self::SC_NOCERT_DES => '未认证的用户,不能看我的详细信息',
+        self::SC_NOCERT_CHAT => '未认证的用户,不能与我聊天',
+        self::SC_NOCERT_DATE => '未认证的用户,不能与我约会',
 
-		self::SC_DATA_DES => '资料不全的用户,不能看我的详细信息',
-		self::SC_DATA_CHAT => '资料不全的用户,不能与我聊天',
-		self::SC_DATA_DATE => '资料不全的用户,不能与我约会',
+        self::SC_DATA_DES => '资料不全的用户,不能看我的详细信息',
+        self::SC_DATA_CHAT => '资料不全的用户,不能与我聊天',
+        self::SC_DATA_DATE => '资料不全的用户,不能与我约会',
 
-		self::SC_BLOCK_DES => '我屏蔽拉黑的用户,不能看我的详细信息',
-		self::SC_BLOCK_CHAT => '我屏蔽拉黑的用户,不能与我聊天',
-		self::SC_BLOCK_DATE => '我屏蔽拉黑的用户,不能与我约会',
+        self::SC_BLOCK_DES => '我屏蔽拉黑的用户,不能看我的详细信息',
+        self::SC_BLOCK_CHAT => '我屏蔽拉黑的用户,不能与我聊天',
+        self::SC_BLOCK_DATE => '我屏蔽拉黑的用户,不能与我约会',
 
-		self::SC_WAY_BODY => '不符合我的婚恋取向,个人素质不符合(身高年龄等)',
-		self::SC_WAY_MONEY => '不符合我的婚恋取向,经济，家庭条件不符合',
-		self::SC_WAY_LOCATION => '不符合我的婚恋取向,地理籍贯不符合',
+        self::SC_WAY_BODY => '不符合我的婚恋取向,个人素质不符合(身高年龄等)',
+        self::SC_WAY_MONEY => '不符合我的婚恋取向,经济，家庭条件不符合',
+        self::SC_WAY_LOCATION => '不符合我的婚恋取向,地理籍贯不符合',
 
-		self::SC_HIDE_NO => '我希望隐身一段时间,先隐身一段时间，不想被人撩',
-		self::SC_HIDE_YES => '我希望隐身一段时间,找到对象了，处不好再来',
-	];
+        self::SC_HIDE_NO => '我希望隐身一段时间,先隐身一段时间，不想被人撩',
+        self::SC_HIDE_YES => '我希望隐身一段时间,找到对象了，处不好再来',
+    ];
 
-	const CAT_YOUZAN_USER = 8001; // 拉取有赞用户
-	const CAT_YOUZAN_ORDER = 8002; // 拉取有赞订单
-	const CAT_YOUZAN_AUDIT = 8003; // 设置用为为严选师
-	const CAT_YOUZAN_FINANCE = 8004; // 对账信息
-	const CAT_USER_FOCUS = 8005; // 关注取消关注
-	const CAT_USER_CUT_PRICE = 8006; // 点赞获取月度畅聊卡
-	const CAT_WECHAT_TEMP_MSG = 8007; // 模板消息
-	const CAT_CAHT_GROUP_MSG = 8008; // 群聊记录
+    const CAT_YOUZAN_USER = 8001; // 拉取有赞用户
+    const CAT_YOUZAN_ORDER = 8002; // 拉取有赞订单
+    const CAT_YOUZAN_AUDIT = 8003; // 设置用为为严选师
+    const CAT_YOUZAN_FINANCE = 8004; // 对账信息
+    const CAT_USER_FOCUS = 8005; // 关注取消关注
+    const CAT_USER_CUT_PRICE = 8006; // 点赞获取月度畅聊卡
+    const CAT_WECHAT_TEMP_MSG = 8007; // 模板消息
+    const CAT_CAHT_GROUP_MSG = 8008; // 群聊记录
 
-	const CAT_SPREAD_MERMAIND = 8009; // 跨时空推广
-	const CAT_EXCEL = 8010; //
+    const CAT_SPREAD_MERMAIND = 8009; // 跨时空推广
+    const CAT_EXCEL = 8010; //
 
-	const CAT_STOCK_MENU_UPDATE = 'stock_menu_update'; //
+    const CAT_STOCK_MENU_UPDATE = 'stock_menu_update'; //
 
-	public static function tableName()
-	{
-		return '{{%log}}';
-	}
+    const CAT_STOCK_MAIN_SMS_SEND = 'stock_main_sms_send';
 
-	public static function add($values = [])
-	{
-		if (!$values) {
-			return false;
-		}
-		$logger = new self();
-		foreach ($values as $key => $val) {
-			$logger->$key = is_array($val) ? json_encode($val, JSON_UNESCAPED_UNICODE) : $val;
-		}
-		$logger->save();
-		return $logger->oId;
-	}
 
-	public static function sCenterEdit($uid, $flag, $key, $val)
-	{
-		$cat = self::CAT_SECURITY_CENTER;
-		$l = self::findOne(["oCategory" => $cat, "oUId" => $uid, "oKey" => $val, "oBefore" => $key]);
-		if ($l) {
-			$l->oAfter = $flag;
-			$l->save();
-			return $l->oId;
-		}
-		$l = new self();
-		$l->oCategory = $cat;
-		$l->oUId = $uid;
-		$l->oKey = $val;
-		$l->oBefore = $key;
-		$l->oAfter = $flag;
-		$l->save();
-		return $l->oId;
-	}
+    public static function tableName()
+    {
+        return '{{%log}}';
+    }
 
-	public static function sCenterItems($uid)
-	{
-		$sql = "select * from im_log where oUId=:uid and oCategory=:cat ";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":uid" => $uid,
-			":cat" => self::CAT_SECURITY_CENTER,
-		])->queryAll();
-		$sc = self::$securityCenter;
-		foreach ($sc as $k => $s) {
-			$sc[$k] = "unchecked";
-			foreach ($res as $v) {
-				if ($v["oKey"] == $k) {
-					$sc[$k] = $v["oAfter"];
-				}
-			}
-		}
-		return $sc;
-	}
+    public static function add($values = [])
+    {
+        if (!$values) {
+            return false;
+        }
+        $logger = new self();
+        foreach ($values as $key => $val) {
+            $logger->$key = is_array($val) ? json_encode($val, JSON_UNESCAPED_UNICODE) : $val;
+        }
+        $logger->save();
 
-	public static function answerItems($criteria, $params, $page = 1, $pageSize = 20)
-	{
-		$conn = AppUtil::db();
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
-		$cat = self::CAT_QUESTION;
-		$limit = "limit " . ($page - 1) * $pageSize . "," . $pageSize;
-		$sql = "select gTitle,uName,uPhone,uThumb,o.* 
+        return $logger->oId;
+    }
+
+    public static function sCenterEdit($uid, $flag, $key, $val)
+    {
+        $cat = self::CAT_SECURITY_CENTER;
+        $l = self::findOne(["oCategory" => $cat, "oUId" => $uid, "oKey" => $val, "oBefore" => $key]);
+        if ($l) {
+            $l->oAfter = $flag;
+            $l->save();
+
+            return $l->oId;
+        }
+        $l = new self();
+        $l->oCategory = $cat;
+        $l->oUId = $uid;
+        $l->oKey = $val;
+        $l->oBefore = $key;
+        $l->oAfter = $flag;
+        $l->save();
+
+        return $l->oId;
+    }
+
+    public static function sCenterItems($uid)
+    {
+        $sql = "select * from im_log where oUId=:uid and oCategory=:cat ";
+        $res = AppUtil::db()->createCommand($sql)->bindValues([
+            ":uid" => $uid,
+            ":cat" => self::CAT_SECURITY_CENTER,
+        ])->queryAll();
+        $sc = self::$securityCenter;
+        foreach ($sc as $k => $s) {
+            $sc[$k] = "unchecked";
+            foreach ($res as $v) {
+                if ($v["oKey"] == $k) {
+                    $sc[$k] = $v["oAfter"];
+                }
+            }
+        }
+
+        return $sc;
+    }
+
+    public static function answerItems($criteria, $params, $page = 1, $pageSize = 20)
+    {
+        $conn = AppUtil::db();
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
+        $cat = self::CAT_QUESTION;
+        $limit = "limit ".($page - 1) * $pageSize.",".$pageSize;
+        $sql = "select gTitle,uName,uPhone,uThumb,o.* 
 				from im_log as o 
 				LEFT JOIN im_question_group as g on g.gId=o.oKey 
 				left join im_user as u on u.uId=o.oUId
 				where oCategory=$cat $strCriteria
 				order by oDate desc $limit";
-		$res = $conn->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as &$v) {
-			$v["anslist"] = self::fmtAns($v["oAfter"]);
-		}
+        $res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+        foreach ($res as &$v) {
+            $v["anslist"] = self::fmtAns($v["oAfter"]);
+        }
 
-		$sql = "select count(1) as co 
+        $sql = "select count(1) as co 
 				from im_log as o 
 				LEFT JOIN im_question_group as g on g.gId=o.oKey 
 				left join im_user as u on u.uId=o.oUId
 				where oCategory=$cat $strCriteria ";
-		$count = $conn->createCommand($sql)->bindValues($params)->queryOne();
-		$count = $count ? $count["co"] : 0;
+        $count = $conn->createCommand($sql)->bindValues($params)->queryOne();
+        $count = $count ? $count["co"] : 0;
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
 
-	public static function fmtAns($oAfter)
-	{
-		$result = [];
-		$oAfter = json_decode($oAfter, 1);
-		if (!$oAfter || !is_array($oAfter)) {
-			return 0;
-		}
-		foreach ($oAfter as $v) {
-			$qsea = QuestionSea::findOne(["qId" => $v["id"]]);
-			$result[] = [
-				"title" => $qsea ? $qsea->qTitle : '',
-				"ans" => $v["ans"],
-			];
-		}
-		return $result;
-	}
+    public static function fmtAns($oAfter)
+    {
+        $result = [];
+        $oAfter = json_decode($oAfter, 1);
+        if (!$oAfter || !is_array($oAfter)) {
+            return 0;
+        }
+        foreach ($oAfter as $v) {
+            $qsea = QuestionSea::findOne(["qId" => $v["id"]]);
+            $result[] = [
+                "title" => $qsea ? $qsea->qTitle : '',
+                "ans" => $v["ans"],
+            ];
+        }
 
-	public static function countSpread($init = 1315, $cat = self::CAT_SPREAD, $key = self::SPREAD_IP8)
-	{
-		$sql = "select sum(oBefore) as co from im_log where oCategory=:cat and oKey=:key ";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			":cat" => $cat,
-			":key" => $key,
-		])->queryScalar();
-		return $res + $init;
-	}
+        return $result;
+    }
+
+    public static function countSpread($init = 1315, $cat = self::CAT_SPREAD, $key = self::SPREAD_IP8)
+    {
+        $sql = "select sum(oBefore) as co from im_log where oCategory=:cat and oKey=:key ";
+        $res = AppUtil::db()->createCommand($sql)->bindValues([
+            ":cat" => $cat,
+            ":key" => $key,
+        ])->queryScalar();
+
+        return $res + $init;
+    }
 
 
-	public static function santaStat($uid, $countExchange = 0)
-	{
-		$conn = AppUtil::db();
-		$str = "";
-		if ($uid) {
-			$str .= " and oUId=$uid ";
-		}
-		if ($countExchange) {
-			// 不计算兑换的
-			$str .= " and oBefore>0 ";
-		}
-		$sql = "select uId,uName,uPhone,
+    public static function santaStat($uid, $countExchange = 0)
+    {
+        $conn = AppUtil::db();
+        $str = "";
+        if ($uid) {
+            $str .= " and oUId=$uid ";
+        }
+        if ($countExchange) {
+            // 不计算兑换的
+            $str .= " and oBefore>0 ";
+        }
+        $sql = "select uId,uName,uPhone,
 				ifnull(sum(case when oKey=100 then oBefore end),0) as sugar,
 				ifnull(sum(case when oKey=200 then oBefore end),0) as hat,
 				ifnull(sum(case when oKey=300 then oBefore end),0) as sock,
@@ -243,894 +252,968 @@ class Log extends ActiveRecord
 				from im_log as o 
 				join im_user as u on u.uId=o.oUId
 				where oCategory=5000 and oDate between '2017-12-23 00:00' and '2018-01-06 23:59' $str ";
-		$res = $conn->createCommand($sql)->queryOne();
-		return $res;
+        $res = $conn->createCommand($sql)->queryOne();
 
-	}
+        return $res;
 
-	public static function addSanta($uid, $key)
-	{
-		$conn = AppUtil::db();
-		$sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k and oBefore>0
+    }
+
+    public static function addSanta($uid, $key)
+    {
+        $conn = AppUtil::db();
+        $sql = "select oId from im_log as l where l.oCategory=:cat and l.oUId=:uid and l.oKey=:k and oBefore>0
 				and DATE_FORMAT(l.oDate,'%Y-%c-%d')=DATE_FORMAT(now(),'%Y-%c-%d')";
-		$l = $conn->createCommand($sql)->bindValues([
-			':cat' => self::CAT_SANTA,
-			':k' => $key,
-			':uid' => $uid
-		])->queryOne();
-		if ($l) {
-			return 0;
-		}
+        $l = $conn->createCommand($sql)->bindValues([
+            ':cat' => self::CAT_SANTA,
+            ':k' => $key,
+            ':uid' => $uid,
+        ])->queryOne();
+        if ($l) {
+            return 0;
+        }
 
-		$sql = "select count(1) as co from im_log 
+        $sql = "select count(1) as co from im_log 
 				where oKey=$key and oUId =$uid and oCategory=5000 and oDate between '2017-12-23' and '2018-01-06 23:59' and oBefore>0";
-		$co = $conn->createCommand($sql)->queryScalar();
-		if (in_array($key, [self::SANTA_SOCK, self::SANTA_OLAF]) && $co >= 3) {
-			return 0;
-		}
+        $co = $conn->createCommand($sql)->queryScalar();
+        if (in_array($key, [self::SANTA_SOCK, self::SANTA_OLAF]) && $co >= 3) {
+            return 0;
+        }
 
-		$sql = "insert into im_log (oCategory,oKey,oUId,oBefore) values (:cat,:k,:uid,1)";
-		return $conn->createCommand($sql)->bindValues([
-			':cat' => self::CAT_SANTA,
-			':k' => $key,
-			':uid' => $uid
-		])->execute();
+        $sql = "insert into im_log (oCategory,oKey,oUId,oBefore) values (:cat,:k,:uid,1)";
 
-	}
+        return $conn->createCommand($sql)->bindValues([
+            ':cat' => self::CAT_SANTA,
+            ':k' => $key,
+            ':uid' => $uid,
+        ])->execute();
 
-	public static function ableGrabEveryRedPacket($uid)
-	{
-		$grabTimes = self::everyTimesByCat($uid, self::EVERY_MONEY);    // 领取红包次数
-		$hasTimes = self::everyTimesByCat($uid, self::EVERY_TIMES);     // 可以获取红包次数
-		$leftTime = $hasTimes + 1 - $grabTimes;
-		return [$leftTime, $grabTimes, $hasTimes];
-	}
+    }
 
-	public static function everyTimesByCat($uid, $key)
-	{
-		$sql = "select count(1) from im_log where oCategory=:cat and oUId=:uid and oKey=:key ";
-		$cmd = AppUtil::db()->createCommand($sql);
-		return $cmd->bindValues([
-			":cat" => self::CAT_EVERYDAY_REDPACKET,
-			":uid" => $uid,
-			":key" => $key,
-		])->queryScalar();
-	}
+    public static function ableGrabEveryRedPacket($uid)
+    {
+        $grabTimes = self::everyTimesByCat($uid, self::EVERY_MONEY);    // 领取红包次数
+        $hasTimes = self::everyTimesByCat($uid, self::EVERY_TIMES);     // 可以获取红包次数
+        $leftTime = $hasTimes + 1 - $grabTimes;
 
-	public static function everyGrabAmt($uid)
-	{
-		list($leftTime, $grabTimes, $hasTimes) = self::ableGrabEveryRedPacket($uid);
-		if ($leftTime < 1) {
-			return [129, " you have no more times~", ''];
-		}
-		if ($grabTimes == 0) {
-			$amt = random_int(10, 50);
-		} else {
-			$amt = random_int(2, 6);
-		}
-		self::add([
-			"oCategory" => self::CAT_EVERYDAY_REDPACKET,
-			"oKey" => self::EVERY_MONEY,
-			'oBefore' => $amt,
-			'oUId' => $uid,
-		]);
-		return [0, '', [
-			'amt' => $amt / 100,
-			'left' => intval($leftTime - 1),
-			'sum' => self::statSum($uid) / 100,
-			'leftAmt' => Log::everySumLeft(),
-		]];
-	}
+        return [$leftTime, $grabTimes, $hasTimes];
+    }
 
-	public static function statSum($uid)
-	{
-		$sql = "select sum(oBefore) from im_log where oCategory=:cat and oUId=:uid and oKey=:key ";
-		return AppUtil::db()->createCommand($sql)->bindValues([
-			":cat" => self::CAT_EVERYDAY_REDPACKET,
-			":uid" => $uid,
-			":key" => self::EVERY_MONEY,
-		])->queryScalar();
-	}
+    public static function everyTimesByCat($uid, $key)
+    {
+        $sql = "select count(1) from im_log where oCategory=:cat and oUId=:uid and oKey=:key ";
+        $cmd = AppUtil::db()->createCommand($sql);
 
-	public static function addEveryTimes($wx_uid, $lastid)
-	{
-		if (!$lastid || $wx_uid == $lastid) {
-			return 0;
-		}
+        return $cmd->bindValues([
+            ":cat" => self::CAT_EVERYDAY_REDPACKET,
+            ":uid" => $uid,
+            ":key" => $key,
+        ])->queryScalar();
+    }
 
-		$insert = [
-			"oCategory" => self::CAT_EVERYDAY_REDPACKET,
-			"oKey" => self::EVERY_TIMES,
-			"oUId" => $wx_uid,
-			"oBefore" => 1,
-			"oAfter" => $lastid,
-		];
-		$hasClick = self::findOne($insert);
-		if ($hasClick) {
-			return 0;
-		}
-		$insert["oUId"] = $lastid;
-		$insert["oAfter"] = $wx_uid;
-		return self::add($insert);
-	}
+    public static function everyGrabAmt($uid)
+    {
+        list($leftTime, $grabTimes, $hasTimes) = self::ableGrabEveryRedPacket($uid);
+        if ($leftTime < 1) {
+            return [129, " you have no more times~", ''];
+        }
+        if ($grabTimes == 0) {
+            $amt = random_int(10, 50);
+        } else {
+            $amt = random_int(2, 6);
+        }
+        self::add([
+            "oCategory" => self::CAT_EVERYDAY_REDPACKET,
+            "oKey" => self::EVERY_MONEY,
+            'oBefore' => $amt,
+            'oUId' => $uid,
+        ]);
 
-	public static function everySumLeft()
-	{
-		$conn = AppUtil::db();
-		$sql = "select count(1) from im_log where oCategory=:cat and oKey=:key and DATE_FORMAT(oDate,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
-		$cmd = $conn->createCommand($sql);
-		$times = $cmd->bindValues([
-			":cat" => self::CAT_EVERYDAY_REDPACKET,
-			":key" => self::EVERY_TIMES,
-		])->queryScalar();
+        return [
+            0,
+            '',
+            [
+                'amt' => $amt / 100,
+                'left' => intval($leftTime - 1),
+                'sum' => self::statSum($uid) / 100,
+                'leftAmt' => Log::everySumLeft(),
+            ],
+        ];
+    }
 
-		$sql = "select sum(oBefore) from im_log where oCategory=:cat and oKey=:key and DATE_FORMAT(oDate,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
-		$grabAmt = $cmd->bindValues([
-			":cat" => self::CAT_EVERYDAY_REDPACKET,
-			":key" => self::EVERY_MONEY,
-		])->queryScalar();
+    public static function statSum($uid)
+    {
+        $sql = "select sum(oBefore) from im_log where oCategory=:cat and oUId=:uid and oKey=:key ";
 
-		return (1000 * 10000 * 100 - 111111111 - $grabAmt - 12345 * $times) / 100;
-	}
+        return AppUtil::db()->createCommand($sql)->bindValues([
+            ":cat" => self::CAT_EVERYDAY_REDPACKET,
+            ":uid" => $uid,
+            ":key" => self::EVERY_MONEY,
+        ])->queryScalar();
+    }
 
-	public static function jasmineAdd($uid)
-	{
-		$insert = [
-			"oUId" => $uid,
-			"oCategory" => self::CAT_JASMINE,
-			"oKey" => self::JASMINE_DEFAULT,
-		];
-		if (self::findOne($insert)) {
-			return 0;
-		}
-		return self::add($insert);
-	}
+    public static function addEveryTimes($wx_uid, $lastid)
+    {
+        if (!$lastid || $wx_uid == $lastid) {
+            return 0;
+        }
 
-	public static function springRedpacket($conn, $sendUId, $receiveUId = '')
-	{
-		if (!$conn) {
-			$conn = AppUtil::db();
-		}
-		$cat = self::CAT_SPRING_FESTIVAL;
-		$key = self::SF_KEY_REDPACKET;
+        $insert = [
+            "oCategory" => self::CAT_EVERYDAY_REDPACKET,
+            "oKey" => self::EVERY_TIMES,
+            "oUId" => $wx_uid,
+            "oBefore" => 1,
+            "oAfter" => $lastid,
+        ];
+        $hasClick = self::findOne($insert);
+        if ($hasClick) {
+            return 0;
+        }
+        $insert["oUId"] = $lastid;
+        $insert["oAfter"] = $wx_uid;
 
-		$str = '';
-		if ($receiveUId) {
-			$str .= " and oAfter=$receiveUId ";
-		}
-		if ($sendUId) {
-			$str .= " and oUId=$sendUId ";
-		}
-		$sql = "select count(1) as co,sum(oBefore) as amt from im_log where oCategory=:cat $str and oKey=:k and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
-		$res = $conn->createCommand($sql)->bindValues([':cat' => $cat, ':k' => $key])->queryOne();
-		if ($res) {
-			return [$res['co'], $res['amt']];
-		} else {
-			return [0, 0];
-		}
+        return self::add($insert);
+    }
 
-	}
+    public static function everySumLeft()
+    {
+        $conn = AppUtil::db();
+        $sql = "select count(1) from im_log where oCategory=:cat and oKey=:key and DATE_FORMAT(oDate,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+        $cmd = $conn->createCommand($sql);
+        $times = $cmd->bindValues([
+            ":cat" => self::CAT_EVERYDAY_REDPACKET,
+            ":key" => self::EVERY_TIMES,
+        ])->queryScalar();
 
-	public static function calculateSendAmt($receivUid, $sendUid)
-	{
-		$conn = AppUtil::db();
-		if (self::springRedpacket($conn, $sendUid, $receivUid)[0]) {
-			return 0;
-		}
-		list($hasSendCount, $hasSendSum) = Log::springRedpacket($conn, $sendUid);
-		if ($hasSendSum >= self::SF_SEND_MAX || $hasSendCount >= self::SF_SEND_LIMIT) {
-			return 0;
-		}
+        $sql = "select sum(oBefore) from im_log where oCategory=:cat and oKey=:key and DATE_FORMAT(oDate,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+        $grabAmt = $cmd->bindValues([
+            ":cat" => self::CAT_EVERYDAY_REDPACKET,
+            ":key" => self::EVERY_MONEY,
+        ])->queryScalar();
 
-		$left = UserTrans::stat($sendUid)[UserTrans::UNIT_COIN_FEN];
+        return (1000 * 10000 * 100 - 111111111 - $grabAmt - 12345 * $times) / 100;
+    }
 
-		$param = [":cat" => self::CAT_SPRING_FESTIVAL, ":k" => self::SF_KEY_RANDOM, ":uid" => $sendUid];
-		$sql = "select oAfter from im_log where oCategory=:cat and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ";
-		$randomstr = $conn->createCommand($sql)->bindValues($param)->queryScalar();
+    public static function jasmineAdd($uid)
+    {
+        $insert = [
+            "oUId" => $uid,
+            "oCategory" => self::CAT_JASMINE,
+            "oKey" => self::JASMINE_DEFAULT,
+        ];
+        if (self::findOne($insert)) {
+            return 0;
+        }
 
-		if ($hasSendCount == 0 && $left >= 15) {
-			$arr = AppUtil::randnum(self::SF_SEND_MAX / 100, 15, .01);
-			foreach ($arr as $k => $v) {
-				$arr[$k] = round($v, 2);
-			}
-			if (!$randomstr) {
-				$param[":after"] = json_encode($arr);
-				$sql = "insert into im_log (oCategory,oKey,oUId,oAfter) values (:cat,:k,:uid,:after) ";
-				$conn->createCommand($sql)->bindValues($param)->execute();
-				$randomstr = json_encode($arr);
-			}
-		}
+        return self::add($insert);
+    }
 
-		$randomArr = json_decode($randomstr, 1);
-		$amt = $randomArr[$hasSendCount];
+    public static function springRedpacket($conn, $sendUId, $receiveUId = '')
+    {
+        if (!$conn) {
+            $conn = AppUtil::db();
+        }
+        $cat = self::CAT_SPRING_FESTIVAL;
+        $key = self::SF_KEY_REDPACKET;
 
-		if ($amt > 0 && $left > $amt * 100) {
-			$oid = Log::add(["oCategory" => self::CAT_SPRING_FESTIVAL, "oKey" => self::SF_KEY_REDPACKET,
-				"oUId" => $sendUid, "oAfter" => $receivUid, "oBefore" => $amt * 100]);
+        $str = '';
+        if ($receiveUId) {
+            $str .= " and oAfter=$receiveUId ";
+        }
+        if ($sendUId) {
+            $str .= " and oUId=$sendUId ";
+        }
+        $sql = "select count(1) as co,sum(oBefore) as amt from im_log where oCategory=:cat $str and oKey=:k and DATE_FORMAT(oDate, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')";
+        $res = $conn->createCommand($sql)->bindValues([':cat' => $cat, ':k' => $key])->queryOne();
+        if ($res) {
+            return [$res['co'], $res['amt']];
+        } else {
+            return [0, 0];
+        }
 
-			UserTrans::add($sendUid, $oid, UserTrans::CAT_COIN_SPRING_F_SEND, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_SEND], $amt * 100, UserTrans::UNIT_COIN_FEN);
-			UserTrans::add($receivUid, $oid, UserTrans::CAT_COIN_SPRING_F_RECEIVE, UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_RECEIVE], $amt * 100, UserTrans::UNIT_COIN_FEN);
-		}
+    }
 
-		return $amt;
-	}
+    public static function calculateSendAmt($receivUid, $sendUid)
+    {
+        $conn = AppUtil::db();
+        if (self::springRedpacket($conn, $sendUid, $receivUid)[0]) {
+            return 0;
+        }
+        list($hasSendCount, $hasSendSum) = Log::springRedpacket($conn, $sendUid);
+        if ($hasSendSum >= self::SF_SEND_MAX || $hasSendCount >= self::SF_SEND_LIMIT) {
+            return 0;
+        }
 
+        $left = UserTrans::stat($sendUid)[UserTrans::UNIT_COIN_FEN];
 
-	const KEY_DEFAULT = 3;
-	const KEY_TRANS_CARD = 1;
-	const KEY_TO_PEOPLE = 5;
-	const KEY_TO_MOMENT = 6;
-	const KEY_EXCHANGE_CARD = 8;
-	static $cutKeyDict = [
-		self::KEY_DEFAULT => '待兑卡',
-		self::KEY_TRANS_CARD => '已兑卡',
-		self::KEY_TO_PEOPLE => '转发给朋友',
-		self::KEY_TO_MOMENT => '转发给朋友圈',
-		self::KEY_EXCHANGE_CARD => '兑卡记录',
-	];
-	//月卡19.9
-	const MOUTH_CARD_PRICE = 19.9;
-	// 砍价4次
-	const CUT_TIMES = 3;
+        $param = [":cat" => self::CAT_SPRING_FESTIVAL, ":k" => self::SF_KEY_RANDOM, ":uid" => $sendUid];
+        $sql = "select oAfter from im_log where oCategory=:cat and oKey=:k and oUId=:uid and DATE_FORMAT(oDate, '%Y-%m-%d') = DATE_FORMAT(now(), '%Y-%m-%d') ";
+        $randomstr = $conn->createCommand($sql)->bindValues($param)->queryScalar();
 
-	public static function cut_one_dao($openid, $last_openid)
-	{
+        if ($hasSendCount == 0 && $left >= 15) {
+            $arr = AppUtil::randnum(self::SF_SEND_MAX / 100, 15, .01);
+            foreach ($arr as $k => $v) {
+                $arr[$k] = round($v, 2);
+            }
+            if (!$randomstr) {
+                $param[":after"] = json_encode($arr);
+                $sql = "insert into im_log (oCategory,oKey,oUId,oAfter) values (:cat,:k,:uid,:after) ";
+                $conn->createCommand($sql)->bindValues($param)->execute();
+                $randomstr = json_encode($arr);
+            }
+        }
 
-		if (!$last_openid) {
-			return [129, '为谁点赞呢？', ''];
-		}
-		if ($last_openid == $openid) {
-			return [129, '无法为自己点赞哦~', ''];
-		}
-		$last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
-		$user_info = UserWechat::findOne(['wOpenId' => $openid]);
-		if (!$last_user_info || !$user_info) {
-			return [129, '用户信息有误', ''];
-		}
+        $randomArr = json_decode($randomstr, 1);
+        $amt = $randomArr[$hasSendCount];
 
-		if (UserWechat::is_subscribe($openid) != 1) {
-			return [128, '您还没有关注公众号，请您先关注、再来帮他点赞吧~~', ''];
-		}
-		if (UserWechat::is_subscribe($last_openid) != 1) {
-			return [129, 'TA还没关注公众号、无法帮他点赞~~', ''];
-		}
-		$uid = $user_info->wUId;
-		$last_uid = $last_user_info->wUId;
-		$cat_cut_price = self::CAT_USER_CUT_PRICE;
-		// 是否有月卡
+        if ($amt > 0 && $left > $amt * 100) {
+            $oid = Log::add([
+                "oCategory" => self::CAT_SPRING_FESTIVAL,
+                "oKey" => self::SF_KEY_REDPACKET,
+                "oUId" => $sendUid,
+                "oAfter" => $receivUid,
+                "oBefore" => $amt * 100,
+            ]);
 
-		if (UserTag::hasCard($last_uid, UserTag::CAT_CHAT_MONTH)) {
-			return [127, 'TA有此卡，点赞无效!', ''];
-		}
+            UserTrans::add($sendUid, $oid, UserTrans::CAT_COIN_SPRING_F_SEND,
+                UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_SEND], $amt * 100, UserTrans::UNIT_COIN_FEN);
+            UserTrans::add($receivUid, $oid, UserTrans::CAT_COIN_SPRING_F_RECEIVE,
+                UserTrans::$catDict[UserTrans::CAT_COIN_SPRING_F_RECEIVE], $amt * 100, UserTrans::UNIT_COIN_FEN);
+        }
 
-		$cond = ['oCategory' => $cat_cut_price, 'oKey' => self::KEY_DEFAULT,
-			'oUId' => $last_user_info->wUId, 'oOpenId' => $uid];
-
-		// 去砍价
-		list($code, $msg) = self::cut_one($last_user_info->wUId, $uid);
-		if ($code == 127) {
-			return [$code, $msg, ''];
-		}
-
-		// 先 获得砍价列表
-		$items = Log::find_cut_price_items($last_uid);
-
-		//后 判断是否够了赠送月卡的条件
-		$left = self::CUT_TIMES - count($items);
-		if (count($items) > (self::CUT_TIMES - 1)) {
-			// 送卡
-			//$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
-			UserTag::add_group_card($last_uid);
-
-			// 修改oKey=1
-			self::edit_cut_price($last_uid);
-			self::add([
-				'oCategory' => self::CAT_USER_CUT_PRICE,
-				'oKey' => self::KEY_EXCHANGE_CARD,
-				'oUId' => $last_uid,
-			]);
-		}
-		return [0, '点赞成功', $items];
-
-	}
+        return $amt;
+    }
 
 
-	public static function cut_one($oUId, $oOpenId)
-	{
-		$cond = ['oCategory' => self::CAT_USER_CUT_PRICE, 'oKey' => self::KEY_DEFAULT,
-			'oUId' => $oUId, 'oOpenId' => $oOpenId];
-		$has_cut = self::findOne($cond);
-		if ($has_cut) {
-			return [127, '您已经帮他点过赞了~', ''];
-		}
-		// 砍价成功
-		$cond['oBefore'] = self::cal_cut_price_amt($oUId);
+    const KEY_DEFAULT = 3;
+    const KEY_TRANS_CARD = 1;
+    const KEY_TO_PEOPLE = 5;
+    const KEY_TO_MOMENT = 6;
+    const KEY_EXCHANGE_CARD = 8;
+    static $cutKeyDict = [
+        self::KEY_DEFAULT => '待兑卡',
+        self::KEY_TRANS_CARD => '已兑卡',
+        self::KEY_TO_PEOPLE => '转发给朋友',
+        self::KEY_TO_MOMENT => '转发给朋友圈',
+        self::KEY_EXCHANGE_CARD => '兑卡记录',
+    ];
+    //月卡19.9
+    const MOUTH_CARD_PRICE = 19.9;
+    // 砍价4次
+    const CUT_TIMES = 3;
 
-		self::add($cond);
-		return [0, '', ''];
-	}
+    public static function cut_one_dao($openid, $last_openid)
+    {
 
-	public static function cal_cut_price_amt($uid)
-	{
-		$sql = "select count(1) as co,sum(oBefore) as amt from im_log where oUId=:uid and oKey=:k ";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			':uid' => $uid,
-			':k' => self::KEY_DEFAULT,
-		])->queryOne();
-		$left_amt = self::MOUTH_CARD_PRICE - (isset($res['amt']) ? $res['amt'] : 0);
-		$left_times = self::CUT_TIMES - (isset($res['co']) ? $res['co'] : 0);
-		return AppUtil::randnum($left_amt, $left_times, 1.5)[0];
-	}
+        if (!$last_openid) {
+            return [129, '为谁点赞呢？', ''];
+        }
+        if ($last_openid == $openid) {
+            return [129, '无法为自己点赞哦~', ''];
+        }
+        $last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
+        $user_info = UserWechat::findOne(['wOpenId' => $openid]);
+        if (!$last_user_info || !$user_info) {
+            return [129, '用户信息有误', ''];
+        }
 
-	public static function find_cut_price_items($uid)
-	{
-		$sql = "select l.*,uThumb,uName from im_log as l 
+        if (UserWechat::is_subscribe($openid) != 1) {
+            return [128, '您还没有关注公众号，请您先关注、再来帮他点赞吧~~', ''];
+        }
+        if (UserWechat::is_subscribe($last_openid) != 1) {
+            return [129, 'TA还没关注公众号、无法帮他点赞~~', ''];
+        }
+        $uid = $user_info->wUId;
+        $last_uid = $last_user_info->wUId;
+        $cat_cut_price = self::CAT_USER_CUT_PRICE;
+        // 是否有月卡
+
+        if (UserTag::hasCard($last_uid, UserTag::CAT_CHAT_MONTH)) {
+            return [127, 'TA有此卡，点赞无效!', ''];
+        }
+
+        $cond = [
+            'oCategory' => $cat_cut_price,
+            'oKey' => self::KEY_DEFAULT,
+            'oUId' => $last_user_info->wUId,
+            'oOpenId' => $uid,
+        ];
+
+        // 去砍价
+        list($code, $msg) = self::cut_one($last_user_info->wUId, $uid);
+        if ($code == 127) {
+            return [$code, $msg, ''];
+        }
+
+        // 先 获得砍价列表
+        $items = Log::find_cut_price_items($last_uid);
+
+        //后 判断是否够了赠送月卡的条件
+        $left = self::CUT_TIMES - count($items);
+        if (count($items) > (self::CUT_TIMES - 1)) {
+            // 送卡
+            //$res = UserTag::add(UserTag::CAT_CHAT_MONTH, $last_uid);
+            UserTag::add_group_card($last_uid);
+
+            // 修改oKey=1
+            self::edit_cut_price($last_uid);
+            self::add([
+                'oCategory' => self::CAT_USER_CUT_PRICE,
+                'oKey' => self::KEY_EXCHANGE_CARD,
+                'oUId' => $last_uid,
+            ]);
+        }
+
+        return [0, '点赞成功', $items];
+
+    }
+
+
+    public static function cut_one($oUId, $oOpenId)
+    {
+        $cond = [
+            'oCategory' => self::CAT_USER_CUT_PRICE,
+            'oKey' => self::KEY_DEFAULT,
+            'oUId' => $oUId,
+            'oOpenId' => $oOpenId,
+        ];
+        $has_cut = self::findOne($cond);
+        if ($has_cut) {
+            return [127, '您已经帮他点过赞了~', ''];
+        }
+        // 砍价成功
+        $cond['oBefore'] = self::cal_cut_price_amt($oUId);
+
+        self::add($cond);
+
+        return [0, '', ''];
+    }
+
+    public static function cal_cut_price_amt($uid)
+    {
+        $sql = "select count(1) as co,sum(oBefore) as amt from im_log where oUId=:uid and oKey=:k ";
+        $res = AppUtil::db()->createCommand($sql)->bindValues([
+            ':uid' => $uid,
+            ':k' => self::KEY_DEFAULT,
+        ])->queryOne();
+        $left_amt = self::MOUTH_CARD_PRICE - (isset($res['amt']) ? $res['amt'] : 0);
+        $left_times = self::CUT_TIMES - (isset($res['co']) ? $res['co'] : 0);
+
+        return AppUtil::randnum($left_amt, $left_times, 1.5)[0];
+    }
+
+    public static function find_cut_price_items($uid)
+    {
+        $sql = "select l.*,uThumb,uName from im_log as l 
 				left join im_user as u on u.uId=l.oOpenId
 				where oUId=:uid and oKey=:k and oCategory=:cat";
-		return AppUtil::db()->createCommand($sql)->bindValues([
-			':uid' => $uid,
-			':k' => self::KEY_DEFAULT,
-			':cat' => self::CAT_USER_CUT_PRICE,
-		])->queryAll();
-	}
 
-	public static function load_cut_list($last_openid, $openid, $is_share = 0)
-	{
-		if ($is_share) {
-			if (!$last_openid) {
-				return [0, '参数错误？', ''];
-			}
-			$last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
-			if (!$last_user_info) {
-				return [0, '用户信息有误', ''];
-			}
-			$uid = $last_user_info->wUId;
-		} else {
-			if (!$openid) {
-				return [0, '参数错误？', ''];
-			}
-			$user_info = UserWechat::findOne(['wOpenId' => $openid]);
-			if (!$user_info) {
-				return [0, '用户信息有误', ''];
-			}
-			$uid = $user_info->wUId;
-		}
+        return AppUtil::db()->createCommand($sql)->bindValues([
+            ':uid' => $uid,
+            ':k' => self::KEY_DEFAULT,
+            ':cat' => self::CAT_USER_CUT_PRICE,
+        ])->queryAll();
+    }
 
-		// 千寻客服 是否已经帮他砍过价
-		self::cut_one($uid, 120000);
-		// 自动砍价
-		self::cut_one_dao($openid, $last_openid);
+    public static function load_cut_list($last_openid, $openid, $is_share = 0)
+    {
+        if ($is_share) {
+            if (!$last_openid) {
+                return [0, '参数错误？', ''];
+            }
+            $last_user_info = UserWechat::findOne(['wOpenId' => $last_openid]);
+            if (!$last_user_info) {
+                return [0, '用户信息有误', ''];
+            }
+            $uid = $last_user_info->wUId;
+        } else {
+            if (!$openid) {
+                return [0, '参数错误？', ''];
+            }
+            $user_info = UserWechat::findOne(['wOpenId' => $openid]);
+            if (!$user_info) {
+                return [0, '用户信息有误', ''];
+            }
+            $uid = $user_info->wUId;
+        }
 
-		return [0, '', [
-			"data" => self::find_cut_price_items($uid),
-			"is_subscribe" => UserWechat::is_subscribe($openid),
-		]];
-	}
+        // 千寻客服 是否已经帮他砍过价
+        self::cut_one($uid, 120000);
+        // 自动砍价
+        self::cut_one_dao($openid, $last_openid);
 
-	public static function edit_cut_price($uid)
-	{
-		$sql = "update im_log set oKey=:k2,oAfter=:dt
+        return [
+            0,
+            '',
+            [
+                "data" => self::find_cut_price_items($uid),
+                "is_subscribe" => UserWechat::is_subscribe($openid),
+            ],
+        ];
+    }
+
+    public static function edit_cut_price($uid)
+    {
+        $sql = "update im_log set oKey=:k2,oAfter=:dt
 				where oUId=:uid and oKey=:k1 and oCategory=:cat ";
-		return AppUtil::db()->createCommand($sql)->bindValues([
-			':uid' => $uid,
-			':k1' => self::KEY_DEFAULT,
-			':k2' => self::KEY_TRANS_CARD,
-			':cat' => self::CAT_USER_CUT_PRICE,
-			':dt' => date('Y-m-d H:i:s'),
-		])->execute();
-	}
 
-	public static function cut_items($condition, $page, $pageSize = 20)
-	{
-		$offset = ($page - 1) * $pageSize;
-		$conn = AppUtil::db();
-		$sql = "select o.*,
+        return AppUtil::db()->createCommand($sql)->bindValues([
+            ':uid' => $uid,
+            ':k1' => self::KEY_DEFAULT,
+            ':k2' => self::KEY_TRANS_CARD,
+            ':cat' => self::CAT_USER_CUT_PRICE,
+            ':dt' => date('Y-m-d H:i:s'),
+        ])->execute();
+    }
+
+    public static function cut_items($condition, $page, $pageSize = 20)
+    {
+        $offset = ($page - 1) * $pageSize;
+        $conn = AppUtil::db();
+        $sql = "select o.*,
 				u1.uThumb as thumb1,u1.uName as name1,u1.uId as uid1,
 				u2.uThumb as thumb2,u2.uName as name2,u2.uId as uid2
 				from im_log as o 
 				left join im_user as u1 on u1.uId=o.oUId
 				left join im_user as u2 on u2.uId=o.oOpenId
 				where oCategory=8006 $condition order by oDate desc limit $offset,$pageSize ";
-		$res = $conn->createCommand($sql)->bindValues([
-			":cat" => self::CAT_USER_CUT_PRICE,
-		])->queryAll();
-		foreach ($res as $k => $v) {
-			$res[$k]['key_text'] = self::$cutKeyDict[$v['oKey']];
-		}
+        $res = $conn->createCommand($sql)->bindValues([
+            ":cat" => self::CAT_USER_CUT_PRICE,
+        ])->queryAll();
+        foreach ($res as $k => $v) {
+            $res[$k]['key_text'] = self::$cutKeyDict[$v['oKey']];
+        }
 
-		$sql = "select count(1)
+        $sql = "select count(1)
 				from im_log as o 
 				left join im_user as u1 on u1.uId=o.oUId
 				left join im_user as u2 on u2.uId=o.oOpenId
 				where oCategory=:cat $condition";
-		$count = $conn->createCommand($sql)->bindValues([":cat" => self::CAT_USER_CUT_PRICE,])->queryScalar();
+        $count = $conn->createCommand($sql)->bindValues([":cat" => self::CAT_USER_CUT_PRICE,])->queryScalar();
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
 
-	/**
-	 * 每天中午12点【推送】最近两天用户的点赞数
-	 * @param string $uid
-	 * @return int
-	 * @throws \yii\db\Exception
-	 */
-	public static function summon_2day_zan($uid = '')
-	{
-		// 174878
-		$str = '';
-		if ($uid) {
-			$str = " and oUId=$uid ";
-		}
-		// 每天推送一条信息 提示用户点赞剩余数
-		$sql = "select oUId,count(1) as co,oDate,uOpenId,uName
+    /**
+     * 每天中午12点【推送】最近两天用户的点赞数
+     * @param string $uid
+     * @return int
+     * @throws \yii\db\Exception
+     */
+    public static function summon_2day_zan($uid = '')
+    {
+        // 174878
+        $str = '';
+        if ($uid) {
+            $str = " and oUId=$uid ";
+        }
+        // 每天推送一条信息 提示用户点赞剩余数
+        $sql = "select oUId,count(1) as co,oDate,uOpenId,uName
 				from im_log as o
 				left join im_user as u on u.uId=o.oUId  
 				where oCategory=:cat and oKey=:k and DATEDIFF(oDate,NOW())=-2 $str group by oUId ";
-		$res = AppUtil::db()->createCommand($sql)->bindValues([
-			':cat' => self::CAT_USER_CUT_PRICE,
-			':k' => self::KEY_DEFAULT,
-		])->queryAll();
-		$cnt = 0;
-		if ($res) {
-			foreach ($res as $v) {
-				$uid = $v['oUId'];
-				$co = intval($v['co']);
-				$title = "好友点赞: " . $co . "次，剩余: " . (self::CUT_TIMES - $co) . "次";
-				WechatUtil::templateMsg(WechatUtil::NOTICE_CUT_PRICE_SUMMON, $uid, $title);
-				$cnt++;
-			}
-		}
-		return $cnt;
-	}
+        $res = AppUtil::db()->createCommand($sql)->bindValues([
+            ':cat' => self::CAT_USER_CUT_PRICE,
+            ':k' => self::KEY_DEFAULT,
+        ])->queryAll();
+        $cnt = 0;
+        if ($res) {
+            foreach ($res as $v) {
+                $uid = $v['oUId'];
+                $co = intval($v['co']);
+                $title = "好友点赞: ".$co."次，剩余: ".(self::CUT_TIMES - $co)."次";
+                WechatUtil::templateMsg(WechatUtil::NOTICE_CUT_PRICE_SUMMON, $uid, $title);
+                $cnt++;
+            }
+        }
 
-	const CAT_CRM_ACTION_ALERT = 'crm_action_alert';
-	const KEY_ALERT_WAIT = 9;
-	const KEY_ALERT_COMPLETE = 1;
-	static $alertDict = [
-		self::KEY_ALERT_COMPLETE => '发送完成',
-		self::KEY_ALERT_WAIT => '等待发送',
-	];
+        return $cnt;
+    }
 
-	/*
-	 * oCategory
-	 * oKey     1 弹框完成  9 等待弹框
-	 * oBefore  im_crm_stock_track tId
-	 * oAfter
-	 * oOpenId  bd
-	 * oUId     im_crm_stock_client cId
-	 *
-	 * 记录用户操作后是否有更新跟进状态
-	 */
-	public static function add_action_alert($cid, $tId)
-	{
-		$client = CRMStockClient::findOne(['cId' => $cid]);
-		if (!$client) {
-			return false;
-		}
-		Log::add(['oCategory' => self::CAT_CRM_ACTION_ALERT,
-			'oKey' => self::KEY_ALERT_WAIT,
-			'oBefore' => $tId,
-			'oOpenId' => $client->cBDAssign,
-			'oUId' => $cid,
-		]);
-		return true;
-	}
+    const CAT_CRM_ACTION_ALERT = 'crm_action_alert';
+    const KEY_ALERT_WAIT = 9;
+    const KEY_ALERT_COMPLETE = 1;
+    static $alertDict = [
+        self::KEY_ALERT_COMPLETE => '发送完成',
+        self::KEY_ALERT_WAIT => '等待发送',
+    ];
 
-	public static function get_action_alert($adminId)
-	{
-		$cat = self::CAT_CRM_ACTION_ALERT;
-		$key = self::KEY_ALERT_WAIT;
-		$sql = "select c.cName,cPhone,l.* from im_log as l
+    /*
+     * oCategory
+     * oKey     1 弹框完成  9 等待弹框
+     * oBefore  im_crm_stock_track tId
+     * oAfter
+     * oOpenId  bd
+     * oUId     im_crm_stock_client cId
+     *
+     * 记录用户操作后是否有更新跟进状态
+     */
+    public static function add_action_alert($cid, $tId)
+    {
+        $client = CRMStockClient::findOne(['cId' => $cid]);
+        if (!$client) {
+            return false;
+        }
+        Log::add([
+            'oCategory' => self::CAT_CRM_ACTION_ALERT,
+            'oKey' => self::KEY_ALERT_WAIT,
+            'oBefore' => $tId,
+            'oOpenId' => $client->cBDAssign,
+            'oUId' => $cid,
+        ]);
+
+        return true;
+    }
+
+    public static function get_action_alert($adminId)
+    {
+        $cat = self::CAT_CRM_ACTION_ALERT;
+        $key = self::KEY_ALERT_WAIT;
+        $sql = "select c.cName,cPhone,l.* from im_log as l
 				left join `im_crm_stock_client` as c on l.oUId=c.cId
 				where oCategory='$cat' and oKey=$key and oOpenId=$adminId ";
-		$ret = AppUtil::db()->createCommand($sql)->queryAll();
-		if ($ret) {
-			return [0, $ret];
-		} else {
-			return [129, ''];
-		}
-	}
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+        if ($ret) {
+            return [0, $ret];
+        } else {
+            return [129, ''];
+        }
+    }
 
-	public static function update_action_alert($oid, $adminId)
-	{
-		$cat = self::CAT_CRM_ACTION_ALERT;
-		$log = self::findOne(['oCategory' => $cat, 'oKey' => self::KEY_ALERT_WAIT, 'oOpenId' => $adminId, 'oId' => $oid]);
-		if (!$log) {
-			return [129, '信息丢失'];
-		}
-		$log->oKey = self::KEY_SEND_COMPLETE;
-		$log->save();
-		return [0, ''];
-	}
+    public static function update_action_alert($oid, $adminId)
+    {
+        $cat = self::CAT_CRM_ACTION_ALERT;
+        $log = self::findOne([
+            'oCategory' => $cat,
+            'oKey' => self::KEY_ALERT_WAIT,
+            'oOpenId' => $adminId,
+            'oId' => $oid,
+        ]);
+        if (!$log) {
+            return [129, '信息丢失'];
+        }
+        $log->oKey = self::KEY_SEND_COMPLETE;
+        $log->save();
+
+        return [0, ''];
+    }
 
 
-	const CAT_SEND_SMS_PHONE = 'send_sms_phone';
-	const CAT_SEND_SMS_LOG = 'send_sms_log';
-	const CAT_SEND_SMS = 'send_sms';
-	const KEY_SEND_FAIL = 2;
-	const KEY_SEND_WAIT = 9;
-	const KEY_SEND_ING = 3;
-	const KEY_SEND_COMPLETE = 1;
-	static $keyDict = [
-		self::KEY_SEND_COMPLETE => '发送完成',
-		self::KEY_SEND_ING => '发送中',
-		self::KEY_SEND_WAIT => '等待发送',
-		self::KEY_SEND_FAIL => '发送失败',
-	];
+    const CAT_SEND_SMS_PHONE = 'send_sms_phone';
+    const CAT_SEND_SMS_LOG = 'send_sms_log';
+    const CAT_SEND_SMS = 'send_sms';
+    const KEY_SEND_FAIL = 2;
+    const KEY_SEND_WAIT = 9;
+    const KEY_SEND_ING = 3;
+    const KEY_SEND_COMPLETE = 1;
+    static $keyDict = [
+        self::KEY_SEND_COMPLETE => '发送完成',
+        self::KEY_SEND_ING => '发送中',
+        self::KEY_SEND_WAIT => '等待发送',
+        self::KEY_SEND_FAIL => '发送失败',
+    ];
 
-	/*
-	 * oCategory
-	 * oKey    记录发送状态 1 发送完成  9 等待发送
-	 * oBefore 记录待发送的表格路径
-	 * oAfter  记录发送内容
-	 * oOpenId 记录发送人数
-	 * oUId    记录发送发送的管理员
-	 */
-	public static function add_sms_item($filepath, $content)
-	{
-		if (!$filepath || !$content) {
-			return false;
-		}
-		self::add(['oCategory' => self::CAT_SEND_SMS,
-			'oKey' => self::KEY_SEND_WAIT,
-			'oBefore' => $filepath,
-			'oAfter' => $content,
-			'oUId' => Admin::getAdminId(),
-		]);
-		return true;
-	}
+    /*
+     * oCategory
+     * oKey    记录发送状态 1 发送完成  9 等待发送
+     * oBefore 记录待发送的表格路径
+     * oAfter  记录发送内容
+     * oOpenId 记录发送人数
+     * oUId    记录发送发送的管理员
+     */
+    public static function add_sms_item($filepath, $content)
+    {
+        if (!$filepath || !$content) {
+            return false;
+        }
+        self::add([
+            'oCategory' => self::CAT_SEND_SMS,
+            'oKey' => self::KEY_SEND_WAIT,
+            'oBefore' => $filepath,
+            'oAfter' => $content,
+            'oUId' => Admin::getAdminId(),
+        ]);
 
-	public static function edit_sms_item($oId, $send_count = 0, $st = self::KEY_SEND_COMPLETE)
-	{
-		if (!$oId || !$send_count) {
-			return false;
-		}
-		$entity = self::findOne(['oId' => $oId]);
-		if (!$entity) {
-			return false;
-		}
-		$entity->oKey = $st;
-		$entity->oOpenId = $send_count;
-		$entity->save();
-		return true;
-	}
+        return true;
+    }
 
-	public static function send_sms_cycle()
-	{
-		$res = self::find()->where(['oCategory' => self::CAT_SEND_SMS, 'oKey' => self::KEY_SEND_WAIT,])->asArray()->all();
-		if (!$res) {
-			return false;
-		}
-		foreach ($res as $v) {
-			$log = self::findOne(['oId' => $v['oId']]);
-			if ($log->oKey == self::KEY_SEND_WAIT) {
-				self::edit_sms_item($v['oId'], 0, self::KEY_SEND_ING);
-			} else {
-				continue;
-			}
-			// 发送短信
-			list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter'], $v['oId']);
-			if ($send_count > 0) {
-				// 发送成功
-				self::edit_sms_item($v['oId'], $send_count);
-			} else {
-				// 发送失败
-				self::edit_sms_item($v['oId'], 0, self::KEY_SEND_FAIL);
-				self::add(['oCategory' => self::CAT_SEND_SMS_LOG,
-					'oKey' => self::KEY_SEND_WAIT,
-					'oBefore' => $msg,
-					'oOpenId' => $v['oId'],
-					'oAfter' => __CLASS__ . '__' . __LINE__,
-				]);
-			}
-		}
-		return true;
-	}
+    public static function edit_sms_item($oId, $send_count = 0, $st = self::KEY_SEND_COMPLETE)
+    {
+        if (!$oId || !$send_count) {
+            return false;
+        }
+        $entity = self::findOne(['oId' => $oId]);
+        if (!$entity) {
+            return false;
+        }
+        $entity->oKey = $st;
+        $entity->oOpenId = $send_count;
+        $entity->save();
 
-	public static function sms_items($criteria, $params, $page, $pageSize = 20)
-	{
-		$offset = ($page - 1) * $pageSize;
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
+        return true;
+    }
 
-		$sql = "select l.*,a.aName
+    public static function send_sms_cycle()
+    {
+        $res = self::find()->where([
+            'oCategory' => self::CAT_SEND_SMS,
+            'oKey' => self::KEY_SEND_WAIT,
+        ])->asArray()->all();
+        if (!$res) {
+            return false;
+        }
+        foreach ($res as $v) {
+            $log = self::findOne(['oId' => $v['oId']]);
+            if ($log->oKey == self::KEY_SEND_WAIT) {
+                self::edit_sms_item($v['oId'], 0, self::KEY_SEND_ING);
+            } else {
+                continue;
+            }
+            // 发送短信
+            list($send_count, $msg) = AppUtil::sendSMS_by_excel($v['oBefore'], $v['oAfter'], $v['oId']);
+            if ($send_count > 0) {
+                // 发送成功
+                self::edit_sms_item($v['oId'], $send_count);
+            } else {
+                // 发送失败
+                self::edit_sms_item($v['oId'], 0, self::KEY_SEND_FAIL);
+                self::add([
+                    'oCategory' => self::CAT_SEND_SMS_LOG,
+                    'oKey' => self::KEY_SEND_WAIT,
+                    'oBefore' => $msg,
+                    'oOpenId' => $v['oId'],
+                    'oAfter' => __CLASS__.'__'.__LINE__,
+                ]);
+            }
+        }
+
+        return true;
+    }
+
+    public static function sms_items($criteria, $params, $page, $pageSize = 20)
+    {
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
+
+        $sql = "select l.*,a.aName
 				from im_log as l
 				left join im_admin as a on a.aId=l.oUId
 				where oId>0 $strCriteria
 				order by oDate desc 
 				limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $k => $v) {
-			$res[$k]['st_txt'] = self::$keyDict[$v['oKey']] ?? '';
-			$res[$k]['url'] = ImageUtil::getUrl($v['oBefore']);
-		}
-		$sql = "select count(1) as co
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
+            $res[$k]['st_txt'] = self::$keyDict[$v['oKey']] ?? '';
+            $res[$k]['url'] = ImageUtil::getUrl($v['oBefore']);
+        }
+        $sql = "select count(1) as co
 				from im_log as l
 				where oId>0 $strCriteria  ";
-		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
 
-	/*
-	 * oCategory
-	 * oKey    toguba
-	 * oBefore 记录待发送的表格路径
-	 * oAfter  记录发送内容
-	 * oOpenId 记录发送人数
-	 * oUId    记录发送发送的管理员
-	 */
-	const CAT_PHONE_SECTION_YES = 'phone_section_yes';
-	const CAT_PHONE_SECTION = 'phone_section';
-	const KEY_WAIT = 1;
-	const KEY_USED = 9;
+    /*
+     * oCategory
+     * oKey    toguba
+     * oBefore 记录待发送的表格路径
+     * oAfter  记录发送内容
+     * oOpenId 记录发送人数
+     * oUId    记录发送发送的管理员
+     */
+    const CAT_PHONE_SECTION_YES = 'phone_section_yes';
+    const CAT_PHONE_SECTION = 'phone_section';
+    const KEY_WAIT = 1;
+    const KEY_USED = 9;
 
-	public static function add_phone_section_admin($phone_sections)
-	{
-		$phone_sections = explode(PHP_EOL, $phone_sections);
+    public static function add_phone_section_admin($phone_sections)
+    {
+        $phone_sections = explode(PHP_EOL, $phone_sections);
 
-		$count = 0;
-		foreach ($phone_sections as $phone_section) {
-			if (strlen($phone_section) >= 7) {
-				$section = substr($phone_section, 0, 7);
-				$res = self::add_phone_section($section, 'admin');
-				if ($res) {
-					$count++;
-				}
-			}
-		}
-		return [0, '添加成功' . $count . '个手机号段'];
-	}
+        $count = 0;
+        foreach ($phone_sections as $phone_section) {
+            if (strlen($phone_section) >= 7) {
+                $section = substr($phone_section, 0, 7);
+                $res = self::add_phone_section($section, 'admin');
+                if ($res) {
+                    $count++;
+                }
+            }
+        }
 
-	public static function add_phone_section($pre_phone, $area)
-	{
-		if (!AppUtil::checkPhone($pre_phone . '0000')) {
-			return false;
-		}
-		$data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];
-		if (self::findOne($data) || strlen($pre_phone) != 7) {
-			return false;
-		}
-		self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area, 'oUId' => Admin::getAdminId()]));
-		return true;
-	}
+        return [0, '添加成功'.$count.'个手机号段'];
+    }
 
-	public static function add_phone_section_yes($phone, $dt, $area = "taoguba")
-	{
-		$data = ['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone];
-		if (self::findOne($data) || strlen($phone) != 11 || !AppUtil::checkPhone($phone)) {
-			return false;
-		}
-		$item = self::findOne(['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone]);
-		if ($item) {
-			return false;
-		}
-		$phone_location = AppUtil::get_phone_location($phone);
-		self::add(array_merge($data, [
-			'oKey' => self::KEY_WAIT,
-			"oBefore" => $area,
-			'oAfter' => $dt, // 抓取的时间
-			'oUId' => is_array($phone_location) ? implode('-', $phone_location) : ''
-		]));
-		return true;
-	}
+    public static function add_phone_section($pre_phone, $area)
+    {
+        if (!AppUtil::checkPhone($pre_phone.'0000')) {
+            return false;
+        }
+        $data = ['oCategory' => self::CAT_PHONE_SECTION, 'oOpenId' => $pre_phone];
+        if (self::findOne($data) || strlen($pre_phone) != 7) {
+            return false;
+        }
+        self::add(array_merge($data, ['oKey' => self::KEY_WAIT, "oBefore" => $area, 'oUId' => Admin::getAdminId()]));
 
-	public static function section_items($criteria, $params, $page, $pageSize = 20)
-	{
-		$offset = ($page - 1) * $pageSize;
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
+        return true;
+    }
 
-		$cat = self::CAT_PHONE_SECTION_YES;
-		$sql = "select *
+    public static function add_phone_section_yes($phone, $dt, $area = "taoguba")
+    {
+        $data = ['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone];
+        if (self::findOne($data) || strlen($phone) != 11 || !AppUtil::checkPhone($phone)) {
+            return false;
+        }
+        $item = self::findOne(['oCategory' => self::CAT_PHONE_SECTION_YES, 'oOpenId' => $phone]);
+        if ($item) {
+            return false;
+        }
+        $phone_location = AppUtil::get_phone_location($phone);
+        self::add(array_merge($data, [
+            'oKey' => self::KEY_WAIT,
+            "oBefore" => $area,
+            'oAfter' => $dt, // 抓取的时间
+            'oUId' => is_array($phone_location) ? implode('-', $phone_location) : '',
+        ]));
+
+        return true;
+    }
+
+    public static function section_items($criteria, $params, $page, $pageSize = 20)
+    {
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
+
+        $cat = self::CAT_PHONE_SECTION_YES;
+        $sql = "select *
 				from im_log 
 				where oCategory='$cat' $strCriteria
 				order by oAfter desc 
 				limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $k => $v) {
-			$res[$k]['st_txt'] = TryPhone::$catDict[$v['oBefore']] ?? '';
-		}
-		$sql = "select count(1) as co
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
+            $res[$k]['st_txt'] = TryPhone::$catDict[$v['oBefore']] ?? '';
+        }
+        $sql = "select count(1) as co
 				from im_log 
 				where oCategory='$cat' $strCriteria  ";
-		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
 
 
-	const CAT_REG_ZHUN_DIAN_MAI = 'reg_zhun_dian_mai';
+    const CAT_REG_ZHUN_DIAN_MAI = 'reg_zhun_dian_mai';
 
-	/*
-	 * oCategory
-	 * oKey    toguba
-	 * oBefore 手机号
-	 * oAfter
-	 * oOpenId
-	 * oUId
-	 */
+    /*
+     * oCategory
+     * oKey    toguba
+     * oBefore 手机号
+     * oAfter
+     * oOpenId
+     * oUId
+     */
 
-	public static function pre_reg_zdm_add($phone, $uid, $ph = '')
-	{
-		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oBefore' => $phone];
-		if (self::findOne($data)) {
-			return false;
-		}
-		self::add(array_merge($data, [
-			'oUId' => $uid,
-			'oKey' => AppUtil::decrypt($ph),
-		]));
-		return true;
-	}
+    public static function pre_reg_zdm_add($phone, $uid, $ph = '')
+    {
+        $data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oBefore' => $phone];
+        if (self::findOne($data)) {
+            return false;
+        }
+        self::add(array_merge($data, [
+            'oUId' => $uid,
+            'oKey' => AppUtil::decrypt($ph),
+        ]));
 
-	public static function reg_zdm($uid)
-	{
-		if (!$uid) {
-			return false;
-		}
-		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oUId' => $uid];
-		if (self::findOne($data)) {
-			return true;
-		}
-		return false;
-	}
+        return true;
+    }
 
-	public static function zdm_items($criteria, $params, $page, $pageSize = 20)
-	{
-		$offset = ($page - 1) * $pageSize;
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
+    public static function reg_zdm($uid)
+    {
+        if (!$uid) {
+            return false;
+        }
+        $data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI, 'oUId' => $uid];
+        if (self::findOne($data)) {
+            return true;
+        }
 
-		$cat = self::CAT_REG_ZHUN_DIAN_MAI;
-		$sql = "select l.*,uName,cName
+        return false;
+    }
+
+    public static function zdm_items($criteria, $params, $page, $pageSize = 20)
+    {
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
+
+        $cat = self::CAT_REG_ZHUN_DIAN_MAI;
+        $sql = "select l.*,uName,cName
 				from im_log as l
 				left join im_stock_user as u on u.uPhone=l.oBefore
 				left join im_crm_client as c on c.cPhone=l.oBefore  
 				where oCategory='$cat' $strCriteria
 				order by oDate desc 
 				limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $k => $v) {
-			$res[$k]['name'] = $v['uName'] ? $v['uName'] : $v['cName'];
-		}
-		$sql = "select count(1) as co 
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
+            $res[$k]['name'] = $v['uName'] ? $v['uName'] : $v['cName'];
+        }
+        $sql = "select count(1) as co 
 				from im_log 
 				where oCategory='$cat' $strCriteria  ";
-		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
 
-	const CAT_REG_ZHUN_DIAN_MAI_LINK = 'reg_zhun_dian_mai_link';
+    const CAT_REG_ZHUN_DIAN_MAI_LINK = 'reg_zhun_dian_mai_link';
 
-	/*
-	 * oCategory
-	 * oKey
-	 * oBefore 链接地址
-	 * oAfter
-	 * oOpenId 手机号
-	 * oUId
-	 */
+    /*
+     * oCategory
+     * oKey
+     * oBefore 链接地址
+     * oAfter
+     * oOpenId 手机号
+     * oUId
+     */
 
-	public static function add_zdm_reg_link($phone)
-	{
-		$data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI_LINK, 'oOpenId' => $phone];
-		if (self::findOne($data)) {
-			return [129, '已添加此手机号的链接'];
-		}
-		self::add(array_merge($data, [
-			'oBefore' => 'https://wx.meipo100.com/wx/reg?ph=' . AppUtil::encrypt($phone),
-		]));
-		return [0, '添加成功'];
-	}
+    public static function add_zdm_reg_link($phone)
+    {
+        $data = ['oCategory' => Log::CAT_REG_ZHUN_DIAN_MAI_LINK, 'oOpenId' => $phone];
+        if (self::findOne($data)) {
+            return [129, '已添加此手机号的链接'];
+        }
+        self::add(array_merge($data, [
+            'oBefore' => 'https://wx.meipo100.com/wx/reg?ph='.AppUtil::encrypt($phone),
+        ]));
 
-	public static function zdm_link_items($criteria, $params, $page, $pageSize = 20)
-	{
+        return [0, '添加成功'];
+    }
+
+    public static function zdm_link_items($criteria, $params, $page, $pageSize = 20)
+    {
 
 
-		$offset = ($page - 1) * $pageSize;
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
 
-		$cat = self::CAT_REG_ZHUN_DIAN_MAI_LINK;
-		$sql = "select l.*
+        $cat = self::CAT_REG_ZHUN_DIAN_MAI_LINK;
+        $sql = "select l.*
 				from im_log as l
 				  
 				where oCategory='$cat' $strCriteria
 				order by oDate desc 
 				limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $k => $v) {
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
 
-		}
-		$sql = "select count(1) as co 
+        }
+        $sql = "select count(1) as co 
 				from im_log 
 				where oCategory='$cat' $strCriteria ";
-		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
 
 
-	// 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
-	const CAT_STOCK_PRICE_REDUCR_WARNING = 'stock_price_reduce_warning';
+    // 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
+    const CAT_STOCK_PRICE_REDUCR_WARNING = 'stock_price_reduce_warning';
 
-	/*
-	 * oCategory stock_price_reduce_warning
-	 * oKey
-	 * oBefore 手机号
-	 * oAfter  发送内容
-	 * oOpenId
-	 * oUId  oId
-	 */
-	public static function pre_reduce_warning_add($order, $stockPrice, $content)
-	{
+    /*
+     * oCategory stock_price_reduce_warning
+     * oKey
+     * oBefore 手机号
+     * oAfter  发送内容
+     * oOpenId
+     * oUId  oId
+     */
+    public static function pre_reduce_warning_add($order, $stockPrice, $content)
+    {
 
-		$key = StockOrder::unique_stock_key($order);
-		$phone = $order['oPhone'];
-		$oId = $order['oId'];
-		// 今天【这支股票】有没有发过短信
-		$sql = "select * from im_log where oCategory=:oCategory and oOpenId=:oOpenId and oKey=:oKey and datediff(oDate,now())=0 ";
-		if (AppUtil::db()->createCommand($sql)->bindValues([
-			':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
-			':oOpenId' => $phone,
-			':oKey' => $key,
-		])->queryOne()) {
-			return false;
-		}
-		//【这支股票】发过短信超过3条后不再提醒
-		$sql = "select count(1) from im_log where oCategory=:oCategory and oOpenId=:oOpenId and oKey=:oKey ";
-		if (AppUtil::db()->createCommand($sql)->bindValues([
-				':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
-				':oOpenId' => $phone,
-				':oKey' => $key,
-			])->queryScalar() > 3) {
-			return false;
-		}
-		self::add([
-			'oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
-			'oOpenId' => $phone,
-			'oBefore' => $stockPrice,
-			'oAfter' => $content,
-			'oUId' => $oId,
-			'oKey' => $key,
-		]);
-		return true;
-	}
+        $key = StockOrder::unique_stock_key($order);
+        $phone = $order['oPhone'];
+        $oId = $order['oId'];
+        // 今天【这支股票】有没有发过短信
+        $sql = "select * from im_log where oCategory=:oCategory and oOpenId=:oOpenId and oKey=:oKey and datediff(oDate,now())=0 ";
+        if (AppUtil::db()->createCommand($sql)->bindValues([
+            ':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
+            ':oOpenId' => $phone,
+            ':oKey' => $key,
+        ])->queryOne()) {
+            return false;
+        }
+        //【这支股票】发过短信超过3条后不再提醒
+        $sql = "select count(1) from im_log where oCategory=:oCategory and oOpenId=:oOpenId and oKey=:oKey ";
+        if (AppUtil::db()->createCommand($sql)->bindValues([
+                ':oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
+                ':oOpenId' => $phone,
+                ':oKey' => $key,
+            ])->queryScalar() > 3) {
+            return false;
+        }
+        self::add([
+            'oCategory' => Log::CAT_STOCK_PRICE_REDUCR_WARNING,
+            'oOpenId' => $phone,
+            'oBefore' => $stockPrice,
+            'oAfter' => $content,
+            'oUId' => $oId,
+            'oKey' => $key,
+        ]);
 
-	public static function sms_tip_items($criteria, $params, $page, $pageSize = 20)
-	{
-		$offset = ($page - 1) * $pageSize;
-		$strCriteria = '';
-		if ($criteria) {
-			$strCriteria = ' AND ' . implode(' AND ', $criteria);
-		}
+        return true;
+    }
 
-		$sql = "select l.*,u.uName
+    public static function sms_tip_items($criteria, $params, $page, $pageSize = 20)
+    {
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
+
+        $sql = "select l.*,u.uName
 				from im_log as l
 				left join im_stock_user as u on u.uPhone=l.oOpenId
 				left join im_stock_order as o on o.oId=l.oUId
 				where l.oId>0 $strCriteria
 				order by oDate desc 
 				limit $offset,$pageSize";
-		$res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
-		foreach ($res as $k => $v) {
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
 
-		}
-		$sql = "select count(1) as co
+        }
+        $sql = "select count(1) as co
 				from im_log as l
 				where oId>0 $strCriteria ";
-		$count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-		return [$res, $count];
-	}
+        return [$res, $count];
+    }
+
+    /**
+     *
+     * @time 2020-01-10 AM
+     */
+    public static function get_stock_main_sms_send_count($phone)
+    {
+        $sql = "select count(1) from im_log where datediff(oDate,now())=0 and `oCategory`=:oCategory and oOpenId=:phone ";
+
+        return AppUtil::db()->createCommand($sql, [
+            ':oCategory' => self::CAT_STOCK_MAIN_SMS_SEND,
+            ':phone' => $phone,
+        ])->queryScalar();
+    }
 }

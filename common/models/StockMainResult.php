@@ -26,6 +26,16 @@ use yii\helpers\ArrayHelper;
  */
 class StockMainResult extends \yii\db\ActiveRecord
 {
+    const TAG_BUY = 'tag_buy';
+    const TAG_SOLD = 'tag_sold';
+
+    const BACK_DIR_1 = 1;
+    const BACK_DIR_2 = 2;
+    static $back_dit_dict = [
+        self::BACK_DIR_1 => '正常回测',
+        self::BACK_DIR_2 => '做空回测',
+    ];
+
     public static function tableName()
     {
         return 'im_stock_main_result';
@@ -331,7 +341,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-12-12 AM
      */
-    public static function send_sms2()
+    public static function send_sms2($debug = 0)
     {
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
@@ -339,21 +349,23 @@ class StockMainResult extends \yii\db\ActiveRecord
         $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
         $end = strtotime(date('Y-m-d '.$model2['c_content'].':00'));
         $curr = time();
-        if ($curr < $start || $curr > $end) {
+        if ($curr < $start || $curr > $end || $debug) {
             return false;
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
         //$ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
-        if (!$ret) {
+        if (!$ret || $debug) {
             return 1;
         }
 
         $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
         $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
-        if (!$buy_type && !$sold_type) {
+        if (!$buy_type && !$sold_type || $debug) {
             return 2;
         }
+
+        // 验证码 8开头是买入 7开头是卖出
         $prefix = '6';
         if ($buy_type) {
             $prefix = "8";
@@ -362,11 +374,28 @@ class StockMainResult extends \yii\db\ActiveRecord
             $prefix = "7";
         }
 
-        $phones = StockMainConfig::get_sms_phone();
+        $able_send_count = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0]['c_content'];
+
+        //$phones = StockMainConfig::get_sms_phone();
+        $phones = [17611629667];
         foreach ($phones as $phone) {
+            $has_send_count = Log::get_stock_main_sms_send_count($phone);
+            if ($has_send_count >= $able_send_count) {
+                continue;
+            }
+
             // 发送短信
             $code = strval($prefix.mt_rand(1000, 9999).'8');
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
+
+            Log::add([
+                'oCategory' => Log::CAT_STOCK_MAIN_SMS_SEND,
+                'oKey' => '',
+                'oUId' => $code,
+                'oOpenId' => $phone,
+                'oBefore' => '',
+                'oAfter' => $res,
+            ]);
 
             @file_put_contents("/data/logs/imei/tencent_sms_".date("Y-m-d").".log",
                 date(" [Y-m-d H:i:s] ").$phone." - ".$code." >>>>>> ".$res.PHP_EOL,
@@ -425,9 +454,6 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         return [array_values($res), $count];
     }
-
-    const TAG_BUY = 'tag_buy';
-    const TAG_SOLD = 'tag_sold';
 
     /**
      * 获取买卖点的结果
@@ -516,13 +542,6 @@ class StockMainResult extends \yii\db\ActiveRecord
         return $first_buys;
     }
 
-
-    const BACK_DIR_1 = 1;
-    const BACK_DIR_2 = 2;
-    static $back_dit_dict = [
-        self::BACK_DIR_1 => '正常回测',
-        self::BACK_DIR_2 => '做空回测',
-    ];
 
     /**
      * 回测收益
@@ -1126,6 +1145,11 @@ class StockMainResult extends \yii\db\ActiveRecord
         return [$data, $rate_year_sum, $stat_rule_right_rate];
     }
 
+    /**
+     * 新的 卖空回测结果表
+     *
+     * @time 2020-01-08 AM
+     */
     public static function cal_back_r_new($price_type, $buy_times, $stop_rate)
     {
         if ($buy_times) {
@@ -1254,6 +1278,11 @@ class StockMainResult extends \yii\db\ActiveRecord
         return [$list_buy, $list_sold, $list_warn];
     }
 
+    /**
+     *
+     * @time 2019-11-27 PM add
+     * @time 2020-01-10 AM modify
+     */
     public static function result_stat_item($rules, $results)
     {
         $data = [];

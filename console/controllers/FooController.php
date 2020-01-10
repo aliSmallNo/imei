@@ -1739,7 +1739,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMainResult::reset(1);
+        var_dump(StockMainResult::send_sms2(1));
         // StockMainPrice::init_excel_data();
         // StockMainStat::init_excel_data();
         exit;
