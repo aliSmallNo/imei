@@ -341,7 +341,7 @@ class StockMainResult extends \yii\db\ActiveRecord
      *
      * @time 2019-12-12 AM
      */
-    public static function send_sms2($debug = 0)
+    public static function send_sms2()
     {
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
@@ -349,20 +349,20 @@ class StockMainResult extends \yii\db\ActiveRecord
         $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
         $end = strtotime(date('Y-m-d '.$model2['c_content'].':00'));
         $curr = time();
-        if ($curr < $start || $curr > $end || $debug) {
-            return false;
+        if ($curr < $start || $curr > $end) {
+            //return 0;
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
         //$ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
-        if (!$ret || $debug) {
-            return 1;
+        if (!$ret) {
+            //return 1;
         }
 
         $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
         $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
-        if (!$buy_type && !$sold_type || $debug) {
-            return 2;
+        if (!$buy_type && !$sold_type) {
+            //return 2;
         }
 
         // 验证码 8开头是买入 7开头是卖出
