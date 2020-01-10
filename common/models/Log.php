@@ -111,6 +111,8 @@ class Log extends ActiveRecord
     const CAT_STOCK_MAIN_UPDATE = 'stock_main_update';
     const CAT_STOCK_MAIN_SMS_SEND = 'stock_main_sms_send';
 
+    const CAT_SITE_LOGIN = 'site_login';
+
 
     public static function tableName()
     {

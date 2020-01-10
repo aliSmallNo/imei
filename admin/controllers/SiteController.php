@@ -62,19 +62,19 @@ class SiteController extends BaseController
         if ($exception && $exception->statusCode && $exception->statusCode == 404) {
             return $this->render('err404.tpl');
         }
+
         return $this->render('error', ['ex' => $exception]);
     }
 
     public function actionDeny()
     {
-        echo "<p>权限不足，请到别的地方逛逛吧 (@﹏@)~ </p>" . date("Y-m-d H:i:s");
+        echo "<p>权限不足，请到别的地方逛逛吧 (@﹏@)~ </p>".date("Y-m-d H:i:s");
     }
 
     public function actionLogin()
     {
         Admin::logout();
 
-        //echo phpinfo();exit;
         $this->layout = 'login';
         $name = self::postParam("name");
         $pass = self::postParam("pass");
@@ -88,12 +88,19 @@ class SiteController extends BaseController
         // var_dump(Yii::$app->request->hostInfo);exit;
 
         if ($name && $pass) {
-
+            Log::add([
+                'oCategory' => Log::CAT_SITE_LOGIN,
+                'oKey' => '2',
+                'oUId' => $name,
+                'oOpenId' => $session_key,
+                'oBefore' => $code,
+                'oAfter' => [$name, $pass, $code],
+            ]);
             $cache_code = RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->getCache();
 
             if ($code && (strcasecmp($code, $cache_code) === 0)) {
-            // 去掉验证码验证
-            // if ($code || (strcasecmp($code, $cache_code) === 0)) {
+                // 去掉验证码验证
+                // if ($code || (strcasecmp($code, $cache_code) === 0)) {
                 $this->admin_id = Admin::login($name, $pass);
                 if ($this->admin_id) {
                     Admin::userInfo($this->admin_id, true);
@@ -107,6 +114,15 @@ class SiteController extends BaseController
         }
 
         list($code, $src) = CaptchaUtil::create();
+
+        Log::add([
+            'oCategory' => Log::CAT_SITE_LOGIN,
+            'oKey' => '1',
+            'oUId' => '',
+            'oOpenId' => $session_key,
+            'oBefore' => $code,
+            'oAfter' => [$name, $pass, $code],
+        ]);
 
         // 可以改为redis
         RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->setCache($code);
@@ -174,7 +190,7 @@ class SiteController extends BaseController
                 'usedMenus' => $usedMenus,
                 "items" => $items,
                 "hourData" => json_encode($hourData),
-                "hideChart" => $hideChart
+                "hideChart" => $hideChart,
             ]
         );
     }
@@ -202,14 +218,14 @@ class SiteController extends BaseController
         sleep(2); // 等待3秒钟
         $ret = RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->getCache();
         if ($ret) {
-            echo "<pre>" . $ret . "</pre>";
+            echo "<pre>".$ret."</pre>";
         } else {
             sleep(3); // 等待3秒钟
             $ret = RedisUtil::init(RedisUtil::KEY_PUB_CODE, $id)->getCache();
             if ($ret) {
-                echo "<pre>" . $ret . "</pre>";
+                echo "<pre>".$ret."</pre>";
             } else {
-                echo "运行失败了~" . date("Y-m-d H:i:s");
+                echo "运行失败了~".date("Y-m-d H:i:s");
             }
         }
     }
@@ -272,12 +288,13 @@ class SiteController extends BaseController
                 }
                 User::edit($id, $data, $this->admin_id);
                 AppUtil::logFile($this->admin_id, 5, __FUNCTION__, __LINE__);
-                $success = self::ICON_OK_HTML . '修改成功';
+                $success = self::ICON_OK_HTML.'修改成功';
                 RedisUtil::init(RedisUtil::KEY_WX_USER, $userInfo['uOpenId'])->delCache();
             }
         }
         $userInfo = User::findOne(["uId" => $id])->toArray();
         $status = User::$Status;
+
         //unset($status[2]);
 
         return $this->renderPage('account.tpl',
@@ -321,14 +338,21 @@ class SiteController extends BaseController
     {
         $session = Yii::$app->session;
         $session->set('admin_id', $this->admin_id);
-        $bundle = self::getBundle('page', 'name', 'location', 'phone', 'fonly', 'inactive', 'status', 'sub_status', 'user_type');
+        $bundle = self::getBundle('page', 'name', 'location', 'phone', 'fonly', 'inactive', 'status', 'sub_status',
+            'user_type');
         list($page, $name, $location, $phone, $fonly, $inactive, $status, $sub_status, $user_type) = array_values($bundle);
-        if (!$page) $page = 1;
-        if (!strlen($status)) $status = User::STATUS_PENDING;
+        if (!$page) {
+            $page = 1;
+        }
+        if (!strlen($status)) {
+            $status = User::STATUS_PENDING;
+        }
         $suffix = '';
         foreach ($bundle as $field => $val) {
-            if ($field == 'status' || $field == 'page') continue;
-            $suffix .= '&' . $field . '=' . $val;
+            if ($field == 'status' || $field == 'page') {
+                continue;
+            }
+            $suffix .= '&'.$field.'='.$val;
         }
         /*$page = self::getParam("page", 1);
         $name = self::getParam('name');
@@ -347,15 +371,19 @@ class SiteController extends BaseController
             $criteria[] = " wSubscribe=1";
             $partCriteria[] = " wSubscribe=1";
             $criteriaNote[] = '显示已关注';
-        } else if ($fonly == 2) {
-            $criteria[] = " wSubscribe !=1";
-            $partCriteria[] = " wSubscribe !=1";
-            $criteriaNote[] = '显示未关注';
+        } else {
+            if ($fonly == 2) {
+                $criteria[] = " wSubscribe !=1";
+                $partCriteria[] = " wSubscribe !=1";
+                $criteriaNote[] = '显示未关注';
+            }
         }
         if ($inactive == 1) {
             $criteriaNote[] = '显示7天不活跃';
-        } else if ($inactive == 2) {
-            $criteriaNote[] = '显示7天内活跃';
+        } else {
+            if ($inactive == 2) {
+                $criteriaNote[] = '显示7天内活跃';
+            }
         }
         if ($name) {
             $criteria[] = "  uName like :name ";
@@ -376,8 +404,8 @@ class SiteController extends BaseController
             $criteriaNote[] = $phone;
         }
         if ($sub_status) {
-            $criteria[] = " uSubStatus=" . $sub_status;
-            $partCriteria[] = " uSubStatus=" . $sub_status;
+            $criteria[] = " uSubStatus=".$sub_status;
+            $partCriteria[] = " uSubStatus=".$sub_status;
             $criteriaNote[] = User::$Substatus[$sub_status];
         }
         $userTypes = [
@@ -457,9 +485,10 @@ class SiteController extends BaseController
         $partCount = User::partCount($partCriteria, $params, $inactive);
         $pagination = self::pagination($page, $count);
         if ($criteriaNote) {
-            $criteriaNote = ' ＜' . implode('＞ ＜', $criteriaNote) . '＞';
+            $criteriaNote = ' ＜'.implode('＞ ＜', $criteriaNote).'＞';
         }
         $dummies = json_encode(User::topDummies(), JSON_UNESCAPED_UNICODE);
+
         return $this->renderPage('accounts.tpl',
             [
                 "status" => $status,
@@ -490,6 +519,7 @@ class SiteController extends BaseController
         $uid = self::getParam("id", 120003);
         $uInfo = User::findOne(["uId" => $uid]);
         list($list) = Trace::items($uid);
+
         return $this->renderPage('follow.tpl',
             [
                 'list' => $list,
@@ -509,19 +539,20 @@ class SiteController extends BaseController
         $condition = $params = [];
         if ($name) {
             $condition[] = '(u1.uName like :name or u2.uName like :name)';
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         list($list, $count) = ChatMsg::items(1, $condition, $params, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("dummychats.tpl",
             [
                 'getInfo' => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list
+                'list' => $list,
             ]
         );
     }
@@ -547,6 +578,7 @@ class SiteController extends BaseController
             throw new Exception("稻草人不存在啊~");
         }
         $dInfo = $dInfo->toArray();
+
         return $this->renderPage('bait.tpl',
             [
                 'roomId' => $roomId,
@@ -561,7 +593,7 @@ class SiteController extends BaseController
                 "dId" => $dummyId,
                 'admin_id' => $this->admin_id,
                 'base_url' => 'site/dummychats',
-                'wsUrl' => AppUtil::wsUrl()
+                'wsUrl' => AppUtil::wsUrl(),
             ]);
     }
 
@@ -582,6 +614,7 @@ class SiteController extends BaseController
             ChatMsg::DummyChatGroup($content, $maleUID, $femaleUID, $tag);
             header('location:/site/dummychats');
         }
+
         return $this->renderPage('dummychatall.tpl',
             [
                 'dmales' => $dmales,
@@ -602,7 +635,7 @@ class SiteController extends BaseController
                 "tNote" => $content,
             ]);
         }
-        $this->redirect('/site/follow?id=' . $uid);
+        $this->redirect('/site/follow?id='.$uid);
     }
 
     public function actionCert()
@@ -671,21 +704,21 @@ class SiteController extends BaseController
 
         if ($name) {
             $criteria[] = " u.uName like :name ";
-            $params[':name'] = '%' . trim($name) . '%';
+            $params[':name'] = '%'.trim($name).'%';
         }
         if ($phone) {
             $criteria[] = " u.uPhone like :phone ";
-            $params[':phone'] = trim($phone) . '%';
+            $params[':phone'] = trim($phone).'%';
         }
 
         if ($cat) {
             $criteria[] = " t.tCategory =$cat ";
         }
         if ($income) {
-            $str = " and t.tCategory in " . "(" . implode(',', UserTrans::$ShowPayAmt) . ")";
-            $criteria[] = " p.pStatus=100 AND p.pTransAmt>0 " . $str;
+            $str = " and t.tCategory in "."(".implode(',', UserTrans::$ShowPayAmt).")";
+            $criteria[] = " p.pStatus=100 AND p.pTransAmt>0 ".$str;
         }
-        $criteria[] = " t.tCategory in (" . implode(',', array_keys(UserTrans::$catDict)) . ") ";
+        $criteria[] = " t.tCategory in (".implode(',', array_keys(UserTrans::$catDict)).") ";
 
         list($items, $count) = UserTrans::recharges($criteria, $params, $page);
         $pagination = self::pagination($page, $count);
@@ -710,6 +743,7 @@ class SiteController extends BaseController
         $page = self::getParam("page", 1);
         list($list, $count) = UserBuzz::wxMessages($this->admin_id, $page);
         $pagination = $pagination = self::pagination($page, $count);
+
         return $this->renderPage("wxmsg.tpl",
             [
                 'getInfo' => $getInfo,
@@ -728,6 +762,7 @@ class SiteController extends BaseController
             Mark::markRead($lastId, $this->admin_id, Mark::CATEGORY_WECHAT);
         }
         $regInfo = User::fmtRow(User::find()->where(["uOpenId" => $openId])->asArray()->one());
+
         return $this->renderPage('wx-reply.tpl',
             [
                 'list' => $list,
@@ -735,7 +770,7 @@ class SiteController extends BaseController
                 "nickName" => $nickname,
                 "openId" => $openId,
                 "regInfo" => $regInfo,
-                'base_url' => 'site/wxmsg'
+                'base_url' => 'site/wxmsg',
             ]);
     }
 
@@ -757,7 +792,7 @@ class SiteController extends BaseController
                 ]);
             }
         }
-        $this->redirect('/site/wxreply?id=' . $openId);
+        $this->redirect('/site/wxreply?id='.$openId);
     }
 
     public function actionNet()
@@ -782,6 +817,7 @@ class SiteController extends BaseController
         }
         list($list, $count) = UserNet::relations($condition, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("relations.tpl",
             [
                 'getInfo' => $getInfo,
@@ -814,6 +850,7 @@ class SiteController extends BaseController
         }
         list($list, $count) = Log::cut_items($condition, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("cut_list.tpl",
             [
                 'getInfo' => $getInfo,
@@ -846,6 +883,7 @@ class SiteController extends BaseController
 
         list($list, $count) = Date::dateItems($condition, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("dates.tpl",
             [
                 'getInfo' => $getInfo,
@@ -864,8 +902,8 @@ class SiteController extends BaseController
         $criteria = $params = [];
         if ($sdate && $edate) {
             $criteria[] = "n.nAddedOn between :sdt and :edt ";
-            $params[':sdt'] = $sdate . ' 00:00:00';
-            $params[':edt'] = $edate . ' 23:59:50';
+            $params[':sdt'] = $sdate.' 00:00:00';
+            $params[':edt'] = $edate.' 23:59:50';
         }
 
         list($stat, $timesSub, $timesReg) = UserNet::netStat($criteria, $params);
@@ -903,8 +941,8 @@ class SiteController extends BaseController
         $criteria = $params = [];
         if ($sdate && $edate) {
             $criteria[] = "n.nAddedOn between :sdt and :edt ";
-            $params[':sdt'] = $sdate . ' 00:00:00';
-            $params[':edt'] = $edate . ' 23:59:50';
+            $params[':sdt'] = $sdate.' 00:00:00';
+            $params[':edt'] = $edate.' 23:59:50';
         }
         if ($phone) {
             $criteria[] = "u.uPhone=:phone ";
@@ -959,8 +997,8 @@ class SiteController extends BaseController
         $criteria = $params = [];
         if ($sdate && $edate) {
             $criteria[] = "t.tAddedOn between :sdt and :edt ";
-            $params[':sdt'] = $sdate . ' 00:00:00';
-            $params[':edt'] = $edate . ' 23:59:50';
+            $params[':sdt'] = $sdate.' 00:00:00';
+            $params[':edt'] = $edate.' 23:59:50';
         }
         if ($phone && AppUtil::checkPhone($phone)) {
             $criteria[] = "u.uPhone=:phone ";
@@ -968,7 +1006,7 @@ class SiteController extends BaseController
         }
         if ($name) {
             $criteria[] = "u.uName like :name ";
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($gender) {
             $criteria[] = "u.uGender=:gen ";
@@ -1002,6 +1040,7 @@ class SiteController extends BaseController
         if ($info) {
             $info = $info->toArray();
         }
+
         return $this->renderPage("searchnet.tpl",
             [
                 'info' => $info,
@@ -1040,6 +1079,7 @@ class SiteController extends BaseController
         }
         list($list, $count) = Feedback::items($condition, $page, $pageSize = 20);
         $pagination = self::pagination($page, $count, $pageSize);
+
         return $this->renderPage("feedback.tpl",
             [
                 'getInfo' => $getInfo,
@@ -1064,7 +1104,7 @@ class SiteController extends BaseController
             [
                 'today' => date('Y年n月j日', time()),
                 'trends' => json_encode($trends),
-                'date' => $date
+                'date' => $date,
             ]);
     }
 
@@ -1078,6 +1118,7 @@ class SiteController extends BaseController
         //$category = ($scope == 'week' ? LogAction::REUSE_DATA_WEEK : LogAction::REUSE_DATA_MONTH);
         //$reuseData = LogAction::reuseData($category, ($sign == 'reset'));
         $reuseData = TrendService::init(TrendService::CAT_REUSE)->chartReuse($scope, $reset);
+
         return $this->renderPage("reusestat.tpl",
             [
                 'reuseData' => $reuseData,
@@ -1096,19 +1137,20 @@ class SiteController extends BaseController
         $condition = $params = [];
         if ($name) {
             $condition[] = '(u1.uName like :name or u2.uName like :name)';
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         list($list, $count) = ChatMsg::items(0, $condition, $params, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("chat.tpl",
             [
                 'getInfo' => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list
+                'list' => $list,
             ]
         );
     }
@@ -1124,19 +1166,20 @@ class SiteController extends BaseController
         $condition[] = "cStatus<9";
         if ($name) {
             $condition[] = '(u1.uName like :name or u2.uName like :name)';
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $condition[] = '(u1.uPhone like :phone or u2.uPhone like :phone)';
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         list($list, $count) = UserComment::clist($condition, $params, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("comments.tpl",
             [
                 'getInfo' => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list
+                'list' => $list,
             ]
         );
     }
@@ -1151,10 +1194,11 @@ class SiteController extends BaseController
         usort($list, function ($a, $b) {
             return $a['addedon'] < $b['addedon'];
         });
+
         return $this->renderPage("chatdes.tpl",
             [
                 'list' => $list,
-                'base_url' => 'site/chat'
+                'base_url' => 'site/chat',
             ]
         );
     }
@@ -1191,7 +1235,7 @@ class SiteController extends BaseController
                 "beginDate" => '2017-07-17',
                 //date("Y-m-d", time() - 15 * 86400),
                 "endDate" => date("Y-m-d"),
-                "colors" => json_encode(array_values($StatusColors))
+                "colors" => json_encode(array_values($StatusColors)),
             ]
         );
     }
@@ -1241,9 +1285,9 @@ class SiteController extends BaseController
                     [
                         "opt" => "A",
                         "text" => "",
-                    ]
+                    ],
                 ],
-            ]
+            ],
         ];
         if ($sign) {
             $data = self::postParam("data");
@@ -1274,7 +1318,7 @@ class SiteController extends BaseController
                     $insertItem["qRaw"] = json_encode([
                         "title" => $v["title"],
                         "options" => $v["options"],
-                        "answer" => $v["answer"]
+                        "answer" => $v["answer"],
                     ], JSON_UNESCAPED_UNICODE);
                 }
 
@@ -1290,7 +1334,7 @@ class SiteController extends BaseController
                 foreach ($insertData as $val) {
                     QuestionSea::edit(0, $val);
                 }
-                $success = self::ICON_OK_HTML . '添加成功';
+                $success = self::ICON_OK_HTML.'添加成功';
             }
         }
 
@@ -1308,6 +1352,7 @@ class SiteController extends BaseController
     public function actionGroup()
     {
         $catDict = QuestionGroup::$titleDict;
+
         return $this->renderPage('group.tpl',
             [
                 'catDict' => $catDict,
@@ -1342,10 +1387,11 @@ class SiteController extends BaseController
         $gid = self::getParam("id", 2002);
         //$gid = 2012;
         $voteStat = QuestionGroup::voteStat($gid);
+
         return $this->renderPage('vote.tpl',
             [
                 'voteStat' => $voteStat,
-                'base_url' => 'site/groups'
+                'base_url' => 'site/groups',
             ]);
     }
 
@@ -1446,7 +1492,7 @@ class SiteController extends BaseController
                 $fDefault = $item[1];
                 $fVal = self::postParam($field);
                 if ($fRequired && strlen($fVal) == 0) {
-                    $error[] = '缺少参数' . $field;
+                    $error[] = '缺少参数'.$field;
                     continue;
                 }
                 $editItem[$field] = $fVal ? $fVal : $fDefault;
@@ -1481,10 +1527,10 @@ class SiteController extends BaseController
             if (!$error) {
                 if ($eId) {
                     $queryId = Event::modify($eId, $editItem);
-                    $success = self::ICON_OK_HTML . '修改成功';
+                    $success = self::ICON_OK_HTML.'修改成功';
                 } else {
                     $queryId = Event::add($editItem);
-                    $success = self::ICON_OK_HTML . '添加成功';
+                    $success = self::ICON_OK_HTML.'添加成功';
                 }
             }
         }
@@ -1493,12 +1539,12 @@ class SiteController extends BaseController
             $editItem = Event::findOne(["eId" => $queryId]);
             $specs = $editItem->eRules ? json_decode($editItem->eRules, 1) : [
                 [
-                    "name" => ""
-                ]
+                    "name" => "",
+                ],
             ];
         } else {
             $specs[] = [
-                "name" => ""
+                "name" => "",
             ];
         }
 
@@ -1509,7 +1555,7 @@ class SiteController extends BaseController
                 "specs" => $specs,
                 "success" => $success,
                 "error" => $error,
-                "stringFeatures" => isset($editItem["eDetails"]) ? $editItem["eDetails"] : '[]'
+                "stringFeatures" => isset($editItem["eDetails"]) ? $editItem["eDetails"] : '[]',
             ]);
     }
 
@@ -1518,6 +1564,7 @@ class SiteController extends BaseController
     {
         $this->layout = 'terse';
         $items = Pin::items();
+
         return $this->renderPage('pins.tpl',
             [
                 'uni' => $this->admin_id,
@@ -1530,6 +1577,7 @@ class SiteController extends BaseController
     public function actionChattest()
     {
         $this->layout = 'terse';
+
         return $this->renderPage('chat_test.tpl',
             [
                 'uni' => $this->admin_id,
@@ -1565,15 +1613,15 @@ class SiteController extends BaseController
         $criteria = $params = [];
         if ($name) {
             $criteria[] = "uName like :name ";
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $criteria[] = "uPhone like :phone ";
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         if ($location) {
             $criteria[] = " (uLocation like :loc)";
-            $params[':loc'] = '%' . $location . '%';
+            $params[':loc'] = '%'.$location.'%';
         }
         if ($gender) {
             $criteria[] = " uGender=:gender";
@@ -1590,6 +1638,7 @@ class SiteController extends BaseController
 
         list($crew, $count) = EventService::init(EventService::EV_PARTY_S01)->crew($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
+
         return $this->renderPage('ev_crew.tpl',
             [
                 'crew' => $crew,
@@ -1599,7 +1648,7 @@ class SiteController extends BaseController
                 'name' => $name,
                 'phone' => $phone,
                 'location' => $location,
-                'pagination' => $pagination
+                'pagination' => $pagination,
             ]
         );
     }
@@ -1613,6 +1662,7 @@ class SiteController extends BaseController
         $homeFigures = $service->homeFigures();
         $chatHeaders = $service->chatHeaders();
         $miscFigures = $service->miscFigures();
+
         return $this->renderPage('cog.tpl',
             [
                 'homeHeaders' => $homeHeaders,
@@ -1634,23 +1684,24 @@ class SiteController extends BaseController
         $condition = $params = [];
         if ($rname) {
             $condition[] = '(r.rTitle like :title )';
-            $params[':title'] = '%' . $rname . '%';
+            $params[':title'] = '%'.$rname.'%';
         }
         if ($name) {
             $condition[] = '(u.uName like :name )';
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $condition[] = '(u.uPhone like :phone )';
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         list($list, $count) = ChatRoom::items($condition, $params, $page);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("rooms.tpl",
             [
                 'getInfo' => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list
+                'list' => $list,
             ]
         );
     }
@@ -1665,15 +1716,16 @@ class SiteController extends BaseController
         $condition = $params = [];
         if ($name) {
             $condition[] = '(u.uName like :name )';
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $condition[] = '(u.uPhone like :phone )';
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         list($chatItems, $count) = ChatRoom::roomChatList($roomId, $condition, $params, $page);
         $stat = ChatRoom::roomStat($roomId);
         $pagination = self::pagination($page, $count, 30);
+
         return $this->renderPage("roomdesc.tpl",
             [
                 'getInfo' => $getInfo,
@@ -1682,7 +1734,7 @@ class SiteController extends BaseController
                 'count' => $count,
                 'roomId' => $roomId,
                 'stat' => $stat,
-                'base_url' => 'site/rooms'
+                'base_url' => 'site/rooms',
             ]
         );
     }
@@ -1690,6 +1742,7 @@ class SiteController extends BaseController
     public function actionAddmember()
     {
         $rid = self::getParam("rid");
+
         return $this->renderPage("addmember.tpl",
             [
                 'info' => ChatRoom::findOne(["rId" => $rid])->toArray(),
@@ -1713,13 +1766,14 @@ class SiteController extends BaseController
             throw new Exception("稻草人不存在啊~");
         }
         $uInfo = $uInfo->toArray();
+
         return $this->renderPage('dummyroomchats.tpl',
             [
                 "rInfo" => $rInfo,
                 "uInfo" => $uInfo,
                 'roomId' => $rId,
                 'admin_id' => $this->admin_id,
-                'base_url' => 'site/rooms'
+                'base_url' => 'site/rooms',
             ]);
     }
 
@@ -1735,15 +1789,15 @@ class SiteController extends BaseController
         $condition = $params = [];
         if ($title) {
             $condition[] = '(m.mContent like :title )';
-            $params[':title'] = '%' . $title . '%';
+            $params[':title'] = '%'.$title.'%';
         }
         if ($name) {
             $condition[] = '(u.uName like :name )';
-            $params[':name'] = '%' . $name . '%';
+            $params[':name'] = '%'.$name.'%';
         }
         if ($phone) {
             $condition[] = '(u.uPhone like :phone )';
-            $params[':phone'] = $phone . '%';
+            $params[':phone'] = $phone.'%';
         }
         if ($cat) {
             $condition[] = '(m.mCategory = :cat )';
@@ -1773,6 +1827,7 @@ class SiteController extends BaseController
         }
         $count = Moment::count($condition, $params);
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("moment.tpl",
             [
                 'getInfo' => $getInfo,
@@ -1792,13 +1847,14 @@ class SiteController extends BaseController
         $condition = $params = [];
         if ($title) {
             $condition[] = '(t.tTitle like :title )';
-            $params[':title'] = '%' . $title . '%';
+            $params[':title'] = '%'.$title.'%';
         }
 
         list($list) = MomentTopic::topiclist($condition, $params, $page, 20);
         $count = MomentTopic::count($condition, $params);
 
         $pagination = self::pagination($page, $count);
+
         return $this->renderPage("mtopic.tpl",
             [
                 'getInfo' => $getInfo,
