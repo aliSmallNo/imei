@@ -251,12 +251,12 @@ class CrontabController extends Controller
     public function actionEvery_second()
     {
         try {
-            //Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'out']);
+            //Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'out']);
 
             $H = date("H");
             $m = date("i");
             if ($H >= 13 && $H < 16 && StockMain::is_trans_date()) {
-                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 0']);
+                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 0']);
                 // 14:50到15:00 每一分钟更新下数据 其余时间段每5分钟更新下数据
                 if (in_array($H, [13, 15])) {
                     if (($m % 5) != 0) {
@@ -268,20 +268,20 @@ class CrontabController extends Controller
                         return false;
                     }
                 }
-                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 1']);
+                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 1']);
                 // 获取当天数据: 上证指数 深证指数 500ETF
                 StockMain::update_curr_day();
-                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 2']);
+                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 2']);
                 //
                 StockMainPrice::update_curr_day();
-                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 3']);
+                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 3']);
                 // 来短信提醒指定用户是否有买点、卖点
                 StockMainResult::send_sms2();
-                Log::add(['oCategory' => 'stock_main_update', 'oBefore' => 'in 4']);
+                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 4']);
             }
         } catch (\Exception $e) {
             Log::add([
-                'oCategory' => 'stock_main_update',
+                'oCategory' => Log::CAT_STOCK_MAIN_UPDATE,
                 'oBefore' => 'exception',
                 'oAfter' => [
                     $e->getMessage(),

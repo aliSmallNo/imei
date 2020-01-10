@@ -108,6 +108,7 @@ class Log extends ActiveRecord
 
     const CAT_STOCK_MENU_UPDATE = 'stock_menu_update'; //
 
+    const CAT_STOCK_MAIN_UPDATE = 'stock_main_update';
     const CAT_STOCK_MAIN_SMS_SEND = 'stock_main_sms_send';
 
 
