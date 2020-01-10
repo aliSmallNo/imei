@@ -99,6 +99,7 @@ class ApiController extends Controller
         }
         $this->admin_name = Admin::userInfo()['aName'];
         $this->admin_phone = Admin::userInfo()['aPhone'];
+
         return parent::beforeAction($action);
     }
 
@@ -109,7 +110,7 @@ class ApiController extends Controller
     {
         $tag = strtolower(self::postParam("tag"));
         $id = self::postParam("id");
-        $ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
+        $ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML."无操作！"];
         switch ($tag) {
             case "mod_user_trans":
                 $data = self::postParam("data");
@@ -178,9 +179,9 @@ class ApiController extends Controller
                 if ($aId) {
                     if ($id) {
                         Admin::clearById($id);
-                        $msg = self::ICON_OK_HTML . "修改用户" . $name . "成功! ";
+                        $msg = self::ICON_OK_HTML."修改用户".$name."成功! ";
                     } else {
-                        $msg = self::ICON_OK_HTML . "添加用户" . $name . "成功! ";
+                        $msg = self::ICON_OK_HTML."添加用户".$name."成功! ";
                     }
                 }
                 $ret = ["code" => 0, "msg" => $msg];
@@ -227,9 +228,10 @@ class ApiController extends Controller
                             'status' => $status,
                             'status_t' => $status_t,
                             'note' => $note,
-                            'dt' => date('y-m-d H:i')
+                            'dt' => date('y-m-d H:i'),
                         ]);
                 }
+
                 return self::renderAPI(129, '操作失败！');
             case "comment":
                 $flag = self::postParam("f");
@@ -254,12 +256,12 @@ class ApiController extends Controller
                 $oldPassWord = strtolower(self::postParam('curPwd'));
 
                 if (strlen($newPassWord) < 6 || strlen($newPassWord) > 16) {
-                    return ["code" => 159, "msg" => self::ICON_ALERT_HTML . "更新失败！新登录密码大于6位小于16位"];
+                    return ["code" => 159, "msg" => self::ICON_ALERT_HTML."更新失败！新登录密码大于6位小于16位"];
                 }
 
                 $adminUserInfo = Admin::userInfo();
                 if (md5($oldPassWord) != $adminUserInfo["aPass"]) {
-                    return ["code" => 159, "msg" => self::ICON_ALERT_HTML . "更新失败！旧密码输入错误"];
+                    return ["code" => 159, "msg" => self::ICON_ALERT_HTML."更新失败！旧密码输入错误"];
                 }
                 $insertData = [];
                 $insertData['aId'] = $adminUserInfo['aId'];
@@ -267,12 +269,13 @@ class ApiController extends Controller
 
                 Admin::saveUser($insertData);
                 Admin::logout();
-                $ret = ["code" => 0, "msg" => self::ICON_OK_HTML . "修改成功！请重新登录"];
+                $ret = ["code" => 0, "msg" => self::ICON_OK_HTML."修改成功！请重新登录"];
                 break;
             case "searchnet":
                 $kw = self::postParam('keyword');
                 $subtag = self::postParam('subtag', 'all');
                 $res = User::searchNet($kw, $subtag);
+
                 return self::renderAPI(0, '', $res);
                 break;
             case "savemp":
@@ -291,6 +294,7 @@ class ApiController extends Controller
                     list($thumb, $figure) = ImageUtil::save2Server($src, true, $top, $left);
                     if ($thumb && $figure) {
                         User::setAvatar($uid, $thumb, $figure, $this->admin_id);
+
                         return self::renderAPI(0, '设置成功');
                     }
                 }
@@ -303,6 +307,7 @@ class ApiController extends Controller
                         return self::renderAPI(0, '旋转图片成功！');
                     }
                 }
+
                 return self::renderAPI(129, '旋转图片失败~');
                 break;
             case 'refresh':
@@ -311,6 +316,7 @@ class ApiController extends Controller
                     $openId = $uInfo['uOpenId'];
                     UserWechat::getInfoByOpenId($openId, 1);
                     UserWechat::refreshWXInfo($openId);
+
                     return self::renderAPI(0, '刷新成功~');
                 } else {
                     return self::renderAPI(129, '用户不存在~');
@@ -324,6 +330,7 @@ class ApiController extends Controller
                     LogAction::add($uInfo['uId'], $openId,
                         $tag == 'login' ? LogAction::ACTION_ONLINE : LogAction::ACTION_OFFLINE);
                     User::logDate($uInfo['uId']);
+
                     return self::renderAPI(0, '刷新成功~', ['dt' => AppUtil::prettyDate()]);
                 } else {
                     return self::renderAPI(129, '用户不存在~');
@@ -333,6 +340,7 @@ class ApiController extends Controller
                 $openId = self::postParam("id");
                 $page = self::postParam("page", 1);
                 $ret = User::getFilter($openId, [], $page, 15);
+
                 return self::renderAPI(0, '', $ret);
                 break;
             case "audit_pass":
@@ -347,29 +355,33 @@ class ApiController extends Controller
                 return self::renderAPI(0, '操作成功');
                 break;
         }
+
         return self::renderAPI($ret["code"], $ret["msg"]);
     }
 
     protected function renderAPI($code, $msg = '', $data = [])
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+
         return [
             'code' => $code,
             'msg' => $msg,
             'data' => $data,
-            'time' => time()
+            'time' => time(),
         ];
     }
 
     protected function getParam($field, $defaultVal = "")
     {
         $getInfo = Yii::$app->request->get();
+
         return isset($getInfo[$field]) ? trim($getInfo[$field]) : $defaultVal;
     }
 
     protected function postParam($field, $defaultVal = "")
     {
         $postInfo = Yii::$app->request->post();
+
         return isset($postInfo[$field]) ? trim($postInfo[$field]) : $defaultVal;
     }
 
@@ -384,6 +396,7 @@ class ApiController extends Controller
             case 'cities':
                 $item = City::addr($id);
                 $items = City::addrItems($id);
+
                 return self::renderAPI(0, '', [
                     'item' => $item,
                     'items' => $items,
@@ -391,6 +404,7 @@ class ApiController extends Controller
             case 'district':
                 $item = City::addr($id);
                 $items = City::addrItems($id);
+
                 return self::renderAPI(0, '', [
                     'item' => $item,
                     'items' => $items,
@@ -398,6 +412,7 @@ class ApiController extends Controller
             default:
                 break;
         }
+
         return self::renderAPI(129);
     }
 
@@ -413,11 +428,13 @@ class ApiController extends Controller
                     return self::renderAPI(129, '参数错误');
                 }
                 YzUser::edit($yzuid, ['uAdminId' => $aid]);
+
                 return self::renderAPI(0, 'ok');
                 break;
             case "set_user_to_yxs":
                 $phone = self::postParam('phone');
                 list($code, $msg) = YzUser::set_user_to_yxs($phone);
+
                 return self::renderAPI($code, $msg);
                 break;
             case "chain_by_phone":
@@ -435,6 +452,7 @@ class ApiController extends Controller
                     'edate' => $edate,
                 ];
                 $res = YzUser::chain_items($criteria, $params, $se_date);
+
                 return self::renderAPI(0, 'ok', [
                     'data' => $res,
                 ]);
@@ -448,11 +466,12 @@ class ApiController extends Controller
 
                 $str = '';
                 foreach ($res as $v) {
-                    $str = $v['name'] . '(' . $v['phone'] . ')' . ' => ' . $str;
+                    $str = $v['name'].'('.$v['phone'].')'.' => '.$str;
                 }
                 $str = $str ? $str : '无上级严选师 => ';
+
                 return self::renderAPI(0, 'ok', [
-                    'data' => $str
+                    'data' => $str,
                 ]);
                 break;
             case "order_list_by_phone":
@@ -472,6 +491,7 @@ class ApiController extends Controller
                     'sdate' => $sdate,
                     'edate' => $edate,
                 ], $page);
+
                 return self::renderAPI(0, 'ok', [
                     'data' => $res,
                     'stat' => $stat,
@@ -489,14 +509,17 @@ class ApiController extends Controller
                         'f_status' => YzFt::ST_PENDING,
                         'f_created_by' => Admin::getAdminId(),
                     ]);
+
                     return self::renderAPI($code, '已提交审核~');
                 }
+
                 return self::renderAPI($code, $msg);
                 break;
             case 'mod_yxs_comfirm':
                 $st = self::postParam("st");
                 $fid = self::postParam("fid");
                 list($code, $msg) = YzFt::yxs_comfirm($st, $fid);
+
                 return self::renderAPI($code, $msg);
                 break;
             case "update_admin_data":
@@ -513,7 +536,7 @@ class ApiController extends Controller
                 $phone = trim(self::postParam("phone"));
                 $msg = YzClient::validity($phone);
                 if (!$id && $msg) {
-                    return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
+                    return self::renderAPI(self::CODE_MESSAGE, "添加失败！".$msg);
                 }
                 YzClient::edit([
                     "name" => trim(self::postParam("name")),
@@ -530,6 +553,7 @@ class ApiController extends Controller
                     "bd" => trim(self::postParam("bd")),
                     "src" => self::postParam("src", CRMClient::SRC_WEBSITE),
                 ], $id, $adminId);
+
                 return self::renderAPI(0, "客户线索保存成功！");
                 break;
             case "yxs_clue_goods_edit":
@@ -541,6 +565,7 @@ class ApiController extends Controller
                     return self::renderAPI(self::CODE_MESSAGE, "添加失败！");
                 }
                 YzClientGoods::edit($data, $id, $adminId);
+
                 return self::renderAPI(0, "客户线索商品保存成功！", [
                     'data' => $data,
                     'file' => $_FILES['clue_goods_image'],
@@ -559,6 +584,7 @@ class ApiController extends Controller
                     'cAuditNote' => $reason,
                     'cStatus' => $st,
                 ]);
+
                 return self::renderAPI(self::CODE_SUCCESS, "OK");
                 break;
             case "edit_finance_info":
@@ -566,6 +592,7 @@ class ApiController extends Controller
                     $data[$field] = self::postParam($field);
                 }
                 list($code, $msg, $res) = YzFinance::check_fields($data);
+
                 return self::renderAPI($code, $msg, $is_zp ? $res : []);
                 break;
             case "get_finance_info":
@@ -573,6 +600,7 @@ class ApiController extends Controller
                     $data[$field] = self::postParam($field);
                 }
                 $res = YzFinance::get_one($data);
+
                 return self::renderAPI(0, "GET FINANCE INFO OK", $res);
                 break;
             case "audit_finance_info":
@@ -582,11 +610,13 @@ class ApiController extends Controller
                     'fid' => self::postParam("fid"),
                 ];
                 list($code, $msg, $res) = YzFinance::audit_one($data);
+
                 return self::renderAPI($code, $msg, $is_zp ? $res : []);
                 break;
             default:
                 break;
         }
+
         return self::renderAPI(129);
     }
 
@@ -597,7 +627,7 @@ class ApiController extends Controller
     {
         $tag = strtolower(self::postParam("tag"));
         $id = self::postParam("id");
-        $ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML . "无操作！"];
+        $ret = ["code" => 159, "msg" => self::ICON_ALERT_HTML."无操作！"];
         switch ($tag) {
             case "users":
                 $ids = self::postParam("ids", 0);
@@ -606,11 +636,13 @@ class ApiController extends Controller
                     $sql = "select uName as name,uPhone as phone from im_user where uId in ($ids)";
                     $res = AppUtil::db()->createCommand($sql)->queryAll();
                 }
+
                 return self::renderAPI(0, '', $res);
             case "del-user":
                 if ($uInfo = User::findOne(["uId" => $id])) {
                     $uInfo->uStatus = User::STATUS_DELETE;
                     $uInfo->save();
+
                     return self::renderAPI(0, '删除成功');
                 } else {
                     return self::renderAPI(129, '删除失败');
@@ -631,7 +663,7 @@ class ApiController extends Controller
                     if ($uInfo = User::findOne(["uId" => $id])) {
                         User::edit($id, [
                             'uStatus' => $st,
-                            'uSubStatus' => $subSt
+                            'uSubStatus' => $subSt,
                         ], $this->admin_id);
                     } else {
                         return self::renderAPI(129, '用户不存在');
@@ -648,7 +680,7 @@ class ApiController extends Controller
                             'tag' => 'hint',
                             'uni' => $uni,
                             'msg' => '你的个人资料审核通过啦',
-                            'action' => 'refresh-profile'
+                            'action' => 'refresh-profile',
                         ];
                         //PushUtil::init()->hint('你的个人资料审核通过啦', $uni, 'refresh-profile')->close();
                     } else {
@@ -662,7 +694,7 @@ class ApiController extends Controller
                             $str = "";
                             foreach ($reason as $v) {
                                 if ($v["text"]) {
-                                    $str .= '你的' . $catArr[$v["tag"]] . "不合规，" . $v["text"] . '；';
+                                    $str .= '你的'.$catArr[$v["tag"]]."不合规，".$v["text"].'；';
                                 }
                             }
                             WechatUtil::templateMsg(WechatUtil::NOTICE_AUDIT,
@@ -674,7 +706,7 @@ class ApiController extends Controller
                                 'tag' => 'hint',
                                 'uni' => $uni,
                                 'msg' => '你的个人资料不完整，需要修改完善',
-                                'action' => 'refresh-profile'
+                                'action' => 'refresh-profile',
                             ];
                             //PushUtil::init()->hint('你的个人资料需要修改完善', $uni, 'refresh-profile')->close();
                         }
@@ -686,7 +718,7 @@ class ApiController extends Controller
                     return self::renderAPI(0, '操作成功',
                         [
                             'broadcast' => $broadcast,
-                            'aid' => $aid
+                            'aid' => $aid,
                         ]);
                 } else {
                     return self::renderAPI(129, '参数错误');
@@ -694,6 +726,7 @@ class ApiController extends Controller
                 break;
 
         }
+
         return self::renderAPI($ret["code"], $ret["msg"]);
     }
 
@@ -721,6 +754,7 @@ class ApiController extends Controller
             case "searchquestion":
                 $word = self::postParam("keyword");
                 $res = QuestionSea::findByKeyWord($word);
+
                 return self::renderAPI(0, '', $res);
             case "savegroup":
                 $ids = self::postParam("ids");
@@ -733,6 +767,7 @@ class ApiController extends Controller
                     "gTitle" => $title,
                     "gItems" => $ids,
                 ]);
+
                 return self::renderAPI(0, '保存成功');
             case "vote":
                 $ids = self::postParam("ids");
@@ -742,8 +777,10 @@ class ApiController extends Controller
                 foreach ($res as &$v) {
                     $v["sex"] = isset(User::$Gender[$v["gender"]]) ? User::$Gender[$v["gender"]] : "";
                 }
+
                 return self::renderAPI(0, '', ["items" => $res]);
         }
+
         return self::renderAPI(129, "什么操作也没做啊！");
     }
 
@@ -758,6 +795,7 @@ class ApiController extends Controller
                 $ret = User::propStat($beginDate, $endDate);
                 $beginDate = date('Y-m-d', strtotime($endDate) - 86400 * 30);
                 $ret['session'] = SessionService::init()->chartData($beginDate, $endDate);
+
                 return self::renderAPI(0, '', $ret);
             case 'reuse_detail':
                 $begin = self::postParam("begin");
@@ -766,9 +804,11 @@ class ApiController extends Controller
                 $to = self::postParam("to");
                 $cat = self::postParam("cat");
                 $ret = LogAction::reuseDetail($cat, $begin, $end, $from, $to);
+
                 return self::renderAPI(0, '', ['items' => $ret]);
                 break;
         }
+
         return self::renderAPI(129, "什么操作也没做啊！");
     }
 
@@ -781,11 +821,13 @@ class ApiController extends Controller
                 $dummyId = self::postParam("did");
                 $userId = self::postParam("uid");
                 list($ret) = ChatMsg::details($dummyId, $userId, 0, true);
+
                 return self::renderAPI(0, '', $ret);
             case 'send':
                 $serviceId = User::SERVICE_UID;
                 $text = self::postParam("text");
                 $ret = ChatMsg::addChat($serviceId, $id, $text, 0, $this->admin_id);
+
                 return self::renderAPI(0, '', $ret);
             case 'dsend':
                 $serviceId = self::postParam("did");
@@ -798,21 +840,23 @@ class ApiController extends Controller
                         'title' => '有人密聊你啦',
                         'sub_title' => 'TA给你发了一条密聊消息，快去看看吧~',
                         'sender_uid' => $serviceId,
-                        'gid' => $ret['gid']
+                        'gid' => $ret['gid'],
                     ],
                     QueueUtil::QUEUE_TUBE_SMS);
                 RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST, 'room', 'msg',
                     [
                         'gid' => $ret['gid'],
                         'room_id' => $ret['gid'],
-                        'items' => $ret
+                        'items' => $ret,
                     ]);
+
                 return self::renderAPI(0, '', [
                     'gid' => $ret['gid'],
-                    'items' => $ret
+                    'items' => $ret,
                 ]);
 
         }
+
         return self::renderAPI(129, "什么操作也没做啊！");
     }
 
@@ -828,10 +872,12 @@ class ApiController extends Controller
                 $type = self::postParam('type');
                 if ($content) {
                     $ret = UserWechat::sendMsgByGroup($group, $type, $content);
+
                     return self::renderAPI(0, "发送成功！", ['count' => $ret]);
                 }
                 break;
         }
+
         return self::renderAPI(129, "什么操作也没做啊！");
     }
 
@@ -855,8 +901,10 @@ class ApiController extends Controller
                         ]);
                     }
                 }
+
                 return self::renderAPI(0, "发送成功！");
         }
+
         return self::renderAPI(129, "什么操作也没做啊！");
     }
 
@@ -873,7 +921,7 @@ class ApiController extends Controller
         }
         Log::add([
             'oCategory' => Log::CAT_SOURCE,
-            'oAfter' => ['prov' => $p, 'city' => $c, 'phone' => $phone]
+            'oAfter' => ['prov' => $p, 'city' => $c, 'phone' => $phone],
         ]);
     }
 
@@ -891,6 +939,7 @@ class ApiController extends Controller
                         ->uploadOnly(false, false, false, true);
                 }
                 $ret = CogService::init()->edit($data, $this->admin_id);
+
                 return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $ret]);
                 break;
         }
@@ -905,6 +954,7 @@ class ApiController extends Controller
                 $page = self::postParam('page', 1);
                 $pageSize = self::postParam('page', 30);
                 list($items) = ChatRoom::roomChatList($rId, [], [], $page, $pageSize);
+
                 return self::renderAPI(0, '', $items);
             case 'avatar':
                 $rId = self::postParam('rid');
@@ -912,6 +962,7 @@ class ApiController extends Controller
                     return self::renderAPI(0, '发布到服务后使用！');
                 }
                 ChatRoom::roomAvatar($rId);
+
                 return self::renderAPI(0, '保存成功！');
             case 'edit': // 添加群
                 $data = json_decode(self::postParam('data'), 1);
@@ -923,6 +974,7 @@ class ApiController extends Controller
                     $data['logo'] = COSUtil::init(COSUtil::UPLOAD_PATH, $tmp, $ext)->uploadOnly(false, false, false);
                 }
                 $ret = ChatRoom::reg($data);
+
                 return self::renderAPI(0, $ret ? '保存成功！' : '保存失败！', ['result' => $data]);
                 break;
             case "adminopt": // 聊天室管理员操作: 1.删除 2.禁言
@@ -936,6 +988,7 @@ class ApiController extends Controller
                     return self::renderAPI(129, '对话不存在啊~');
                 }
                 ChatRoomFella::adminOPt($subtag, $oUId, $rid, $cid, $ban, $del);
+
                 return self::renderAPI(0, '', [
                     "chat" => '',
                 ]);
@@ -950,6 +1003,7 @@ class ApiController extends Controller
                     ChatMsg::addRoomChat($rid, $uid, "hi,大家好", $this->admin_id, $conn);
                 }
                 $code = $res ? 0 : 129;
+
                 return self::renderAPI($code, '', [
 
                 ]);
@@ -964,9 +1018,11 @@ class ApiController extends Controller
                     $info['room_id'] = $rid;
                     RedisUtil::publish(RedisUtil::CHANNEL_BROADCAST,
                         'room', 'msg', $info);
+
                     return self::renderAPI($code, $msg, $info);
                 }
         }
+
         return self::renderAPI(129, '操作无效');
     }
 
@@ -1008,7 +1064,7 @@ class ApiController extends Controller
                         'text_title' => 'title',
                         'text_intro' => 'subtext',
                         'topic' => 'mTopic',
-                        'uid' => 'mUId'
+                        'uid' => 'mUId',
                     ],
                     110 => ['cat' => 'mCategory', 'img_title' => 'title', 'topic' => 'mTopic', 'uid' => 'mUId'],
                     120 => [
@@ -1016,7 +1072,7 @@ class ApiController extends Controller
                         'voice_title' => 'title',
                         'voice_src' => 'other_url',
                         'topic' => 'mTopic',
-                        'uid' => '用户'
+                        'uid' => '用户',
                     ],
                     130 => [
                         'cat' => 'mCategory',
@@ -1024,8 +1080,8 @@ class ApiController extends Controller
                         'article_intro' => 'subtext',
                         'article_src' => 'other_url',
                         'topic' => 'mTopic',
-                        'uid' => 'mUId'
-                    ]
+                        'uid' => 'mUId',
+                    ],
                 ];
 
                 switch ($sign) {
@@ -1085,6 +1141,7 @@ class ApiController extends Controller
                     return self::renderAPI(129, '参数错误');
                 }
                 Moment::adminEdit($mid, ["mStatus" => $st]);
+
                 return self::renderAPI(0, '操作成功');
                 break;
             case "user_opt":
@@ -1107,6 +1164,7 @@ class ApiController extends Controller
                         list($data, $nextpage) = Moment::itemByCat($page, $mid, MomentSub::CAT_COMMENT);
                         break;
                 }
+
                 return self::renderAPI(0, '', [
                     'data' => $data,
                     'nextpage' => $nextpage,
@@ -1149,6 +1207,7 @@ class ApiController extends Controller
                 } elseif ($sign = 'edit') {
                     MomentTopic::adminEdit($tid, $insert);
                 }
+
                 return self::renderAPI(0, 'ok', [
                     "insert" => $insert,
                     "data" => $data,
@@ -1156,6 +1215,7 @@ class ApiController extends Controller
                 ]);
                 break;
         }
+
         return self::renderAPI(129, '操作无效');
     }
 
@@ -1170,20 +1230,23 @@ class ApiController extends Controller
             case "user-client":
                 if ($id) {
                     list($code, $msg) = CRMClient::addFromUser($id, $adminId);
+
                     return self::renderAPI($code, $msg);
                 }
                 break;
             case "grab":
                 list($code, $msg) = CRMClient::grab($id, $adminId);
-                return self::renderAPI($code, ($code == 0 ? self::ICON_OK_HTML : self::ICON_ALERT_HTML) . $msg);
+
+                return self::renderAPI($code, ($code == 0 ? self::ICON_OK_HTML : self::ICON_ALERT_HTML).$msg);
             case "remove":
                 CRMClient::del($id, $adminId);
+
                 return self::renderAPI(0, "删除成功！");
             case "edit":
                 $phone = trim(self::postParam("phone"));
                 $msg = CRMClient::validity($phone);
                 if (!$id && $msg) {
-                    return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
+                    return self::renderAPI(self::CODE_MESSAGE, "添加失败！".$msg);
                 }
                 CRMClient::edit([
                     "name" => trim(self::postParam("name")),
@@ -1200,6 +1263,7 @@ class ApiController extends Controller
                     "bd" => trim(self::postParam("bd")),
                     "src" => self::postParam("src", CRMClient::SRC_WEBSITE),
                 ], $id, $adminId);
+
                 return self::renderAPI(0, "客户线索保存成功！");
             case 'change':
                 $bdID = trim(self::postParam("bd"));
@@ -1209,25 +1273,29 @@ class ApiController extends Controller
                 $bdInfo = Admin::findOne(['aId' => $bdID]);
                 $note = '';
                 if ($bdInfo) {
-                    $note = '转移给' . $bdInfo->aName;
+                    $note = '转移给'.$bdInfo->aName;
                 } elseif ($bdID < 1) {
                     $note = '扔到公海里了';
                 }
                 CRMTrack::add($id, [
                     "status" => trim(self::postParam("status", 0)),
-                    "note" => $note
+                    "note" => $note,
                 ], $adminId);
+
                 return self::renderAPI(0, "客户转移成功！");
             case "track":
                 CRMTrack::add($id, [
                     "status" => trim(self::postParam("status")),
                     "note" => trim(self::postParam("note")),
                 ], $adminId);
+
                 return self::renderAPI(0, "添加跟进状态描述成功！");
             case "del":
                 CRMTrack::del($id, $adminId);
+
                 return self::renderAPI(0, "删除成功！");
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1256,7 +1324,7 @@ class ApiController extends Controller
                     "titles" => $clientTitles,
                     "sources" => $srcStat,//线索
                     "inners" => $donutInner,
-                    "outers" => $donutOuter
+                    "outers" => $donutOuter,
                 ];
                 if ($id) {
                     $trackStat = CRMTrack::trackStatDetail($category, $beginDate, $endDate, $id, $conn);
@@ -1271,8 +1339,10 @@ class ApiController extends Controller
                     $ret["track"] = $trackStat;
                     $ret["new"] = $newClientStat;
                 }
+
                 return self::renderAPI(0, "", $ret);
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1299,8 +1369,10 @@ class ApiController extends Controller
                 if (!$srcStat) {
                     return self::renderAPI(self::CODE_MESSAGE, "无数据", $ret);
                 }
+
                 return self::renderAPI(0, "", $ret);
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1314,20 +1386,23 @@ class ApiController extends Controller
             case "user-client":
                 if ($id) {
                     list($code, $msg) = CRMStockClient::addFromUser($id, $adminId);
+
                     return self::renderAPI($code, $msg);
                 }
                 break;
             case "grab":
                 list($code, $msg) = CRMStockClient::grab($id, $adminId);
-                return self::renderAPI($code, ($code == 0 ? self::ICON_OK_HTML : self::ICON_ALERT_HTML) . $msg);
+
+                return self::renderAPI($code, ($code == 0 ? self::ICON_OK_HTML : self::ICON_ALERT_HTML).$msg);
             case "remove":
                 CRMStockClient::del($id, $adminId);
+
                 return self::renderAPI(0, "删除成功！");
             case "edit":
                 $phone = trim(self::postParam("phone"));
                 $msg = CRMStockClient::validity($phone);
                 if (!$id && $msg) {
-                    return self::renderAPI(self::CODE_MESSAGE, "添加失败！" . $msg);
+                    return self::renderAPI(self::CODE_MESSAGE, "添加失败！".$msg);
                 }
                 list($data, $msg) = CRMStockClient::edit([
                     "name" => trim(self::postParam("name")),
@@ -1358,32 +1433,37 @@ class ApiController extends Controller
                 $bdInfo = Admin::findOne(['aId' => $bdID]);
                 $note = '';
                 if ($bdInfo) {
-                    $note = $this->admin_name . '转移给' . $bdInfo->aName;
+                    $note = $this->admin_name.'转移给'.$bdInfo->aName;
                 } elseif ($bdID < 1) {
 
-                    $note = $this->admin_name . '扔到公海里了';
+                    $note = $this->admin_name.'扔到公海里了';
                 }
                 CRMStockTrack::add($id, [
                     //"status" => trim(self::postParam("status", 0)),// 2019-04-02 delete
                     "status" => CRMStockClient::findOne($id)->cStatus,
-                    "note" => $note
+                    "note" => $note,
                 ], $adminId);
+
                 return self::renderAPI(0, "客户转移成功！");
             case "track":
                 CRMStockTrack::add($id, [
                     "status" => trim(self::postParam("status")),
                     "note" => trim(self::postParam("note")),
                 ], $adminId);
+
                 return self::renderAPI(0, "添加跟进状态描述成功！");
             case "del":
                 CRMStockTrack::del($id, $adminId);
+
                 return self::renderAPI(0, "删除成功！");
             case "user_alert":
                 list($code, $data) = Log::get_action_alert($this->admin_id);
+
                 return self::renderAPI($code, "", $data);
             case "update_user_alert":
                 $oid = self::postParam("oid");
                 list($code, $data) = Log::update_action_alert($oid, $this->admin_id);
+
                 return self::renderAPI($code, "", $data);
             case "choose_2_lose_client":
                 $data = self::postParam('data');
@@ -1394,8 +1474,10 @@ class ApiController extends Controller
                 foreach ($data as $cid) {
                     CRMStockClient::mod($cid, ['cBDAssign' => CRMStockClient::CBDASSIGN_LOSE]);
                 }
+
                 return self::renderAPI(0, "", $data);
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1495,7 +1577,7 @@ class ApiController extends Controller
                 if ($res) {
                     return self::renderAPI(0, "保存成功！", $data);
                 } else {
-                    return self::renderAPI(129, '保存失败' . $msg, $data);
+                    return self::renderAPI(129, '保存失败'.$msg, $data);
                 }
                 break;
             case 'edit_main_config_sms_time':
@@ -1512,14 +1594,34 @@ class ApiController extends Controller
                 if ($res1 && $res2) {
                     return self::renderAPI(0, "保存成功！");
                 } else {
-                    return self::renderAPI(129, '保存失败' . $msg);
+                    return self::renderAPI(129, '保存失败'.$msg);
                 }
+                break;
+            case 'edit_main_config_sms_send_times':
+                $msg = '';
+                $sms_send_times = intval(self::postParam("sms_send_times"));
+                if ($sms_send_times > 3) {
+                    $sms_send_times = 3;
+                }
+                if ($sms_send_times < 0) {
+                    $sms_send_times = 0;
+                }
+                $model = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0];
+                list($res) = StockMainConfig::edit($model['c_id'], ['c_content' => $sms_send_times]);
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！");
+                } else {
+                    return self::renderAPI(129, '保存失败'.$msg);
+                }
+
                 break;
             case "reset_main_result":
                 StockMainResult::reset();
+
                 return self::renderAPI(0, "重置数据成功！");
                 break;
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1550,7 +1652,7 @@ class ApiController extends Controller
                     "titles" => $clientTitles,
                     "sources" => $srcStat,//线索
                     "inners" => $donutInner,
-                    "outers" => $donutOuter
+                    "outers" => $donutOuter,
                 ];
                 if ($id) {
                     $trackStat = CRMStockTrack::trackStatDetail($category, $beginDate, $endDate, $id, $conn);
@@ -1571,8 +1673,10 @@ class ApiController extends Controller
                     $ret["prov"] = CRMStockClient::location_stat($beginDate, $endDate, 'cProvince', "", $conn);
                     $ret["city"] = CRMStockClient::location_stat($beginDate, $endDate, 'cCity', "", $conn);
                 }
+
                 return self::renderAPI(0, "", $ret);
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1599,8 +1703,10 @@ class ApiController extends Controller
                 if (!$srcStat) {
                     return self::renderAPI(self::CODE_MESSAGE, "无数据", $ret);
                 }
+
                 return self::renderAPI(0, "", $ret);
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1617,6 +1723,7 @@ class ApiController extends Controller
                 $uRate = self::postParam("uRate");
                 $uType = self::postParam("uType");
                 list($code, $msg, $data) = StockUser::edit_admin($uName, $uPhone, $uPtPhone, $uRate, $uType, $uNote);
+
                 return self::renderAPI($code, $msg, $data);
             case "edit_user_admin":
                 $uaId = self::postParam("uaId");
@@ -1625,16 +1732,19 @@ class ApiController extends Controller
                 $uaStatus = self::postParam("uaStatus");
                 $uaNote = self::postParam("uaNote");
                 list($code, $msg, $data) = StockUserAdmin::edit_admin($uaId, $uaPhone, $uaPtPhone, $uaStatus, $uaNote);
+
                 return self::renderAPI($code, $msg, $data);
             case "delete_stock_order":
                 $dt = self::postParam("dt");
                 list($code, $msg) = StockOrder::delete_by_dt($dt);
+
                 return self::renderAPI($code, $msg);
             case "cal_sold_order":
                 $dt = self::postParam("dt");
                 StockOrder::delete_by_dt(date('Y-m-d'), StockOrder::ST_SOLD);
                 StockOrder::sold_stock($dt);
                 StockOrder::update_price();
+
                 return self::renderAPI(0, '操作成功');
             case "edit_source":
                 $sName = self::postParam("sName");
@@ -1642,25 +1752,30 @@ class ApiController extends Controller
                 $sId = self::postParam("sId");
                 $sStatus = self::postParam("sStatus");
                 list($code, $msg) = CRMStockSource::pre_edit_admin($sId, $sName, $sTxt, $sStatus);
+
                 return self::renderAPI($code, $msg);
                 break;
             case "add_phone_section":
                 $phone_sections = self::postParam("section_phones");
                 list($code, $msg) = Log::add_phone_section_admin($phone_sections);
+
                 return self::renderAPI($code, $msg);
                 break;
             case "add_zdm_link":
                 $spread_phone = self::postParam("spread_phone");
                 list($code, $msg) = Log::add_zdm_reg_link($spread_phone);
+
                 return self::renderAPI($code, $msg);
                 break;
             case 'cal_hold_days':
                 StockOrder::cla_stock_hold_days();
+
                 return self::renderAPI(0, '计算完成');
                 break;
             case "update_user_action_change":
                 $dt = self::postParam("dt");
                 StockActionChange::insert_today_change($dt);
+
                 return self::renderAPI(0, '更新完成');
                 break;
             case "create_short_url":
@@ -1668,9 +1783,11 @@ class ApiController extends Controller
                 $shortUrl = WechatUtil::long2short_url($originUrl);
                 $code = $shortUrl ? 0 : 129;
                 $msg = $shortUrl ? "ok" : '请稍后再试';
+
                 return self::renderAPI($code, $msg, $shortUrl);
                 break;
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 
@@ -1684,6 +1801,7 @@ class ApiController extends Controller
         }
 
         $aId = Admin::getAdminId();
+
         return CRMTrack::visit($aId, $constr);
     }
 
@@ -1714,7 +1832,8 @@ class ApiController extends Controller
                 if (!$int) {
                     return self::renderAPI(self::CODE_MESSAGE, '删除失败', ['key_name' => $key_name]);
                 }
-                return self::renderAPI(self::CODE_SUCCESS, '删除' . $int . '个键成功', ['key_name' => $key_name]);
+
+                return self::renderAPI(self::CODE_SUCCESS, '删除'.$int.'个键成功', ['key_name' => $key_name]);
             case "add_key":
                 $key_type = self::postParam("key_type");
                 $key_name = self::postParam("key_name");
@@ -1724,16 +1843,16 @@ class ApiController extends Controller
 
                 $res = false;
 
-                $main_key = self::FIXED_PREFIX . self::GULE . $key_name;
+                $main_key = self::FIXED_PREFIX.self::GULE.$key_name;
                 if ($key_type == 'string') {
-                    $mainKey = $main_key . self::GULE . $key_name_sub;
+                    $mainKey = $main_key.self::GULE.$key_name_sub;
                     $res = $redis->set($mainKey, $key_val);
                     $redis->expire($mainKey, intval($key_expire) > 0 ? intval($key_expire) : 60);
 
                 } elseif ($key_type == 'list') {
 
                 } elseif ($key_type == 'hash') {
-                    $key_name_sub = self::GULE . $key_name_sub;
+                    $key_name_sub = self::GULE.$key_name_sub;
                     $res = $redis->hset($main_key, $key_name_sub, $key_val);
 
                 } elseif ($key_type == 'set') {
@@ -1744,6 +1863,7 @@ class ApiController extends Controller
 
 
         }
+
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");
     }
 

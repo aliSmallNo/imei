@@ -89,9 +89,7 @@ class StockMainConfig extends \yii\db\ActiveRecord
         }
 
         foreach ($values as $key => $val) {
-            if ($val) {
-                $entity->$key = $val;
-            }
+            $entity->$key = $val;
         }
         $entity->c_update_on = date('Y-m-d H:i:s');
         $res = $entity->save();

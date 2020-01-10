@@ -1840,6 +1840,7 @@ class StockController extends BaseController
                 'stDict' => StockMainConfig::$stDict,
                 'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
                 'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
+                'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
             ]);
     }
 

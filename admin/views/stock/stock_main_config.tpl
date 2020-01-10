@@ -79,6 +79,30 @@
         </div>
       </div>
     </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-cog fa-fw"></i> 设置推送短信每日次数
+        <div class="pull-right">
+          <a href="javascript:;" class="btnSaveSmsDayTimes btn btn-primary btn-xs" tag="dayTimesSetting">确定保存</a>
+        </div>
+      </div>
+      <div class="panel-body" tag="dayTimesSetting">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">每日推送短信次数</label>
+            <div class="col-sm-7">
+              <input class="form-control sms_send_times" value="{{$sms_times.c_content}}"
+                     placeholder="请输入每日推送短信次数"
+                     type="number"
+                     autocomplete="off">
+              <p class="help-block">每日推送短信次数,最大次数是3</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -217,12 +241,38 @@
                 layer.msg(resp.msg);
                 if (resp.code == 0) {
                     setTimeout(function () {
-                        //location.reload();
+                        location.reload();
                     }, 800);
                 }
             }, 'json');
         }
     });
+
+    $(document).on('click', '.btnSaveSmsDayTimes', function () {
+        var url = '/api/stock_main';
+        var postData = {
+            tag: 'edit_main_config_sms_send_times',
+            sms_send_times: $.trim($('.sms_send_times').val()),
+        };
+        console.log(postData);
+        if (!postData["sms_send_times"]) {
+            layer.msg("次数不能为空！");
+            return;
+        }
+        if (postData) {
+            layer.load();
+            $.post(url, postData, function (resp) {
+                layer.closeAll();
+                layer.msg(resp.msg);
+                if (resp.code == 0) {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 800);
+                }
+            }, 'json');
+        }
+    });
+
 
 
 </script>
