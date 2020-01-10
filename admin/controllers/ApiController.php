@@ -51,6 +51,7 @@ use common\models\YzUser;
 use common\service\CogService;
 use common\service\SessionService;
 use common\utils\AppUtil;
+use common\utils\CaptchaUtil;
 use common\utils\COSUtil;
 use common\utils\ImageUtil;
 use common\utils\RedisUtil;
@@ -92,6 +93,9 @@ class ApiController extends Controller
 
     public function beforeAction($action)
     {
+        if (in_array(\Yii::$app->controller->action->id, ['login'])) {
+            return parent::beforeAction($action);
+        }
         $this->admin_id = Admin::getAdminId();
         if (!$this->admin_id) {
             header("location:/site/login");
@@ -414,6 +418,30 @@ class ApiController extends Controller
         }
 
         return self::renderAPI(129);
+    }
+
+    public function actionLogin()
+    {
+        $tag = strtolower(self::postParam("tag"));
+        switch ($tag) {
+            case 'change_captcha':
+                list($code, $src) = CaptchaUtil::create();
+                $session_key = AppUtil::getCookie('PHPSESSID');
+                Log::add([
+                    'oCategory' => Log::CAT_SITE_LOGIN,
+                    'oKey' => '100',
+                    'oUId' => '',
+                    'oOpenId' => $session_key,
+                    'oBefore' => $code,
+                    'oAfter' => [$code],
+                ]);
+                RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->setCache($code);
+
+                return self::renderAPI(0, "ok", ['src' => $src]);
+                break;
+        }
+
+        return self::renderAPI(129, "什么操作也没做啊！");
     }
 
     public function actionYouz()

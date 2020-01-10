@@ -37,9 +37,9 @@ class CaptchaUtil
         // 获得二进制图片
         $content = $model->renderImage($code);
         // 转化为base64的图片
-        $src = 'data:' . 'image/png' . ';base64,' . base64_encode($content);
+        $src = 'data:'.'image/png'.';base64,'.base64_encode($content);
 
-        return [$code, $src];
+        return [$code, $src, $content];
     }
 
     public function initFont()
@@ -171,8 +171,8 @@ class CaptchaUtil
     {
         $backColor = $this->transparent
             ? new \ImagickPixel('transparent')
-            : new \ImagickPixel('#' . str_pad(dechex($this->backColor), 6, 0, STR_PAD_LEFT));
-        $foreColor = new \ImagickPixel('#' . str_pad(dechex($this->foreColor), 6, 0, STR_PAD_LEFT));
+            : new \ImagickPixel('#'.str_pad(dechex($this->backColor), 6, 0, STR_PAD_LEFT));
+        $foreColor = new \ImagickPixel('#'.str_pad(dechex($this->foreColor), 6, 0, STR_PAD_LEFT));
 
         $image = new \Imagick();
         $image->newImage($this->width, $this->height, $backColor);
@@ -199,6 +199,7 @@ class CaptchaUtil
         }
 
         $image->setImageFormat('png');
+
         return $image->getImageBlob();
     }
 

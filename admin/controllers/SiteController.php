@@ -40,7 +40,10 @@ use common\utils\WechatUtil;
 use console\utils\QueueUtil;
 use Yii;
 use yii\base\Exception;
-use yii\captcha\CaptchaAction;
+use yii\captcha\Captcha;
+use yii\filters\VerbFilter;
+use yii\helpers\Url;
+use yii\web\Response;
 
 
 class SiteController extends BaseController
@@ -86,7 +89,6 @@ class SiteController extends BaseController
         $session_key = AppUtil::getCookie('PHPSESSID');
 
         // var_dump(Yii::$app->request->hostInfo);exit;
-
         if ($name && $pass) {
             Log::add([
                 'oCategory' => Log::CAT_SITE_LOGIN,
@@ -127,11 +129,11 @@ class SiteController extends BaseController
         // 可以改为redis
         RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->setCache($code);
 
-        header("Last-Modified:".gmdate(" D, d M Y H:i:s ")."GMT ");
-        header("Cache-Control: no-cache, must-revalidate ");
-        header("Cache-Control:no-cache,must-revalidate,no-store"); //这个no-store加了之后，Firefox下有效
-        header("Pragma:no-cache");
-        header("Expires:-1");
+        Yii::$app->getResponse()->getHeaders()
+            ->set('Pragma', 'public')
+            ->set('Expires', '0')
+            ->set('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+            ->set('Last-Modified', gmdate(" D, d M Y H:i:s ")."GMT ");
 
         return $this->renderPage('login.tpl', [
             'tip' => $tip,
