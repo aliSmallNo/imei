@@ -127,6 +127,12 @@ class SiteController extends BaseController
         // 可以改为redis
         RedisUtil::init(RedisUtil::KEY_LOGIN_CODE, $session_key)->setCache($code);
 
+        header(" Last-Modified:".gmdate(" D, d M Y H:i:s ")."GMT ");
+        header("Cache-Control: no-cache, must-revalidate ");
+        header("Cache-Control:no-cache,must-revalidate,no-store"); //这个no-store加了之后，Firefox下有效
+        header("Pragma:no-cache");
+        header("Expires:-1");
+
         return $this->renderPage('login.tpl', [
             'tip' => $tip,
             'src' => $src,
