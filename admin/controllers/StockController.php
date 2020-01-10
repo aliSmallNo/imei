@@ -1716,12 +1716,13 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat();
+        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat();
 
         return $this->renderPage("stock_main_result_stat.tpl",
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
+                'list_warn' => $list_warn,
             ]
         );
     }
@@ -1733,12 +1734,13 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat2018()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat('2018', '2018');
+        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat('2018', '2018');
 
         return $this->renderPage("stock_main_result_stat2018.tpl",
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
+                'list_warn' => $list_warn,
             ]
         );
     }
@@ -1750,12 +1752,14 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat2019()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat('2019', '2019');
+        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat('2019', '2019');
 
         return $this->renderPage("stock_main_result_stat2019.tpl",
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
+                'list_warn' => $list_warn,
+
             ]
         );
     }
@@ -1767,12 +1771,14 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat1820()
     {
-        list($list_buy, $list_sold) = StockMainResult::result_stat('2018', '2020');
+        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat('2018', '2020');
 
         return $this->renderPage("stock_main_result_stat1820.tpl",
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
+                'list_warn' => $list_warn,
+
             ]
         );
     }

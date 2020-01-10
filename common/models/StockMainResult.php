@@ -394,7 +394,17 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         foreach ($res as $k => $v) {
             foreach ($v as $f => $v1) {
-                if (in_array($f, ['r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20','r_warn5', 'r_warn10', 'r_warn20'])) {
+                if (in_array($f, [
+                    'r_buy5',
+                    'r_buy10',
+                    'r_buy20',
+                    'r_sold5',
+                    'r_sold10',
+                    'r_sold20',
+                    'r_warn5',
+                    'r_warn10',
+                    'r_warn20',
+                ])) {
                     $res[$k][$f] = trim($res[$k][$f], ',');
                 }
             }
@@ -1221,22 +1231,27 @@ class StockMainResult extends \yii\db\ActiveRecord
      */
     public static function result_stat($year1 = '', $year2 = '')
     {
-        $rules_buys = StockMainRule::find()->where([
+        /*$rules_buys = StockMainRule::find()->where([
             'r_cat' => StockMainRule::CAT_BUY,
             'r_status' => StockMainRule::ST_ACTIVE,
         ])->asArray()->all();
         $rules_solds = StockMainRule::find()->where([
             'r_cat' => StockMainRule::CAT_SOLD,
             'r_status' => StockMainRule::ST_ACTIVE,
-        ])->asArray()->all();
+        ])->asArray()->all();*/
+
+        $rules_buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
+        $rules_solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
+        $rules_warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
 
         $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1.'-01-01', $year2.'-12-31'] : [];
         $results = StockMainResult::find()->where($where)->asArray()->all();
 
         $list_buy = self::result_stat_item($rules_buys, $results);
         $list_sold = self::result_stat_item($rules_solds, $results);
+        $list_warn = self::result_stat_item($rules_warns, $results);
 
-        return [$list_buy, $list_sold];
+        return [$list_buy, $list_sold, $list_warn];
     }
 
     public static function result_stat_item($rules, $results)
@@ -1245,6 +1260,8 @@ class StockMainResult extends \yii\db\ActiveRecord
         foreach ($rules as $rule) {
             $item = [];
             $rule_name = $rule['r_name'];
+            $rule_cat = $rule['r_cat'];
+            // $rule_name = $rule['r_id'];
             $item[$rule_name] = [
                 5 => [
                     'times' => 0,
@@ -1290,24 +1307,47 @@ class StockMainResult extends \yii\db\ActiveRecord
                 return $item;
             };
             foreach ($results as $result) {
-                if (strpos($result['r_buy5'], $rule_name) !== false) {
+                foreach ([5, 10, 20] as $day) {
+                    foreach ([
+                                 StockMainRule::CAT_BUY => 'r_buy',
+                                 StockMainRule::CAT_SOLD => 'r_sold',
+                                 StockMainRule::CAT_WARN => 'r_warn',
+                             ] as $_rule_cat => $field) {
+                        if (strpos($result[$field.$day], $rule_name) !== false && $rule_cat == $_rule_cat) {
+                            $item = $count($item, $result, $day, $rule_name);
+                        }
+                    }
+                }
+                /*
+                if (strpos($result['r_buy5'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_BUY) {
                     $item = $count($item, $result, 5, $rule_name);
                 }
-                if (strpos($result['r_sold5'], $rule_name) !== false) {
+                if (strpos($result['r_buy10'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_BUY) {
+                    $item = $count($item, $result, 10, $rule_name);
+                }
+                if (strpos($result['r_buy20'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_BUY) {
+                    $item = $count($item, $result, 20, $rule_name);
+                }
+
+                if (strpos($result['r_sold5'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_SOLD) {
                     $item = $count($item, $result, 5, $rule_name);
                 }
-                if (strpos($result['r_buy10'], $rule_name) !== false) {
+                if (strpos($result['r_sold10'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_SOLD) {
                     $item = $count($item, $result, 10, $rule_name);
                 }
-                if (strpos($result['r_sold10'], $rule_name) !== false) {
+                if (strpos($result['r_sold20'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_SOLD) {
+                    $item = $count($item, $result, 20, $rule_name);
+                }
+
+                if (strpos($result['r_warn5'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_WARN) {
+                    $item = $count($item, $result, 5, $rule_name);
+                }
+                if (strpos($result['r_warn10'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_WARN) {
                     $item = $count($item, $result, 10, $rule_name);
                 }
-                if (strpos($result['r_buy20'], $rule_name) !== false) {
+                if (strpos($result['r_warn20'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_WARN) {
                     $item = $count($item, $result, 20, $rule_name);
-                }
-                if (strpos($result['r_sold20'], $rule_name) !== false) {
-                    $item = $count($item, $result, 20, $rule_name);
-                }
+                }*/
             }
             $data[] = $item;
         }
