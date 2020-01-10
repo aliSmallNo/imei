@@ -350,19 +350,18 @@ class StockMainResult extends \yii\db\ActiveRecord
         $end = strtotime(date('Y-m-d '.$model2['c_content'].':00'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
-            //return 0;
+            return 0;
         }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-        //$ret = self::find()->where(['r_trans_on' => '2019-11-07'])->asArray()->one();
         if (!$ret) {
-            //return 1;
+            return 1;
         }
 
         $buy_type = self::get_buy_sold_item($ret, self::TAG_BUY);
         $sold_type = self::get_buy_sold_item($ret, self::TAG_SOLD);
         if (!$buy_type && !$sold_type) {
-            //return 2;
+            return 2;
         }
 
         // 验证码 8开头是买入 7开头是卖出
@@ -376,8 +375,8 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         $able_send_count = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0]['c_content'];
 
-        //$phones = StockMainConfig::get_sms_phone();
-        $phones = [17611629667];
+        $phones = StockMainConfig::get_sms_phone();
+
         foreach ($phones as $phone) {
             $has_send_count = Log::get_stock_main_sms_send_count($phone);
             if ($has_send_count >= $able_send_count) {
