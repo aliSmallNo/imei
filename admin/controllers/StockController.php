@@ -1800,6 +1800,29 @@ class StockController extends BaseController
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
                 'avgs' => $avgs,
+                'flag' => 0,
+            ]
+        );
+    }
+
+    /**
+     * 麻烦做下买点出现后5天的【做空】收益率
+     *
+     * @time 2020-01-13 PM
+     */
+    public function actionRate_5day_after_r()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+
+        list($list, $avgs) = StockMainPrice::get_5day_after_rate_r($price_type);
+
+        return $this->renderPage("stock_main_rate_5day_rate.tpl",
+            [
+                'list' => array_reverse($list),
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+                'avgs' => $avgs,
+                'flag' => 1,
             ]
         );
     }

@@ -201,7 +201,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
      *
      * @time 2019-12-02 PM
      */
-    public static function get_5day_after_rate_item($buy_dt, $price_type, $conn)
+    public static function get_5day_after_rate_item($buy_dt, $price_type, $conn, $flag = 1)
     {
         $conn = $conn ? $conn : AppUtil::db();
         $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 6";
@@ -220,7 +220,11 @@ class StockMainPrice extends \yii\db\ActiveRecord
         ];
 
         // 获得卖点
-        $sold = StockMainResult::get_sold_point($buy_dt);
+        if ($flag) {
+            $sold = StockMainResult::get_sold_point($buy_dt);
+        } else {
+            $sold = StockMainResult::get_sold_point_r($buy_dt);
+        }
         $sold_dt = '';
         if ($sold) {
             $sold_dt = $sold['r_trans_on'];
@@ -235,6 +239,65 @@ class StockMainPrice extends \yii\db\ActiveRecord
         }
 
         return $data;
+    }
+
+    /**
+     * 做下买点出现后5天的 【做空】收益率
+     *
+     * 买点后收益率，有2点改进下：
+     * 1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计
+     * 2. 统计的收益率点，如果5天内出现卖点，那么后面的收益率就不统计了。因为卖点后继续统计，会影响数据。
+     *
+     * @time 2020-01-13 added
+     */
+    public static function get_5day_after_rate_r($price_type)
+    {
+        $conn = AppUtil::db();
+        $sql = "select 
+                p_trans_on
+                from im_stock_main_price p
+                join im_stock_main_result r on p.p_trans_on=r.r_trans_on
+                where p_trans_on > '2018-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) 
+                order by p_trans_on asc";
+        $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
+
+        // 买点找出卖出
+        $buy_sold_dts = [];
+        foreach ($dts as $dt) {
+            $sold = StockMainResult::get_sold_point_r($dt);
+            if ($sold) {
+                $buy_sold_dts[$dt] = $sold['r_trans_on'];
+            }
+        }
+        // 卖出点后出现的“第一次买点”
+        $sold_dt_flag = '';
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            if (!$sold_dt_flag) {
+                $sold_dt_flag = $sold_dt;
+                continue;
+            }
+            if ($sold_dt == $sold_dt_flag) {
+                unset($buy_sold_dts[$buy_dt]);
+            } else {
+                $sold_dt_flag = $sold_dt;
+            }
+        }
+
+        $data = [];
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            $data[] = self::get_5day_after_rate_item($buy_dt, $price_type, $conn, 0);
+        }
+
+        $avgs = [];
+        foreach ([0, 1, 2, 3, 4] as $avg_k) {
+            $column = array_column($data, $avg_k);
+            $sum = array_sum($column);
+            $co = count(array_filter($column));
+            //echo $avg_k.' = '.$co.'<br>';
+            $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
+        }
+
+        return [$data, $avgs];
     }
 
     public static function init_excel_data()

@@ -281,7 +281,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $flag10 = intval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
         $flag11 = intval($rule['r_diff_gt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_gt'] : true;
-        $flag12 = intval($rule['r_diff_lt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_lt'] : true;
+        $flag12 = intval($rule['r_diff_lt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) < $rule['r_diff_lt'] : true;
 
         $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= $rule['r_date_gt'] : true;
         $flag14 = intval($rule['r_date_lt']) ? strtotime($s_trans_on) <= $rule['r_date_lt'] : true;

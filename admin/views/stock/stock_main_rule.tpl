@@ -98,6 +98,7 @@
           <div>>{{$item.r_sh_turnover_gt}}</div>
           <div><{{$item.r_sh_turnover_lt}}</div>
         </td>
+        <!-- 差值 -->
         <td>
           <div>>{{$item.r_diff_gt}}</div>
           <div><{{$item.r_diff_lt}}</div>
