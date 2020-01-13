@@ -16,12 +16,14 @@
 </style>
 <div class="row">
   <div class="col-sm-6">
-    <h4>买点出现后5天的{{if $flag}}【做空】{{/if}}收益率
+    <h4>收益率
     </h4>
   </div>
 </div>
+<div class="row-divider"></div>
+
 <div class="row">
-  <form action="/stock/rate_5day_after{{if $flag}}_r{{/if}}" method="get" class="form-inline">
+  <form action="/stock/rate_5day_after" method="get" class="form-inline">
     <div class="form-group">
       <select class="form-control" name="price_type">
         {{foreach from=$price_types item=type key=key}}
@@ -33,6 +35,19 @@
     <span class="space"></span>
   </form>
 </div>
+
+<div class="row">
+  <ul class="nav nav-tabs">
+    {{foreach from=$tabs key=key item=tab}}
+      <li class="ng-scope {{$tab.cls}}">
+        <a href="/stock/rate_5day_after?is_go_short={{$tab.is_go_short}}"
+           class="ng-binding">{{$tab.name}}
+        </a>
+      </li>
+    {{/foreach}}
+  </ul>
+</div>
+
 <div class="row-divider"></div>
 <div class="row">
   <table class="table table-striped table-bordered">

@@ -1590,26 +1590,38 @@ class StockController extends BaseController
     {
         $page = self::getParam("page", 1);
         $name = self::getParam("name", '');
+        $cat = self::getParam("cat", '');
 
         $criteria = [];
         $params = [];
 
         if ($name) {
-            // 'r_buy5', 'r_buy10', 'r_buy20', 'r_sold5', 'r_sold10', 'r_sold20'
-            $criteria[] = "  (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
+            $criteria[] = " (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
             or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name 
             or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name ) ";
             $params[':name'] = "%$name%";
         }
+        if ($cat) {
+            $cStr = [
+                5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or or CHAR_LENGTH(r.r_warn5)>0) ',
+                10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
+                20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
+            ];
+            $criteria[] = $cStr[$cat];
+        }
+
 
         list($list, $count) = StockMainResult::items($criteria, $params, $page, 10000);
         $pagination = self::pagination($page, $count, 10000);
+
 
         return $this->renderPage("stock_main_result.tpl",
             [
                 'pagination' => $pagination,
                 'list' => $list,
                 'name' => $name,
+                'cats' => StockMainStat::$cats,
+                'cat' => $cat,
             ]
         );
     }
@@ -1716,15 +1728,115 @@ class StockController extends BaseController
      */
     public function actionStock_result_stat()
     {
-        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat();
+        $st_year = self::getParam("st_year", '');
+        $et_year = self::getParam("et_year", '');
+
+        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat($st_year, $et_year);
+
+        $tabs = [
+            ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
+            ['name' => '2018策略结果列表', 'st_year' => '2018', 'et_year' => '2018', 'cls' => ''],
+            ['name' => '2019策略结果列表', 'st_year' => '2019', 'et_year' => '2019', 'cls' => ''],
+            ['name' => '2018-2020策略结果列表', 'st_year' => '2018', 'et_year' => '2020', 'cls' => ''],
+        ];
+        foreach ($tabs as $k => $v) {
+            if ($st_year == $v['st_year'] && $et_year == $v['et_year']) {
+                $tabs[$k]['cls'] = 'active';
+            }
+        }
 
         return $this->renderPage("stock_main_result_stat.tpl",
             [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
                 'list_warn' => $list_warn,
+                'tabs' => $tabs,
+                //'st_year' => $st_year,
+                //'et_year' => $et_year,
             ]
         );
+    }
+
+
+    /**
+     * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
+     * @time 2019-12-02
+     *
+     * 买点出现后5天的【做空】收益率
+     * @time 2020-01-13 PM
+     *
+     */
+    public function actionRate_5day_after()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $is_go_short = self::getParam("is_go_short", 0);
+
+        if ($is_go_short) {
+            list($list, $avgs) = StockMainPrice::get_5day_after_rate_r($price_type);
+        } else {
+            list($list, $avgs) = StockMainPrice::get_5day_after_rate($price_type);
+        }
+
+        $tabs = [
+            ['name' => '买点出现后5天的收益率', 'is_go_short' => 1, 'cls' => ''],
+            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 0, 'cls' => ''],
+        ];
+        foreach ($tabs as $k => $v) {
+            if ($is_go_short == $v['is_go_short']) {
+                $tabs[$k]['cls'] = 'active';
+            }
+        }
+
+        return $this->renderPage("stock_main_rate_5day_rate.tpl",
+            [
+                'list' => array_reverse($list),
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+                'avgs' => $avgs,
+                'tabs' => $tabs,
+                //'is_go_short' => $is_go_short,
+            ]
+        );
+    }
+
+    /**
+     * 有没有可能做一个随机的买点和卖点，然后来验一下我们这个模型。
+     * 是不是比随机的要好一些，就比如什么意思呢，就是比如说六月份出来一个买点和一个卖点，我们交易了一次。
+     * 然后呢，六月份你随机模拟一个买点和卖点。然后这样整体算下来看，一年下来，我们的这种。策略是比谁机要更强一些。
+     *
+     * @time 2019-12-09
+     */
+    public function actionRandom_rate()
+    {
+        $max_hold_days = self::getParam("max_hold_days", 10);
+
+        list($list, $rate_year_sum) = StockMainResult::random_buy_rate($max_hold_days);
+
+        return $this->renderPage("stock_main_random_rate.tpl",
+            [
+                'list' => $list,
+                'rate_year_sum' => $rate_year_sum,
+                'max_hold_days' => $max_hold_days,
+            ]);
+    }
+
+    /**
+     * 配置项
+     *
+     * @time 2019-12-19 PM
+     */
+    public function actionStock_main_config()
+    {
+        $list = StockMainConfig::get_items_by_cat();
+
+        return $this->renderPage("stock_main_config.tpl",
+            [
+                'list' => $list,
+                'stDict' => StockMainConfig::$stDict,
+                'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
+                'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
+                'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
+            ]);
     }
 
     /**
@@ -1782,89 +1894,4 @@ class StockController extends BaseController
             ]
         );
     }
-
-    /**
-     * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
-     *
-     * @time 2019-12-02
-     */
-    public function actionRate_5day_after()
-    {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
-
-        list($list, $avgs) = StockMainPrice::get_5day_after_rate($price_type);
-
-        return $this->renderPage("stock_main_rate_5day_rate.tpl",
-            [
-                'list' => array_reverse($list),
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'avgs' => $avgs,
-                'flag' => 0,
-            ]
-        );
-    }
-
-    /**
-     * 麻烦做下买点出现后5天的【做空】收益率
-     *
-     * @time 2020-01-13 PM
-     */
-    public function actionRate_5day_after_r()
-    {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
-
-        list($list, $avgs) = StockMainPrice::get_5day_after_rate_r($price_type);
-
-        return $this->renderPage("stock_main_rate_5day_rate.tpl",
-            [
-                'list' => array_reverse($list),
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'avgs' => $avgs,
-                'flag' => 1,
-            ]
-        );
-    }
-
-    /**
-     * 有没有可能做一个随机的买点和卖点，然后来验一下我们这个模型。
-     * 是不是比随机的要好一些，就比如什么意思呢，就是比如说六月份出来一个买点和一个卖点，我们交易了一次。
-     * 然后呢，六月份你随机模拟一个买点和卖点。然后这样整体算下来看，一年下来，我们的这种。策略是比谁机要更强一些。
-     *
-     * @time 2019-12-09
-     */
-    public function actionRandom_rate()
-    {
-        $max_hold_days = self::getParam("max_hold_days", 10);
-
-        list($list, $rate_year_sum) = StockMainResult::random_buy_rate($max_hold_days);
-
-        return $this->renderPage("stock_main_random_rate.tpl",
-            [
-                'list' => $list,
-                'rate_year_sum' => $rate_year_sum,
-                'max_hold_days' => $max_hold_days,
-            ]);
-    }
-
-    /**
-     * 配置项
-     *
-     * @time 2019-12-19 PM
-     */
-    public function actionStock_main_config()
-    {
-        $list = StockMainConfig::get_items_by_cat();
-
-        return $this->renderPage("stock_main_config.tpl",
-            [
-                'list' => $list,
-                'stDict' => StockMainConfig::$stDict,
-                'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
-                'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
-                'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
-            ]);
-    }
-
 }

@@ -332,25 +332,7 @@ class Menu
                         "level" => 820
                     ],
                     [
-                        "name" => "结果统计2018",
-                        "url" => "/stock/stock_result_stat2018",
-                        "revise" => 1,
-                        "level" => 820
-                    ],
-                    [
-                        "name" => "结果统计2019",
-                        "url" => "/stock/stock_result_stat2019",
-                        "revise" => 1,
-                        "level" => 820
-                    ],
-                    [
-                        "name" => "结果统计1820",
-                        "url" => "/stock/stock_result_stat1820",
-                        "revise" => 1,
-                        "level" => 820
-                    ],
-                    [
-                        "name" => "买点后收益率",
+                        "name" => "收益率",
                         "url" => "/stock/rate_5day_after",
                         "revise" => 1,
                         "level" => 820

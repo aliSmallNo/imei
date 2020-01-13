@@ -32,6 +32,12 @@
   <form action="/stock/stock_main_result" method="get" class="form-inline">
     <div class="form-group">
       <input type="text" name="name" class="form-control" placeholder="策略名称" value="{{$name}}">
+      <select class="form-control" name="cat">
+        <option>-=请选择=-</option>
+        {{foreach from=$cats item=day key=key}}
+          <option value="{{$key}}" {{if $key==$cat}}selected{{/if}}>{{$day}}</option>
+        {{/foreach}}
+      </select>
     </div>
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>
