@@ -1778,8 +1778,8 @@ class StockController extends BaseController
         }
 
         $tabs = [
-            ['name' => '买点出现后5天的收益率', 'is_go_short' => 1, 'cls' => ''],
-            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 0, 'cls' => ''],
+            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => ''],
+            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => ''],
         ];
         foreach ($tabs as $k => $v) {
             if ($is_go_short == $v['is_go_short']) {
