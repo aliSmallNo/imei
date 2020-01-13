@@ -108,6 +108,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
             default:
                 $price_field = '';
         }
+
         return $price_field;
     }
 
@@ -138,7 +139,12 @@ class StockMainPrice extends \yii\db\ActiveRecord
     /**
      * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
      *
-     * @time 2019-12-06
+     * @time 2019-12-06 added
+     *
+     * 买点后收益率，有2点改进下：
+     * 1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计
+     * 2. 统计的收益率点，如果5天内出现卖点，那么后面的收益率就不统计了。因为卖点后继续统计，会影响数据。
+     * @time 2020-01-13 modify
      */
     public static function get_5day_after_rate($price_type)
     {
@@ -151,18 +157,41 @@ class StockMainPrice extends \yii\db\ActiveRecord
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
-        $data = [];
+        // 买点找出卖出
+        $buy_sold_dts = [];
         foreach ($dts as $dt) {
-            $data[] = self::get_5day_after_rate_item($dt, $price_type, $conn);
+            $sold = StockMainResult::get_sold_point($dt);
+            if ($sold) {
+                $buy_sold_dts[$dt] = $sold['r_trans_on'];
+            }
         }
-        $co = count($data);
-        $avgs = [
-            0 => round(array_sum(array_column($data, 0)) / $co, 3),
-            1 => round(array_sum(array_column($data, 1)) / $co, 3),
-            2 => round(array_sum(array_column($data, 2)) / $co, 3),
-            3 => round(array_sum(array_column($data, 3)) / $co, 3),
-            4 => round(array_sum(array_column($data, 4)) / $co, 3),
-        ];
+        // 卖出点后出现的“第一次买点”
+        $sold_dt_flag = '';
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            if (!$sold_dt_flag) {
+                $sold_dt_flag = $sold_dt;
+                continue;
+            }
+            if ($sold_dt == $sold_dt_flag) {
+                unset($buy_sold_dts[$buy_dt]);
+            } else {
+                $sold_dt_flag = $sold_dt;
+            }
+        }
+
+        $data = [];
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            $data[] = self::get_5day_after_rate_item($buy_dt, $price_type, $conn);
+        }
+
+        $avgs = [];
+        foreach ([0, 1, 2, 3, 4] as $avg_k) {
+            $column = array_column($data, $avg_k);
+            $sum = array_sum($column);
+            $co = count(array_filter($column));
+            //echo $avg_k.' = '.$co.'<br>';
+            $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
+        }
 
         return [$data, $avgs];
     }
@@ -172,26 +201,39 @@ class StockMainPrice extends \yii\db\ActiveRecord
      *
      * @time 2019-12-02 PM
      */
-    public static function get_5day_after_rate_item($dt, $price_type, $conn)
+    public static function get_5day_after_rate_item($buy_dt, $price_type, $conn)
     {
         $conn = $conn ? $conn : AppUtil::db();
         $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 6";
-        $res = $conn->createCommand($sql, [':dt' => $dt])->queryAll();
+        $res = $conn->createCommand($sql, [':dt' => $buy_dt])->queryAll();
 
         $today = array_shift($res);
         $price = $today[$price_type];
-        $data['dt'] = $dt;
+        $data['dt'] = $buy_dt;
         $data = [
-            'dt' => $dt,
+            'dt' => $buy_dt,
             '0' => 0,
             '1' => 0,
             '2' => 0,
             '3' => 0,
             '4' => 0,
         ];
+
+        // 获得卖点
+        $sold = StockMainResult::get_sold_point($buy_dt);
+        $sold_dt = '';
+        if ($sold) {
+            $sold_dt = $sold['r_trans_on'];
+        }
+
         foreach ($res as $k => $v) {
+            // 如果5天内出现卖点，那么后面的收益率就不统计了
+            if ($sold_dt && strtotime($v['p_trans_on']) > strtotime($sold_dt)) {
+                continue;
+            }
             $data[$k] = $price > 0 ? round($v[$price_type] / $price - 1, 5) * 100 : 0;
         }
+
         return $data;
     }
 
@@ -200,7 +242,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
         return false;
 
         foreach (self::$ic_futures as $dt => $ic_price) {
-            echo $dt . PHP_EOL;
+            echo $dt.PHP_EOL;
             self::add([
                 //'p_etf500' => StockMain::$etf500_data[$dt] ?? 0,
                 //'p_etf300' => $etf300_price,
