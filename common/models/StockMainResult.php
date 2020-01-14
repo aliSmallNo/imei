@@ -419,6 +419,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 				order by r_trans_on desc 
 				$limit ";
         $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+        //echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();exit;
 
         foreach ($res as $k => $v) {
             foreach ($v as $f => $v1) {
