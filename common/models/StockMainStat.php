@@ -311,6 +311,10 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
 
+        $r_sh_turnover_change_rate = round($N_s_sum_turnover_avg_scale / $J_s_sh_change, 3);
+        $flag30 = intval($rule['r_sh_turnover_change_rate_gt']) != self::IGNORE_VAL ? $r_sh_turnover_change_rate > $rule['r_sh_turnover_change_rate_gt'] : true;
+        $flag31 = intval($rule['r_sh_turnover_change_rate_lt']) != self::IGNORE_VAL ? $r_sh_turnover_change_rate < $rule['r_sh_turnover_change_rate_lt'] : true;
+
         switch ($rule['r_cat']) {
             case StockMainRule::CAT_BUY:
 
@@ -321,7 +325,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
         if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8
-            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15 && $flag16 && $flag17) {
+            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15 && $flag16 && $flag17
+            && $flag30 && $flag31) {
             $flag = true;
         }
 
