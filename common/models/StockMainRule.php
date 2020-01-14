@@ -59,6 +59,10 @@ class StockMainRule extends \yii\db\ActiveRecord
             'r_sh_close_avg_lt' => '上证指数均值小于',
             'r_sh_close_60avg_10avg_offset_gt' => '差值 上证指数60日均值-上证指数10日均值 大于',
             'r_sh_close_60avg_10avg_offset_lt' => '差值 上证指数60日均值-上证指数10日均值 小于',
+
+            'r_sh_turnover_change_rate_gt' => '上证交易额均值比例/上证涨跌 比例 大于',
+            'r_sh_turnover_change_rate_lt' => '上证交易额均值比例/上证涨跌 比例 小于',
+
             'r_date_gt' => '日期大于',
             'r_date_lt' => '日期小于',
             'r_scat' => 'day类型 5日，10日，20日',
