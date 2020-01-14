@@ -1603,7 +1603,7 @@ class StockController extends BaseController
         }
         if ($cat) {
             $cStr = [
-                5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or or CHAR_LENGTH(r.r_warn5)>0) ',
+                5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
                 10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
                 20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
             ];
@@ -1778,14 +1778,9 @@ class StockController extends BaseController
         }
 
         $tabs = [
-            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => ''],
-            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => ''],
+            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => $is_go_short == 0 ? 'active' : ''],
+            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => $is_go_short == 1 ? 'active' : ''],
         ];
-        foreach ($tabs as $k => $v) {
-            if ($is_go_short == $v['is_go_short']) {
-                $tabs[$k]['cls'] = 'active';
-            }
-        }
 
         return $this->renderPage("stock_main_rate_5day_rate.tpl",
             [
