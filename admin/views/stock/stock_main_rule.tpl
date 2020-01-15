@@ -67,7 +67,7 @@
       <th>差值</th>
       <th>上证指数均值</th>
       <th>上证指数60日均值-上证指数10日均值</th>
-      <th>上证交易额均值比例/上证涨跌 比例</th>
+      <th>上证交易额均值/上证涨跌 比例</th>
       <th>日期</th>
       <th>DAY</th>
       <th>备注</th>
@@ -112,10 +112,10 @@
           <div>>{{$item.r_sh_close_60avg_10avg_offset_gt}}</div>
           <div><{{$item.r_sh_close_60avg_10avg_offset_lt}}</div>
         </td>
-        <!-- 上证交易额均值比例/上证涨跌 比例 -->
+        <!-- 上证指数均值/上证涨跌 比例 -->
         <td>
-          <div>>{{$item.r_sh_turnover_change_rate_gt}}</div>
-          <div><{{$item.r_sh_turnover_change_rate_lt}}</div>
+          <div>>{{$item.r_sh_close_avg_change_rate_gt}}</div>
+          <div><{{$item.r_sh_close_avg_change_rate_lt}}</div>
         </td>
         <td>
           <div>>{{$item.r_date_gt}}</div>
@@ -137,8 +137,8 @@
             data-r_sh_close_avg_gt="{{$item.r_sh_close_avg_gt}}" data-r_sh_close_avg_lt="{{$item.r_sh_close_avg_lt}}"
             data-r_sh_close_60avg_10avg_offset_gt="{{$item.r_sh_close_60avg_10avg_offset_gt}}"
             data-r_sh_close_60avg_10avg_offset_lt="{{$item.r_sh_close_60avg_10avg_offset_lt}}"
-            data-r_sh_turnover_change_rate_gt="{{$item.r_sh_turnover_change_rate_gt}}"
-            data-r_sh_turnover_change_rate_lt="{{$item.r_sh_turnover_change_rate_lt}}"
+            data-r_sh_close_avg_change_rate_gt="{{$item.r_sh_close_avg_change_rate_gt}}"
+            data-r_sh_close_avg_change_rate_lt="{{$item.r_sh_close_avg_change_rate_lt}}"
             data-r_date_gt="{{$item.r_date_gt}}" data-r_date_lt="{{$item.r_date_lt}}"
             data-r_scat="{{$item.r_scat}}"
             data-r_note="{{$item.r_note}}"
@@ -286,15 +286,15 @@
     </div>
 
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证交易额均值比例/上证涨跌 比例 大于: <p class="form_tip">填 999 则忽略此条件</p></label>
+      <label class="col-sm-4 control-label">上证指数均值/上证涨跌 比例 大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
-        <input type="text" class="form-control r_sh_turnover_change_rate_gt">
+        <input type="text" class="form-control r_sh_close_avg_change_rate_gt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证交易额均值比例/上证涨跌 比例 小于: <p class="form_tip">填 999 则忽略此条件</p></label>
+      <label class="col-sm-4 control-label">上证指数均值/上证涨跌 比例 小于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
-        <input type="text" class="form-control r_sh_turnover_change_rate_lt">
+        <input type="text" class="form-control r_sh_close_avg_change_rate_lt">
       </div>
     </div>
 
@@ -372,8 +372,8 @@
                     r_sh_close_avg_lt: $.trim($('.r_sh_close_avg_lt').val()),
                     r_sh_close_60avg_10avg_offset_gt: $.trim($('.r_sh_close_60avg_10avg_offset_gt').val()),
                     r_sh_close_60avg_10avg_offset_lt: $.trim($('.r_sh_close_60avg_10avg_offset_lt').val()),
-                    r_sh_turnover_change_rate_gt: $.trim($('.r_sh_turnover_change_rate_gt').val()),
-                    r_sh_turnover_change_rate_lt: $.trim($('.r_sh_turnover_change_rate_lt').val()),
+                    r_sh_close_avg_change_rate_gt: $.trim($('.r_sh_close_avg_change_rate_gt').val()),
+                    r_sh_close_avg_change_rate_lt: $.trim($('.r_sh_close_avg_change_rate_lt').val()),
                     r_date_gt: $.trim($('.r_date_gt').val()),
                     r_date_lt: $.trim($('.r_date_lt').val()),
                     r_scat: $.trim($('.r_scat').val()),
@@ -433,8 +433,8 @@
         $('.r_sh_close_avg_lt').val(td.attr("data-r_sh_close_avg_lt"))
         $('.r_sh_close_60avg_10avg_offset_gt').val(td.attr("data-r_sh_close_60avg_10avg_offset_gt"))
         $('.r_sh_close_60avg_10avg_offset_lt').val(td.attr("data-r_sh_close_60avg_10avg_offset_lt"))
-        $('.r_sh_turnover_change_rate_gt').val(td.attr("data-r_sh_turnover_change_rate_gt"))
-        $('.r_sh_turnover_change_rate_lt').val(td.attr("data-r_sh_turnover_change_rate_lt"))
+        $('.r_sh_close_avg_change_rate_gt').val(td.attr("data-r_sh_close_avg_change_rate_gt"))
+        $('.r_sh_close_avg_change_rate_lt').val(td.attr("data-r_sh_close_avg_change_rate_lt"))
         $('.r_date_gt').val(td.attr("data-r_date_gt"))
         $('.r_date_lt').val(td.attr("data-r_date_lt"))
         $('.r_scat').val(td.attr("data-r_scat"))

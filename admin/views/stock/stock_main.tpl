@@ -107,23 +107,30 @@
         <td>{{$item.m_etf_close}}</td>
         <td>{{$item.m_sh_close}}</td>
         <td>{{$item.m_sh_turnover}}</td>
+        <!-- 深圳交易额 -->
         <td>{{$item.m_sz_turnover}}</td>
         <td>{{$item.m_sum_turnover}}</td>
         <td class="border_r">{{$item.m_cus_rate}}%</td>
 
+        <!-- 上证涨跌 -->
         <td>{{$item.s_sh_change}}%</td>
+        <!-- 散户比值 -->
         <td>
           <div>均值 {{$item.s_cus_rate_avg}}%</div>
           <div>均值比例 {{$item.s_cus_rate_avg_scale}}%</div>
         </td>
+        <!-- 合计交易额 -->
         <td>
           <div>均值 {{$item.s_sum_turnover_avg}}</div>
           <div>均值比例 {{$item.s_sum_turnover_avg_scale}}%</div>
         </td>
+        <!-- 上证指数 -->
         <td>
           <div>均值 {{$item.s_sh_close_avg}}</div>
           <div>均值比例 {{$item.s_sh_close_avg_scale}}%</div>
+          <div>均值/上证涨跌 {{$item.s_sh_close_change_rate}}</div>
         </td>
+        <!-- 上证交易额 -->
         <td>
           <div>均值 {{$item.s_sh_turnover_avg}}</div>
           <div>均值比例 {{$item.s_sh_turnover_avg_scale}}%</div>

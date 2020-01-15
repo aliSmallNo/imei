@@ -33,7 +33,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         return [
             's_id' => 'id',
             's_cat' => '5日，10日，20日',
-            's_sh_change' => '上证 涨跌',
+            's_sh_change' => '上证涨跌',
             's_cus_rate_avg' => '散户比值 散户比值均值',
             's_cus_rate_avg_scale' => '比例 散户比值均值比例',
             's_sh_turnover_avg' => '上证交易额均值',
@@ -42,6 +42,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sum_turnover_avg_scale' => '比例 合计交易额均值比例',
             's_sh_close_avg' => '上证 上证指数均值',
             's_sh_close_avg_scale' => '比例 上证指数均值比例',
+            's_sh_close_change_rate' => '比例 上证指数均值/(上证涨跌*100) s_sh_close_avg/(s_sh_change*100)',
             's_trans_on' => '交易日期',
             's_added_on' => 'add',
             's_update_on' => 'update',
@@ -177,6 +178,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_sh_turnover_avg = round(array_sum(array_column($data, 'm_sh_turnover')) / $cat, 0);
         $s_sh_turnover_avg_scale = round(($curr['m_sh_turnover'] / $s_sh_turnover_avg - 1) * 100, 3);
 
+        $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_close_avg / ($s_sh_change * 100)), 3) : 99999;
+
         self::add([
             's_cat' => $cat,
             's_sh_change' => $s_sh_change,
@@ -188,6 +191,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sh_close_avg_scale' => $s_sh_close_avg_scale,
             's_sh_turnover_avg' => $s_sh_turnover_avg,
             's_sh_turnover_avg_scale' => $s_sh_turnover_avg_scale,
+            's_sh_close_change_rate' => $s_sh_close_change_rate,
             's_trans_on' => $trans_on,
         ]);
 
@@ -310,10 +314,9 @@ class StockMainStat extends \yii\db\ActiveRecord
             }
         }
 
-
-        $r_sh_turnover_change_rate = round($N_s_sum_turnover_avg_scale / $J_s_sh_change, 3);
-        $flag30 = intval($rule['r_sh_turnover_change_rate_gt']) != self::IGNORE_VAL ? $r_sh_turnover_change_rate > $rule['r_sh_turnover_change_rate_gt'] : true;
-        $flag31 = intval($rule['r_sh_turnover_change_rate_lt']) != self::IGNORE_VAL ? $r_sh_turnover_change_rate < $rule['r_sh_turnover_change_rate_lt'] : true;
+        $s_sh_close_change_rate = $stat['s_sh_close_change_rate'];
+        $flag30 = intval($rule['r_sh_close_avg_change_rate_gt']) != self::IGNORE_VAL ? $s_sh_close_change_rate > $rule['r_sh_close_avg_change_rate_gt'] : true;
+        $flag31 = intval($rule['r_sh_close_avg_change_rate_lt']) != self::IGNORE_VAL ? $s_sh_close_change_rate < $rule['r_sh_close_avg_change_rate_lt'] : true;
 
         switch ($rule['r_cat']) {
             case StockMainRule::CAT_BUY:
