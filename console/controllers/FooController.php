@@ -1739,23 +1739,11 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        /*$sql = "select * from im_stock_main_stat order by s_id desc";
-        $all = AppUtil::db()->createCommand($sql)->queryAll();
-        $sql = "update im_stock_main_stat set s_sh_close_change_rate=:s_sh_close_change_rate where s_id=:s_id";
-        $cmd = AppUtil::db()->createCommand($sql);
-        foreach ($all as $v) {
-            $s_sh_change = $v['s_sh_change'];
-            $s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];
-            $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_turnover_avg_scale / ($s_sh_change)), 3) : 999999;
-            $int = $cmd->bindValues([
-                ':s_sh_close_change_rate' => $s_sh_close_change_rate,
-                ':s_id' => $v['s_id'],
-            ])->execute();
-            echo $int.'__'.$v['s_trans_on'].'__'.$v['s_cat'].PHP_EOL;
-        }*/
+        //StockMainStat::init_main_stat_data();
+        //StockMainStat::cal('2020-01-10');
 
-//        StockMain::update_curr_day();
-//        StockMainPrice::update_curr_day();
+        //StockMain::update_curr_day();
+        //StockMainPrice::update_curr_day();
 
         // StockMainPrice::init_excel_data();
         // StockMainStat::init_excel_data();

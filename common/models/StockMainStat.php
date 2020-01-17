@@ -99,7 +99,7 @@ class StockMainStat extends \yii\db\ActiveRecord
      *
      * @time 2019-11-20 AM
      */
-    public static function init_excel_data()
+    public static function init_main_stat_data()
     {
         return false;
 
@@ -166,7 +166,9 @@ class StockMainStat extends \yii\db\ActiveRecord
             return false;
         }
 
-        $s_sh_change = round($curr['m_sh_close'] / $data[0]['m_sh_close'] - 1, 5) * 100;
+        $s_sh_change_raw = $curr['m_sh_close'] / $data[0]['m_sh_close'] - 1;
+
+        $s_sh_change = round($s_sh_change_raw, 5) * 100;
         $s_cus_rate_avg = round(array_sum(array_column($data, 'm_cus_rate')) / $cat, 2);
         $s_cus_rate_avg_scale = ($curr['m_cus_rate'] / $s_cus_rate_avg - 1) * 100;
 
@@ -176,9 +178,13 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_sh_close_avg_scale = ($curr['m_sh_close'] / $s_sh_close_avg - 1) * 100;
 
         $s_sh_turnover_avg = round(array_sum(array_column($data, 'm_sh_turnover')) / $cat, 0);
-        $s_sh_turnover_avg_scale = round(($curr['m_sh_turnover'] / $s_sh_turnover_avg - 1) * 100, 3);
 
-        $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_turnover_avg_scale / $s_sh_change ), 3) : 99999;
+        $s_sh_turnover_avg_scale_raw = $curr['m_sh_turnover'] / $s_sh_turnover_avg - 1;
+        $s_sh_turnover_avg_scale = round($s_sh_turnover_avg_scale_raw, 5) * 100;
+
+        //$s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_turnover_avg_scale / $s_sh_change), 3) : 99999;
+        //改为下边的算法 更精确 2020-01-17
+        $s_sh_close_change_rate = $s_sh_change != 0 ? round($s_sh_turnover_avg_scale_raw / $s_sh_change_raw, 3) : 99999;
 
         self::add([
             's_cat' => $cat,
