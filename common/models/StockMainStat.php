@@ -178,7 +178,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_sh_turnover_avg = round(array_sum(array_column($data, 'm_sh_turnover')) / $cat, 0);
         $s_sh_turnover_avg_scale = round(($curr['m_sh_turnover'] / $s_sh_turnover_avg - 1) * 100, 3);
 
-        $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_close_avg_scale / $s_sh_change ), 3) : 99999;
+        $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_turnover_avg_scale / $s_sh_change ), 3) : 99999;
 
         self::add([
             's_cat' => $cat,

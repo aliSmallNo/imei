@@ -1745,8 +1745,8 @@ class FooController extends Controller
         $cmd = AppUtil::db()->createCommand($sql);
         foreach ($all as $v) {
             $s_sh_change = $v['s_sh_change'];
-            $s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];
-            $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_close_avg_scale / ($s_sh_change)), 3) : 999999;
+            $s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];
+            $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_turnover_avg_scale / ($s_sh_change)), 3) : 999999;
             $int = $cmd->bindValues([
                 ':s_sh_close_change_rate' => $s_sh_close_change_rate,
                 ':s_id' => $v['s_id'],
