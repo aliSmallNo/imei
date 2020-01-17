@@ -128,7 +128,7 @@
         <td>
           <div>均值 {{$item.s_sh_close_avg}}</div>
           <div>均值比例 {{$item.s_sh_close_avg_scale}}%</div>
-          <div>均值/上证涨跌 {{$item.s_sh_close_change_rate}}</div>
+          <div>均值比例/上证涨跌 {{$item.s_sh_close_change_rate}}</div>
         </td>
         <!-- 上证交易额 -->
         <td>

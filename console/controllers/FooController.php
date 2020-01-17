@@ -1745,8 +1745,8 @@ class FooController extends Controller
         $cmd = AppUtil::db()->createCommand($sql);
         foreach ($all as $v) {
             $s_sh_change = $v['s_sh_change'];
-            $s_sh_close_avg = $v['s_sh_close_avg'];
-            $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_close_avg / ($s_sh_change * 100)), 3) : 999999;
+            $s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];
+            $s_sh_close_change_rate = $s_sh_change != 0 ? round(($s_sh_close_avg_scale / ($s_sh_change)), 3) : 999999;
             $int = $cmd->bindValues([
                 ':s_sh_close_change_rate' => $s_sh_close_change_rate,
                 ':s_id' => $v['s_id'],
@@ -1754,8 +1754,8 @@ class FooController extends Controller
             echo $int.'__'.$v['s_trans_on'].'__'.$v['s_cat'].PHP_EOL;
         }*/
 
-        StockMain::update_curr_day();
-        StockMainPrice::update_curr_day();
+//        StockMain::update_curr_day();
+//        StockMainPrice::update_curr_day();
 
         // StockMainPrice::init_excel_data();
         // StockMainStat::init_excel_data();
