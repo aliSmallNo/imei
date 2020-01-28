@@ -1738,6 +1738,13 @@ class FooController extends Controller
 
     public function actionZp()
     {
+        $rule = [
+            'r_date_gt' => '2018-01-01',
+        ];
+        $s_trans_on = '2016-12-30';
+        $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= strtotime($rule['r_date_gt']) : true;
+        var_dump(intval($rule['r_date_gt']));
+        var_dump($flag13);
 
         //StockMainStat::init_main_stat_data();
         //StockMainStat::cal('2020-01-10');
