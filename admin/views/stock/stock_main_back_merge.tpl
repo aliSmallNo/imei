@@ -128,6 +128,27 @@
 </div>
 <!------------ 正常回测 正确率统计 end ------------------------------------------>
 
+<!-- 正常回测 连续错误次数 start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr class="back_dir_1">
+      <th>序号</th>
+      <th>连续错误次数</th>
+      <th>开始时间点</th>
+    </tr>
+    </thead>
+    {{foreach from=$continue_errors1 item=item key=index}}
+      <tr>
+        <td>{{$index+1}}</td>
+        <td>{{$item.co}}</td>
+        <td>{{$item.first_dt}}</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 正常回测 连续错误次数 end -->
+
 <!------------ 做空回测 收益 start ------------------------------------------>
 <div class="row">
   <table class="table table-striped table-bordered">
@@ -201,6 +222,27 @@
   </table>
 </div>
 <!------------ 做空回测 正确率统计 start ------------------------------------------>
+
+<!-- 做空回测 连续错误次数 start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr class="back_dir_2">
+      <th>序号</th>
+      <th>连续错误次数</th>
+      <th>开始时间点</th>
+    </tr>
+    </thead>
+    {{foreach from=$continue_errors2 item=item key=index}}
+      <tr>
+        <td>{{$index+1}}</td>
+        <td>{{$item.co}}</td>
+        <td>{{$item.first_dt}}</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 做空回测 连续错误次数 end -->
 
 <div class="row-divider"></div>
 <div class="row">

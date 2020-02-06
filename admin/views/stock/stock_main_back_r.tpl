@@ -18,6 +18,9 @@
   .sold_color_2 {
     background: #99CCCC;
   }
+  .error_rate {
+    background: #ffcc99;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -119,6 +122,27 @@
   </table>
 </div>
 
+<!-- 连续错误次数 start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>序号</th>
+      <th>连续错误次数</th>
+      <th>开始时间点</th>
+    </tr>
+    </thead>
+    {{foreach from=$continue_errors item=item key=index}}
+      <tr>
+        <td>{{$index+1}}</td>
+        <td>{{$item.co}}</td>
+        <td>{{$item.first_dt}}</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 连续错误次数 end -->
+
 <div class="row-divider"></div>
 <div class="row">
   <table class="table table-striped table-bordered">
@@ -169,7 +193,9 @@
 
         <td>{{$item.rule_rate}}%</td>
         <td>{{$item.set_rate}}%</td>
-        <td class="{{if $stop_rate==$item.rate}}tip{{/if}}">{{$item.rate}}%</td>
+        <td class="{{if $stop_rate==$item.rate}}tip{{/if}} {{if $item.rate<0}} error_rate {{/if}}">
+          {{$item.rate}}%
+        </td>
 
         <td>
           <div>{{$item.high.r_trans_on}}</div>

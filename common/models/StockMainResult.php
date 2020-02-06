@@ -698,6 +698,68 @@ class StockMainResult extends \yii\db\ActiveRecord
     }
 
     /**
+     * 麻烦把下方“连续错误表”，加到3张回测表中（策略回测，卖空回测，回测合并）
+     * 连续错误表 => [序号,连续错误次数,开始时间点]
+     *
+     * 备注：
+     * 1.连续错误次数，指收益率为负的情况
+     * 2.时间点，为首次是负的情况
+     * 3.连续错误，指连续几次都是负（多出现于止损情况）
+     *
+     * @time 2020-02-06 PM
+     */
+    public static function continue_errors($data)
+    {
+        // 收益率为负
+        $errors = $errors_tmp = [];
+        $data = array_reverse($data);
+
+        $dt_tmp = '';
+        $co_tmp = 0;
+        $pre_index = -1;
+
+        $mark_continue = 1;// 标记连续
+        foreach ($data as $k => $v) {
+            if ($v['rate'] < 0) {
+                $co_tmp++;
+                if ($k - $pre_index == 1) {
+                    $errors_tmp[] = [
+                        'mark' => $mark_continue,
+                        'buy_dt' => $v['buy_dt'],
+                        'first_dt' => $dt_tmp,
+                        'co' => $co_tmp,
+                    ];
+                } else {
+                    $mark_continue++;
+                    $dt_tmp = $v['buy_dt'];
+                    $errors_tmp[] = [
+                        'mark' => $mark_continue,
+                        'buy_dt' => $v['buy_dt'],
+                        'first_dt' => $dt_tmp,
+                        'co' => $co_tmp,
+                    ];
+                }
+                $pre_index = $k;
+            } else {
+                $co_tmp = 0;
+            }
+        }
+        //print_r($errors_tmp);
+
+        foreach ($errors_tmp as $error_tmp) {
+            $first_dt = $error_tmp['first_dt'];
+            $co = $error_tmp['co'];
+            $last_co = $errors[$first_dt]['co'] ?? 0;
+            $errors[$first_dt]['co'] = $co > $last_co ? $co : $last_co;
+            $errors[$first_dt]['first_dt'] = $first_dt;
+            $errors[$first_dt]['items'][] = $error_tmp;
+        }
+        //print_r($errors);exit;
+
+        return array_reverse(array_values($errors));
+    }
+
+    /**
      * 回测表中加一个“正确率”
      *
      * @time 2019-12-16 AM

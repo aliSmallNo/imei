@@ -23,6 +23,10 @@
   .sold_color_2 {
     background: #99CCCC;
   }
+
+  .error_rate {
+    background: #ffcc99;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -117,6 +121,27 @@
   </table>
 </div>
 
+<!-- 连续错误次数 start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>序号</th>
+      <th>连续错误次数</th>
+      <th>开始时间点</th>
+    </tr>
+    </thead>
+    {{foreach from=$continue_errors item=item key=index}}
+      <tr>
+        <td>{{$index+1}}</td>
+        <td>{{$item.co}}</td>
+        <td>{{$item.first_dt}}</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 连续错误次数 end -->
+
 <div class="row-divider"></div>
 <div class="row">
   <table class="table table-striped table-bordered">
@@ -146,39 +171,51 @@
     {{foreach from=$list item=item key=key}}
       <tr>
         <td>{{$key+1}}</td>
+        <!-- 买入日期 -->
         <td>{{$item.buy_dt}}</td>
+        <!-- 价格 -->
         <td>{{$item.buy_price}}</td>
+        <!-- 买入类型 -->
         <td>
           {{foreach from=$item.buy_type item=types key=day}}
             {{$day}}日: {{$types}}
             <br>
           {{/foreach}}
         </td>
-
+        <!-- 卖出日期 -->
         <td class="{{$item.sold_color}}">{{$item.sold_dt}}</td>
+        <!-- 价格 -->
         <td>{{$item.sold_price}}</td>
+        <!-- 卖出类型 -->
         <td>
           {{foreach from=$item.sold_type item=types key=day}}
             {{$day}}日: {{$types}}
             <br>
           {{/foreach}}
         </td>
-
+        <!-- 持有天数 -->
         <td>{{$item.hold_days}}</td>
+        <!-- 策略收益率 -->
         <td>{{$item.rule_rate}}%</td>
+        <!-- set收益率 -->
         <td>{{$item.set_rate}}%</td>
-        <td class="{{if $stop_rate==$item.rate}}tip{{/if}}">{{$item.rate}}%</td>
-
+        <!-- 收益率 -->
+        <td class="{{if $stop_rate==$item.rate}}tip{{/if}} {{if $item.rate<0}} error_rate {{/if}}">
+          {{$item.rate}}%
+        </td>
+        <!-- 最高卖点 -->
         <td>
           <div>{{$item.high.r_trans_on}}</div>
           <div>{{$item.high.curr_price}}</div>
           <div>{{$item.high.rate}}%</div>
         </td>
+        <!-- 最低卖点 -->
         <td>
           <div>{{$item.low.r_trans_on}}</div>
           <div>{{$item.low.curr_price}}</div>
           <div>{{$item.low.rate}}%</div>
         </td>
+        <!-- 平均收益率 -->
         <td>{{$item.rate_avg}}%</td>
 
       </tr>
