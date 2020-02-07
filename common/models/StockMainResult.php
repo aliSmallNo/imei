@@ -756,7 +756,15 @@ class StockMainResult extends \yii\db\ActiveRecord
         }
         //print_r($errors);exit;
 
-        return array_reverse(array_values($errors));
+        $errors = array_reverse(array_values($errors));
+        // 去掉 连续错误次数=1 的
+        foreach ($errors as $k => $error) {
+            if ($error['co'] == 1) {
+                unset($errors[$k]);
+            }
+        }
+
+        return array_values($errors);
     }
 
     /**
