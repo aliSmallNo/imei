@@ -1749,6 +1749,7 @@ class FooController extends Controller
                 StockMainPrice::edit($model->p_id, ['p_sh_close' => $m_sh_close]);
             }
         }*/
+        StockMainPrice::init_excel_data();
 
         //StockMainStat::init_main_stat_data();
         //StockMainStat::cal('2020-01-10');
