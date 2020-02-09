@@ -1738,13 +1738,17 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        $rule = [
-            'r_date_gt' => '2018-01-01',
-        ];
-        $s_trans_on = '2016-12-30';
-        $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= strtotime($rule['r_date_gt']) : true;
-        var_dump(intval($rule['r_date_gt']));
-        var_dump($flag13);
+        /*$all = StockMain::find()->where([])->asArray()->orderBy('m_trans_on desc')->all();
+        foreach ($all as $v) {
+            $m_trans_on = $v['m_trans_on'];
+            $m_sh_close = $v['m_sh_close'];
+
+            $model = StockMainPrice::findOne(['p_trans_on' => $m_trans_on]);
+            if ($model) {
+                echo $m_trans_on.PHP_EOL;
+                StockMainPrice::edit($model->p_id, ['p_sh_close' => $m_sh_close]);
+            }
+        }*/
 
         //StockMainStat::init_main_stat_data();
         //StockMainStat::cal('2020-01-10');

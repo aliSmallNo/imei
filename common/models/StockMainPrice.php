@@ -73,7 +73,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
         foreach ($values as $key => $val) {
             $entity->$key = $val;
         }
-        $entity->p_update_on = date('Y-m-d H:i:s');
+        //$entity->p_update_on = date('Y-m-d H:i:s');
         $res = $entity->save();
 
         return [$res, $entity];
@@ -83,34 +83,14 @@ class StockMainPrice extends \yii\db\ActiveRecord
     const TYPE_ETF_300 = 'p_etf300';
     const TYPE_ETF_500 = 'p_etf500';
     const TYPE_IC_FUTURES = 'p_ic_futures';
+    const TYPE_SH_CLOSE = 'p_sh_close';
     static $types = [
         self::TYPE_ETF_50 => '50ETF',
         self::TYPE_ETF_300 => '300ETF',
         self::TYPE_ETF_500 => '500ETF',
         self::TYPE_IC_FUTURES => 'IC_FUTURES',
+        self::TYPE_SH_CLOSE => 'SH_CLOSE',
     ];
-
-    public static function get_price_field($price_type)
-    {
-        switch ($price_type) {
-            case self::TYPE_ETF_50:
-                $price_field = 'p_etf50';
-                break;
-            case self::TYPE_ETF_300:
-                $price_field = 'p_etf300';
-                break;
-            case self::TYPE_ETF_500:
-                $price_field = 'p_etf500';
-                break;
-            case self::TYPE_IC_FUTURES:
-                $price_field = 'p_ic_futures';
-                break;
-            default:
-                $price_field = '';
-        }
-
-        return $price_field;
-    }
 
     /**
      * 每日更新价格
@@ -127,11 +107,16 @@ class StockMainPrice extends \yii\db\ActiveRecord
             && $data3
             && $data1['m_trans_on'] == $data2['m_trans_on']
             && $data1['m_trans_on'] == $data3['m_trans_on']) {
+
+            $p_trans_on = date('Y-m-d', strtotime($data1['m_trans_on']));
+            $StockMain = StockMain::findOne(['m_trans_on' => $p_trans_on]);
+
             self::add([
                 'p_etf500' => $data1['close'],
                 'p_etf300' => $data2['close'],
                 'p_etf50' => $data3['close'],
-                'p_trans_on' => date('Y-m-d', strtotime($data1['m_trans_on'])),
+                'p_sh_close' => $StockMain ? $StockMain->m_sh_close : 0,
+                'p_trans_on' => $p_trans_on,
             ]);
         }
     }
