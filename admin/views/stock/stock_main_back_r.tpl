@@ -63,6 +63,7 @@
       <th>
         成功率(失败次数/sum)
       </th>
+      <th>平均收益率</th>
     </tr>
     </thead>
     {{foreach from=$rate_year_sum item=item key=year}}
@@ -71,11 +72,8 @@
         <td>{{$item.sum_rate|round:2}}%</td>
         <td>{{$item.success_times}}</td>
         <td>{{$item.fail_times}}</td>
-        <td>
-          {{if $item.success_times+$item.fail_times>0}}
-            {{(($item.fail_times/($item.success_times+$item.fail_times))|round:4)*100}}%
-          {{else}}0{{/if}}
-        </td>
+        <td>{{$item.success_rate}}</td>
+        <td>{{$item.avg_rate}}%</td>
       </tr>
     {{/foreach}}
   </table>

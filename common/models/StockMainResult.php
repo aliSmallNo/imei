@@ -941,6 +941,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                     'success_times' => 0,
                     'fail_times' => 0,
                     'success_rate' => 0,
+                    'avg_rate' => 0,
                 ];
             }
             $rate_year_sum[$year]['sum_rate'] += $v3['rate'];
@@ -949,6 +950,13 @@ class StockMainResult extends \yii\db\ActiveRecord
             } else {
                 $rate_year_sum[$year]['fail_times']++;
             }
+        }
+        foreach ($rate_year_sum as $k => $v) {
+            $sum_rate = $v['sum_rate'];
+            $success_times = $v['success_times'];
+            $sum_times = $success_times + $v['fail_times'];
+            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? round($success_times / $sum_times, 2) : 0;
+            $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
         }
 
         return $rate_year_sum;

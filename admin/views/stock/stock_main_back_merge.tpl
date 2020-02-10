@@ -59,7 +59,7 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr class="back_dir_1">
-      <td colspan="5">正常回测</td>
+      <td colspan="6">正常回测</td>
     </tr>
     <tr>
       <th>收益</th>
@@ -67,6 +67,7 @@
       <th>成功次数</th>
       <th>失败次数</th>
       <th>成功率</th>
+      <th>平均收益率</th>
     </tr>
     </thead>
     {{foreach from=$rate_year_sum1 item=item key=year}}
@@ -75,7 +76,8 @@
         <td>{{$item.sum_rate|round:2}}%</td>
         <td>{{$item.success_times}}</td>
         <td>{{$item.fail_times}}</td>
-        <td>{{($item.success_times/($item.success_times+$item.fail_times))|round:2}}</td>
+        <td>{{$item.success_rate}}</td>
+        <td>{{$item.avg_rate}}%</td>
       </tr>
     {{/foreach}}
   </table>
@@ -154,7 +156,7 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr class="back_dir_2">
-      <td colspan="5">做空回测</td>
+      <td colspan="6">做空回测</td>
     </tr>
     <tr>
       <th>收益</th>
@@ -162,6 +164,7 @@
       <th>成功次数</th>
       <th>失败次数</th>
       <th>成功率</th>
+      <th>平均收益率</th>
     </tr>
     </thead>
     {{foreach from=$rate_year_sum2 item=item key=year}}
@@ -170,7 +173,8 @@
         <td>{{$item.sum_rate|round:2}}%</td>
         <td>{{$item.success_times}}</td>
         <td>{{$item.fail_times}}</td>
-        <td>{{($item.success_times/($item.success_times+$item.fail_times))|round:2}}</td>
+        <td>{{$item.success_rate}}</td>
+        <td>{{$item.avg_rate}}%</td>
       </tr>
     {{/foreach}}
   </table>
