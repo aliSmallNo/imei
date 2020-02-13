@@ -712,7 +712,7 @@ class StockMainResult extends \yii\db\ActiveRecord
     {
         // 收益率为负
         $errors = $errors_tmp = [];
-        $data = array_reverse($data);
+        ArrayHelper::multisort($data, 'buy_dt', SORT_ASC);
 
         $dt_tmp = '';
         $co_tmp = 0;

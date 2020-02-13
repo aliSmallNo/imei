@@ -275,27 +275,42 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         $flag = false;
 
+        // 大盘大于
         $flag1 = intval($rule['r_stocks_gt']) != self::IGNORE_VAL ? $J_s_sh_change > $rule['r_stocks_gt'] : true;
+        // 大盘小于
         $flag2 = intval($rule['r_stocks_lt']) != self::IGNORE_VAL ? $J_s_sh_change < $rule['r_stocks_lt'] : true;
 
+        // 散户大于
         $flag3 = intval($rule['r_cus_gt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale > $rule['r_cus_gt'] : true;
+        // 散户小于
         $flag4 = intval($rule['r_cus_lt']) != self::IGNORE_VAL ? $L_s_cus_rate_avg_scale < $rule['r_cus_lt'] : true;
 
+        // 交易额大于
         $flag5 = intval($rule['r_turnover_gt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale > $rule['r_turnover_gt'] : true;
+        // 交易额小于
         $flag6 = intval($rule['r_turnover_lt']) != self::IGNORE_VAL ? $N_s_sum_turnover_avg_scale < $rule['r_turnover_lt'] : true;
 
+        // 上证指数均值大于
         $flag7 = intval($rule['r_sh_close_avg_gt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale > $rule['r_sh_close_avg_gt'] : true;
+        // 上证指数均值小于
         $flag8 = intval($rule['r_sh_close_avg_lt']) != self::IGNORE_VAL ? $P_s_sh_close_avg_scale < $rule['r_sh_close_avg_lt'] : true;
 
+        // 上证交易额大于
         $flag9 = intval($rule['r_sh_turnover_gt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale > $rule['r_sh_turnover_gt'] : true;
+        // 上证交易额小于
         $flag10 = intval($rule['r_sh_turnover_lt']) != self::IGNORE_VAL ? $R_s_sh_turnover_avg_scale < $rule['r_sh_turnover_lt'] : true;
 
+        // 差值 合计交易额均值比例—散户比值均值比例 大于
         $flag11 = intval($rule['r_diff_gt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) > $rule['r_diff_gt'] : true;
+        // 差值 合计交易额均值比例—散户比值均值比例 小于
         $flag12 = intval($rule['r_diff_lt']) != self::IGNORE_VAL ? ($N_s_sum_turnover_avg_scale - $L_s_cus_rate_avg_scale) < $rule['r_diff_lt'] : true;
 
+        // 日期 大于
         $flag13 = intval($rule['r_date_gt']) ? strtotime($s_trans_on) >= strtotime($rule['r_date_gt']) : true;
+        // 日期 小于
         $flag14 = intval($rule['r_date_lt']) ? strtotime($s_trans_on) <= strtotime($rule['r_date_lt']) : true;
 
+        // day类型 5日，10日，20日
         $flag15 = intval($rule['r_scat']) ? in_array($s_cat, explode(',', $rule['r_scat'])) : true;
 
         // 这样 会导致重置很慢
@@ -305,12 +320,14 @@ class StockMainStat extends \yii\db\ActiveRecord
 //            ? $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'] : true;
 
         $flag16 = $flag17 = true;
+        // 差值 上证指数60日均值-上证指数10日均值 大于
         if (intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL) {
             $sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
             if ($sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
                 $flag16 = $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'];
             }
         }
+        // 差值 上证指数60日均值-上证指数10日均值 小于
         if (intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL) {
             if (!isset($sh_close_60avg_10avg_offset)) {
                 $sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
@@ -321,7 +338,9 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
         $s_sh_close_change_rate = $stat['s_sh_close_change_rate'];
+        // 上证指数均值/上证涨跌 比例 大于
         $flag30 = intval($rule['r_sh_close_avg_change_rate_gt']) != self::IGNORE_VAL ? $s_sh_close_change_rate > $rule['r_sh_close_avg_change_rate_gt'] : true;
+        // 上证指数均值/上证涨跌 比例 小于
         $flag31 = intval($rule['r_sh_close_avg_change_rate_lt']) != self::IGNORE_VAL ? $s_sh_close_change_rate < $rule['r_sh_close_avg_change_rate_lt'] : true;
 
         switch ($rule['r_cat']) {

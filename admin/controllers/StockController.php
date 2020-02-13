@@ -1725,8 +1725,7 @@ class StockController extends BaseController
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate1' => $stat_rule_right_rate1,
                 'stat_rule_right_rate2' => $stat_rule_right_rate2,
-                'continue_errors1' => StockMainResult::continue_errors($list1),
-                'continue_errors2' => StockMainResult::continue_errors($list2),
+                'continue_errors' => StockMainResult::continue_errors(array_merge($list1, $list2)),
 
             ]
         );
