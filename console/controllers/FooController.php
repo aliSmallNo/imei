@@ -1779,7 +1779,6 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-02-21', 1);
 
         //StockMainStat::init_main_stat_data();
         //StockMainStat::cal('2020-01-10');
