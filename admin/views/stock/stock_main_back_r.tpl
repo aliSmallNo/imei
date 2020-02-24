@@ -141,6 +141,87 @@
 </div>
 <!-- 连续错误次数 end -->
 
+<!-- 第一次买入结果（第一次出现买入信号买入，第一次出现卖出信号卖出）start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>第1次买入结果</th>
+      <th>总收益</th>
+      <th>成功次数</th>
+      <th>失败次数</th>
+      <th>成功率</th>
+      <th>平均收益率</th>
+    </tr>
+    </thead>
+    {{foreach from=$N1_time_buy_ret item=item key=year}}
+      <tr>
+        <td>{{$year}}</td>
+        <td>{{$item.sum_rate|round:2}}%</td>
+        <td>{{$item.success_times}}</td>
+        <td>{{$item.fail_times}}</td>
+        <td>{{$item.success_rate}}</td>
+        <td>{{$item.avg_rate}}%</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 第一次买入结果 end -->
+
+<!-- 第2次买入结果（第2次出现买入信号买入，第1次出现卖出信号卖出）start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>第2次买入结果</th>
+      <th>总收益</th>
+      <th>成功次数</th>
+      <th>失败次数</th>
+      <th>成功率</th>
+      <th>平均收益率</th>
+    </tr>
+    </thead>
+    {{foreach from=$N2_time_buy_ret item=item key=year}}
+      <tr>
+        <td>{{$year}}</td>
+        <td>{{$item.sum_rate|round:2}}%</td>
+        <td>{{$item.success_times}}</td>
+        <td>{{$item.fail_times}}</td>
+        <td>{{$item.success_rate}}</td>
+        <td>{{$item.avg_rate}}%</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 第2次买入结果 end -->
+
+<!-- 第3次买入结果（第3次出现买入信号买入，第一次出现卖出信号卖出）start -->
+<div class="row">
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>第3次买入结果</th>
+      <th>总收益</th>
+      <th>成功次数</th>
+      <th>失败次数</th>
+      <th>成功率</th>
+      <th>平均收益率</th>
+    </tr>
+    </thead>
+    {{foreach from=$N3_time_buy_ret item=item key=year}}
+      <tr>
+        <td>{{$year}}</td>
+        <td>{{$item.sum_rate|round:2}}%</td>
+        <td>{{$item.success_times}}</td>
+        <td>{{$item.fail_times}}</td>
+        <td>{{$item.success_rate}}</td>
+        <td>{{$item.avg_rate}}%</td>
+      </tr>
+    {{/foreach}}
+  </table>
+</div>
+<!-- 第3次买入结果 end -->
+
 <div class="row-divider"></div>
 <div class="row">
   <table class="table table-striped table-bordered">

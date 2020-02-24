@@ -137,7 +137,7 @@ class StockMainStat extends \yii\db\ActiveRecord
     {
         $trans_on = $trans_on ? date('Y-m-d', strtotime($trans_on)) : date('Y-m-d');
 
-        echo $trans_on.PHP_EOL;
+        //echo $trans_on.PHP_EOL;
 
         $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 21';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();
@@ -254,6 +254,132 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         return [$res, $count];
     }
+
+    /**
+     * 每日预计策略。简单说13点后可以提前估计今天会有哪些策略出现
+     *
+     * @time 2020-02-18
+     */
+    public static function curr_day_trend()
+    {
+        $curr_day = $buys = $solds = [];
+
+        $sql = "select m.*,s.*
+				from im_stock_main as m
+				left join im_stock_main_stat s on s.s_trans_on=m.m_trans_on
+				order by m_trans_on desc  limit 6";
+        $res = AppUtil::db()->createCommand($sql)->queryAll();
+        foreach ($res as $v) {
+            $m_trans_on = $v['m_trans_on'];
+            $curr_day[$m_trans_on][] = $v;
+        }
+
+        $curr_day = array_values($curr_day);
+        $diff = self::get_diff($curr_day);
+
+        $buy_rules = StockMainRule::get_rules(StockMainRule::CAT_BUY);
+        $sold_rules = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
+
+
+        $buys = self::curr_day_trend_item($buy_rules);
+        $solds = self::curr_day_trend_item($sold_rules);
+
+        return [$curr_day, $buys, $solds,$diff];
+    }
+
+    /**
+     * 今天比昨天的涨幅数据
+     * 【500ETF 上证指数 上证交易额 深圳交易额 合计交易额】
+     *
+     * @time 2020-02-19 PM
+     */
+    public static function get_diff($curr_day)
+    {
+        $today = $curr_day[0][0];
+        $yesterday = $curr_day[1][0];
+
+        $last_day_etf_close = $yesterday['m_etf_close'];
+        $diff_m_etf_close = $today['m_etf_close'] - $last_day_etf_close;
+        $diff_m_etf_close_rate = (round($diff_m_etf_close / $last_day_etf_close, 4) * 100);
+
+        $last_day_m_sh_close = $yesterday['m_sh_close'];
+        $diff_m_sh_close = $today['m_sh_close'] - $last_day_m_sh_close;
+
+        $last_day_m_sh_turnover = $yesterday['m_sh_turnover'];
+        $diff_m_sh_turnover = $today['m_sh_turnover'] - $last_day_m_sh_turnover;
+
+        $last_day_m_sz_turnover = $yesterday['m_sz_turnover'];
+        $diff_m_sz_turnover = $today['m_sz_turnover'] - $last_day_m_sz_turnover;
+
+        $last_day_m_sum_turnover = $yesterday['m_sum_turnover'];
+        $diff_m_sum_turnover = $today['m_sum_turnover'] - $last_day_m_sum_turnover;
+
+        return [
+            'diff_m_etf_close' => round($diff_m_etf_close, 3),
+            'diff_m_etf_close_rate' => $diff_m_etf_close_rate.'%',
+
+            'diff_m_sh_close' => round($diff_m_sh_close, 3),
+            'diff_m_sh_close_rate' => (round($diff_m_sh_close / $last_day_m_sh_close, 4) * 100).'%',
+
+            'diff_m_sh_turnover' => round($diff_m_sh_turnover, 3),
+            'diff_m_sh_turnover_rate' => (round($diff_m_sh_turnover / $last_day_m_sh_turnover, 4) * 100).'%',
+
+            'diff_m_sz_turnover' => round($diff_m_sz_turnover, 3),
+            'diff_m_sz_turnover_rate' => (round($diff_m_sz_turnover / $last_day_m_sz_turnover, 4) * 100).'%',
+
+            'diff_m_sum_turnover' => round($diff_m_sum_turnover, 3),
+            'diff_m_sum_turnover_rate' => (round($diff_m_sum_turnover / $last_day_m_sum_turnover, 4) * 100).'%',
+
+        ];
+    }
+
+    /**
+     * 卖出 买入 列表数据
+     *
+     * @time 2020-02-19 PM
+     */
+    public static function curr_day_trend_item($rules)
+    {
+        $items = [];
+
+        foreach ($rules as $rule) {
+            // s_sh_change 上证涨跌
+            // s_cus_rate_avg 散户比值均值比例
+
+            $r_cus_gt = $rule['r_cus_gt'];// 散户比值均值比例 大于
+            $r_cus_lt = $rule['r_cus_lt'];
+            $r_stocks_gt = $rule['r_stocks_gt'];// 上证涨跌 大于
+            $r_stocks_lt = $rule['r_stocks_lt'];
+            $r_scat = $rule['r_scat'];
+
+            $r_scat_arr = $s_cus_rate_avgs = $s_sh_changes = [];
+            if ($r_scat == 0) {
+                $r_scat = "5,10,20";
+            }
+            $r_scat = $r_scat.',';
+            $r_scat_arr = array_filter(explode(',', $r_scat));
+
+            foreach ($r_scat_arr as $day) {
+                $s_cus_rate_avgs[$day] = ($r_cus_gt == self::IGNORE_VAL ? '' : '>'.$r_cus_gt).($r_cus_lt == self::IGNORE_VAL ? '' : ' <'.$r_cus_lt);
+                $s_sh_changes[$day] = ($r_stocks_gt == self::IGNORE_VAL ? '' : '>'.$r_stocks_gt).($r_stocks_lt == self::IGNORE_VAL ? '' : ' <'.$r_stocks_lt);
+            }
+
+            $item = [
+                'rule_name' => $rule['r_name'],
+                'm_etf_close' => '',
+                'm_sh_close' => '',
+                'm_sh_turnover' => '',
+                'm_sz_turnover' => '',
+                'm_sum_turnover' => '',
+                's_cus_rate_avgs' => $s_cus_rate_avgs,
+                's_sh_changes' => $s_sh_changes,
+            ];
+            $items[] = $item;
+        }
+
+        return $items;
+    }
+
 
     const IGNORE_VAL = 999;
 

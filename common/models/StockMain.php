@@ -63,6 +63,7 @@ class StockMain extends \yii\db\ActiveRecord
             $entity->$key = $val;
         }
         $entity->m_added_on = date('Y-m-d H:i:s');
+        $entity->m_update_on = date('Y-m-d H:i:s');
         $res = $entity->save();
 
         return [$res, $entity];
@@ -196,7 +197,7 @@ class StockMain extends \yii\db\ActiveRecord
         list($res) = self::add($insert);
 
         // 添加今天统计数据
-        if ($res) {
+        if ($res && $trans_on == date('Y-m-d')) {
             StockMainStat::cal($trans_on);
             StockMainResult::cal_one($trans_on);
             StockMainTmp0::cal_sh_close_60_avg($trans_on);

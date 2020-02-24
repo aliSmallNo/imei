@@ -67,7 +67,7 @@
       <th>差值</th>
       <th>上证指数均值</th>
       <th>上证指数60日均值-上证指数10日均值</th>
-      <th>上证指数均值比例/上证涨跌</th>
+      <th>上证指数均值/上证涨跌</th>
       <th>日期</th>
       <th>DAY</th>
       <th>备注</th>
@@ -112,7 +112,7 @@
           <div>>{{$item.r_sh_close_60avg_10avg_offset_gt}}</div>
           <div><{{$item.r_sh_close_60avg_10avg_offset_lt}}</div>
         </td>
-        <!-- 上证指数均值比例/上证涨跌 比例 -->
+        <!-- 上证指数均值/上证涨跌 比例 -->
         <td>
           <div>>{{$item.r_sh_close_avg_change_rate_gt}}</div>
           <div><{{$item.r_sh_close_avg_change_rate_lt}}</div>
@@ -286,13 +286,13 @@
     </div>
 
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证指数均值比例/上证涨跌 比例 大于: <p class="form_tip">填 999 则忽略此条件</p></label>
+      <label class="col-sm-4 control-label">上证指数均值/上证涨跌 比例 大于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_sh_close_avg_change_rate_gt">
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-4 control-label">上证指数均值比例/上证涨跌 比例 小于: <p class="form_tip">填 999 则忽略此条件</p></label>
+      <label class="col-sm-4 control-label">上证指数均值/上证涨跌 比例 小于: <p class="form_tip">填 999 则忽略此条件</p></label>
       <div class="col-sm-7">
         <input type="text" class="form-control r_sh_close_avg_change_rate_lt">
       </div>

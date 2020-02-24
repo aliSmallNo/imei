@@ -113,7 +113,7 @@ class StockMainTmp0 extends \yii\db\ActiveRecord
     {
         $trans_on = $trans_on ? date('Y-m-d', strtotime($trans_on)) : date('Y-m-d');
 
-        echo $trans_on.PHP_EOL;
+        //echo $trans_on.PHP_EOL;
 
         $sql = 'select * from im_stock_main where m_trans_on < :m_trans_on order by m_trans_on desc limit 60';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();

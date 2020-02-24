@@ -1647,11 +1647,9 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
 
-        $list = StockMainResult::change_color_diff_sold_dt($list);
-
         return $this->renderPage("stock_main_back.tpl",
             [
-                'list' => $list,
+                'list' => StockMainResult::change_color_diff_sold_dt($list),
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
@@ -1659,6 +1657,9 @@ class StockController extends BaseController
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
                 'continue_errors' => StockMainResult::continue_errors($list),
+                'N1_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 1),
+                'N2_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 2),
+                'N3_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 3),
             ]
         );
     }
@@ -1677,11 +1678,10 @@ class StockController extends BaseController
 
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back_r_new($price_type, $buy_times,
             $stop_rate);
-        $list = StockMainResult::change_color_diff_sold_dt($list);
 
         return $this->renderPage("stock_main_back_r.tpl",
             [
-                'list' => $list,
+                'list' => StockMainResult::change_color_diff_sold_dt($list),
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
@@ -1689,6 +1689,9 @@ class StockController extends BaseController
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
                 'continue_errors' => StockMainResult::continue_errors($list),
+                'N1_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 1),
+                'N2_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 2),
+                'N3_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 3),
             ]
         );
     }
@@ -1899,4 +1902,25 @@ class StockController extends BaseController
             ]
         );
     }
+
+    /**
+     * 每日预计策略。简单说13点后可以提前估计今天会有哪些策略出现
+     *
+     * @time 2020-02-18 AM
+     */
+    public function actionStock_curr_day_trend()
+    {
+        list($curr_day, $buys, $solds, $diff) = StockMainStat::curr_day_trend();
+
+        return $this->renderPage("stock_curr_day_trend.tpl",
+            [
+                'curr_day' => $curr_day,
+                'diff' => $diff,
+                'buys' => $buys,
+                'solds' => $solds,
+                'update_on' => StockMain::get_latest_update_on(),
+            ]
+        );
+    }
+
 }

@@ -698,6 +698,43 @@ class StockMainResult extends \yii\db\ActiveRecord
     }
 
     /**
+     * 最近尝试了下期货，亏了不少，所以麻烦在策略回测中，增加3个表格
+     * 1． 第一次买入结果（第一次出现买入信号买入，第一次出现卖出信号卖出）
+     * 2． 第二次买入结果（第二次出现买入信号买入，第一次出现卖出信号卖出）
+     * 3． 第三次买入结果（第三次出现买入信号买入，第一次出现卖出信号卖出）
+     * 4． 表格就如下方表格就行，我想看到哪次买入的正确比较高
+     * 5． 卖空回测表格中，也增加下
+     *
+     * @param $data
+     * @param int $n 第N次出现买入信号买入
+     *
+     * @time 2020-02-24 PM
+     */
+    public static function N_times_buy_ret($data, $n = 1)
+    {
+        $tmp = [];
+        foreach ($data as $k => $v) {
+            $sold_dt = $v['sold_dt'];
+            $tmp[$sold_dt][] = $v;
+        }
+
+        foreach ($tmp as $k100 => $v100) {
+            ArrayHelper::multisort($tmp[$k100], 'buy_dt', SORT_ASC);
+        }
+
+        $ret = [];
+        foreach ($tmp as $v1) {
+            $index = $n - 1;
+            if (isset($v1[$index])) {
+                $ret[] = $v1[$index];
+            }
+        }
+        // print_r($ret);exit;
+
+        return self::get_year_data($ret);
+    }
+
+    /**
      * 麻烦把下方“连续错误表”，加到3张回测表中（策略回测，卖空回测，回测合并）
      * 连续错误表 => [序号,连续错误次数,开始时间点]
      *

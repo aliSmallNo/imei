@@ -1736,20 +1736,49 @@ class FooController extends Controller
         }
     }
 
+    public function actionImport_stock_data()
+    {
+        $sz = require __DIR__.'/../data/stock_sz.php';
+        $sh = require __DIR__.'/../data/stock_sh.php';
+        $etf = require __DIR__.'/../data/stock_etf500.php';
+
+        foreach ($etf as $day => $v) {
+            $ctime = strtotime($day);
+            // 现在数据库有从 2014-09-19 至今的数据
+            if ($ctime > strtotime("2014-09-18")) {
+                //if ($ctime > strtotime("2014-10-24")) {
+                continue;
+            }
+            $trans_on = date("Y-m-d", $ctime);
+
+            $stf_turnover = 0;
+            $stf_close = $v[0];
+            $sh_turnover = $sh[$day][1];
+            $sh_close = $sh[$day][0];
+            $sz_turnover = $sz[$day][1];
+            $sz_close = $sz[$day][0];
+
+            /*StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover, $sh_close, $sz_turnover, $sz_close,
+                $trans_on);*/
+
+            /*StockMainStat::cal($trans_on);
+            StockMainResult::cal_one($trans_on);
+            StockMainTmp0::cal_sh_close_60_avg($trans_on);*/
+
+            /*StockMainPrice::add([
+                'p_sh_close' => $sh_close,
+                'p_etf500' => $stf_close,
+                'p_trans_on' => $trans_on,
+            ]);*/
+
+            echo $trans_on.PHP_EOL;
+
+        }
+    }
+
     public function actionZp()
     {
-        /*$all = StockMain::find()->where([])->asArray()->orderBy('m_trans_on desc')->all();
-        foreach ($all as $v) {
-            $m_trans_on = $v['m_trans_on'];
-            $m_sh_close = $v['m_sh_close'];
 
-            $model = StockMainPrice::findOne(['p_trans_on' => $m_trans_on]);
-            if ($model) {
-                echo $m_trans_on.PHP_EOL;
-                StockMainPrice::edit($model->p_id, ['p_sh_close' => $m_sh_close]);
-            }
-        }*/
-        StockMainPrice::init_excel_data();
 
         //StockMainStat::init_main_stat_data();
         //StockMainStat::cal('2020-01-10');
