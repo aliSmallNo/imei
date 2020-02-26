@@ -729,6 +729,7 @@ class StockMainResult extends \yii\db\ActiveRecord
                 $ret[] = $v1[$index];
             }
         }
+
         // print_r($ret);exit;
 
         return self::get_year_data($ret);
@@ -992,7 +993,7 @@ class StockMainResult extends \yii\db\ActiveRecord
             $sum_rate = $v['sum_rate'];
             $success_times = $v['success_times'];
             $sum_times = $success_times + $v['fail_times'];
-            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? round($success_times / $sum_times, 2) : 0;
+            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? (round($success_times / $sum_times, 3) * 100).'%' : 0;
             $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
         }
 
