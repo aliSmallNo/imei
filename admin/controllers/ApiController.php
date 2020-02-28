@@ -1658,6 +1658,17 @@ class ApiController extends Controller
 
                 return self::renderAPI(0, "重置数据成功！");
                 break;
+            case "edit_main_result2":
+                $data = [
+                    'r_note' => trim(self::postParam("r_note")),
+                ];
+                list($res) = StockMainResult2::edit($id, $data);
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！", $data);
+                } else {
+                    return self::renderAPI(129, '保存失败', $data);
+                }
+                break;
         }
 
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");

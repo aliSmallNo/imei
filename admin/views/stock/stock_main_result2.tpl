@@ -114,7 +114,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">分配BD信息</h4>
+        <h4 class="modal-title" id="myModalLabel">xxx</h4>
       </div>
       <div class="modal-body">
 
@@ -148,7 +148,7 @@
         var url = '/api/stock_main';
         console.log(tag);
         switch (tag) {
-            case "edit_main_result":
+            case "edit_main_result2":
                 postData = {
                     tag: tag,
                     r_note: $.trim($('.r_note').val()),
@@ -183,7 +183,7 @@
         $('div.modal-body').html(vHtml);
         $('#myModalLabel').html('修改' + td.attr('data-r_trans_on'));
         $('.btnSaveMod').attr({
-            tag: "edit_main_result",
+            tag: "edit_main_result2",
             id: td.attr("data-id")
         });
 
