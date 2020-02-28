@@ -1790,7 +1790,7 @@ class FooController extends Controller
             echo $v['m_trans_on'].PHP_EOL;
         }*/
 
-        // 计算 StockMainStat.s_cus_rate_avg2
+        /*// 计算 StockMainStat.s_cus_rate_avg2
         // 计算 StockMainStat.s_cus_rate_avg_scale2
         $d = StockMain::find()->where([])->asArray()->orderBy('m_trans_on desc')->all();
         foreach ($d as $v) {
@@ -1798,7 +1798,7 @@ class FooController extends Controller
             StockMainStat::cal($m_trans_on);
             echo $v['m_trans_on'].PHP_EOL;
             //break;
-        }
+        }*/
 
 
         //StockMainStat::init_main_stat_data();
