@@ -360,6 +360,56 @@ class Menu
                 ],
             ],
             [
+                "name" => "策略结果(新)",
+                "id" => "stock_main_result2",
+                "icon" => "fa-users",
+                "staff" => 1,
+                "items" => [
+                    [
+                        "name" => "策略结果",
+                        "url" => "/stock/stock_main_result2",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    /*[
+                        "name" => "策略回测",
+                        "url" => "/stock/stock_main_back",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
+                        "name" => "卖空回测",
+                        "url" => "/stock/stock_main_back_r",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
+                        "name" => "回测合并",
+                        "url" => "/stock/stock_main_back_merge",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
+                        "name" => "结果统计",
+                        "url" => "/stock/stock_result_stat",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
+                        "name" => "收益率",
+                        "url" => "/stock/rate_5day_after",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+                    [
+                        "name" => "随机收益率",
+                        "url" => "/stock/random_rate",
+                        "revise" => 1,
+                        "level" => 820
+                    ],*/
+                ],
+            ],
+            [
                 "name" => "信息统计",
                 "id" => "stock_stat",
                 "icon" => "fa-users",

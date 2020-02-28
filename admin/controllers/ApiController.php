@@ -31,6 +31,7 @@ use common\models\QuestionSea;
 use common\models\StockActionChange;
 use common\models\StockMainConfig;
 use common\models\StockMainResult;
+use common\models\StockMainResult2;
 use common\models\StockMainRule;
 use common\models\StockOrder;
 use common\models\StockUser;
@@ -1649,6 +1650,11 @@ class ApiController extends Controller
                 break;
             case "reset_main_result":
                 StockMainResult::reset();
+
+                return self::renderAPI(0, "重置数据成功！");
+                break;
+            case "reset_main_result2":
+                StockMainResult2::reset();
 
                 return self::renderAPI(0, "重置数据成功！");
                 break;

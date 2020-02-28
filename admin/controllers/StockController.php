@@ -22,6 +22,7 @@ use common\models\StockMain;
 use common\models\StockMainConfig;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
+use common\models\StockMainResult2;
 use common\models\StockMainRule;
 use common\models\StockMainStat;
 use common\models\StockOrder;
@@ -1654,6 +1655,57 @@ class StockController extends BaseController
 
 
         return $this->renderPage("stock_main_result.tpl",
+            [
+                'pagination' => $pagination,
+                'list' => $list,
+                'name' => $name,
+                'cats' => StockMainStat::$cats,
+                'cat' => $cat,
+            ]
+        );
+    }
+
+    /**
+     * 上证，深证，500etf 策略结果列表
+     *
+     * @time 2020-02-28
+     */
+    public function actionStock_main_result2()
+    {
+        $page = self::getParam("page", 1);
+        $name = self::getParam("name", '');
+        $cat = self::getParam("cat", '');
+
+        $criteria = [];
+        $params = [];
+
+        if ($name) {
+            $nStr = [
+                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
+            or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name 
+            or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name  ) ',
+                5 => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
+                10 => ' (r.r_buy10 like :name or r.r_sold10 like :name or r.r_warn10 like :name) ',
+                20 => ' (r.r_buy20 like :name or r.r_sold20 like :name or r.r_warn20 like :name) ',
+            ];
+            $criteria[] = isset($nStr[$cat]) ? $nStr[$cat] : $nStr[0];
+            $params[':name'] = "%$name%";
+        }
+        if ($cat) {
+            $cStr = [
+                5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
+                10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
+                20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
+            ];
+            $criteria[] = $cStr[$cat];
+        }
+
+
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
+        $pagination = self::pagination($page, $count, 10000);
+
+
+        return $this->renderPage("stock_main_result2.tpl",
             [
                 'pagination' => $pagination,
                 'list' => $list,
