@@ -346,6 +346,20 @@ class Menu
                 ],
             ],
             [
+                "name" => "大盘指数新",
+                "id" => "stock_main2",
+                "icon" => "fa-users",
+                "staff" => 1,
+                "items" => [
+                    [
+                        "name" => "指数列表",
+                        "url" => "/stock/stock_main2",
+                        "revise" => 1,
+                        "level" => 830
+                    ],
+                ],
+            ],
+            [
                 "name" => "信息统计",
                 "id" => "stock_stat",
                 "icon" => "fa-users",

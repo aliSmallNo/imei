@@ -1550,6 +1550,38 @@ class StockController extends BaseController
     }
 
     /**
+     * 上证，深证，500etf 列表
+     *
+     * @time 2020-02-28 PM
+     */
+    public function actionStock_main2()
+    {
+        $page = self::getParam("page", 1);
+        $cat = self::getParam("cat", StockMainStat::CAT_DAY_5);
+
+        $criteria = [];
+        $params = [];
+
+        if ($cat) {
+            $criteria[] = "  s.s_cat = :cat ";
+            $params[':cat'] = $cat;
+        }
+
+        list($list, $count) = StockMainStat::items($criteria, $params, $page, 100);
+        $pagination = self::pagination($page, $count, 100);
+
+        return $this->renderPage("stock_main2.tpl",
+            [
+                'cat' => $cat,
+                'pagination' => $pagination,
+                'list' => $list,
+                'cats' => StockMainStat::$cats,
+                'update_on' => StockMain::get_latest_update_on(),
+            ]
+        );
+    }
+
+    /**
      * 上证，深证，500etf 策略列表
      *
      * @time 2019-11-20

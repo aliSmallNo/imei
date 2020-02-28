@@ -1778,6 +1778,27 @@ class FooController extends Controller
 
     public function actionZp()
     {
+        /*
+         // 计算 StockMain.m_cus_rate2
+         $d = StockMain::find()->where([])->asArray()->orderBy('m_trans_on desc')->all();
+        foreach ($d as $v) {
+            $sum_turnover = $v['m_sum_turnover'];
+            $sh_close = $v['m_sh_close'];
+            StockMain::edit($v['m_id'], [
+                'm_cus_rate2' => $sum_turnover > 0 ? round($sh_close / $sum_turnover * 100000000, 3) : 0,
+            ]);
+            echo $v['m_trans_on'].PHP_EOL;
+        }*/
+
+        // 计算 StockMainStat.s_cus_rate_avg2
+        // 计算 StockMainStat.s_cus_rate_avg_scale2
+        $d = StockMain::find()->where([])->asArray()->orderBy('m_trans_on desc')->all();
+        foreach ($d as $v) {
+            $m_trans_on = $v['m_trans_on'];
+            StockMainStat::cal($m_trans_on);
+            echo $v['m_trans_on'].PHP_EOL;
+            //break;
+        }
 
 
         //StockMainStat::init_main_stat_data();
@@ -1879,7 +1900,6 @@ class FooController extends Controller
          }
          file_put_contents('/data/code/imei/cache_phones_20191011.txt', AppUtil::json_encode($data));*/
 
-        exit;
     }
 
     /**

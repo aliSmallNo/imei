@@ -43,6 +43,7 @@ class StockMain extends \yii\db\ActiveRecord
             'm_sz_close' => '深证 收盘价',
             'm_sum_turnover' => '上证深证合计 成交量',
             'm_cus_rate' => '散户比例',
+            'm_cus_rate2' => '散户比例2',//新算法 2020-02-28 添加
             'm_trans_on' => '交易日期',
             'm_added_on' => '添加时间',
             'm_update_on' => '修改时间',
@@ -192,6 +193,7 @@ class StockMain extends \yii\db\ActiveRecord
             'm_sz_close' => $sz_close,
             'm_sum_turnover' => $sum_turnover,
             'm_cus_rate' => $sum_turnover > 0 ? round($stf_close / $sum_turnover * 100000000, 3) : 0,
+            'm_cus_rate2' => $sum_turnover > 0 ? round($sh_close / $sum_turnover * 100000000, 3) : 0,
             'm_trans_on' => $trans_on,
         ];
         list($res) = self::add($insert);

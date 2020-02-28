@@ -36,6 +36,8 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sh_change' => '上证涨跌',
             's_cus_rate_avg' => '散户比值 散户比值均值',
             's_cus_rate_avg_scale' => '比例 散户比值均值比例',
+            's_cus_rate_avg2' => '散户比值 散户比值2均值',        // 2020-02-28 PM add
+            's_cus_rate_avg_scale2' => '比例 散户比值2均值比例',  // 2020-02-28 PM add
             's_sh_turnover_avg' => '上证交易额均值',
             's_sh_turnover_avg_scale' => '上证交易额均值比例',
             's_sum_turnover_avg' => '交易额 合计交易额均值',
@@ -169,8 +171,12 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_sh_change_raw = $curr['m_sh_close'] / $data[0]['m_sh_close'] - 1;
 
         $s_sh_change = round($s_sh_change_raw, 5) * 100;
+
         $s_cus_rate_avg = round(array_sum(array_column($data, 'm_cus_rate')) / $cat, 2);
         $s_cus_rate_avg_scale = ($curr['m_cus_rate'] / $s_cus_rate_avg - 1) * 100;
+
+        $s_cus_rate_avg2 = round(array_sum(array_column($data, 'm_cus_rate2')) / $cat, 2);
+        $s_cus_rate_avg_scale2 = ($curr['m_cus_rate2'] / $s_cus_rate_avg2 - 1) * 100;
 
         $s_sum_turnover_avg = round(array_sum(array_column($data, 'm_sum_turnover')) / $cat, 0);
         $s_sum_turnover_avg_scale = ($curr['m_sum_turnover'] / $s_sum_turnover_avg - 1) * 100;
@@ -191,6 +197,8 @@ class StockMainStat extends \yii\db\ActiveRecord
             's_sh_change' => $s_sh_change,
             's_cus_rate_avg' => $s_cus_rate_avg,
             's_cus_rate_avg_scale' => $s_cus_rate_avg_scale,
+            's_cus_rate_avg2' => $s_cus_rate_avg2,              // 2020-02-28 add
+            's_cus_rate_avg_scale2' => $s_cus_rate_avg_scale2,  // 2020-02-28 add
             's_sum_turnover_avg' => $s_sum_turnover_avg,
             's_sum_turnover_avg_scale' => $s_sum_turnover_avg_scale,
             's_sh_close_avg' => $s_sh_close_avg,
