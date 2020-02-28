@@ -346,7 +346,7 @@ class Menu
                 ],
             ],
             [
-                "name" => "大盘指数新",
+                "name" => "大盘指数(新)",
                 "id" => "stock_main2",
                 "icon" => "fa-users",
                 "staff" => 1,
