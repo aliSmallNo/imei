@@ -154,7 +154,7 @@ class StockMainRule2 extends \yii\db\ActiveRecord
      */
     public static function get_rules($cat = self::CAT_BUY)
     {
-        return StockMainRule::find()->where([
+        return self::find()->where([
             'r_status' => self::ST_ACTIVE,
             'r_cat' => $cat
         ])->asArray()->orderBy('r_id asc')->all();
