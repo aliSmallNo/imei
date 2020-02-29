@@ -357,6 +357,12 @@ class Menu
                         "revise" => 1,
                         "level" => 830
                     ],
+                    [
+                        "name" => "策略列表",
+                        "url" => "/stock/stock_main_rule2",
+                        "revise" => 1,
+                        "level" => 830
+                    ],
                 ],
             ],
             [

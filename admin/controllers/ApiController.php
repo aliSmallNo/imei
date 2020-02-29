@@ -33,6 +33,7 @@ use common\models\StockMainConfig;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
 use common\models\StockMainRule;
+use common\models\StockMainRule2;
 use common\models\StockOrder;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
@@ -1570,6 +1571,65 @@ class ApiController extends Controller
                     list($res) = StockMainRule::edit($id, $data);
                 } else {
                     list($res) = StockMainRule::add($data);
+                }
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！", $data);
+                } else {
+                    return self::renderAPI(129, '保存失败', $data);
+                }
+            case "edit_main_rule2":
+                $data = [
+                    'r_name' => trim(self::postParam("r_name")),
+                    'r_status' => trim(self::postParam("r_status")),
+                    'r_cat' => trim(self::postParam("r_cat")),
+                    'r_stocks_gt' => trim(self::postParam("r_stocks_gt")),
+                    'r_stocks_lt' => trim(self::postParam("r_stocks_lt")),
+                    'r_cus_gt' => trim(self::postParam("r_cus_gt")),
+                    'r_cus_lt' => trim(self::postParam("r_cus_lt")),
+                    'r_turnover_gt' => trim(self::postParam("r_turnover_gt")),
+                    'r_turnover_lt' => trim(self::postParam("r_turnover_lt")),
+                    'r_sh_turnover_gt' => trim(self::postParam("r_sh_turnover_gt")),
+                    'r_sh_turnover_lt' => trim(self::postParam("r_sh_turnover_lt")),
+                    'r_diff_gt' => trim(self::postParam("r_diff_gt")),
+                    'r_diff_lt' => trim(self::postParam("r_diff_lt")),
+                    'r_sh_close_avg_gt' => trim(self::postParam("r_sh_close_avg_gt")),
+                    'r_sh_close_avg_lt' => trim(self::postParam("r_sh_close_avg_lt")),
+                    'r_sh_close_60avg_10avg_offset_gt' => trim(self::postParam("r_sh_close_60avg_10avg_offset_gt")),
+                    'r_sh_close_60avg_10avg_offset_lt' => trim(self::postParam("r_sh_close_60avg_10avg_offset_lt")),
+                    'r_sh_close_avg_change_rate_gt' => trim(self::postParam("r_sh_close_avg_change_rate_gt")),
+                    'r_sh_close_avg_change_rate_lt' => trim(self::postParam("r_sh_close_avg_change_rate_lt")),
+                    'r_date_gt' => trim(self::postParam("r_date_gt")),
+                    'r_date_lt' => trim(self::postParam("r_date_lt")),
+                    'r_scat' => trim(self::postParam("r_scat")),
+                    'r_note' => trim(self::postParam("r_note")),
+                ];
+                foreach ($data as $k => $v) {
+                    if (in_array($k,
+                        [
+                            'r_stocks_gt',
+                            'r_stocks_lt',
+                            'r_cus_gt',
+                            'r_cus_lt',
+                            'r_turnover_gt',
+                            'r_turnover_lt',
+                            'r_sh_turnover_gt',
+                            'r_sh_turnover_lt',
+                            'r_diff_gt',
+                            'r_diff_lt',
+                            'r_sh_close_avg_gt',
+                            'r_sh_close_avg_lt',
+                            'r_sh_close_60avg_10avg_offset_gt',
+                            'r_sh_close_60avg_10avg_offset_lt',
+                            'r_sh_close_avg_change_rate_gt',
+                            'r_sh_close_avg_change_rate_lt',
+                        ])) {
+                        $data[$k] = floatval($v);
+                    }
+                }
+                if ($id) {
+                    list($res) = StockMainRule2::edit($id, $data);
+                } else {
+                    list($res) = StockMainRule2::add($data);
                 }
                 if ($res) {
                     return self::renderAPI(0, "保存成功！", $data);

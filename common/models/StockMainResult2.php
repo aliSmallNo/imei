@@ -119,6 +119,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 重置表数据
      *
      * @time 2020-02-28 PM 
+     * @time 2020-02-29 PM modify
      */
     public static function reset($flag = 0)
     {
@@ -131,9 +132,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $ret = [];
         // 策略
-        $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
-        $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
-        $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
+        $buys = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
+        $solds = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
+        $warns = StockMainRule2::get_rules(StockMainRule2::CAT_WARN);
         foreach ($res as $k => $v) {
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
@@ -237,9 +238,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             return $data;
         }
 
-        $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
-        $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
-        $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
+        $buys = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
+        $solds = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
+        $warns = StockMainRule2::get_rules(StockMainRule2::CAT_WARN);
 
         foreach ($res as $k => $v) {
             $cat = $v['s_cat'];                                             // 5 10,20
@@ -1302,14 +1303,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      */
     public static function result_stat($year1 = '', $year2 = '')
     {
-        /*$rules_buys = StockMainRule::find()->where([
-            'r_cat' => StockMainRule::CAT_BUY,
-            'r_status' => StockMainRule::ST_ACTIVE,
-        ])->asArray()->all();
-        $rules_solds = StockMainRule::find()->where([
-            'r_cat' => StockMainRule::CAT_SOLD,
-            'r_status' => StockMainRule::ST_ACTIVE,
-        ])->asArray()->all();*/
 
         $rules_buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $rules_solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);

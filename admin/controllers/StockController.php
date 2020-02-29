@@ -24,6 +24,7 @@ use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
 use common\models\StockMainRule;
+use common\models\StockMainRule2;
 use common\models\StockMainStat;
 use common\models\StockOrder;
 use common\models\StockTurn;
@@ -1603,6 +1604,38 @@ class StockController extends BaseController
         $pagination = self::pagination($page, $count, 100);
 
         return $this->renderPage("stock_main_rule.tpl",
+            [
+                'pagination' => $pagination,
+                'list' => $list,
+                'cats' => StockMainRule::$cats,
+                'sts' => StockMainRule::$stDict,
+                'cat' => $cat,
+                'scat' => StockMainStat::$cats_map,
+            ]
+        );
+    }
+
+    /**
+     * 上证，深证，500etf 策略列表
+     *
+     * @time 2020-02-29 PM
+     */
+    public function actionStock_main_rule2()
+    {
+        $page = self::getParam("page", 1);
+        $cat = self::getParam("cat", '');
+
+        $criteria = [];
+        $params = [];
+        if ($cat) {
+            $criteria[] = "  r.r_cat = :cat ";
+            $params[':cat'] = $cat;
+        }
+
+        list($list, $count) = StockMainRule2::items($criteria, $params, $page, 100);
+        $pagination = self::pagination($page, $count, 100);
+
+        return $this->renderPage("stock_main_rule2.tpl",
             [
                 'pagination' => $pagination,
                 'list' => $list,
