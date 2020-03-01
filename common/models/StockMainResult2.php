@@ -211,6 +211,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 跟新一条表数据
      *
      * @time 2020-02-28 PM
+     * @time 2020-02-29 PM modify
      */
     public static function cal_one($trans_on = '')
     {
@@ -275,6 +276,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      */
     public static function send_sms2()
     {
+        return false;
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
@@ -336,6 +338,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return 100;
     }
 
+    /**
+     * 
+     * @time 2020-03-01 PM 
+     */
     public static function items($criteria, $params, $page, $pageSize = 1000)
     {
         $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
@@ -391,6 +397,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 获取买卖点的结果
      *
      * @time 2019-11-27
+     * @time 2020-03-01 PM modify
      */
     public static function get_buy_sold_item($data, $cat = self::TAG_BUY)
     {
@@ -422,6 +429,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 获取卖点后首次买点时间
      *
      * @time 2019-12-23 PM
+     * @time 2020-03-01 PM modify
      */
     public static function get_first_buys()
     {
@@ -450,6 +458,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 获取买点后首次卖点时间
      *
      * @time 2019-12-23 PM
+     * @time 2020-03-01 PM modify
      */
     public static function get_first_buys_r()
     {
@@ -502,6 +511,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 止损比例：做个输入框，我们可以灵活输入止损点，看哪个止损点效果更好。
      *
      * @time 2019-11-29 PM
+     * @time 2020-03-01 PM modify
      */
     public static function cal_back($price_type, $buy_times = 0, $stop_rate = 0)
     {
@@ -602,6 +612,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 相邻的卖出日期相同 背景颜色一致
      *
      * @time 2020-01-09 PM
+     * @time 2020-03-01 PM modify
      */
     public static function change_color_diff_sold_dt($data)
     {
@@ -641,6 +652,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @param int $n 第N次出现买入信号买入
      *
      * @time 2020-02-24 PM
+     * @time 2020-03-01 PM modify
      */
     public static function N_times_buy_ret($data, $n = 1)
     {
@@ -677,6 +689,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 3.连续错误，指连续几次都是负（多出现于止损情况）
      *
      * @time 2020-02-06 PM
+     * @time 2020-03-01 PM modify
      */
     public static function continue_errors($data)
     {
@@ -741,10 +754,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 回测表中加一个“正确率”
      *
      * @time 2019-12-16 AM
+     * @time 2020-03-01 PM modify
      */
     public static function stat_rule_right_rate($data)
     {
-        $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->orderBy('r_cat')->all();
+        $rules = StockMainRule2::find()->where(['r_status' => StockMainRule2::ST_ACTIVE])->asArray()->orderBy('r_cat')->all();
         $ret = ArrayHelper::map($rules, 'r_name', 0);
         foreach ($ret as $k => $v) {
             $ret[$k] = [
@@ -899,6 +913,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 获取年度数据
      *
      * @time 2019-12-10
+     * @time 2020-03-01 PM modify
      */
     public static function get_year_data($data)
     {
@@ -936,6 +951,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 回测收益 获取卖点
      *
      * @time 2019-11-26
+     * @time 2020-03-01 PM modify
      */
     public static function get_sold_point($buy_dt)
     {
@@ -951,6 +967,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 回测收益 获取低于止损点的卖点
      *
      * @time 2019-11-29
+     * @time 2020-03-01 PM modify
      */
     public static function _get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate)
     {
@@ -982,6 +999,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 回测收益 获取反向卖点
      *
      * @time 2019-11-26
+     * @time 2020-03-01 PM modify
      */
     public static function get_sold_point_r($buy_dt)
     {
@@ -1028,6 +1046,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 回测收益 获取低于止损点的反向卖点
      *
      * @time 2020-01-08 AM
+     * @time 2020-03-01 PM modify
      */
     public static function _get_sold_point_r_new($buy_dt, $sold_dt, $price_type, $stop_rate)
     {
@@ -1062,6 +1081,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 找最高 最低卖点 及平均收益率
      *
      * @time 2019-11-26
+     * @time 2020-03-01 PM modify
      */
     public static function get_high_low_point($buy_dt, $sold_dt, $price_type)
     {
@@ -1094,109 +1114,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     }
 
     /**
-     * 卖空回测结果表 => 单独表: 把策略结果列表的 买点作为卖点 卖点作为买点 计算
-     *
-     * 买入日期 价格 买入类型 卖出日期 价格 卖出类型 收益率 持有天数 收益率 最高卖点 最低卖点 平均收益率
-     *
-     * @time 2019-12-03
-     */
-    public static function cal_back_r($price_type, $buy_times, $stop_rate)
-    {
-        if ($buy_times) {
-            $get_first_buys = self::get_first_buys_r();
-            //print_r($get_first_buys);exit;
-        }
-        $sql = "select p.*,r.* from im_stock_main_result2 r
-                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
-        $ret = AppUtil::db()->createCommand($sql)->queryAll();
-
-        $data = [];
-        foreach ($ret as $buy) {
-            $buy_dt = $buy['r_trans_on'];
-
-            // 2019-12-23 add
-            if ($buy_times) {
-                if (isset($get_first_buys[$buy_dt])) {
-                    $has_buy_times = 1;
-                }
-                if ($has_buy_times > $buy_times) {
-                    continue;
-                }
-                $has_buy_times++;
-            }
-
-            $sold = self::get_sold_point_r($buy_dt);
-            if (!$sold) {
-                continue;
-            }
-            $sold_dt = $sold['r_trans_on'];
-
-            $buy_type = self::get_buy_sold_item($buy, self::TAG_SOLD);
-            $buy_price = $buy[$price_type];
-
-            $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
-            $sold_price = $sold[$price_type];
-            $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
-            $rule_rate = $rate;
-            $set_rate = 0;
-            $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
-
-            // 低于止损比例 获取新的卖点
-            //if ($stop_rate && $rate > $stop_rate) {
-            if ($stop_rate) {
-                $sold = self::_get_sold_point_r($buy_dt, $sold_dt, $price_type, $stop_rate);
-                if ($sold) {
-                    $sold_dt = $sold['r_trans_on'];
-                    $sold_type = self::get_buy_sold_item($sold, self::TAG_BUY);
-                    $sold_price = $sold[$price_type];
-                    $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
-                    $rate = $stop_rate;
-                    $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
-                }
-            }
-
-            // 找最高 最低卖点 及平均收益率
-            list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
-
-            $item = [
-                'buy_dt' => $buy_dt,
-                'buy_price' => $buy_price,
-                'buy_type' => $buy_type,
-                'sold_dt' => $sold_dt,
-                'sold_price' => $sold_price,
-                'sold_type' => $sold_type,
-                'hold_days' => $hold_days,
-                'rule_rate' => $rule_rate,
-                'set_rate' => $set_rate,
-                'rate' => $rate,
-                'rate_avg' => $rate_avg,
-                'high' => $high,
-                'low' => $low,
-                'back_dir' => self::BACK_DIR_2, // 做空回测
-            ];
-            $data[] = $item;
-        }
-        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
-
-        // 去掉大于买入次数的买点 从2015开始买往现在推的
-        if (intval($buy_times) > 0) {
-            //$data = self::pop_by_times($buy_times, $data);
-        }
-
-        // 回测表中加一个“正确率” 2019-12-12 PM
-        $stat_rule_right_rate = self::stat_rule_right_rate($data);
-
-        // 统计年度收益
-        $rate_year_sum = self::get_year_data($data);
-
-        return [$data, $rate_year_sum, $stat_rule_right_rate];
-    }
-
-    /**
      * 新的 卖空回测结果表
      *
      * @time 2020-01-08 AM
+     * @time 2020-03-01 PM modify
      */
     public static function cal_back_r_new($price_type, $buy_times, $stop_rate)
     {
@@ -1300,16 +1221,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 能否按照下图，有个单独页面，展示下每个策略的正确率。
      *
      * @time 2019-11-27
+     * @time 2020-03-01 PM modify
      */
     public static function result_stat($year1 = '', $year2 = '')
     {
 
-        $rules_buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
-        $rules_solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
-        $rules_warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
+        $rules_buys = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
+        $rules_solds = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
+        $rules_warns = StockMainRule2::get_rules(StockMainRule2::CAT_WARN);
 
         $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1.'-01-01', $year2.'-12-31'] : [];
-        $results = StockMainResult::find()->where($where)->asArray()->all();
+        $results = self::find()->where($where)->asArray()->all();
 
         $list_buy = self::result_stat_item($rules_buys, $results);
         $list_sold = self::result_stat_item($rules_solds, $results);
@@ -1322,6 +1244,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-11-27 PM add
      * @time 2020-01-10 AM modify
+     * @time 2020-03-01 PM modify
      */
     public static function result_stat_item($rules, $results)
     {
@@ -1378,45 +1301,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             foreach ($results as $result) {
                 foreach ([5, 10, 20] as $day) {
                     foreach ([
-                                 StockMainRule::CAT_BUY => 'r_buy',
-                                 StockMainRule::CAT_SOLD => 'r_sold',
-                                 StockMainRule::CAT_WARN => 'r_warn',
+                                 StockMainRule2::CAT_BUY => 'r_buy',
+                                 StockMainRule2::CAT_SOLD => 'r_sold',
+                                 StockMainRule2::CAT_WARN => 'r_warn',
                              ] as $_rule_cat => $field) {
                         if (strpos($result[$field.$day], $rule_name) !== false && $rule_cat == $_rule_cat) {
                             $item = $count($item, $result, $day, $rule_name);
                         }
                     }
                 }
-                /*
-                if (strpos($result['r_buy5'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_BUY) {
-                    $item = $count($item, $result, 5, $rule_name);
-                }
-                if (strpos($result['r_buy10'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_BUY) {
-                    $item = $count($item, $result, 10, $rule_name);
-                }
-                if (strpos($result['r_buy20'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_BUY) {
-                    $item = $count($item, $result, 20, $rule_name);
-                }
-
-                if (strpos($result['r_sold5'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_SOLD) {
-                    $item = $count($item, $result, 5, $rule_name);
-                }
-                if (strpos($result['r_sold10'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_SOLD) {
-                    $item = $count($item, $result, 10, $rule_name);
-                }
-                if (strpos($result['r_sold20'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_SOLD) {
-                    $item = $count($item, $result, 20, $rule_name);
-                }
-
-                if (strpos($result['r_warn5'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_WARN) {
-                    $item = $count($item, $result, 5, $rule_name);
-                }
-                if (strpos($result['r_warn10'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_WARN) {
-                    $item = $count($item, $result, 10, $rule_name);
-                }
-                if (strpos($result['r_warn20'], $rule_name) !== false && $rule_cat == StockMainRule::CAT_WARN) {
-                    $item = $count($item, $result, 20, $rule_name);
-                }*/
             }
             $data[] = $item;
         }
@@ -1521,6 +1414,173 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $res = array_slice($res, 0, 1);
 
         return $res[0];
+    }
+
+    /**
+     * 做下买点出现后5天的 【做空】收益率
+     *
+     * 买点后收益率，有2点改进下：
+     * 1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计
+     * 2. 统计的收益率点，如果5天内出现卖点，那么后面的收益率就不统计了。因为卖点后继续统计，会影响数据。
+     *
+     * @time 2020-01-13 added
+     * @time 2020-03-01 modify
+     */
+    public static function get_5day_after_rate_r($price_type)
+    {
+        $conn = AppUtil::db();
+        $sql = "select 
+                p_trans_on
+                from im_stock_main_price p
+                join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
+                where p_trans_on > '2018-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) 
+                order by p_trans_on asc";
+        $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
+
+        // 买点找出卖出
+        $buy_sold_dts = [];
+        foreach ($dts as $dt) {
+            $sold = self::get_sold_point_r($dt);
+            if ($sold) {
+                $buy_sold_dts[$dt] = $sold['r_trans_on'];
+            }
+        }
+        // 卖出点后出现的“第一次买点”
+        $sold_dt_flag = '';
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            if (!$sold_dt_flag) {
+                $sold_dt_flag = $sold_dt;
+                continue;
+            }
+            if ($sold_dt == $sold_dt_flag) {
+                unset($buy_sold_dts[$buy_dt]);
+            } else {
+                $sold_dt_flag = $sold_dt;
+            }
+        }
+
+        $data = [];
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            $data[] = self::get_5day_after_rate_item($buy_dt, $price_type, $conn, 0);
+        }
+
+        $avgs = [];
+        foreach ([0, 1, 2, 3, 4] as $avg_k) {
+            $column = array_column($data, $avg_k);
+            $sum = array_sum($column);
+            $co = count(array_filter($column));
+            //echo $avg_k.' = '.$co.'<br>';
+            $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
+        }
+
+        return [$data, $avgs];
+    }
+
+    /**
+     * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
+     *
+     * @time 2019-12-06 added
+     *
+     * 买点后收益率，有2点改进下：
+     * 1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计
+     * 2. 统计的收益率点，如果5天内出现卖点，那么后面的收益率就不统计了。因为卖点后继续统计，会影响数据。
+     * @time 2020-01-13 modify
+     * @time 2020-03-01 modify
+     */
+    public static function get_5day_after_rate($price_type)
+    {
+        $conn = AppUtil::db();
+        $sql = "select 
+                p_trans_on
+                from im_stock_main_price p
+                join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
+                where p_trans_on > '2018-01-01' and (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0) 
+                order by p_trans_on asc";
+        $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
+
+        // 买点找出卖出
+        $buy_sold_dts = [];
+        foreach ($dts as $dt) {
+            $sold = self::get_sold_point($dt);
+            if ($sold) {
+                $buy_sold_dts[$dt] = $sold['r_trans_on'];
+            }
+        }
+        // 卖出点后出现的“第一次买点”
+        $sold_dt_flag = '';
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            if (!$sold_dt_flag) {
+                $sold_dt_flag = $sold_dt;
+                continue;
+            }
+            if ($sold_dt == $sold_dt_flag) {
+                unset($buy_sold_dts[$buy_dt]);
+            } else {
+                $sold_dt_flag = $sold_dt;
+            }
+        }
+
+        $data = [];
+        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+            $data[] = self::get_5day_after_rate_item($buy_dt, $price_type, $conn);
+        }
+
+        $avgs = [];
+        foreach ([0, 1, 2, 3, 4] as $avg_k) {
+            $column = array_column($data, $avg_k);
+            $sum = array_sum($column);
+            $co = count(array_filter($column));
+            //echo $avg_k.' = '.$co.'<br>';
+            $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
+        }
+
+        return [$data, $avgs];
+    }
+
+    /**
+     * 买点出现后5天的收益率
+     *
+     * @time 2019-12-02 PM
+     * @time 2020-03-01 modify
+     */
+    public static function get_5day_after_rate_item($buy_dt, $price_type, $conn, $flag = 1)
+    {
+        $conn = $conn ? $conn : AppUtil::db();
+        $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 6";
+        $res = $conn->createCommand($sql, [':dt' => $buy_dt])->queryAll();
+
+        $today = array_shift($res);
+        $price = $today[$price_type];
+        $data['dt'] = $buy_dt;
+        $data = [
+            'dt' => $buy_dt,
+            '0' => 0,
+            '1' => 0,
+            '2' => 0,
+            '3' => 0,
+            '4' => 0,
+        ];
+
+        // 获得卖点
+        if ($flag) {
+            $sold = self::get_sold_point($buy_dt);
+        } else {
+            $sold = self::get_sold_point_r($buy_dt);
+        }
+        $sold_dt = '';
+        if ($sold) {
+            $sold_dt = $sold['r_trans_on'];
+        }
+
+        foreach ($res as $k => $v) {
+            // 如果5天内出现卖点，那么后面的收益率就不统计了
+            if ($sold_dt && strtotime($v['p_trans_on']) > strtotime($sold_dt)) {
+                continue;
+            }
+            $data[$k] = $price > 0 ? round($v[$price_type] / $price - 1, 5) * 100 : 0;
+        }
+
+        return $data;
     }
 
 }

@@ -1782,6 +1782,39 @@ class StockController extends BaseController
     }
 
     /**
+     * 策略结果回测列表
+     *
+     * @time 2019-11-25
+     * @time 2020-03-01 PM modify
+     */
+    public function actionStock_main_back2()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $buy_times = self::getParam("buy_times", 0);
+        $stop_rate = self::getParam("stop_rate", 0);
+        $stop_rate = trim($stop_rate, '%');
+
+        list($list, $rate_year_sum, $stat_rule_right_rate)
+            = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
+
+        return $this->renderPage("stock_main_back2.tpl",
+            [
+                'list' => StockMainResult2::change_color_diff_sold_dt($list),
+                'rate_year_sum' => $rate_year_sum,
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+                'buy_times' => $buy_times,
+                'stop_rate' => $stop_rate,
+                'stat_rule_right_rate' => $stat_rule_right_rate,
+                'continue_errors' => StockMainResult2::continue_errors($list),
+                'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
+                'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),
+                'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 3),
+            ]
+        );
+    }
+
+    /**
      * 策略结果 卖空回测列表
      *
      * @time 2019-11-28
@@ -1812,6 +1845,40 @@ class StockController extends BaseController
             ]
         );
     }
+
+    /**
+     * 策略结果 卖空回测列表
+     *
+     * @time 2019-11-28
+     * @time 2020-03-01 PM modify
+     */
+    public function actionStock_main_back_r2()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $buy_times = self::getParam("buy_times", 0);
+        $stop_rate = self::getParam("stop_rate", 0);
+        $stop_rate = trim($stop_rate, '%');
+
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, $buy_times,
+            $stop_rate);
+
+        return $this->renderPage("stock_main_back_r2.tpl",
+            [
+                'list' => StockMainResult2::change_color_diff_sold_dt($list),
+                'rate_year_sum' => $rate_year_sum,
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+                'buy_times' => $buy_times,
+                'stop_rate' => $stop_rate,
+                'stat_rule_right_rate' => $stat_rule_right_rate,
+                'continue_errors' => StockMainResult2::continue_errors($list),
+                'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
+                'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),
+                'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 3),
+            ]
+        );
+    }
+
 
     /**
      * 策略结果 卖空回测|回测列表 合并列表
@@ -1846,6 +1913,45 @@ class StockController extends BaseController
                 'stat_rule_right_rate1' => $stat_rule_right_rate1,
                 'stat_rule_right_rate2' => $stat_rule_right_rate2,
                 'continue_errors' => StockMainResult::continue_errors(array_merge($list1, $list2)),
+
+            ]
+        );
+    }
+
+    /**
+     * 策略结果 卖空回测|回测列表 合并列表
+     *
+     * @time 2019-12-30 PM
+     * @time 2020-03-01 PM modify
+     */
+    public function actionStock_main_back_merge2()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $buy_times = self::getParam("buy_times", 0);
+        $stop_rate = self::getParam("stop_rate", 0);
+        $stop_rate = trim($stop_rate, '%');
+
+        // 回测列表
+        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
+            = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
+        // 卖空回测
+        list($list2, $rate_year_sum2, $stat_rule_right_rate2)
+            = StockMainResult2::cal_back_r_new($price_type, $buy_times, $stop_rate);
+
+        $list = array_merge($list1, $list2);
+        ArrayHelper::multisort($list, 'buy_dt', SORT_DESC);
+
+        return $this->renderPage("stock_main_back_merge2.tpl", [
+                'list' => $list,
+                'rate_year_sum1' => $rate_year_sum1,
+                'rate_year_sum2' => $rate_year_sum2,
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+                'buy_times' => $buy_times,
+                'stop_rate' => $stop_rate,
+                'stat_rule_right_rate1' => $stat_rule_right_rate1,
+                'stat_rule_right_rate2' => $stat_rule_right_rate2,
+                'continue_errors' => StockMainResult2::continue_errors(array_merge($list1, $list2)),
 
             ]
         );
@@ -1887,6 +1993,43 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 上证，深证，500etf 策略结果 统计
+     *
+     * @time 2019-11-27
+     * @time 2020-03-01 PM modify
+     */
+    public function actionStock_result_stat2()
+    {
+        $st_year = self::getParam("st_year", '');
+        $et_year = self::getParam("et_year", '');
+
+        list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
+
+        $tabs = [
+            ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
+            ['name' => '2018策略结果列表', 'st_year' => '2018', 'et_year' => '2018', 'cls' => ''],
+            ['name' => '2019策略结果列表', 'st_year' => '2019', 'et_year' => '2019', 'cls' => ''],
+            ['name' => '2018-2020策略结果列表', 'st_year' => '2018', 'et_year' => '2020', 'cls' => ''],
+        ];
+        foreach ($tabs as $k => $v) {
+            if ($st_year == $v['st_year'] && $et_year == $v['et_year']) {
+                $tabs[$k]['cls'] = 'active';
+            }
+        }
+
+        return $this->renderPage("stock_main_result_stat2.tpl",
+            [
+                'list_buy' => $list_buy,
+                'list_sold' => $list_sold,
+                'list_warn' => $list_warn,
+                'tabs' => $tabs,
+                //'st_year' => $st_year,
+                //'et_year' => $et_year,
+            ]
+        );
+    }
+
 
     /**
      * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
@@ -1902,9 +2045,9 @@ class StockController extends BaseController
         $is_go_short = self::getParam("is_go_short", 0);
 
         if ($is_go_short) {
-            list($list, $avgs) = StockMainPrice::get_5day_after_rate_r($price_type);
+            list($list, $avgs) = StockMainResult::get_5day_after_rate_r($price_type);
         } else {
-            list($list, $avgs) = StockMainPrice::get_5day_after_rate($price_type);
+            list($list, $avgs) = StockMainResult::get_5day_after_rate($price_type);
         }
 
         $tabs = [
@@ -1913,6 +2056,42 @@ class StockController extends BaseController
         ];
 
         return $this->renderPage("stock_main_rate_5day_rate.tpl",
+            [
+                'list' => array_reverse($list),
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
+                'avgs' => $avgs,
+                'tabs' => $tabs,
+                //'is_go_short' => $is_go_short,
+            ]
+        );
+    }
+
+    /**
+     * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
+     * @time 2019-12-02
+     *
+     * 买点出现后5天的【做空】收益率
+     * @time 2020-01-13 PM
+     * @time 2020-03-01 PM modify
+     */
+    public function actionRate_5day_after2()
+    {
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $is_go_short = self::getParam("is_go_short", 0);
+
+        if ($is_go_short) {
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type);
+        } else {
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type);
+        }
+
+        $tabs = [
+            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => $is_go_short == 0 ? 'active' : ''],
+            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => $is_go_short == 1 ? 'active' : ''],
+        ];
+
+        return $this->renderPage("stock_main_rate_5day_rate2.tpl",
             [
                 'list' => array_reverse($list),
                 'price_types' => StockMainPrice::$types,
@@ -1962,62 +2141,6 @@ class StockController extends BaseController
                 'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
                 'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
             ]);
-    }
-
-    /**
-     * 2018年 策略结果 统计
-     *
-     * @time 2019-12-02
-     */
-    public function actionStock_result_stat2018()
-    {
-        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat('2018', '2018');
-
-        return $this->renderPage("stock_main_result_stat2018.tpl",
-            [
-                'list_buy' => $list_buy,
-                'list_sold' => $list_sold,
-                'list_warn' => $list_warn,
-            ]
-        );
-    }
-
-    /**
-     * 2019年 策略结果 统计
-     *
-     * @time 2019-12-02
-     */
-    public function actionStock_result_stat2019()
-    {
-        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat('2019', '2019');
-
-        return $this->renderPage("stock_main_result_stat2019.tpl",
-            [
-                'list_buy' => $list_buy,
-                'list_sold' => $list_sold,
-                'list_warn' => $list_warn,
-
-            ]
-        );
-    }
-
-    /**
-     * 2018、2019年 策略结果 统计
-     *
-     * @time 2019-12-03 AM
-     */
-    public function actionStock_result_stat1820()
-    {
-        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat('2018', '2020');
-
-        return $this->renderPage("stock_main_result_stat1820.tpl",
-            [
-                'list_buy' => $list_buy,
-                'list_sold' => $list_sold,
-                'list_warn' => $list_warn,
-
-            ]
-        );
     }
 
     /**

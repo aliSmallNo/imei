@@ -88,7 +88,7 @@ class StockMainRule2 extends \yii\db\ActiveRecord
         self::ST_DEL => '禁用',
     ];
 
-    const CAT_MAIN_RULE = 'main_rule';
+    const CAT_MAIN_RULE = 'main_rule2';
 
     public static function add($values = [])
     {
@@ -150,7 +150,7 @@ class StockMainRule2 extends \yii\db\ActiveRecord
     /**
      * 按$cat获取购买策略
      *
-     * @time 2019-11-20 AM
+     * @time 2020-02-29 AM
      */
     public static function get_rules($cat = self::CAT_BUY)
     {

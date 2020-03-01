@@ -24,6 +24,7 @@ use common\models\StockMainConfig;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainRule;
+use common\models\StockMainRule2;
 use common\models\StockMainStat;
 use common\models\StockMainTmp0;
 use common\models\StockMenu;
@@ -1778,6 +1779,36 @@ class FooController extends Controller
 
     public function actionZp()
     {
+        /*//复制 im_stock_main_rule => im_stock_main_rule2
+        $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
+        foreach ($rules as $v) {
+            StockMainRule2::add([
+                'r_name' => $v['r_name'],
+                'r_status' => $v['r_status'],
+                'r_cat' => $v['r_cat'],
+                'r_stocks_gt' => $v['r_stocks_gt'],
+                'r_stocks_lt' => $v['r_stocks_lt'],
+                'r_cus_gt' => $v['r_cus_gt'],
+                'r_cus_lt' => $v['r_cus_lt'],
+                'r_turnover_gt' => $v['r_turnover_gt'],
+                'r_turnover_lt' => $v['r_turnover_lt'],
+                'r_sh_turnover_gt' => $v['r_sh_turnover_gt'],
+                'r_sh_turnover_lt' => $v['r_sh_turnover_lt'],
+                'r_diff_gt' => $v['r_diff_gt'],
+                'r_diff_lt' => $v['r_diff_lt'],
+                'r_sh_close_avg_gt' => $v['r_sh_close_avg_gt'],
+                'r_sh_close_avg_lt' => $v['r_sh_close_avg_lt'],
+                'r_sh_close_60avg_10avg_offset_gt' => $v['r_sh_close_60avg_10avg_offset_gt'],
+                'r_sh_close_60avg_10avg_offset_lt' => $v['r_sh_close_60avg_10avg_offset_lt'],
+                'r_sh_close_avg_change_rate_gt' => $v['r_sh_close_avg_change_rate_gt'],
+                'r_sh_close_avg_change_rate_lt' => $v['r_sh_close_avg_change_rate_lt'],
+                'r_date_gt' => $v['r_date_gt'],
+                'r_date_lt' => $v['r_date_lt'],
+                'r_scat' => $v['r_scat'],
+                'r_note' => $v['r_note'],
+            ]);
+        }*/
+
         /*
          // 计算 StockMain.m_cus_rate2
          $d = StockMain::find()->where([])->asArray()->orderBy('m_trans_on desc')->all();

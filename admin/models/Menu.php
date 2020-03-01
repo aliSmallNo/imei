@@ -377,37 +377,37 @@ class Menu
                         "revise" => 1,
                         "level" => 820
                     ],
-                    /*[
+                    [
                         "name" => "策略回测",
-                        "url" => "/stock/stock_main_back",
+                        "url" => "/stock/stock_main_back2",
                         "revise" => 1,
                         "level" => 820
                     ],
                     [
                         "name" => "卖空回测",
-                        "url" => "/stock/stock_main_back_r",
+                        "url" => "/stock/stock_main_back_r2",
                         "revise" => 1,
                         "level" => 820
                     ],
                     [
                         "name" => "回测合并",
-                        "url" => "/stock/stock_main_back_merge",
+                        "url" => "/stock/stock_main_back_merge2",
                         "revise" => 1,
                         "level" => 820
                     ],
                     [
                         "name" => "结果统计",
-                        "url" => "/stock/stock_result_stat",
+                        "url" => "/stock/stock_result_stat2",
                         "revise" => 1,
                         "level" => 820
                     ],
                     [
                         "name" => "收益率",
-                        "url" => "/stock/rate_5day_after",
+                        "url" => "/stock/rate_5day_after2",
                         "revise" => 1,
                         "level" => 820
                     ],
-                    [
+                    /*[
                         "name" => "随机收益率",
                         "url" => "/stock/random_rate",
                         "revise" => 1,
