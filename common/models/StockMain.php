@@ -202,6 +202,7 @@ class StockMain extends \yii\db\ActiveRecord
         if ($res && $trans_on == date('Y-m-d')) {
             StockMainStat::cal($trans_on);
             StockMainResult::cal_one($trans_on);
+            StockMainResult2::cal_one($trans_on);
             StockMainTmp0::cal_sh_close_60_avg($trans_on);
         }
 

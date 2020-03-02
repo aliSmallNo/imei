@@ -23,6 +23,7 @@ use common\models\StockMain;
 use common\models\StockMainConfig;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
+use common\models\StockMainResult2;
 use common\models\StockMainRule;
 use common\models\StockMainRule2;
 use common\models\StockMainStat;
@@ -1779,6 +1780,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
+
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
         foreach ($rules as $v) {
