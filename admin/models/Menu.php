@@ -343,6 +343,14 @@ class Menu
                         "revise" => 1,
                         "level" => 820
                     ],
+                    [
+                        "name" => "今日预测",
+                        "url" => "/stock/stock_curr_day_trend",
+                        "revise" => 1,
+                        "level" => 820
+                    ],
+
+
                 ],
             ],
             [
