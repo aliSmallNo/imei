@@ -232,12 +232,6 @@ class StockMainStat extends \yii\db\ActiveRecord
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
         foreach ($res as $k => $v) {
-//            $J_s_sh_change = $v['s_sh_change'];                             //'上证 涨跌'
-//            $L_s_cus_rate_avg_scale = $v['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'
-//            $N_s_sum_turnover_avg_scale = $v['s_sum_turnover_avg_scale'];   //'比例 合计交易额均值比例',
-//            $P_s_sh_close_avg_scale = $v['s_sh_close_avg_scale'];           //'比例 上证指数均值比例',
-//            $R_s_sh_turnover_avg_scale = $v['s_sh_turnover_avg_scale'];
-
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
@@ -248,6 +242,56 @@ class StockMainStat extends \yii\db\ActiveRecord
 
             foreach ($solds as $sold) {
                 if (self::get_rule_flag($v, $sold)) {
+                    $sold_name[] = $sold['r_name'];
+                }
+            }
+            $res[$k]['buys'] = $buy_name;
+            $res[$k]['solds'] = $sold_name;
+        }
+        $sql = "select count(1) as co
+				from im_stock_main as m
+				left join im_stock_main_stat s on s.s_trans_on=m.m_trans_on
+				where m_id>0 $strCriteria ";
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
+
+        return [$res, $count];
+    }
+
+    /**
+     * 新的
+     *
+     * @time 2020-03-05 PM modify
+     */
+    public static function items2($criteria, $params, $page, $pageSize = 20)
+    {
+        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
+        }
+
+        $sql = "select m.*,s.*
+				from im_stock_main as m
+				left join im_stock_main_stat s on s.s_trans_on=m.m_trans_on
+				where m_id>0 $strCriteria 
+				order by m_trans_on desc 
+				$limit ";
+        $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
+
+        // 策略
+        $buys = StockMainRule2::get_rules(StockMainRule::CAT_BUY);
+        $solds = StockMainRule2::get_rules(StockMainRule::CAT_SOLD);
+        foreach ($res as $k => $v) {
+            $buy_name = $sold_name = [];
+
+            foreach ($buys as $buy) {
+                if (self::get_rule_flag2($v, $buy)) {
+                    $buy_name[] = $buy['r_name'];
+                }
+            }
+
+            foreach ($solds as $sold) {
+                if (self::get_rule_flag2($v, $sold)) {
                     $sold_name[] = $sold['r_name'];
                 }
             }

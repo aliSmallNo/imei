@@ -1554,7 +1554,9 @@ class StockController extends BaseController
     /**
      * 上证，深证，500etf 列表
      *
-     * @time 2020-02-28 PM
+     * @time 2020-02-28 PM modify
+     * @time 2020-03-05 PM modify
+     *
      */
     public function actionStock_main2()
     {
@@ -1569,7 +1571,7 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockMainStat::items($criteria, $params, $page, 100);
+        list($list, $count) = StockMainStat::items2($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
         return $this->renderPage("stock_main2.tpl",
