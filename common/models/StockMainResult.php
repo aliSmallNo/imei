@@ -385,6 +385,7 @@ class StockMainResult extends \yii\db\ActiveRecord
 
             // 发送短信
             $code = strval($prefix.mt_rand(1000, 9999).'8');
+
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
 
             Log::add([

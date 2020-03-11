@@ -276,8 +276,8 @@ class CrontabController extends Controller
                 StockMainPrice::update_curr_day();
                 Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 3']);
                 // 来短信提醒指定用户是否有买点、卖点
-                StockMainResult::send_sms2();
-                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 4']);
+                $res = StockMainResult::send_sms2();
+                Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 4', 'oAfter' => $res]);
             }
         } catch (\Exception $e) {
             Log::add([
