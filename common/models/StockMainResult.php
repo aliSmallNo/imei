@@ -347,7 +347,7 @@ class StockMainResult extends \yii\db\ActiveRecord
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
         $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
-        $end = strtotime(date('Y-m-d '.$model2['c_content'].':00'));
+        $end = strtotime(date('Y-m-d '.$model2['c_content'].':05'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
             return 0;
