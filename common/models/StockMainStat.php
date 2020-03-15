@@ -311,8 +311,9 @@ class StockMainStat extends \yii\db\ActiveRecord
      * 每日预计策略。简单说13点后可以提前估计今天会有哪些策略出现
      *
      * @time 2020-02-18
+     * @time 2020-03-15 AM modify
      */
-    public static function curr_day_trend()
+    public static function curr_day_trend($params)
     {
         $curr_day = $buys = $solds = [];
 
@@ -333,10 +334,10 @@ class StockMainStat extends \yii\db\ActiveRecord
         $sold_rules = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
 
 
-        $buys = self::curr_day_trend_item($buy_rules);
-        $solds = self::curr_day_trend_item($sold_rules);
+        $buys = self::curr_day_trend_item($buy_rules, $params);
+        $solds = self::curr_day_trend_item($sold_rules, $params);
 
-        return [$curr_day, $buys, $solds,$diff];
+        return [$curr_day, $buys, $solds, $diff];
     }
 
     /**
@@ -389,10 +390,32 @@ class StockMainStat extends \yii\db\ActiveRecord
      * 卖出 买入 列表数据
      *
      * @time 2020-02-19 PM
+     * @time 2020-03-15 AM modify
      */
-    public static function curr_day_trend_item($rules)
+    public static function curr_day_trend_item($rules, $params)
     {
+        /*$params = [
+            'sh_close' => 0.8,
+            'cus' => 0.8,
+            'turnover' => 0,
+            'sh_turnover' => 0,
+            'diff_val' => 0,
+            'sh_close_avg' => 0.8,
+            'rate' => 0,
+        ];*/
+
+        $sql = "select m_trans_on from im_stock_main order by m_trans_on desc  limit 2";
+        $last_trans_dt = AppUtil::db()->createCommand($sql)->queryColumn()[1];
+        $sql = "select m.*,s.*
+                    from im_stock_main as m
+                    left join im_stock_main_stat s on s.s_trans_on=m.m_trans_on
+                    where m_trans_on='$last_trans_dt'";
+        $last_stat = AppUtil::db()->createCommand($sql)->queryAll();//上个交易日 数据
+        $last_stat = array_column($last_stat, null, 's_cat');
+
+
         $items = [];
+
 
         foreach ($rules as $rule) {
             // s_sh_change 上证涨跌
@@ -403,27 +426,114 @@ class StockMainStat extends \yii\db\ActiveRecord
             $r_stocks_gt = $rule['r_stocks_gt'];// 上证涨跌 大于
             $r_stocks_lt = $rule['r_stocks_lt'];
             $r_scat = $rule['r_scat'];
+            $r_sh_turnover_gt = $rule['r_sh_turnover_gt']; //'上证交易额大于',
+            $r_sh_turnover_lt = $rule['r_sh_turnover_lt']; //'上证交易额小于',
 
-            $r_scat_arr = $s_cus_rate_avgs = $s_sh_changes = [];
+            $r_turnover_gt = $rule['r_turnover_gt']; //'交易额大于',
+            $r_turnover_lt = $rule['r_turnover_lt']; //'交易额小于',
+
+            $r_sh_close_avg_gt = $rule['r_sh_close_avg_gt']; //'上证指数均值 大于',
+            $r_sh_close_avg_lt = $rule['r_sh_close_avg_lt']; //'上证指数均值 小于',
+
             if ($r_scat == 0) {
                 $r_scat = "5,10,20";
             }
             $r_scat = $r_scat.',';
             $r_scat_arr = array_filter(explode(',', $r_scat));
 
+
+            $s_cus_rate_avgs_item = function ($r_cus_gt, $r_cus_lt) {
+                if ($r_cus_gt != self::IGNORE_VAL && $r_cus_lt != self::IGNORE_VAL) {
+                    return '( '.$r_cus_gt.' , '.$r_cus_lt.' )';
+                } elseif ($r_cus_gt == self::IGNORE_VAL && $r_cus_lt != self::IGNORE_VAL) {
+                    return '( - , '.$r_cus_lt.' )';
+                } elseif ($r_cus_gt != self::IGNORE_VAL && $r_cus_lt == self::IGNORE_VAL) {
+                    return '( '.$r_cus_gt.' , - )';
+                } else {
+                    return '-';
+                }
+            };
+            $s_sh_changes_item = function ($r_stocks_gt, $r_stocks_lt) {
+                if ($r_stocks_gt != self::IGNORE_VAL && $r_stocks_lt != self::IGNORE_VAL) {
+                    return '( '.$r_stocks_gt.' , '.$r_stocks_lt.' )';
+                } elseif ($r_stocks_gt == self::IGNORE_VAL && $r_stocks_lt != self::IGNORE_VAL) {
+                    return '( - , '.$r_stocks_lt.' )';
+                } elseif ($r_stocks_gt != self::IGNORE_VAL && $r_stocks_lt == self::IGNORE_VAL) {
+                    return '( '.$r_stocks_gt.' , - )';
+                } else {
+                    return '-';
+                }
+            };
+
+            $cal_item = function ($compare_val, $gt, $lt) {
+
+                $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
+                $lt_val = $lt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $lt / 100), 1);
+
+                if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+                    return "($gt,$lt) ($gt_val,$lt_val)";
+                } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+                    return "(-,$lt) (-,$lt_val)";
+                } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
+                    return "($gt,'-') ($gt_val,-)";
+                } else {
+                    return '-';
+                }
+            };
+
+            $cal_item_cls = function ($gt, $lt, $compare) {
+                if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+                    return $compare > $gt && $compare < $lt ? 'satisfy' : '';
+                } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+                    return $compare < $lt ? 'satisfy' : '';
+                } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
+                    return $compare > $gt ? 'satisfy' : '';
+                } else {
+                    return '';
+                }
+            };
+
+            $m_sh_close = $sh_close_avg = $sh_turnover = $sum_turnover = $cus_rate_avgs = $s_sh_changes = [];
             foreach ($r_scat_arr as $day) {
-                $s_cus_rate_avgs[$day] = ($r_cus_gt == self::IGNORE_VAL ? '' : '>'.$r_cus_gt).($r_cus_lt == self::IGNORE_VAL ? '' : ' <'.$r_cus_lt);
-                $s_sh_changes[$day] = ($r_stocks_gt == self::IGNORE_VAL ? '' : '>'.$r_stocks_gt).($r_stocks_lt == self::IGNORE_VAL ? '' : ' <'.$r_stocks_lt);
+                $last_stat_cat = $last_stat[$day];
+
+                // 大盘:上证指数
+                $m_sh_close[$day] = [
+                    $cal_item($last_stat_cat['m_sh_close'], $r_stocks_gt, $r_stocks_lt),
+                    $cal_item_cls($r_stocks_gt, $r_stocks_lt, $params['sh_close']),
+                ];
+                /*if ($rule['r_name'] == '买T3-10-WD-SX') {
+                    print_r([$r_stocks_gt, $r_stocks_lt, $params['sh_close']]);exit;
+                }*/
+                // 上证指数均值
+                $sh_close_avg[$day] = [
+                    $cal_item($last_stat_cat['s_sh_close_avg'], $r_sh_close_avg_gt, $r_sh_close_avg_lt),
+                    $cal_item_cls($r_stocks_gt, $r_stocks_lt, $params['sh_close_avg']),
+                ];
+                // 上证交易额
+                $sh_turnover[$day] = $cal_item($last_stat_cat['s_sh_turnover_avg'], $r_sh_turnover_gt,
+                    $r_sh_turnover_lt);
+
+                // 总交易额
+                $sum_turnover[$day] = $cal_item($last_stat_cat['s_sum_turnover_avg'], $r_turnover_gt, $r_turnover_lt);
+                // 散户比值
+                $cus_rate_avgs[$day] = [
+                    $s_cus_rate_avgs_item($r_cus_gt, $r_cus_lt),
+                    $cal_item_cls($r_cus_gt, $r_cus_lt, $params['cus']),
+                ];
+                // 上证涨跌
+                $s_sh_changes[$day] = $s_sh_changes_item($r_stocks_gt, $r_stocks_lt);
             }
 
             $item = [
                 'rule_name' => $rule['r_name'],
                 'm_etf_close' => '',
-                'm_sh_close' => '',
-                'm_sh_turnover' => '',
+                'm_sh_close' => $m_sh_close,
+                'm_sh_close_avg' => $sh_close_avg,
+                'm_sh_turnover' => $sh_turnover,
                 'm_sz_turnover' => '',
-                'm_sum_turnover' => '',
-                's_cus_rate_avgs' => $s_cus_rate_avgs,
+                'm_sum_turnover' => $sum_turnover,
+                's_cus_rate_avgs' => $cus_rate_avgs,
                 's_sh_changes' => $s_sh_changes,
             ];
             $items[] = $item;

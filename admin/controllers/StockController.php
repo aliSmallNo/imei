@@ -2152,7 +2152,26 @@ class StockController extends BaseController
      */
     public function actionStock_curr_day_trend()
     {
-        list($curr_day, $buys, $solds, $diff) = StockMainStat::curr_day_trend();
+        $sh_close = self::getParam("sh_close", 0.8);
+        $cus = self::getParam("cus", 0.8);
+        $turnover = self::getParam("turnover", '');
+        $sh_turnover = self::getParam("sh_turnover", '');
+        $diff_val = self::getParam("diff_val", '');
+        $sh_close_avg = self::getParam("sh_close_avg", 0.8);
+        $rate = self::getParam("rate", '');
+
+        $params = [
+            'sh_close' => $sh_close,
+            'cus' => $cus,
+            'turnover' => $turnover,
+            'sh_turnover' => $sh_turnover,
+            'diff_val' => $diff_val,
+            'sh_close_avg' => $sh_close_avg,
+            'rate' => $rate,
+        ];
+        //print_r($params);exit;
+
+        list($curr_day, $buys, $solds, $diff) = StockMainStat::curr_day_trend($params);
 
         return $this->renderPage("stock_curr_day_trend.tpl",
             [
@@ -2161,6 +2180,13 @@ class StockController extends BaseController
                 'buys' => $buys,
                 'solds' => $solds,
                 'update_on' => StockMain::get_latest_update_on(),
+                'sh_close' => $sh_close,
+                'cus' => $cus,
+                'turnover' => $turnover,
+                'sh_turnover' => $sh_turnover,
+                'diff_val' => $diff_val,
+                'sh_close_avg' => $sh_close_avg,
+                'rate' => $rate,
             ]
         );
     }
