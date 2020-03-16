@@ -2158,7 +2158,7 @@ class StockController extends BaseController
         $sh_turnover = self::getParam("sh_turnover", '');
         $diff_val = self::getParam("diff_val", '');
         $sh_close_avg = self::getParam("sh_close_avg", 0.8);
-        $rate = self::getParam("rate", '');
+        $change = self::getParam("change", 0);//上证涨跌
 
         $params = [
             'sh_close' => $sh_close,
@@ -2167,7 +2167,7 @@ class StockController extends BaseController
             'sh_turnover' => $sh_turnover,
             'diff_val' => $diff_val,
             'sh_close_avg' => $sh_close_avg,
-            'rate' => $rate,
+            'change' => $change,
         ];
         //print_r($params);exit;
 
@@ -2186,7 +2186,7 @@ class StockController extends BaseController
                 'sh_turnover' => $sh_turnover,
                 'diff_val' => $diff_val,
                 'sh_close_avg' => $sh_close_avg,
-                'rate' => $rate,
+                'change' => $change,
             ]
         );
     }

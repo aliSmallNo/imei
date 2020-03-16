@@ -401,17 +401,21 @@ class StockMainStat extends \yii\db\ActiveRecord
             'sh_turnover' => 0,
             'diff_val' => 0,
             'sh_close_avg' => 0.8,
-            'rate' => 0,
+            'change' => 0,
         ];*/
 
         $sql = "select m_trans_on from im_stock_main order by m_trans_on desc  limit 2";
+        $curr_trans_dt = AppUtil::db()->createCommand($sql)->queryColumn()[0];
         $last_trans_dt = AppUtil::db()->createCommand($sql)->queryColumn()[1];
         $sql = "select m.*,s.*
                     from im_stock_main as m
                     left join im_stock_main_stat s on s.s_trans_on=m.m_trans_on
-                    where m_trans_on='$last_trans_dt'";
-        $last_stat = AppUtil::db()->createCommand($sql)->queryAll();//上个交易日 数据
+                    where m_trans_on=:dt";
+        $last_stat = AppUtil::db()->createCommand($sql, [':dt' => $last_trans_dt])->queryAll();//上个交易日 数据
         $last_stat = array_column($last_stat, null, 's_cat');
+
+        $today_stat = AppUtil::db()->createCommand($sql, [':dt' => $curr_trans_dt])->queryAll();//今天 数据
+        $today_stat = array_column($today_stat, null, 's_cat');
 
 
         $items = [];
@@ -420,6 +424,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         foreach ($rules as $rule) {
             // s_sh_change 上证涨跌
             // s_cus_rate_avg 散户比值均值比例
+
+            $r_cat = $rule['r_cat'];// 1买入，2卖出
 
             $r_cus_gt = $rule['r_cus_gt'];// 散户比值均值比例 大于
             $r_cus_lt = $rule['r_cus_lt'];
@@ -442,29 +448,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             $r_scat_arr = array_filter(explode(',', $r_scat));
 
 
-            $s_cus_rate_avgs_item = function ($r_cus_gt, $r_cus_lt) {
-                if ($r_cus_gt != self::IGNORE_VAL && $r_cus_lt != self::IGNORE_VAL) {
-                    return '( '.$r_cus_gt.' , '.$r_cus_lt.' )';
-                } elseif ($r_cus_gt == self::IGNORE_VAL && $r_cus_lt != self::IGNORE_VAL) {
-                    return '( - , '.$r_cus_lt.' )';
-                } elseif ($r_cus_gt != self::IGNORE_VAL && $r_cus_lt == self::IGNORE_VAL) {
-                    return '( '.$r_cus_gt.' , - )';
-                } else {
-                    return '-';
-                }
-            };
-            $s_sh_changes_item = function ($r_stocks_gt, $r_stocks_lt) {
-                if ($r_stocks_gt != self::IGNORE_VAL && $r_stocks_lt != self::IGNORE_VAL) {
-                    return '( '.$r_stocks_gt.' , '.$r_stocks_lt.' )';
-                } elseif ($r_stocks_gt == self::IGNORE_VAL && $r_stocks_lt != self::IGNORE_VAL) {
-                    return '( - , '.$r_stocks_lt.' )';
-                } elseif ($r_stocks_gt != self::IGNORE_VAL && $r_stocks_lt == self::IGNORE_VAL) {
-                    return '( '.$r_stocks_gt.' , - )';
-                } else {
-                    return '-';
-                }
-            };
-
+            // 算出范围
             $cal_item = function ($compare_val, $gt, $lt) {
 
                 $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
@@ -481,13 +465,27 @@ class StockMainStat extends \yii\db\ActiveRecord
                 }
             };
 
-            $cal_item_cls = function ($gt, $lt, $compare) {
+            // 判断是否符合条件 符合则加上显示红色的字的类 satisfy
+            $cal_item_cls = function ($compare_val, $gt, $lt, $_compare_val, $rate) {
+                $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
+                $lt_val = $lt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $lt / 100), 1);
+                $_compare_val_lt = $_compare_val * (1 + $rate);
+                $_compare_val_gt = $_compare_val * (1 - $rate);
                 if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
-                    return $compare > $gt && $compare < $lt ? 'satisfy' : '';
+                    // $_compare_val_lt 或 $_compare_val_gt 在 ($gt_val,$lt_val) 则符合条件
+                    $flag1 = $_compare_val_lt > $gt_val && $_compare_val_lt < $lt_val;
+                    $flag2 = $_compare_val_gt > $gt_val && $_compare_val_gt < $lt_val;
+                    return $flag1 || $flag2 ? 'satisfy' : '';
                 } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
-                    return $compare < $lt ? 'satisfy' : '';
+                    //$lt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
+                    $flag1 = $_compare_val_lt < $lt_val;
+                    $flag2 = $_compare_val_gt > $lt_val;
+                    return $flag1 && $flag2 ? 'satisfy' : '';
                 } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
-                    return $compare > $gt ? 'satisfy' : '';
+                    //$gt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
+                    $flag1 = $_compare_val_lt < $lt_val;
+                    $flag2 = $_compare_val_gt > $lt_val;
+                    return $flag1 && $flag2 ? 'satisfy' : '';
                 } else {
                     return '';
                 }
@@ -496,19 +494,26 @@ class StockMainStat extends \yii\db\ActiveRecord
             $m_sh_close = $sh_close_avg = $sh_turnover = $sum_turnover = $cus_rate_avgs = $s_sh_changes = [];
             foreach ($r_scat_arr as $day) {
                 $last_stat_cat = $last_stat[$day];
+                $today_stat_cat = $today_stat[$day];
 
                 // 大盘:上证指数
+                $compare_val = $last_stat_cat['m_sh_close'];
+                $_compare_val = $today_stat_cat['m_sh_close'];
+                $rate = $params['sh_close'];
                 $m_sh_close[$day] = [
-                    $cal_item($last_stat_cat['m_sh_close'], $r_stocks_gt, $r_stocks_lt),
-                    $cal_item_cls($r_stocks_gt, $r_stocks_lt, $params['sh_close']),
+                    $cal_item($compare_val, $r_stocks_gt, $r_stocks_lt),
+                    $cal_item_cls($compare_val, $r_stocks_gt, $r_stocks_lt, $_compare_val, $rate),
                 ];
                 /*if ($rule['r_name'] == '买T3-10-WD-SX') {
                     print_r([$r_stocks_gt, $r_stocks_lt, $params['sh_close']]);exit;
                 }*/
                 // 上证指数均值
+                $compare_val = $last_stat_cat['s_sh_close_avg'];
+                $_compare_val = $today_stat_cat['s_sh_close_avg'];
+                $rate = $params['sh_close_avg'];
                 $sh_close_avg[$day] = [
-                    $cal_item($last_stat_cat['s_sh_close_avg'], $r_sh_close_avg_gt, $r_sh_close_avg_lt),
-                    $cal_item_cls($r_stocks_gt, $r_stocks_lt, $params['sh_close_avg']),
+                    $cal_item($compare_val, $r_sh_close_avg_gt, $r_sh_close_avg_lt),
+                    $cal_item_cls($compare_val, $r_stocks_gt, $r_stocks_lt, $_compare_val, $rate),
                 ];
                 // 上证交易额
                 $sh_turnover[$day] = $cal_item($last_stat_cat['s_sh_turnover_avg'], $r_sh_turnover_gt,
@@ -516,13 +521,15 @@ class StockMainStat extends \yii\db\ActiveRecord
 
                 // 总交易额
                 $sum_turnover[$day] = $cal_item($last_stat_cat['s_sum_turnover_avg'], $r_turnover_gt, $r_turnover_lt);
+
                 // 散户比值
+                $compare_val = $last_stat_cat['s_cus_rate_avg_scale'];
+                $_compare_val = $today_stat_cat['s_cus_rate_avg_scale'];
+                $rate = $params['cus'];
                 $cus_rate_avgs[$day] = [
-                    $s_cus_rate_avgs_item($r_cus_gt, $r_cus_lt),
-                    $cal_item_cls($r_cus_gt, $r_cus_lt, $params['cus']),
+                    $cal_item($compare_val, $r_cus_gt, $r_cus_lt),
+                    $cal_item_cls($compare_val, $r_cus_gt, $r_cus_lt, $_compare_val, $rate),
                 ];
-                // 上证涨跌
-                $s_sh_changes[$day] = $s_sh_changes_item($r_stocks_gt, $r_stocks_lt);
             }
 
             $item = [
@@ -534,7 +541,6 @@ class StockMainStat extends \yii\db\ActiveRecord
                 'm_sz_turnover' => '',
                 'm_sum_turnover' => $sum_turnover,
                 's_cus_rate_avgs' => $cus_rate_avgs,
-                's_sh_changes' => $s_sh_changes,
             ];
             $items[] = $item;
         }

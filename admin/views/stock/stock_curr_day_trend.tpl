@@ -43,38 +43,6 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label">散户:</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="cus" placeholder="散户" type="text" value="{{$cus}}">
-          <p><span>散户 数值为当天 13 点收盘是±0.8%</span></p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label">交易额:</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="turnover" placeholder="交易额" type="text" value="{{$turnover}}">
-          <p><span>交易额 数值列表如下图: </span></p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-
-      <div class="form-group">
-        <label class="col-sm-3 control-label">上证交易额:</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="sh_turnover" placeholder="上证交易额" type="text"
-                 value="{{$sh_turnover}}">
-          <p><span>上证交易额 实时交易额/百分比</span></p>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label">差值:</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="diff_val" placeholder="差值" type="text" value="{{$diff_val}}">
-          <p><span>差值</span></p>
-        </div>
-      </div>
-      <div class="form-group">
         <label class="col-sm-3 control-label">上证指数均值:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" name="sh_close_avg" placeholder="上证指数均值" type="text"
@@ -83,12 +51,44 @@
         </div>
       </div>
       <div class="form-group">
-        <label class="col-sm-3 control-label">上证指数均值/上证涨跌:</label>
+        <label class="col-sm-3 control-label">合计交易额:</label>
         <div class="col-sm-9">
-          <input type="text" class="form-control" name="rate" placeholder="上证指数均值/上证涨跌" type="text" value="{{$rate}}">
-          <p><span>上证指数均值/上证涨跌</span></p>
+          <input type="text" class="form-control" name="turnover" placeholder="交易额" type="text" value="{{$turnover}}">
+          <p><span>合计交易额: </span></p>
         </div>
       </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">上证交易额:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="sh_turnover" placeholder="上证交易额" type="text"
+                 value="{{$sh_turnover}}">
+          <p><span>上证交易额: </span></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">差值:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="diff_val" placeholder="差值" type="text" value="{{$diff_val}}">
+          <p><span>差值</span></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">散户:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="cus" placeholder="散户" type="text" value="{{$cus}}">
+          <p><span>散户 数值为当天 13 点收盘是±0.8%</span></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label">上证涨跌:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" name="cus" placeholder="上证涨跌" type="text" value="{{$change}}">
+          <p><span>上证涨跌 ±0.8%填0.8</span></p>
+        </div>
+      </div>
+
     </div>
 
     <div class="form-group">
@@ -186,7 +186,6 @@
       <th>深圳交易额</th>
       <th>合计交易额</th>
       <th class="col-sm-2">散户比值</th>
-      <th class="col-sm-2">上证涨跌</th>
     </tr>
     </thead>
     <tbody>
@@ -224,12 +223,7 @@
             <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
           {{/foreach}}
         </td>
-        <!-- 上证涨跌 -->
-        <td>
-          {{foreach from=$item.s_sh_changes item=it key=day}}
-            <div>{{$day}}日: {{$it}}</div>
-          {{/foreach}}
-        </td>
+
       </tr>
     {{/foreach}}
     </tbody>
@@ -286,12 +280,7 @@
             <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
           {{/foreach}}
         </td>
-        <!-- 上证涨跌 -->
-        <td>
-          {{foreach from=$item.s_sh_changes item=it key=day}}
-            <div>{{$day}}日: {{$it}}</div>
-          {{/foreach}}
-        </td>
+
       </tr>
     {{/foreach}}
     </tbody>
