@@ -425,8 +425,6 @@ class StockMainStat extends \yii\db\ActiveRecord
             // s_sh_change 上证涨跌
             // s_cus_rate_avg 散户比值均值比例
 
-            $r_cat = $rule['r_cat'];// 1买入，2卖出
-
             $r_cus_gt = $rule['r_cus_gt'];// 散户比值均值比例 大于
             $r_cus_lt = $rule['r_cus_lt'];
             $r_stocks_gt = $rule['r_stocks_gt'];// 上证涨跌 大于
@@ -447,50 +445,6 @@ class StockMainStat extends \yii\db\ActiveRecord
             $r_scat = $r_scat.',';
             $r_scat_arr = array_filter(explode(',', $r_scat));
 
-
-            // 算出范围
-            $cal_item = function ($compare_val, $gt, $lt) {
-
-                $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
-                $lt_val = $lt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $lt / 100), 1);
-
-                if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
-                    return "($gt,$lt) ($gt_val,$lt_val)";
-                } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
-                    return "(-,$lt) (-,$lt_val)";
-                } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
-                    return "($gt,'-') ($gt_val,-)";
-                } else {
-                    return '-';
-                }
-            };
-
-            // 判断是否符合条件 符合则加上显示红色的字的类 satisfy
-            $cal_item_cls = function ($compare_val, $gt, $lt, $_compare_val, $rate) {
-                $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
-                $lt_val = $lt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $lt / 100), 1);
-                $_compare_val_lt = $_compare_val * (1 + $rate);
-                $_compare_val_gt = $_compare_val * (1 - $rate);
-                if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
-                    // $_compare_val_lt 或 $_compare_val_gt 在 ($gt_val,$lt_val) 则符合条件
-                    $flag1 = $_compare_val_lt > $gt_val && $_compare_val_lt < $lt_val;
-                    $flag2 = $_compare_val_gt > $gt_val && $_compare_val_gt < $lt_val;
-                    return $flag1 || $flag2 ? 'satisfy' : '';
-                } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
-                    //$lt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
-                    $flag1 = $_compare_val_lt < $lt_val;
-                    $flag2 = $_compare_val_gt > $lt_val;
-                    return $flag1 && $flag2 ? 'satisfy' : '';
-                } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
-                    //$gt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
-                    $flag1 = $_compare_val_lt < $lt_val;
-                    $flag2 = $_compare_val_gt > $lt_val;
-                    return $flag1 && $flag2 ? 'satisfy' : '';
-                } else {
-                    return '';
-                }
-            };
-
             $m_sh_close = $sh_close_avg = $sh_turnover = $sum_turnover = $cus_rate_avgs = $s_sh_changes = [];
             foreach ($r_scat_arr as $day) {
                 $last_stat_cat = $last_stat[$day];
@@ -501,8 +455,8 @@ class StockMainStat extends \yii\db\ActiveRecord
                 $_compare_val = $today_stat_cat['m_sh_close'];
                 $rate = $params['sh_close'];
                 $m_sh_close[$day] = [
-                    $cal_item($compare_val, $r_stocks_gt, $r_stocks_lt),
-                    $cal_item_cls($compare_val, $r_stocks_gt, $r_stocks_lt, $_compare_val, $rate),
+                    self::today_trend_cal_item($compare_val, $r_stocks_gt, $r_stocks_lt),
+                    self::today_trend_cal_item_cls($compare_val, $r_stocks_gt, $r_stocks_lt, $_compare_val, $rate),
                 ];
                 /*if ($rule['r_name'] == '买T3-10-WD-SX') {
                     print_r([$r_stocks_gt, $r_stocks_lt, $params['sh_close']]);exit;
@@ -512,23 +466,33 @@ class StockMainStat extends \yii\db\ActiveRecord
                 $_compare_val = $today_stat_cat['s_sh_close_avg'];
                 $rate = $params['sh_close_avg'];
                 $sh_close_avg[$day] = [
-                    $cal_item($compare_val, $r_sh_close_avg_gt, $r_sh_close_avg_lt),
-                    $cal_item_cls($compare_val, $r_stocks_gt, $r_stocks_lt, $_compare_val, $rate),
+                    self::today_trend_cal_item($compare_val, $r_sh_close_avg_gt, $r_sh_close_avg_lt),
+                    self::today_trend_cal_item_cls($compare_val, $r_stocks_gt, $r_stocks_lt, $_compare_val, $rate),
                 ];
-                // 上证交易额
-                $sh_turnover[$day] = $cal_item($last_stat_cat['s_sh_turnover_avg'], $r_sh_turnover_gt,
-                    $r_sh_turnover_lt);
+                // 上证交易额 有策略
+                $compare_val = $last_stat_cat['s_sh_turnover_avg_scale'];
+                $_compare_val = $today_stat_cat['s_sh_turnover_avg_scale'];
+                $rate = $params['sh_turnover'];
+                $sh_turnover[$day] = [
+                    self::today_trend_cal_item2($r_sh_turnover_gt, $r_sh_turnover_lt),
+                    self::today_trend_cal_item_cls2($r_sh_turnover_gt, $r_sh_turnover_lt, $_compare_val, $rate)
+                ];
+                /*try{
+                }catch (\Exception $e){
+                }*/
 
-                // 总交易额
-                $sum_turnover[$day] = $cal_item($last_stat_cat['s_sum_turnover_avg'], $r_turnover_gt, $r_turnover_lt);
+                // 总交易额 无策略
+                $sum_turnover[$day] = [
+
+                ];
 
                 // 散户比值
                 $compare_val = $last_stat_cat['s_cus_rate_avg_scale'];
                 $_compare_val = $today_stat_cat['s_cus_rate_avg_scale'];
                 $rate = $params['cus'];
                 $cus_rate_avgs[$day] = [
-                    $cal_item($compare_val, $r_cus_gt, $r_cus_lt),
-                    $cal_item_cls($compare_val, $r_cus_gt, $r_cus_lt, $_compare_val, $rate),
+                    self::today_trend_cal_item($compare_val, $r_cus_gt, $r_cus_lt),
+                    self::today_trend_cal_item_cls($compare_val, $r_cus_gt, $r_cus_lt, $_compare_val, $rate),
                 ];
             }
 
@@ -546,6 +510,105 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
         return $items;
+    }
+
+    /**
+     * 算出范围
+     *
+     * @time 2020-03-17 AM
+     */
+    public static function today_trend_cal_item($compare_val, $gt, $lt)
+    {
+        $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
+        $lt_val = $lt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $lt / 100), 1);
+
+        if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            return ["($gt,$lt)", "($gt_val,$lt_val)"];
+        } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            return ["(-,$lt)", "(-,$lt_val)"];
+        } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
+            return ["($gt,'-')", "($gt_val,-)"];
+        } else {
+            return ['-', '-'];
+        }
+    }
+
+    public static function today_trend_cal_item2($gt, $lt)
+    {
+        if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            return ["($gt,$lt)", "($gt,$lt)"];
+        } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            return ["(-,$lt)", "(-,$lt)"];
+        } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
+            return ["($gt,'-')", "($gt,-)"];
+        } else {
+            return ['-', '-'];
+        }
+    }
+
+    /**
+     * 判断是否符合条件 符合则加上显示红色的字的类 satisfy
+     *
+     * @time 2020-03-17 AM
+     */
+    public static function today_trend_cal_item_cls($compare_val, $gt, $lt, $_compare_val, $rate)
+    {
+        $gt_val = $gt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $gt / 100), 1);
+        $lt_val = $lt == self::IGNORE_VAL ? '' : round($compare_val * (1 + $lt / 100), 1);
+        $_compare_val_lt = $_compare_val * (1 + $rate);
+        $_compare_val_gt = $_compare_val * (1 - $rate);
+        if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            // $_compare_val_lt 或 $_compare_val_gt 在 ($gt_val,$lt_val) 则符合条件
+            $flag1 = $_compare_val_lt > $gt_val && $_compare_val_lt < $lt_val;
+            $flag2 = $_compare_val_gt > $gt_val && $_compare_val_gt < $lt_val;
+
+            return $flag1 || $flag2 ? 'satisfy' : '';
+        } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            //$lt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
+            $flag1 = $_compare_val_lt < $lt_val;
+            $flag2 = $_compare_val_gt > $lt_val;
+
+            return $flag1 && $flag2 ? 'satisfy' : '';
+        } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
+            //$gt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
+            $flag1 = $_compare_val_lt < $lt_val;
+            $flag2 = $_compare_val_gt > $lt_val;
+
+            return $flag1 && $flag2 ? 'satisfy' : '';
+        } else {
+            return '';
+        }
+    }
+
+    public static function today_trend_cal_item_cls2( $gt, $lt, $_compare_val, $rate)
+    {
+        $gt_val = $gt;
+        $lt_val = $lt;
+
+        $_compare_val_lt = $_compare_val * (1 + $rate);
+        $_compare_val_gt = $_compare_val * (1 - $rate);
+
+        if ($gt != self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            // $_compare_val_lt 或 $_compare_val_gt 在 ($gt_val,$lt_val) 则符合条件
+            $flag1 = $_compare_val_lt > $gt_val && $_compare_val_lt < $lt_val;
+            $flag2 = $_compare_val_gt > $gt_val && $_compare_val_gt < $lt_val;
+
+            return $flag1 || $flag2 ? 'satisfy' : '';
+        } elseif ($gt == self::IGNORE_VAL && $lt != self::IGNORE_VAL) {
+            //$lt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
+            $flag1 = $_compare_val_lt < $lt_val;
+            $flag2 = $_compare_val_gt > $lt_val;
+
+            return $flag1 && $flag2 ? 'satisfy' : '';
+        } elseif ($gt != self::IGNORE_VAL && $lt == self::IGNORE_VAL) {
+            //$gt_val 在 ($_compare_val_lt , $_compare_val_gt)  则符合条件
+            $flag1 = $_compare_val_lt < $lt_val;
+            $flag2 = $_compare_val_gt > $lt_val;
+
+            return $flag1 && $flag2 ? 'satisfy' : '';
+        } else {
+            return '';
+        }
     }
 
 

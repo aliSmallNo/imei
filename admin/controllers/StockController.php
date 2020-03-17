@@ -2154,11 +2154,10 @@ class StockController extends BaseController
     {
         $sh_close = self::getParam("sh_close", 0.8);
         $cus = self::getParam("cus", 0.8);
-        $turnover = self::getParam("turnover", '');
-        $sh_turnover = self::getParam("sh_turnover", '');
-        $diff_val = self::getParam("diff_val", '');
+        $turnover = self::getParam("turnover", 0.1);
+        $sh_turnover = self::getParam("sh_turnover", 0.1);
+        $diff_val = self::getParam("diff_val", 0);
         $sh_close_avg = self::getParam("sh_close_avg", 0.8);
-        $change = self::getParam("change", 0);//上证涨跌
 
         $params = [
             'sh_close' => $sh_close,
@@ -2167,11 +2166,10 @@ class StockController extends BaseController
             'sh_turnover' => $sh_turnover,
             'diff_val' => $diff_val,
             'sh_close_avg' => $sh_close_avg,
-            'change' => $change,
         ];
-        //print_r($params);exit;
 
         list($curr_day, $buys, $solds, $diff) = StockMainStat::curr_day_trend($params);
+        // print_r($curr_day);exit;
 
         return $this->renderPage("stock_curr_day_trend.tpl",
             [
@@ -2186,7 +2184,6 @@ class StockController extends BaseController
                 'sh_turnover' => $sh_turnover,
                 'diff_val' => $diff_val,
                 'sh_close_avg' => $sh_close_avg,
-                'change' => $change,
             ]
         );
     }

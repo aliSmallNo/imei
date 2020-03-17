@@ -81,13 +81,7 @@
           <p><span>散户 数值为当天 13 点收盘是±0.8%</span></p>
         </div>
       </div>
-      <div class="form-group">
-        <label class="col-sm-3 control-label">上证涨跌:</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" name="cus" placeholder="上证涨跌" type="text" value="{{$change}}">
-          <p><span>上证涨跌 ±0.8%填0.8</span></p>
-        </div>
-      </div>
+
 
     </div>
 
@@ -108,14 +102,13 @@
   <table class="table table-striped table-bordered">
     <thead>
     <tr>
-      <th class="col-sm-2">交易日期</th>
-      <th>500ETF</th>
-      <th>上证指数</th>
-      <th>上证交易额</th>
-      <th>深圳交易额</th>
-      <th>合计交易额</th>
+      <th class="col-sm-1">交易日期</th>
+      <th class="col-sm-1">500ETF</th>
+      <th class="col-sm-1">上证指数</th>
+      <th class="col-sm-2">上证交易额</th>
+      <th class="col-sm-2">合计交易额</th>
       <th class="col-sm-2">散户比值</th>
-      <th class="col-sm-2">上证涨跌</th>
+      <th class="col-sm-2">上证指数均值</th>
     </tr>
     </thead>
     <tbody>
@@ -126,7 +119,6 @@
         <!-- 上证指数 -->
         <td>{{$item[0].m_sh_close}}</td>
         <td>{{$item[0].m_sh_turnover}}</td>
-        <td>{{$item[0].m_sz_turnover}}</td>
         <td>{{$item[0].m_sum_turnover}}</td>
         <!-- 散户比值 -->
         <td>
@@ -134,42 +126,14 @@
             <div>{{$it.s_cat}}日: {{$it.s_cus_rate_avg}}%</div>
           {{/foreach}}
         </td>
-        <!-- 上证涨跌 -->
+        <!-- 上证指数 均值 -->
         <td>
           {{foreach from=$item item=it}}
-            <div>{{$it.s_cat}}日: {{$it.s_sh_change}}%</div>
+            <div>{{$it.s_cat}}日: {{$it.s_sh_close_avg}}</div>
           {{/foreach}}
         </td>
       </tr>
     {{/foreach}}
-    <tr>
-      <td>
-        <div>涨跌</div>
-        <div>涨跌幅</div>
-      </td>
-      <td>
-        <div>{{$diff.diff_m_etf_close}}</div>
-        <div>{{$diff.diff_m_etf_close_rate}}</div>
-      </td>
-      <td>
-        <div>{{$diff.diff_m_sh_close}}</div>
-        <div>{{$diff.diff_m_sh_close_rate}}</div>
-      </td>
-      <td>
-        <div>{{$diff.diff_m_sh_turnover}}</div>
-        <div>{{$diff.diff_m_sh_turnover_rate}}</div>
-      </td>
-      <td>
-        <div>{{$diff.diff_m_sz_turnover}}</div>
-        <div>{{$diff.diff_m_sz_turnover_rate}}</div>
-      </td>
-      <td>
-        <div>{{$diff.diff_m_sum_turnover}}</div>
-        <div>{{$diff.diff_m_sum_turnover_rate}}</div>
-      </td>
-      <td></td>
-      <td></td>
-    </tr>
     </tbody>
   </table>
   <!-- 今天数据 end --->
@@ -179,12 +143,11 @@
     <thead>
     <tr class="tr_buy">
       <th class="col-sm-1">策略名称</th>
-      <th>500ETF</th>
-      <th>大盘:上证指数</th>
-      <th>上证指数均值</th>
-      <th>上证交易额</th>
-      <th>深圳交易额</th>
-      <th>合计交易额</th>
+      <th class="col-sm-1">500ETF</th>
+      <th class="col-sm-1">大盘:上证指数</th>
+      <th class="col-sm-2">上证指数均值</th>
+      <th class="col-sm-2">上证交易额</th>
+      <th class="col-sm-2">合计交易额</th>
       <th class="col-sm-2">散户比值</th>
     </tr>
     </thead>
@@ -196,31 +159,31 @@
         <!-- 大盘 上证指数 -->
         <td>
           {{foreach from=$item.m_sh_close item=it key=day}}
-            <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][1]}}</div>
           {{/foreach}}
         </td>
         <!-- 上证指数均值 -->
         <td>
           {{foreach from=$item.m_sh_close_avg item=it key=day}}
-            <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][1]}}</div>
           {{/foreach}}
         </td>
+        <!-- 上证 交易额 -->
         <td>
           {{foreach from=$item.m_sh_turnover item=it key=day}}
-            <div>{{$day}}日: {{$it}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][1]}}</div>
           {{/foreach}}
         </td>
-        <td>{{$item.m_sz_turnover}}</td>
-        <!--  合计交易额 -->
+        <!--  合计 交易额 -->
         <td>
           {{foreach from=$item.m_sum_turnover item=it key=day}}
-            <div>{{$day}}日: {{$it}}</div>
+
           {{/foreach}}
         </td>
         <!-- 散户比值 -->
         <td>
           {{foreach from=$item.s_cus_rate_avgs item=it key=day}}
-            <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][0]}}</div>
           {{/foreach}}
         </td>
 
@@ -235,14 +198,12 @@
     <thead>
     <tr class="tr_sold">
       <th class="col-sm-1">策略名称</th>
-      <th>500ETF</th>
-      <th>大盘:上证指数</th>
-      <th>上证指数均值</th>
-      <th>上证交易额</th>
-      <th>深圳交易额</th>
-      <th>合计交易额</th>
+      <th class="col-sm-1">500ETF</th>
+      <th class="col-sm-1">大盘:上证指数</th>
+      <th class="col-sm-2">上证指数均值</th>
+      <th class="col-sm-2">上证交易额</th>
+      <th class="col-sm-2">合计交易额</th>
       <th class="col-sm-2">散户比值</th>
-      <th class="col-sm-2">上证涨跌</th>
     </tr>
     </thead>
     <tbody>
@@ -253,31 +214,31 @@
         <!-- 大盘 上证指数 -->
         <td>
           {{foreach from=$item.m_sh_close item=it key=day}}
-            <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][1]}}</div>
           {{/foreach}}
         </td>
         <!-- 上证指数均值 -->
         <td>
           {{foreach from=$item.m_sh_close_avg item=it key=day}}
-            <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][1]}}</div>
           {{/foreach}}
         </td>
+        <!-- 上证 交易额 -->
         <td>
           {{foreach from=$item.m_sh_turnover item=it key=day}}
-            <div>{{$day}}日: {{$it}}</div>
+
           {{/foreach}}
         </td>
-        <td>{{$item.m_sz_turnover}}</td>
         <!--  合计交易额 -->
         <td>
           {{foreach from=$item.m_sum_turnover item=it key=day}}
-            <div>{{$day}}日: {{$it}}</div>
+
           {{/foreach}}
         </td>
         <!-- 散户比值 -->
         <td>
           {{foreach from=$item.s_cus_rate_avgs item=it key=day}}
-            <div class="{{$it[1]}}">{{$day}}日: {{$it[0]}}</div>
+            <div class="{{$it[1]}}">{{$day}}日: {{$it[0][0]}}</div>
           {{/foreach}}
         </td>
 
