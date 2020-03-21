@@ -2150,7 +2150,7 @@ class StockController extends BaseController
      *
      * @time 2020-02-18 AM
      */
-    public function actionStock_curr_day_trend()
+    public function actionStock_curr_day_trend2()
     {
         $sh_close = self::getParam("sh_close", 0.8);
         $cus = self::getParam("cus", 0.8);
@@ -2168,17 +2168,58 @@ class StockController extends BaseController
             'sh_close_avg' => $sh_close_avg,
         ];
 
-        list($curr_day, $buys, $solds, $diff) = StockMainStat::curr_day_trend($params);
+        list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend($params);
+        // print_r($curr_day);exit;
+
+        return $this->renderPage("stock_curr_day_trend2.tpl",
+            [
+                'curr_day' => $curr_day,
+                'buys' => $buys,
+                'solds' => $solds,
+                'update_on' => StockMain::get_latest_update_on(),
+                'sh_close' => $sh_close,
+                'cus' => $cus,
+                'turnover' => $turnover,
+                'sh_turnover' => $sh_turnover,
+                'diff_val' => $diff_val,
+                'sh_close_avg' => $sh_close_avg,
+            ]
+        );
+    }
+
+    /**
+     * 每日预计策略。简单说13点后可以提前估计今天会有哪些策略出现
+     *
+     * @time 2020-02-18 AM
+     */
+    public function actionStock_curr_day_trend()
+    {
+        $sh_change = self::getParam("sh_change", 0.08);
+        $cus = self::getParam("cus", 0.08);
+        $turnover = self::getParam("turnover", 0.08);
+        $sh_turnover = self::getParam("sh_turnover", 0.08);
+        $diff_val = self::getParam("diff_val", 0.08);
+        $sh_close_avg = self::getParam("sh_close_avg", 0.08);
+
+        $params = [
+            'sh_change' => $sh_change,
+            'cus' => $cus,
+            'turnover' => $turnover,
+            'sh_turnover' => $sh_turnover,
+            'diff_val' => $diff_val,
+            'sh_close_avg' => $sh_close_avg,
+        ];
+
+        list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend2($params);
         // print_r($curr_day);exit;
 
         return $this->renderPage("stock_curr_day_trend.tpl",
             [
                 'curr_day' => $curr_day,
-                'diff' => $diff,
                 'buys' => $buys,
                 'solds' => $solds,
                 'update_on' => StockMain::get_latest_update_on(),
-                'sh_close' => $sh_close,
+                'sh_change' => $sh_change,
                 'cus' => $cus,
                 'turnover' => $turnover,
                 'sh_turnover' => $sh_turnover,
