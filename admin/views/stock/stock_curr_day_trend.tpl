@@ -39,21 +39,21 @@
         <div class="col-sm-9">
           <input type="text" class="form-control" name="sh_change" placeholder="大盘（上证涨跌）" type="text"
                  value="{{$sh_change}}">
-          <p><span>大盘(上证涨跌): 数值为当前值 * ±0.8</span></p>
+          <p><span>大盘(上证涨跌): 数值为当前值 * ±0.08</span></p>
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">散户:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" name="cus" placeholder="散户" type="text" value="{{$cus}}">
-          <p><span>散户(散户比值均值比例): 数值为当前值 * ±0.8</span></p>
+          <p><span>散户(散户比值均值比例): 数值为当前值 * ±0.08</span></p>
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">合计交易额:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" name="turnover" placeholder="交易额" type="text" value="{{$turnover}}">
-          <p><span>合计交易额(交易额均值比例): 数值为当前值 * ±0.8</span></p>
+          <p><span>合计交易额(交易额均值比例): 数值为当前值 * ±0.08</span></p>
         </div>
       </div>
     </div>
@@ -63,14 +63,14 @@
         <div class="col-sm-9">
           <input type="text" class="form-control" name="sh_turnover" placeholder="上证交易额" type="text"
                  value="{{$sh_turnover}}">
-          <p><span>上证交易额(上证指数均值比例): 数值为当前值 * ±0.8</span></p>
+          <p><span>上证交易额(上证指数均值比例): 数值为当前值 * ±0.08</span></p>
         </div>
       </div>
       <div class="form-group">
         <label class="col-sm-3 control-label">差值:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" name="diff_val" placeholder="差值" type="text" value="{{$diff_val}}">
-          <p><span>差值(合计交易额均值比例—散户比值均值比例) 数值为当前值 * ±0.8</span></p>
+          <p><span>差值(合计交易额均值比例—散户比值均值比例) 数值为当前值 * ±0.08</span></p>
         </div>
       </div>
       <div class="form-group">
@@ -78,7 +78,7 @@
         <div class="col-sm-9">
           <input type="text" class="form-control" name="sh_close_avg" placeholder="上证指数均值" type="text"
                  value="{{$sh_close_avg}}">
-          <p><span>上证交易额均值比例 数值为当前值 * ±0.8</span></p>
+          <p><span>上证交易额均值比例 数值为当前值 * ±0.08</span></p>
         </div>
       </div>
 
