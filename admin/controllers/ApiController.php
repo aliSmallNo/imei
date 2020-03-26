@@ -1640,8 +1640,10 @@ class ApiController extends Controller
                 $data = [
                     'r_note' => trim(self::postParam("r_note")),
                 ];
-                list($res) = StockMainResult::edit($id, $data);
+                list($res, $model) = StockMainResult::edit($id, $data);
                 if ($res) {
+                    StockMainResult2::sync_note($model);
+
                     return self::renderAPI(0, "保存成功！", $data);
                 } else {
                     return self::renderAPI(129, '保存失败', $data);

@@ -118,7 +118,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     /**
      * 重置表数据
      *
-     * @time 2020-02-28 PM 
+     * @time 2020-02-28 PM
      * @time 2020-02-29 PM modify
      */
     public static function reset($flag = 0)
@@ -339,8 +339,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     }
 
     /**
-     * 
-     * @time 2020-03-01 PM 
+     *
+     * @time 2020-03-01 PM
      */
     public static function items($criteria, $params, $page, $pageSize = 1000)
     {
@@ -1581,6 +1581,19 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         return $data;
+    }
+
+    /**
+     * 同步note
+     *
+     * @time 2020-03-26 AM
+     */
+    public static function sync_note($result)
+    {
+        $self = self::findOne(['r_trans_on' => $result->r_trans_on]);
+        if ($self) {
+            self::edit($self->r_id, ['r_note' => $result->r_note]);
+        }
     }
 
 }

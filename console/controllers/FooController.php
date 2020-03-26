@@ -1781,6 +1781,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
+        StockMainResult2::sync_note();
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
         foreach ($rules as $v) {
