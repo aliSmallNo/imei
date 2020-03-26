@@ -89,28 +89,28 @@ class StockMainPb extends \yii\db\ActiveRecord
     }
 
     /**
-     * 每天更新 任务入口
+     * 【市净率】每天更新 任务入口
      *
      * @time 2020-03-26 PM
      */
-    public static function update_current_day_all()
+    public static function update_current_day_pbs()
     {
         $ids = StockMenu::get_valid_stocks();
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $cat = $v['mCat'];
-            echo 'update_current_day_all:' . $stockId . PHP_EOL;
+            //echo 'update_current_day_all:' . $stockId . PHP_EOL;
 
             //用腾讯接口获取市净率信息
             $data = self::get_stock_data($stockId, $cat);
-            if($data){
+            if ($data) {
                 self::add($data);
             }
         }
     }
 
     /**
-     * https://blog.csdn.net/USTBHacker/article/details/8365756
+     * 获取每只股票的 【市净率】
      *
      * @time 2020-03-26 PM
      */
@@ -125,8 +125,8 @@ class StockMainPb extends \yii\db\ActiveRecord
         if (is_array($ret) && count($ret) > 40) {
             $dt = $ret[30];
             $trans_on = substr($dt, 0, 4)
-                . '-' . substr($dt, 4, 2)
-                . '-' . substr($dt, 6, 2);
+                .'-'.substr($dt, 4, 2)
+                .'-'.substr($dt, 6, 2);
 
             $data = [
                 "p_stock_id" => $stockId,
@@ -138,4 +138,22 @@ class StockMainPb extends \yii\db\ActiveRecord
         return $data;
     }
 
+    /**
+     * 获取 【市净率】<100 的股票数
+     *
+     * @time 2020-03-26 PM
+     */
+    public static function get_pb_count($dt = '', $max_pb_val = 100)
+    {
+        if (!$dt) {
+            $dt = date('Y-m-d');
+        }
+        $sql = "select count(1) from im_stock_main_pb where p_trans_on=:dt and p_pb_val<:p_pb_val ";
+
+        return AppUtil::db()->createCommand($sql, [
+            ':dt' => $dt,
+            ':p_pb_val' => $max_pb_val,
+        ])->queryScalar();
+
+    }
 }

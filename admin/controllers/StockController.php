@@ -20,12 +20,14 @@ use common\models\StockActionChange;
 use common\models\StockBack;
 use common\models\StockMain;
 use common\models\StockMainConfig;
+use common\models\StockMainPb;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
 use common\models\StockMainRule;
 use common\models\StockMainRule2;
 use common\models\StockMainStat;
+use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
@@ -2169,6 +2171,7 @@ class StockController extends BaseController
         ];
 
         list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend($params);
+
         // print_r($curr_day);exit;
 
         return $this->renderPage("stock_curr_day_trend2.tpl",
@@ -2211,6 +2214,7 @@ class StockController extends BaseController
         ];
 
         list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend2($params);
+
         // print_r($curr_day);exit;
 
         return $this->renderPage("stock_curr_day_trend.tpl",
@@ -2225,6 +2229,29 @@ class StockController extends BaseController
                 'sh_turnover' => $sh_turnover,
                 'diff_val' => $diff_val,
                 'sh_close_avg' => $sh_close_avg,
+            ]
+        );
+    }
+
+    /**
+     * 市净率
+     *
+     * @time 2020-03-26 AM
+     */
+    public function actionStock_main_pb()
+    {
+        $dt = self::getParam("dt", date('Y-m-d'));
+        $max_pb_val = self::getParam("max_pb_val", 100);
+
+        $count = StockMainPb::get_pb_count($dt, $max_pb_val);
+
+        return $this->renderPage("stock_main_pb.tpl",
+            [
+                'dt' => $dt,
+                'max_pb_val' => $max_pb_val,
+                'count' => $count,
+                'stock_count' => count(StockMenu::get_valid_stocks()),
+                'update_dt' => StockMainPb::find()->max('p_update_on'),
             ]
         );
     }

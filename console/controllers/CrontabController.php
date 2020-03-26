@@ -12,6 +12,7 @@ use common\models\CRMStockClient;
 use common\models\Log;
 use common\models\StockAction;
 use common\models\StockMain;
+use common\models\StockMainPb;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockTurn;
@@ -158,6 +159,9 @@ class CrontabController extends Controller
         try {
             Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'out']);
             if (in_array(date('H'), ['10', '11', '13', '14', '15', '16', '17', '18', '19', '20'])) {
+                // 市净率 更新 2020-03-26 PM
+                StockMainPb::update_current_day_pbs();
+
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'start']);
                 StockTurn::update_current_day_all();
                 StockTurnStat::stat();
