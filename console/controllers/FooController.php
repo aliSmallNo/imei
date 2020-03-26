@@ -21,6 +21,7 @@ use common\models\StockKline;
 use common\models\StockLow;
 use common\models\StockMain;
 use common\models\StockMainConfig;
+use common\models\StockMainPb;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
@@ -1781,7 +1782,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMainResult2::sync_note();
+        StockMainPb::update_current_day_all();
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
         foreach ($rules as $v) {
