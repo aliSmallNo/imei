@@ -13,6 +13,10 @@
     color: #f80;
     font-weight: 400;
   }
+
+  .rule_diff {
+    color: red;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -84,44 +88,44 @@
         </td>
         <td>{{$item.r_cat_t}}</td>
         <td>
-          <div>>{{$item.r_stocks_gt}}</div>
-          <div><{{$item.r_stocks_lt}}</div>
+          <div class="{{$item.r_stocks_gt_cls}}">>{{$item.r_stocks_gt}}</div>
+          <div class="{{$item.r_stocks_lt_cls}}"><{{$item.r_stocks_lt}}</div>
         </td>
         <td>
-          <div>>{{$item.r_cus_gt}}</div>
-          <div><{{$item.r_cus_lt}}</div>
+          <div class="{{$item.r_cus_gt_cls}}">>{{$item.r_cus_gt}}</div>
+          <div class="{{$item.r_cus_lt_cls}}"><{{$item.r_cus_lt}}</div>
         </td>
         <td>
-          <div>>{{$item.r_turnover_gt}}</div>
-          <div><{{$item.r_turnover_lt}}</div>
+          <div class="{{$item.r_turnover_gt_cls}}">>{{$item.r_turnover_gt}}</div>
+          <div class="{{$item.r_turnover_lt_cls}}"><{{$item.r_turnover_lt}}</div>
         </td>
         <td>
-          <div>>{{$item.r_sh_turnover_gt}}</div>
-          <div><{{$item.r_sh_turnover_lt}}</div>
+          <div class="{{$item.r_sh_turnover_gt_cls}}">>{{$item.r_sh_turnover_gt}}</div>
+          <div class="{{$item.r_sh_turnover_lt_cls}}"><{{$item.r_sh_turnover_lt}}</div>
         </td>
         <!-- 差值 -->
         <td>
-          <div>>{{$item.r_diff_gt}}</div>
-          <div><{{$item.r_diff_lt}}</div>
+          <div class="{{$item.r_diff_gt_cls}}">>{{$item.r_diff_gt}}</div>
+          <div class="{{$item.r_diff_lt_cls}}"><{{$item.r_diff_lt}}</div>
         </td>
         <td>
-          <div>>{{$item.r_sh_close_avg_gt}}</div>
-          <div><{{$item.r_sh_close_avg_lt}}</div>
+          <div class="{{$item.r_sh_close_avg_gt_cls}}">>{{$item.r_sh_close_avg_gt}}</div>
+          <div class="{{$item.r_sh_close_avg_lt_cls}}"><{{$item.r_sh_close_avg_lt}}</div>
         </td>
         <td>
-          <div>>{{$item.r_sh_close_60avg_10avg_offset_gt}}</div>
-          <div><{{$item.r_sh_close_60avg_10avg_offset_lt}}</div>
+          <div class="{{$item.r_sh_close_60avg_10avg_offset_gt_cls}}">>{{$item.r_sh_close_60avg_10avg_offset_gt}}</div>
+          <div class="{{$item.r_sh_close_60avg_10avg_offset_lt_cls}}"><{{$item.r_sh_close_60avg_10avg_offset_lt}}</div>
         </td>
         <!-- 上证指数均值/上证涨跌 比例 -->
         <td>
-          <div>>{{$item.r_sh_close_avg_change_rate_gt}}</div>
-          <div><{{$item.r_sh_close_avg_change_rate_lt}}</div>
+          <div class="{{$item.r_sh_close_avg_change_rate_gt_cls}}">>{{$item.r_sh_close_avg_change_rate_gt}}</div>
+          <div class="{{$item.r_sh_close_avg_change_rate_lt_cls}}"><{{$item.r_sh_close_avg_change_rate_lt}}</div>
         </td>
         <td>
-          <div>>{{$item.r_date_gt}}</div>
-          <div><{{$item.r_date_lt}}</div>
+          <div class="{{$item.r_date_gt_cls}}">>{{$item.r_date_gt}}</div>
+          <div class="{{$item.r_date_lt_cls}}"><{{$item.r_date_lt}}</div>
         </td>
-        <td>{{$item.r_scat}}</td>
+        <td class="{{$item.r_scat_cls}}">{{$item.r_scat}}</td>
         <td class="col-sm-1">{{$item.r_note}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>

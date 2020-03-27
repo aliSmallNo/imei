@@ -156,16 +156,16 @@ class StockMainRule2 extends \yii\db\ActiveRecord
     {
         return self::find()->where([
             'r_status' => self::ST_ACTIVE,
-            'r_cat' => $cat
+            'r_cat' => $cat,
         ])->asArray()->orderBy('r_id asc')->all();
     }
 
     public static function items($criteria, $params, $page, $pageSize = 20)
     {
-        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
+        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
 
         $sql = "select r.*
@@ -184,7 +184,53 @@ class StockMainRule2 extends \yii\db\ActiveRecord
 				where r_id>0 $strCriteria ";
         $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
-        return [$res, $count];
+        return [self::diff_from_old($res), $count];
+    }
+
+    /**
+     * 新的策略列表中和老的，如果策略名称相同，但是里面数值不同的，麻烦帮我标红。
+     *
+     * @time 2020-03-27 PM
+     */
+    public static function diff_from_old($rules)
+    {
+        $fields = [
+            'r_stocks_gt',
+            'r_stocks_lt',
+            'r_cus_gt',
+            'r_cus_lt',
+            'r_turnover_gt',
+            'r_turnover_lt',
+            'r_sh_turnover_gt',
+            'r_sh_turnover_lt',
+            'r_diff_gt',
+            'r_diff_lt',
+            'r_sh_close_avg_gt',
+            'r_sh_close_avg_lt',
+            'r_sh_close_60avg_10avg_offset_gt',
+            'r_sh_close_60avg_10avg_offset_lt',
+            'r_sh_close_avg_change_rate_gt',
+            'r_sh_close_avg_change_rate_lt',
+            'r_date_gt',
+            'r_date_lt',
+            'r_scat',
+        ];
+        foreach ($rules as $k => $rule) {
+            $r_name = $rule['r_name'];
+            $old = StockMainRule::findOne(['r_name' => $r_name, 'r_status' => StockMainRule::ST_ACTIVE]);
+            foreach ($fields as $field) {
+                $rules[$k][$field.'_cls'] = '';
+                if ($old && $old->$field != $rule[$field]) {
+                    //echo $r_name.' =old:'.$old->$field.' new:'.$rule[$field]."\n";
+                    //$rules[$k][$field.'_old'] = $old->$field;
+                    $rules[$k][$field.'_cls'] = 'rule_diff';
+                }
+            }
+        }
+        //print_r($rules);exit;
+
+        return $rules;
+
     }
 
 }
