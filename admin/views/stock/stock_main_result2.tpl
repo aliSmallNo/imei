@@ -209,7 +209,7 @@
             layer.msg(resp.msg);
             if (resp.code == 0) {
                 setTimeout(function () {
-                   //location.reload();
+                   location.reload();
                 }, 800);
             }
         }, 'json');

@@ -134,14 +134,15 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
         $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
-        $time = time();
+        // 算出所有的offset 上证指数60日均值-上证指数10日均值
+        $offset_map = StockMainTmp0::sh_close_60avg_10avg_offset_map();
+
         foreach ($res as $k => $v) {
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
 
             if ($flag) {
-                echo time() - $time.',== dt '.$trans_on.' cat'.$cat.PHP_EOL;
-                // file_put_contents('reset1.txt', time() - $time.',== dt '.$trans_on.' cat'.$cat."\n", FILE_APPEND);
+                echo '== dt '.$trans_on.' cat'.$cat.PHP_EOL;
             }
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
@@ -161,18 +162,18 @@ class StockMainResult extends \yii\db\ActiveRecord
 
             if ($cat) {
                 foreach ($buys as $buy) {
-                    if (StockMainStat::get_rule_flag($v, $buy)) {
+                    if (StockMainStat::get_rule_flag($v, $buy, $offset_map)) {
                         $ret[$trans_on]['r_buy'.$cat] .= ','.$buy['r_name'];
                     }
                 }
 
                 foreach ($solds as $sold) {
-                    if (StockMainStat::get_rule_flag($v, $sold)) {
+                    if (StockMainStat::get_rule_flag($v, $sold, $offset_map)) {
                         $ret[$trans_on]['r_sold'.$cat] .= ','.$sold['r_name'];
                     }
                 }
                 foreach ($warns as $warn) {
-                    if (StockMainStat::get_rule_flag($v, $warn)) {
+                    if (StockMainStat::get_rule_flag($v, $warn, $offset_map)) {
                         $ret[$trans_on]['r_warn'.$cat] .= ','.$warn['r_name'];
                     }
                 }
