@@ -946,7 +946,7 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         $flag16 = $flag17 = true;
         // 差值 上证指数60日均值-上证指数10日均值 大于
-        $sh_close_60avg_10avg_offset = $offset_map($s_trans_on);
+        $sh_close_60avg_10avg_offset = $offset_map[$s_trans_on] ?? '';
         if (intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
             $flag16 = $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'];
         }
