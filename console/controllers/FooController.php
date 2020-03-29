@@ -1788,7 +1788,8 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMainResult::reset(1);
+        //StockMainResult::reset(1);
+
 
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();

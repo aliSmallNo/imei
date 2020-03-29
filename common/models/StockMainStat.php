@@ -888,7 +888,7 @@ class StockMainStat extends \yii\db\ActiveRecord
      *
      * @time 2020-02-28 PM
      */
-    public static function get_rule_flag2($stat, $rule)
+    public static function get_rule_flag2($stat, $rule, $offset_map)
     {
         $J_s_sh_change = $stat['s_sh_change'];                             //'上证 涨跌'
         $L_s_cus_rate_avg_scale = $stat['s_cus_rate_avg_scale2'];           //'比例 散户比值2均值比例'
@@ -946,20 +946,13 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         $flag16 = $flag17 = true;
         // 差值 上证指数60日均值-上证指数10日均值 大于
-        if (intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL) {
-            $sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
-            if ($sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
-                $flag16 = $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'];
-            }
+        $sh_close_60avg_10avg_offset = $offset_map($s_trans_on);
+        if (intval($rule['r_sh_close_60avg_10avg_offset_gt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
+            $flag16 = $sh_close_60avg_10avg_offset > $rule['r_sh_close_60avg_10avg_offset_gt'];
         }
         // 差值 上证指数60日均值-上证指数10日均值 小于
-        if (intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL) {
-            if (!isset($sh_close_60avg_10avg_offset)) {
-                $sh_close_60avg_10avg_offset = StockMainTmp0::sh_close_60avg_10avg_offset($s_trans_on);
-            }
-            if ($sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
-                $flag17 = $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'];
-            }
+        if (intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
+            $flag17 = $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'];
         }
 
         $s_sh_close_change_rate = $stat['s_sh_close_change_rate'];

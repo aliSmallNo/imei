@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "im_stock_main_tmp0".
@@ -143,6 +144,31 @@ class StockMainTmp0 extends \yii\db\ActiveRecord
         }
 
         return 999;
+    }
+
+    /**
+     * 按日期计算 上证指数60日均值-上证指数10日均值 差值
+     *
+     * @time 2020-03-29 PM
+     */
+    public static function sh_close_60avg_10avg_offset_map()
+    {
+        $model60 = self::find()->where([])->asArray()->all();
+        $model10 = StockMainStat::find()->where(['s_cat' => StockMainStat::CAT_DAY_10])->asArray()->all();
+
+        $model60 = ArrayHelper::map($model60, 'o_trans_on', 'o_sh_close_avg');
+        $model10 = ArrayHelper::map($model10, 's_trans_on', 's_sh_close_avg');
+
+        $map = [];
+        foreach ($model60 as $trans_on => $v) {
+            if (isset($model10[$trans_on])) {
+                $map[$trans_on] = $v - $model10[$trans_on];
+            } else {
+                $map[$trans_on] = 999;
+            }
+        }
+
+        return $map;
     }
 
 
