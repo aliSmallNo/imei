@@ -1782,7 +1782,8 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMainPb::update_current_day_all();
+        StockMainResult2::reset();
+
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
         foreach ($rules as $v) {
