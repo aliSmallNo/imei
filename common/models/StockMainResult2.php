@@ -142,6 +142,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
             if ($flag) {
                 echo time() - $time.',== dt '.$trans_on.' cat'.$cat.PHP_EOL;
+                file_put_contents('reset2.txt', time() - $time.',== dt '.$trans_on.' cat'.$cat."\n", FILE_APPEND);
             }
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [

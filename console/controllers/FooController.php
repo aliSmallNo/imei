@@ -1782,6 +1782,7 @@ class FooController extends Controller
     public function actionZp2()
     {
         StockMainResult2::reset(1);
+
     }
 
     public function actionZp()
