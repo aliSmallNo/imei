@@ -1297,17 +1297,21 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
                 if (in_array($result['r_note'], ['买错', '卖对'])) {
                     if ($rule_cat == StockMainRule2::CAT_BUY) {
-
+                        $item[$rule_name][$day]['times_no'] += 1;
+                        $item[$rule_name]['SUM']['times_no'] += 1;
                     } elseif ($rule_cat == StockMainRule2::CAT_SOLD) {
-
+                        $item[$rule_name][$day]['times_yes'] += 1;
+                        $item[$rule_name]['SUM']['times_yes'] += 1;
                     }
 
                 }
                 if (in_array($result['r_note'], ['买对', '卖错'])) {
                     if ($rule_cat == StockMainRule2::CAT_BUY) {
-
+                        $item[$rule_name][$day]['times_yes'] += 1;
+                        $item[$rule_name]['SUM']['times_yes'] += 1;
                     } elseif ($rule_cat == StockMainRule2::CAT_SOLD) {
-
+                        $item[$rule_name][$day]['times_no'] += 1;
+                        $item[$rule_name]['SUM']['times_no'] += 1;
                     }
 
                 }

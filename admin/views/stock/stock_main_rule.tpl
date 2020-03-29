@@ -13,6 +13,10 @@
     color: #f80;
     font-weight: 400;
   }
+  .rule_id{
+    font-size: 10px;
+    color: #777777;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -78,7 +82,11 @@
     <tbody>
     {{foreach from=$list item=item}}
       <tr>
-        <td>{{$item.r_name}}</td>
+        <td>{{$item.r_name}}
+          <br>
+          <br>
+          <div class="rule_id">{{$item.r_id}}</div>
+        </td>
         <td>
           <a class="btn btn-xs btn-{{if $item.r_status==9}}danger{{else}}primary{{/if}}">{{$item.r_status_t}}</a>
         </td>
