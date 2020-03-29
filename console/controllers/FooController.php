@@ -1782,7 +1782,10 @@ class FooController extends Controller
     public function actionZp()
     {
 
+        echo ini_get("max_execution_time").PHP_EOL;
+        $time1 = time();
         StockMainResult2::reset();
+        echo time() - $time1;
 
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
