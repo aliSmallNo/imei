@@ -134,12 +134,13 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
         $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
+        $time = time();
         foreach ($res as $k => $v) {
             $trans_on = $v['m_trans_on'];                                   // 5 10,20
             $cat = $v['s_cat'];                                             // 5 10,20
 
             if ($flag) {
-                echo 'dt '.$trans_on.' cat'.$cat.PHP_EOL;
+                echo time() - $time.',== dt '.$trans_on.' cat'.$cat.PHP_EOL;
             }
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
