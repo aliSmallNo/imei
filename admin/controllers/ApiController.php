@@ -1717,7 +1717,7 @@ class ApiController extends Controller
                 break;
             case "reset_main_result2":
                 ini_set('max_execution_time', 300);// 5 min
-                StockMainResult2::reset();
+                //StockMainResult2::reset();
 
                 return self::renderAPI(0, "重置数据成功！",ini_get("max_execution_time"));
                 break;
