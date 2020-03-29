@@ -1280,7 +1280,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     'times_mid' => 0,
                 ],
             ];
-            $count = function ($item, $result, $day, $rule_name) {
+            $count = function ($item, $result, $day, $rule_name, $rule_cat) {
                 $item[$rule_name]['SUM']['times'] += 1;
                 $item[$rule_name][$day]['times'] += 1;
                 if ($result['r_note'] == '对') {
@@ -1295,6 +1295,22 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $item[$rule_name][$day]['times_mid'] += 1;
                     $item[$rule_name]['SUM']['times_mid'] += 1;
                 }
+                if (in_array($result['r_note'], ['买错', '卖对'])) {
+                    if ($rule_cat == StockMainRule2::CAT_BUY) {
+
+                    } elseif ($rule_cat == StockMainRule2::CAT_SOLD) {
+
+                    }
+
+                }
+                if (in_array($result['r_note'], ['买对', '卖错'])) {
+                    if ($rule_cat == StockMainRule2::CAT_BUY) {
+
+                    } elseif ($rule_cat == StockMainRule2::CAT_SOLD) {
+
+                    }
+
+                }
 
                 return $item;
             };
@@ -1306,7 +1322,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                                  StockMainRule2::CAT_WARN => 'r_warn',
                              ] as $_rule_cat => $field) {
                         if (strpos($result[$field.$day], $rule_name) !== false && $rule_cat == $_rule_cat) {
-                            $item = $count($item, $result, $day, $rule_name);
+                            $item = $count($item, $result, $day, $rule_name, $rule_cat);
                         }
                     }
                 }

@@ -171,7 +171,7 @@ class StockMainRule2 extends \yii\db\ActiveRecord
         $sql = "select r.*
 				from im_stock_main_rule2 as r
 				where r_id>0 $strCriteria 
-				order by r_cat asc,r_id asc
+				order by r_cat asc,r_name asc
 				$limit ";
         $res = AppUtil::db()->createCommand($sql)->bindValues($params)->queryAll();
 
