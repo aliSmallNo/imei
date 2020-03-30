@@ -179,7 +179,8 @@ class StockMainPb extends \yii\db\ActiveRecord
         $start_dt = '2020-03-26';
         $sql = "select m.*,s.s_sh_change from im_stock_main as m 
                 left join im_stock_main_stat as s on m.m_trans_on=s.s_trans_on and s.s_cat=5
-                where m_trans_on >=:dt";
+                where m_trans_on >=:dt
+                order by m_trans_on desc ";
         $data = AppUtil::db()->createCommand($sql, [
             ':dt' => $start_dt,
         ])->queryAll();
