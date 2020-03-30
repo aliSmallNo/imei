@@ -358,6 +358,12 @@ class Menu
                         "revise" => 1,
                         "level" => 820,
                     ],
+                    [
+                        "name" => "市净率列表",
+                        "url" => "/stock/stock_main_pb_list",
+                        "revise" => 1,
+                        "level" => 820,
+                    ],
 
 
                 ],

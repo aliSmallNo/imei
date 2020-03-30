@@ -1737,7 +1737,6 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-
         list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
         $pagination = self::pagination($page, $count, 10000);
 
@@ -2252,6 +2251,26 @@ class StockController extends BaseController
                 'count' => $count,
                 'stock_count' => count(StockMenu::get_valid_stocks()),
                 'update_dt' => StockMainPb::find()->max('p_update_on'),
+            ]
+        );
+    }
+
+    /**
+     * 市净率 列表
+     *
+     * @time 2020-03-30 PM
+     */
+    public function actionStock_main_pb_list()
+    {
+
+        $max_pb_val = self::getParam("max_pb_val", 100);
+
+        $list = StockMainPb::items($max_pb_val);
+
+        return $this->renderPage("stock_main_pb_list.tpl",
+            [
+                'list' => $list,
+                'max_pb_val' => $max_pb_val,
             ]
         );
     }

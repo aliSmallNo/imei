@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "im_stock_main_pb".
@@ -150,10 +151,48 @@ class StockMainPb extends \yii\db\ActiveRecord
         }
         $sql = "select count(1) from im_stock_main_pb where p_trans_on=:dt and p_pb_val<:p_pb_val ";
 
+
         return AppUtil::db()->createCommand($sql, [
             ':dt' => $dt,
             ':p_pb_val' => $max_pb_val,
         ])->queryScalar();
 
     }
+
+    /**
+     * 获取所有 【市净率】<100 的股票数
+     *
+     * @time 2020-03-30 PM
+     */
+    public static function get_pb_count_map($max_pb_val = 100)
+    {
+        $sql = "select count(1) as co,p_trans_on from im_stock_main_pb where  p_pb_val<:p_pb_val group by p_trans_on ";
+        $res = AppUtil::db()->createCommand($sql, [
+            ':p_pb_val' => $max_pb_val,
+        ])->queryAll();
+
+        return ArrayHelper::map($res, 'p_trans_on', 'co');
+    }
+
+    public static function items($max_pb_val)
+    {
+        $start_dt = '2020-03-26';
+        $sql = "select m.*,s.s_sh_change from im_stock_main as m 
+                left join im_stock_main_stat as s on m.m_trans_on=s.s_trans_on and s.s_cat=5
+                where m_trans_on >=:dt";
+        $data = AppUtil::db()->createCommand($sql, [
+            ':dt' => $start_dt,
+        ])->queryAll();
+        $pb_count_map = self::get_pb_count_map($max_pb_val);
+        $stock_count = count(StockMenu::get_valid_stocks());
+        foreach ($data as $k => $v) {
+            $trans_on = $v['m_trans_on'];
+            $data[$k]['pb_count'] = $pb_count_map[$trans_on];
+            $data[$k]['pb_rate'] = round($pb_count_map[$trans_on]/$stock_count,4)*100;
+            $data[$k]['stock_count'] = $stock_count;
+        }
+
+        return $data;
+    }
+
 }

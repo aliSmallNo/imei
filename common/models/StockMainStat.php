@@ -173,7 +173,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $s_sh_change = round($s_sh_change_raw, 5) * 100;
 
         $s_cus_rate_avg = round(array_sum(array_column($data, 'm_cus_rate')) / $cat, 2);
-        $s_cus_rate_avg_scale = ($curr['m_cus_rate'] / $s_cus_rate_avg - 1) * 100;
+        $s_cus_rate_avg_scale = $s_cus_rate_avg ? ($curr['m_cus_rate'] / $s_cus_rate_avg - 1) * 100 : 0;
 
         $s_cus_rate_avg2 = round(array_sum(array_column($data, 'm_cus_rate2')) / $cat, 2);
         $s_cus_rate_avg_scale2 = ($curr['m_cus_rate2'] / $s_cus_rate_avg2 - 1) * 100;

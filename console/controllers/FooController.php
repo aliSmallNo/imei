@@ -1745,34 +1745,30 @@ class FooController extends Controller
         $sh = require __DIR__.'/../data/stock_sh.php';
         $etf = require __DIR__.'/../data/stock_etf500.php';
 
-        foreach ($etf as $day => $v) {
+        foreach ($sh as $day => $sh_v) {
             $ctime = strtotime($day);
-            // 现在数据库有从 2014-09-19 至今的数据
-            if ($ctime > strtotime("2014-09-18")) {
-                //if ($ctime > strtotime("2014-10-24")) {
+            // 现在数据库有从 2012-01-01 - 2013-03-20 至今的数据
+            if ($ctime > strtotime("2013-03-20") || $ctime < strtotime('2012-01-01')) {
                 continue;
             }
             $trans_on = date("Y-m-d", $ctime);
 
             $stf_turnover = 0;
-            $stf_close = $v[0];
-            $sh_turnover = $sh[$day][1];
-            $sh_close = $sh[$day][0];
+            $stf_close = isset($etf[$day]) ? $etf[$day][0] : 0;
+            $sh_turnover = $sh_v[1];
+            $sh_close = $sh_v[0];
             $sz_turnover = $sz[$day][1];
             $sz_close = $sz[$day][0];
 
-            /*StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover, $sh_close, $sz_turnover, $sz_close,
-                $trans_on);*/
+//            StockMain::pre_insert(
+//                $stf_turnover, $stf_close, $sh_turnover, $sh_close, $sz_turnover, $sz_close, $trans_on);
 
-            /*StockMainStat::cal($trans_on);
+ /*         StockMainStat::cal($trans_on);
             StockMainResult::cal_one($trans_on);
-            StockMainTmp0::cal_sh_close_60_avg($trans_on);*/
+            StockMainResult2::cal_one($trans_on);
+            StockMainTmp0::cal_sh_close_60_avg($trans_on);
 
-            /*StockMainPrice::add([
-                'p_sh_close' => $sh_close,
-                'p_etf500' => $stf_close,
-                'p_trans_on' => $trans_on,
-            ]);*/
+            StockMainPrice::add(['p_sh_close' => $sh_close, 'p_etf500' => $stf_close, 'p_trans_on' => $trans_on,]);*/
 
             echo $trans_on.PHP_EOL;
 
