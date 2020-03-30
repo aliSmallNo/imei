@@ -231,17 +231,19 @@ class StockMainStat extends \yii\db\ActiveRecord
         // 策略
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
+        // 算出所有的offset 上证指数60日均值-上证指数10日均值
+        $offset_map = StockMainTmp0::sh_close_60avg_10avg_offset_map();
         foreach ($res as $k => $v) {
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
-                if (self::get_rule_flag($v, $buy)) {
+                if (self::get_rule_flag($v, $buy, $offset_map)) {
                     $buy_name[] = $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                if (self::get_rule_flag($v, $sold)) {
+                if (self::get_rule_flag($v, $sold, $offset_map)) {
                     $sold_name[] = $sold['r_name'];
                 }
             }
@@ -281,17 +283,19 @@ class StockMainStat extends \yii\db\ActiveRecord
         // 策略
         $buys = StockMainRule2::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule2::get_rules(StockMainRule::CAT_SOLD);
+        // 算出所有的offset 上证指数60日均值-上证指数10日均值
+        $offset_map = StockMainTmp0::sh_close_60avg_10avg_offset_map();
         foreach ($res as $k => $v) {
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
-                if (self::get_rule_flag2($v, $buy)) {
+                if (self::get_rule_flag2($v, $buy, $offset_map)) {
                     $buy_name[] = $buy['r_name'];
                 }
             }
 
             foreach ($solds as $sold) {
-                if (self::get_rule_flag2($v, $sold)) {
+                if (self::get_rule_flag2($v, $sold, $offset_map)) {
                     $sold_name[] = $sold['r_name'];
                 }
             }
@@ -785,7 +789,7 @@ class StockMainStat extends \yii\db\ActiveRecord
      *
      * @time 2019-11-22
      */
-    public static function get_rule_flag($stat, $rule,$offset_map)
+    public static function get_rule_flag($stat, $rule, $offset_map)
     {
         $J_s_sh_change = $stat['s_sh_change'];                             //'上证 涨跌'
         $L_s_cus_rate_avg_scale = $stat['s_cus_rate_avg_scale'];           //'比例 散户比值均值比例'

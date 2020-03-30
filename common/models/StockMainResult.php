@@ -243,24 +243,25 @@ class StockMainResult extends \yii\db\ActiveRecord
         $buys = StockMainRule::get_rules(StockMainRule::CAT_BUY);
         $solds = StockMainRule::get_rules(StockMainRule::CAT_SOLD);
         $warns = StockMainRule::get_rules(StockMainRule::CAT_WARN);
-
+        // 算出所有的offset 上证指数60日均值-上证指数10日均值
+        $offset_map = StockMainTmp0::sh_close_60avg_10avg_offset_map();
         foreach ($res as $k => $v) {
             $cat = $v['s_cat'];                                             // 5 10,20
             if (!$cat) {
                 continue;
             }
             foreach ($buys as $buy) {
-                if (StockMainStat::get_rule_flag($v, $buy)) {
+                if (StockMainStat::get_rule_flag($v, $buy, $offset_map)) {
                     $data['r_buy'.$cat] .= ','.$buy['r_name'];
                 }
             }
             foreach ($solds as $sold) {
-                if (StockMainStat::get_rule_flag($v, $sold)) {
+                if (StockMainStat::get_rule_flag($v, $sold, $offset_map)) {
                     $data['r_sold'.$cat] .= ','.$sold['r_name'];
                 }
             }
             foreach ($warns as $warn) {
-                if (StockMainStat::get_rule_flag($v, $warn)) {
+                if (StockMainStat::get_rule_flag($v, $warn, $offset_map)) {
                     $data['r_warn'.$cat] .= ','.$warn['r_name'];
                 }
             }
