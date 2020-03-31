@@ -145,6 +145,7 @@ class StockMenu extends \yii\db\ActiveRecord
         $data = $data['result']['data'] ?? [];
 
         if ($error_code == 0 && $result && $data) {
+            echo count($data).PHP_EOL;
             foreach ($data as $v) {
                 self::add([
                     'mCat' => $type,
@@ -163,6 +164,7 @@ class StockMenu extends \yii\db\ActiveRecord
     public static function get_valid_stocks($where = "")
     {
         $sql = "select * from im_stock_menu where mStatus=:st $where order by mId asc ";
+
         return AppUtil::db()->createCommand($sql, [
             ':st' => self::STATUS_USE,
         ])->queryAll();

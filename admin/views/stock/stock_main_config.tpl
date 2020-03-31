@@ -103,6 +103,29 @@
       </div>
     </div>
 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-cog fa-fw"></i> 设置推送短信间隔(单位秒)
+        <div class="pull-right">
+          <a href="javascript:;" class="btnSaveSmsInterval btn btn-primary btn-xs" tag="smsIntervalSetting">确定保存</a>
+        </div>
+      </div>
+      <div class="panel-body" tag="smsIntervalSetting">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">推送短信间隔(单位秒)</label>
+            <div class="col-sm-7">
+              <input class="form-control sms_send_interval" value="{{$sms_interval.c_content}}"
+                     placeholder="请输入推送短信间隔(单位秒)"
+                     type="number"
+                     autocomplete="off">
+              <p class="help-block">推送短信间隔(单位秒) 如'10分钟'则填写'600'</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -257,6 +280,31 @@
         console.log(postData);
         if (!postData["sms_send_times"]) {
             layer.msg("次数不能为空！");
+            return;
+        }
+        if (postData) {
+            layer.load();
+            $.post(url, postData, function (resp) {
+                layer.closeAll();
+                layer.msg(resp.msg);
+                if (resp.code == 0) {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 800);
+                }
+            }, 'json');
+        }
+    });
+
+    $(document).on('click', '.btnSaveSmsInterval', function () {
+        var url = '/api/stock_main';
+        var postData = {
+            tag: 'edit_main_config_sms_send_interval',
+            sms_send_interval: $.trim($('.sms_send_interval').val()),
+        };
+        console.log(postData);
+        if (!postData["sms_send_interval"]) {
+            layer.msg("时间间隔不能为空！");
             return;
         }
         if (postData) {

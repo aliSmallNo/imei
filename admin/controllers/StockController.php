@@ -21,6 +21,7 @@ use common\models\StockBack;
 use common\models\StockMain;
 use common\models\StockMainConfig;
 use common\models\StockMainPb;
+use common\models\StockMainPbStat;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
@@ -2143,6 +2144,7 @@ class StockController extends BaseController
                 'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
                 'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
                 'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
+                'sms_interval' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_INTERVAL)[0],
             ]);
     }
 
@@ -2271,6 +2273,27 @@ class StockController extends BaseController
             [
                 'list' => $list,
                 'max_pb_val' => $max_pb_val,
+            ]
+        );
+    }
+
+    /**
+     * 市净率统计 列表
+     *
+     * @time 2020-03-31 PM
+     */
+    public function actionStock_main_pb_stat()
+    {
+        $page = self::getParam('page', 1);
+
+        $criteria = $params = [];
+        list($list, $count) = StockMainPbStat::items($criteria, $params, $page, 100);
+        $pagination = self::pagination($page, $count, 100);
+
+        return $this->renderPage("stock_main_pb_stat.tpl",
+            [
+                'list' => $list,
+                'pagination' => $pagination,
             ]
         );
     }

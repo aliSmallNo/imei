@@ -46,11 +46,13 @@ class StockMainConfig extends \yii\db\ActiveRecord
     const CAT_SMS_ST = 'sms_st';
     const CAT_SMS_ET = 'sms_et';
     const CAT_SMS_TIMES = 'sms_times';
+    const CAT_SMS_INTERVAL = 'sms_interval';
     static $catDict = [
         self::CAT_PHONE => '推送短信手机',
         self::CAT_SMS_ST => '推送短信开始时间',
         self::CAT_SMS_ET => '推送短信结束时间',
         self::CAT_SMS_TIMES => '每日每个手机号推送短信次数',
+        self::CAT_SMS_INTERVAL => '推送短信最小间隔时间(秒)',
     ];
 
     const ST_ACTIVE = 1;

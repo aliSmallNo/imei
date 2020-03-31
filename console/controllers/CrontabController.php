@@ -13,8 +13,10 @@ use common\models\Log;
 use common\models\StockAction;
 use common\models\StockMain;
 use common\models\StockMainPb;
+use common\models\StockMainPbStat;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
+use common\models\StockMainResult2;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
@@ -161,6 +163,8 @@ class CrontabController extends Controller
             if (in_array(date('H'), ['10', '11', '13', '14', '15', '16', '17', '18', '19', '20'])) {
                 // 市净率 更新 2020-03-26 PM
                 StockMainPb::update_current_day_pbs();
+                // 市净率统计 更新 2020-03-31 PM
+                StockMainPbStat::update_one();
 
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'start']);
                 StockTurn::update_current_day_all();
@@ -280,7 +284,7 @@ class CrontabController extends Controller
                 StockMainPrice::update_curr_day();
                 Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 3']);
                 // 来短信提醒指定用户是否有买点、卖点
-                $res = StockMainResult::send_sms2();
+                $res = StockMainResult2::send_sms2();
                 Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 4', 'oAfter' => $res]);
             }
         } catch (\Exception $e) {

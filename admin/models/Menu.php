@@ -359,8 +359,8 @@ class Menu
                         "level" => 820,
                     ],
                     [
-                        "name" => "市净率列表",
-                        "url" => "/stock/stock_main_pb_list",
+                        "name" => "市净率统计",
+                        "url" => "/stock/stock_main_pb_stat",
                         "revise" => 1,
                         "level" => 820,
                     ],

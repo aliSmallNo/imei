@@ -180,7 +180,7 @@ class StockMain extends \yii\db\ActiveRecord
         $trans_on
     ) {
         if ($trans_on != date('Y-m-d')) {
-            //return false;
+            return false;
         }
 
         $sum_turnover = $sh_turnover + $sz_turnover;

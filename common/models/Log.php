@@ -1207,12 +1207,28 @@ class Log extends ActiveRecord
     }
 
     /**
+     * 获取此手机号 当日发送次数
      *
      * @time 2020-01-10 AM
      */
     public static function get_stock_main_sms_send_count($phone)
     {
         $sql = "select count(1) from im_log where datediff(oDate,now())=0 and `oCategory`=:oCategory and oOpenId=:phone ";
+
+        return AppUtil::db()->createCommand($sql, [
+            ':oCategory' => self::CAT_STOCK_MAIN_SMS_SEND,
+            ':phone' => $phone,
+        ])->queryScalar();
+    }
+
+    /**
+     * 获取此手机号 上次发送短信的时间
+     *
+     * @time 2020-03-31 PM
+     */
+    public static function get_stock_main_sms_send_last($phone)
+    {
+        $sql = "select oDate from im_log where `oCategory`=:oCategory and oOpenId=:phone order by oDate desc ";
 
         return AppUtil::db()->createCommand($sql, [
             ':oCategory' => self::CAT_STOCK_MAIN_SMS_SEND,

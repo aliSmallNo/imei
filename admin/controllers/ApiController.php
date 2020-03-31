@@ -1710,6 +1710,19 @@ class ApiController extends Controller
                 }
 
                 break;
+            case 'edit_main_config_sms_send_interval':
+                $msg = '';
+                $sms_send_interval = intval(self::postParam("sms_send_interval"));
+
+                $model = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_INTERVAL)[0];
+                list($res) = StockMainConfig::edit($model['c_id'], ['c_content' => $sms_send_interval]);
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！");
+                } else {
+                    return self::renderAPI(129, '保存失败'.$msg);
+                }
+
+                break;
             case "reset_main_result":
                 StockMainResult::reset();
 

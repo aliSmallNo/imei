@@ -276,15 +276,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 14:30后，5分钟一次，有就提醒，没有就不提醒 => 替代上边的方法 self::send_sms()
      *
      * @time 2019-12-12 AM
+     *
+     * 发送短信：时间间隔为设置的值$min
+     * @time 2020-03-31 PM modify
      */
     public static function send_sms2()
     {
-        return false;
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
         $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
-        $end = strtotime(date('Y-m-d '.$model2['c_content'].':00'));
+        $end = strtotime(date('Y-m-d '.$model2['c_content'].':05'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
             return 0;
@@ -301,7 +303,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             return 2;
         }
 
-        // 验证码 8开头是买入 7开头是卖出
+        // 验证码 8开头是买入 7开头是卖出 9开头是同事存在买入卖出
         $prefix = '6';
         if ($buy_type) {
             $prefix = "8";
@@ -309,19 +311,32 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         if ($sold_type) {
             $prefix = "7";
         }
+        if ($buy_type && $sold_type) {
+            $prefix = "9";
+        }
 
         $able_send_count = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0]['c_content'];
 
         $phones = StockMainConfig::get_sms_phone();
+        $model3 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_INTERVAL)[0];//两次发送短信的时间间隔
 
         foreach ($phones as $phone) {
             $has_send_count = Log::get_stock_main_sms_send_count($phone);
+            // 超过次数
             if ($has_send_count >= $able_send_count) {
+                continue;
+            }
+            // 没达到两次间隔 单位 秒
+            $interval = intval($model3['c_content']);
+            $last_send_dt = Log::get_stock_main_sms_send_last($phone);
+            if ($last_send_dt // 有可能没有发送过短信
+                && (time() - strtotime($last_send_dt)) < $interval) {
                 continue;
             }
 
             // 发送短信
             $code = strval($prefix.mt_rand(1000, 9999).'8');
+
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
 
             Log::add([

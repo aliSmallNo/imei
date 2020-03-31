@@ -22,6 +22,7 @@ use common\models\StockLow;
 use common\models\StockMain;
 use common\models\StockMainConfig;
 use common\models\StockMainPb;
+use common\models\StockMainPbStat;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
@@ -1739,6 +1740,27 @@ class FooController extends Controller
         }
     }
 
+    public function actionPbs()
+    {
+        $pbs = file_get_contents(__DIR__.'/../data/pbs.txt');
+        $pbs = AppUtil::json_decode($pbs);
+        foreach ($pbs as $pb) {
+            $s_pb_co = $pb['belowNetAsset'];
+            $s_stock_co = $pb['totalCompany'];
+            $s_trans_on = date('Y-m-d', $pb['date'] / 1000);
+
+            StockMainPbStat::add([
+                's_pb_co' => $s_pb_co,
+                's_stock_co' => $s_stock_co,
+                's_rate' => $s_stock_co != 0 ? round($s_pb_co / $s_stock_co, 4) * 100 : 0,
+                's_trans_on' => $s_trans_on,
+            ]);
+            echo $s_trans_on.PHP_EOL;
+        }
+
+
+    }
+
     public function actionImport_stock_data()
     {
         $sz = require __DIR__.'/../data/stock_sz.php';
@@ -1763,12 +1785,12 @@ class FooController extends Controller
 //            StockMain::pre_insert(
 //                $stf_turnover, $stf_close, $sh_turnover, $sh_close, $sz_turnover, $sz_close, $trans_on);
 
- /*         StockMainStat::cal($trans_on);
-            StockMainResult::cal_one($trans_on);
-            StockMainResult2::cal_one($trans_on);
-            StockMainTmp0::cal_sh_close_60_avg($trans_on);
+            /*         StockMainStat::cal($trans_on);
+                       StockMainResult::cal_one($trans_on);
+                       StockMainResult2::cal_one($trans_on);
+                       StockMainTmp0::cal_sh_close_60_avg($trans_on);
 
-            StockMainPrice::add(['p_sh_close' => $sh_close, 'p_etf500' => $stf_close, 'p_trans_on' => $trans_on,]);*/
+                       StockMainPrice::add(['p_sh_close' => $sh_close, 'p_etf500' => $stf_close, 'p_trans_on' => $trans_on,]);*/
 
             echo $trans_on.PHP_EOL;
 
@@ -1783,9 +1805,6 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
-        //StockMainResult::reset(1);
-
 
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();
