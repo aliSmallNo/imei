@@ -1416,7 +1416,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sold_dt' => $sold_dt,
                 'sold_price' => $sold_price,
                 'hold_days' => ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400),
-                'rate' => round(($sold_price - $buy_price) / $buy_price, 4) * 100,
+                'rate' => $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0,
             ];
         }
 
