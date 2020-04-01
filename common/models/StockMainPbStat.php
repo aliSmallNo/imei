@@ -3,6 +3,7 @@
 namespace common\models;
 
 use common\utils\AppUtil;
+use common\utils\ExcelUtil;
 use Yii;
 
 /**
@@ -129,11 +130,138 @@ class StockMainPbStat extends \yii\db\ActiveRecord
 
         $sql = "select count(1) as co
 				from im_stock_main_pb_stat as ps
-                left join im_stock_main as m on ps.s_trans_on=m.m_trans_on
+                join im_stock_main as m on ps.s_trans_on=m.m_trans_on
                 left join im_stock_main_stat as s on m.m_trans_on=s.s_trans_on and s.s_cat=5
                 where ps.s_id >0 $strCriteria ";
         $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
         return [$res, $count];
     }
+
+    /**
+     * 市净率统计 导出
+     *
+     * @time 2020-04-01 AM
+     */
+    public static function export($sdate, $edate)
+    {
+        $filename_time = date("Y-m-d");
+
+        $params = [];
+        $where = "";
+        if ($sdate && $edate) {
+            $where = " and ps.s_trans_on between :st and :et ";
+            $params = [
+                ':st' => date('Y-m-d', strtotime($sdate)),
+                ':et' => date('Y-m-d', strtotime($edate)),
+            ];
+        }
+
+        $sql = "select m.m_sh_close,s.s_sh_change,ps.* 
+                from im_stock_main_pb_stat as ps
+                join im_stock_main as m on ps.s_trans_on=m.m_trans_on
+                left join im_stock_main_stat as s on m.m_trans_on=s.s_trans_on and s.s_cat=5
+                where ps.s_id >0 $where
+                order by ps.s_trans_on desc";
+        $conn = AppUtil::db();
+        $res = $conn->createCommand($sql, $params)->queryAll();
+
+        $header = $content = [];
+        $header = [
+            "交易日期",
+            "市净率小于1的股票数",
+            "股票总数",
+            "占比",
+            "上证指数",
+            "上证涨幅",
+        ];
+        $cloum_w = [
+            12,
+            20,
+            12,
+            12,
+            12,
+            12,
+        ];
+
+        foreach ($res as $v) {
+            $row = [
+                $v['s_trans_on'],
+                $v['s_pb_co'],
+                $v['s_stock_co'],
+                $v['s_rate'].'%',
+                $v['m_sh_close'],
+                $v['s_sh_change'].'%',
+            ];
+
+            $content[] = $row;
+        }
+
+        $filename = "破1市净率".$filename_time;
+
+        ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
+        exit;
+    }
+
+    /**
+     * 市净率统计 highstock 数据
+     *
+     * @time 2020-04-01 PM
+     */
+    public static function charts()
+    {
+        $sql = "select s.* 
+                from im_stock_main_pb_stat as s
+                join im_stock_main as m on s.s_trans_on=m.m_trans_on
+                where s.s_id >0 order by s_trans_on asc";
+        $conn = AppUtil::db();
+        $res = $conn->createCommand($sql)->queryAll();
+        $pb_cos = [];
+        $pb_rates = [];
+        foreach ($res as $v) {
+            $pb_co = intval($v['s_pb_co']);
+            $rate = floatval($v['s_rate']);
+            // Highchart 有时区问题 WTF 改为前端设置了
+            // $time = (strtotime($v['s_trans_on'].' 08:00:00')) * 1000;
+            $time = (strtotime($v['s_trans_on'])) * 1000;
+            $pb_cos[] = [$time, $pb_co, $v['s_trans_on']];
+            $pb_rates[] = [$time, $rate, $v['s_trans_on']];
+        }
+
+        $data = [
+            ['name' => '破净股比例', 'data' => $pb_rates],
+            ['name' => '破净股数量', 'data' => $pb_cos, 'yAxis' => 1],
+        ];
+
+        return [$pb_rates, $pb_cos, $data];
+    }
+
+    /**
+     * 市净率统计 highstock 数据 测试bug
+     *
+     * @time 2020-04-01 PM
+     */
+    public static function charts2()
+    {
+        $data_s = file_get_contents(__DIR__.'/../../console/data/pbs.txt');
+        $data_arr = AppUtil::json_decode($data_s);
+
+        foreach ($data_arr as $v) {
+            $pb_co = intval($v['belowNetAsset']);
+            $sum = intval($v['totalCompany']);
+            $rate = round($pb_co / $sum, 2);
+            $time = $v['date'];
+            $date = date('Y-m-d H:i:s', $time / 1000);
+            $pb_cos[] = [$time, $pb_co, $date];
+            $pb_rates[] = [$time, $rate, $date];
+        }
+
+        $data = [
+            ['name' => '破净股比例', 'data' => $pb_rates],
+            ['name' => '破净股数量', 'data' => $pb_cos, 'yAxis' => 1],
+        ];
+
+        return [$pb_rates, $pb_cos, $data];
+    }
+
 }

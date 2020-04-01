@@ -364,6 +364,12 @@ class Menu
                         "revise" => 1,
                         "level" => 820,
                     ],
+                    [
+                        "name" => "市净率图",
+                        "url" => "/stock/stock_main_pb_chart",
+                        "revise" => 1,
+                        "level" => 820,
+                    ],
 
 
                 ],

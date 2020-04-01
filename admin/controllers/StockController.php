@@ -2298,4 +2298,39 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 市净率统计 导出
+     *
+     * @time 2020-04-01 PM
+     */
+    public function actionExport_stock_main_pb()
+    {
+        Admin::staffOnly();
+
+        $sdate = self::getParam("sdate");
+        $edate = self::getParam("edate");
+
+        StockMainPbStat::export($sdate, $edate);
+
+    }
+
+    /**
+     * 市净率统计 highstock图
+     *
+     * @time 2020-04-01 PM
+     */
+    public function actionStock_main_pb_chart()
+    {
+        Admin::staffOnly();
+
+        list($pb_rates, $pb_cos, $data) = StockMainPbStat::charts();
+
+        return $this->renderPage("stock_main_pb_chart.tpl",
+            [
+                'pb_rates' => AppUtil::json_encode($pb_rates),
+                'pb_cos' => AppUtil::json_encode($pb_cos),
+                'data' => AppUtil::json_encode($data),
+            ]
+        );
+    }
 }

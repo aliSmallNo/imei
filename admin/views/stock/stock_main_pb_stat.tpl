@@ -17,12 +17,24 @@
   .bot_line div {
     border-bottom: 1px solid #aaa;
   }
+  .autoW {
+    width: auto;
+    display: inline-block;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
     <h4>市净率统计列表
     </h4>
   </div>
+</div>
+
+<div class="row">
+  <input class="form-control autoW beginDate my-date-input" placeholder="开始时间" name="sdate">
+  至
+  <input class="form-control autoW endDate my-date-input" placeholder="截止时间" name="edate">
+
+  <button class="btn btn-primary opExcel">导出</button>
 </div>
 
 <div class="row-divider"></div>
@@ -60,6 +72,15 @@
     var $sls = {
         load_flag: false,
     };
+    /********************* 导出 start *********************************/
+    $('.opExcel').on('click', function() {
+        // var admin = $("select[name=admin]").val();
+        var sdate = $('input[name=sdate]').val();
+        var edate = $('input[name=edate]').val();
+        var url = '/stock/export_stock_main_pb?sdate=' + sdate + '&edate=' + edate;
+        location.href = url;
+    });
+    /********************* 导出 end ******************************/
 
 </script>
 {{include file="layouts/footer.tpl"}}
