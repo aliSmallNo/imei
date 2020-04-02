@@ -1742,7 +1742,7 @@ class FooController extends Controller
 
     public function actionPbs()
     {
-        $pbs = file_get_contents(__DIR__.'/../data/pbs.txt');
+        /*$pbs = file_get_contents(__DIR__.'/../data/pbs.txt');
         $pbs = AppUtil::json_decode($pbs);
         foreach ($pbs as $pb) {
             $s_pb_co = $pb['belowNetAsset'];
@@ -1756,8 +1756,37 @@ class FooController extends Controller
                 's_trans_on' => $s_trans_on,
             ]);
             echo $s_trans_on.PHP_EOL;
+        }*/
+
+        /*$sh = require __DIR__.'/../data/stock_sh.php';
+
+        foreach ($sh as $day => $sh_v) {
+            $ctime = strtotime($day);
+            $trans_on = date("Y-m-d", $ctime);
+            if ($ctime < strtotime("2005-01-05")) {
+                continue;
+            }
+            StockMainPbStat::pre_edit([
+                's_trans_on' => $trans_on,
+                's_sh_close' => $sh_v[0],
+            ]);
+
+            echo $trans_on.PHP_EOL;
+
         }
 
+        $mains = StockMain::find()->where(" m_trans_on >:dt ", [':dt' => "2020-02-16"])->asArray()->all();
+        foreach ($mains as $v) {
+
+            $trans_on = $v['m_trans_on'];
+
+            StockMainPbStat::pre_edit([
+                's_trans_on' => $trans_on,
+                's_sh_close' => $v['m_sh_close'],
+            ]);
+
+            echo $trans_on.PHP_EOL;
+        }*/
 
     }
 

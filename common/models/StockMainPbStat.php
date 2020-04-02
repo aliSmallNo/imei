@@ -13,6 +13,7 @@ use Yii;
  * @property integer $s_pb_co
  * @property integer $s_stock_co
  * @property string $s_rate
+ * @property string $s_sh_close
  * @property string $s_trans_on
  * @property string $s_added_on
  * @property string $s_update_on
@@ -31,7 +32,8 @@ class StockMainPbStat extends \yii\db\ActiveRecord
             's_id' => 'S ID',
             's_pb_co' => '市净率小于1的股票数',
             's_stock_co' => '大盘股票数',
-            's_rate' => 'S Rate 市净率小于1的股票数/大盘股票数',
+            's_rate' => '市净率小于1的股票数/大盘股票数',
+            's_sh_close' => '上证 收盘价',
             's_trans_on' => '交易日期',
             's_added_on' => 'add时间',
             's_update_on' => '修改时间',
@@ -83,6 +85,20 @@ class StockMainPbStat extends \yii\db\ActiveRecord
         $res = $entity->save();
 
         return [$res, $entity];
+    }
+
+    public static function pre_edit($values = [])
+    {
+        if (!$values) {
+            return [false, false];
+        }
+
+        $entity = self::unique_one($values['s_trans_on']);
+        if (!$entity) {
+            return [false, false];
+        }
+
+        return self::edit($entity->s_id, $values);
     }
 
     /**
@@ -216,24 +232,20 @@ class StockMainPbStat extends \yii\db\ActiveRecord
                 where s.s_id >0 order by s_trans_on asc";
         $conn = AppUtil::db();
         $res = $conn->createCommand($sql)->queryAll();
-        $pb_cos = [];
-        $pb_rates = [];
+        $pb_cos = $pb_rates = $pb_sh_closes = [];
         foreach ($res as $v) {
             $pb_co = intval($v['s_pb_co']);
             $rate = floatval($v['s_rate']);
+            $sh_close = floatval($v['s_sh_close']);
             // Highchart 有时区问题 WTF 改为前端设置了
             // $time = (strtotime($v['s_trans_on'].' 08:00:00')) * 1000;
             $time = (strtotime($v['s_trans_on'])) * 1000;
             $pb_cos[] = [$time, $pb_co, $v['s_trans_on']];
             $pb_rates[] = [$time, $rate, $v['s_trans_on']];
+            $pb_sh_closes[] = [$time, $sh_close, $v['s_trans_on']];
         }
 
-        $data = [
-            ['name' => '破净股比例', 'data' => $pb_rates],
-            ['name' => '破净股数量', 'data' => $pb_cos, 'yAxis' => 1],
-        ];
-
-        return [$pb_rates, $pb_cos, $data];
+        return [$pb_rates, $pb_cos, $pb_sh_closes];
     }
 
     /**

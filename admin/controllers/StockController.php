@@ -2323,13 +2323,13 @@ class StockController extends BaseController
     {
         Admin::staffOnly();
 
-        list($pb_rates, $pb_cos, $data) = StockMainPbStat::charts();
+        list($pb_rates, $pb_cos, $pb_sh_closes) = StockMainPbStat::charts();
 
         return $this->renderPage("stock_main_pb_chart.tpl",
             [
                 'pb_rates' => AppUtil::json_encode($pb_rates),
                 'pb_cos' => AppUtil::json_encode($pb_cos),
-                'data' => AppUtil::json_encode($data),
+                'pb_sh_closes' => AppUtil::json_encode($pb_sh_closes),
             ]
         );
     }
