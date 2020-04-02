@@ -111,11 +111,13 @@ class StockMainPbStat extends \yii\db\ActiveRecord
         if (!$dt) {
             $dt = date('Y-m-d');
         }
+        $main = StockMain::findOne(['m_trans_on' => $dt]);
         $s_pb_co = StockMainPb::get_pb_count($dt);
         $s_stock_co = count(StockMenu::get_valid_stocks());
         StockMainPbStat::add([
             's_pb_co' => $s_pb_co,
             's_stock_co' => $s_stock_co,
+            's_sh_close' => $main ? $main->m_sh_close : 0,
             's_rate' => $s_stock_co != 0 ? round($s_pb_co / $s_stock_co, 4) * 100 : 0,
             's_trans_on' => $dt,
         ]);
