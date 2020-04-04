@@ -23,9 +23,10 @@ $this->beginPage() ?>
 		<link href="/css/login.min.css?v=1.2.2" rel="stylesheet">
 		<script src="/assets/js/jquery221.min.js"></script>
 	</head>
-	<body class="signin">
+	<body _class="signin">
+    <img src="/images/bg_login_1.jpeg?v=1.1" alt="" style="    position: absolute;left: 0;top: 0;width: 100%;height: 720px;">
 	<?php $this->beginBody() ?>
-	<div class="container">
+	<div class="container" style="position: relative;">
 		<?= $content ?>
 	</div>
 	<?php $this->endBody() ?>

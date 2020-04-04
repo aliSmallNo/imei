@@ -1,3 +1,14 @@
+<style>
+  .qm_20200404 {
+    /*filter: grayscale(100%);
+    filter: url(data:image/svg+xml;utf8,#grayscale);*/
+    -webkit-filter: grayscale(1);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  }
+</style>
 <div class="row">
   <div class="signinpanel col sform">
     <div class="row">
@@ -7,7 +18,7 @@
       <h4 class="g-title" style="display: none"><img src="/images/i_brand.png?v=1.1.3" alt="">&nbsp;</h4>
       <div class="row">
         <div class="input-field col s12">
-          <input name="name" id="name" type="text" placeholder="请输入用户账号" autofocus  autocomplete="off">
+          <input name="name" id="name" type="text" placeholder="请输入用户账号" autofocus autocomplete="off">
           <label class="active" for="name">账号</label>
         </div>
       </div>
@@ -20,7 +31,7 @@
 
       <div class="row">
         <div class="input-field col s12">
-          <input name="code" id="code" type="text" placeholder="请输入验证码"  autocomplete="off">
+          <input name="code" id="code" type="text" placeholder="请输入验证码" autocomplete="off">
           <a href="javascript:;" id="change_captcha"><img src="{{$src}}" alt=""></a>
           <label class="active" for="code">验证码</label>
         </div>
@@ -50,5 +61,11 @@
             }
         }, 'json');
 
+    })
+
+    // 清明节 页面调成灰色
+    var cls ='{{$qingming_cls}}';
+    $(function () {
+        $('html').addClass(cls);
     })
 </script>

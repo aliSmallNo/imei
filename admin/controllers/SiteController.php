@@ -138,6 +138,7 @@ class SiteController extends BaseController
         return $this->renderPage('login.tpl', [
             'tip' => $tip,
             'src' => $src,
+            'qingming_cls' => date('Y-m-d')=='2020-04-04'?'qm_20200404':'',
         ], true);
     }
 
