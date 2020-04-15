@@ -290,12 +290,6 @@ class Menu
                         "revise" => 1,
                         "level" => 830,
                     ],
-                    [
-                        "name" => "配置项",
-                        "url" => "/stock/stock_main_config",
-                        "revise" => 1,
-                        "level" => 830,
-                    ],
                 ],
             ],
             [
@@ -352,26 +346,6 @@ class Menu
                         "revise" => 1,
                         "level" => 820,
                     ],
-                    [
-                        "name" => "市净率",
-                        "url" => "/stock/stock_main_pb",
-                        "revise" => 1,
-                        "level" => 820,
-                    ],
-                    [
-                        "name" => "市净率统计",
-                        "url" => "/stock/stock_main_pb_stat",
-                        "revise" => 1,
-                        "level" => 820,
-                    ],
-                    [
-                        "name" => "市净率图",
-                        "url" => "/stock/stock_main_pb_chart",
-                        "revise" => 1,
-                        "level" => 820,
-                    ],
-
-
                 ],
             ],
             [
@@ -389,6 +363,12 @@ class Menu
                     [
                         "name" => "策略列表",
                         "url" => "/stock/stock_main_rule2",
+                        "revise" => 1,
+                        "level" => 830,
+                    ],
+                    [
+                        "name" => "配置项",
+                        "url" => "/stock/stock_main_config",
                         "revise" => 1,
                         "level" => 830,
                     ],
@@ -436,12 +416,24 @@ class Menu
                         "revise" => 1,
                         "level" => 820,
                     ],
-                    /*[
-                        "name" => "随机收益率",
-                        "url" => "/stock/random_rate",
+                    [
+                        "name" => "市净率",
+                        "url" => "/stock/stock_main_pb",
                         "revise" => 1,
-                        "level" => 820
-                    ],*/
+                        "level" => 820,
+                    ],
+                    [
+                        "name" => "市净率统计",
+                        "url" => "/stock/stock_main_pb_stat",
+                        "revise" => 1,
+                        "level" => 820,
+                    ],
+                    [
+                        "name" => "市净率图",
+                        "url" => "/stock/stock_main_pb_chart",
+                        "revise" => 1,
+                        "level" => 820,
+                    ],
                 ],
             ],
             [
