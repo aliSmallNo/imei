@@ -785,6 +785,7 @@ class StockController extends BaseController
                         'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
                         'oKey' => $cat,
                         'oBefore' => $filepath,
+                        'oAfter' => $info,
                         'oUId' => Admin::getAdminId(),
                     ]);
                 } catch (\Exception $e) {
@@ -792,6 +793,7 @@ class StockController extends BaseController
                         'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
                         'oKey' => $cat,
                         'oBefore' => $e->getMessage(),
+                        'oAfter' => $info,
                         'oUId' => Admin::getAdminId(),
                     ]);
                 }
