@@ -386,8 +386,8 @@ class StockOrder extends ActiveRecord
 				where oId>0 $strCriteria $cond
 				order by oAddedOn desc,oId desc 
 				limit $offset,$pageSize";
-        $res = $conn->createCommand($sql)->bindValues($params)->getRawSql();
-        echo $res;exit;
+        $res = $conn->createCommand($sql)->bindValues($params)->queryAll();
+
         foreach ($res as $k => $v) {
             $res[$k]['dt'] = date('Y-m-d', strtotime($v['oAddedOn']));
             $res[$k]['st_t'] = self::$stDict[$v['oStatus']];
