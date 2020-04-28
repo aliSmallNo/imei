@@ -57,6 +57,7 @@ class StockOrder extends ActiveRecord
             $entity->$key = $val;
         }
         $entity->save();
+
         return $entity->oId;
     }
 
@@ -73,6 +74,7 @@ class StockOrder extends ActiveRecord
             $entity->$key = $val;
         }
         $res = $entity->save();
+
         //var_dump($entity->getErrors());
         return $entity->oId;
     }
@@ -82,6 +84,7 @@ class StockOrder extends ActiveRecord
         if (AppUtil::checkPhone($phone)) {
             return self::add($values);
         }
+
         return false;
     }
 
@@ -162,7 +165,7 @@ class StockOrder extends ActiveRecord
                 // 加入今天卖出的股票
                 self::sold_stock();
                 // 更新价格
-                self::update_price();
+                self::update_price($data_date);
             }
         }
 
@@ -171,7 +174,7 @@ class StockOrder extends ActiveRecord
 
     public static function unique_stock_key($order)
     {
-        return $order['oPhone'] . '_' . $order['oStockId'] . '_' . $order['oStockAmt'] . '_' . $order['oLoan'];
+        return $order['oPhone'].'_'.$order['oStockId'].'_'.$order['oStockAmt'].'_'.$order['oLoan'];
     }
 
     public static function sold_stock($last_dt = '')
@@ -216,19 +219,65 @@ class StockOrder extends ActiveRecord
                     "oStockAmt" => $v3['oStockAmt'],
                     "oLoan" => $v3['oLoan'],
                     "oStatus" => self::ST_SOLD,
-                    "oAddedOn" => date('Y-m-d')
+                    "oAddedOn" => date('Y-m-d'),
                 ]);
             }
         }
     }
 
-    public static function update_price()
+    public static function update_price($data_date)
     {
+        if (!$data_date) {
+            $data_date = date('Y-m-d');
+        }
         $sql = " select * from im_stock_order where datediff(oAddedOn,now())=0 ";
         $res = AppUtil::db()->createCommand($sql)->queryAll();
         foreach ($res as $v) {
             $stockId = $v['oStockId'];
-            $ret = StockOrder::getStockPrice($stockId);
+            if (date('Y-m-d') == date('Y-m-d', strtotime($data_date))) {
+                $ret = StockOrder::getStockPrice($stockId);
+            } else {
+                $ret = StockOrder::getStockPrice2($data_date, $stockId);
+            }
+            self::update_price_des($ret, $v['oId']);
+        }
+    }
+
+    /**
+     * 解决 StockOrder::getStockPrice($stockId) 接口只能返回当天数据问题
+     *
+     * @time 2020-04-25 PM add
+     */
+    public static function getStockPrice2($trans_on, $stockId)
+    {
+        $data = StockTurn::findOne(['tTransOn' => $trans_on, 'tStockId' => $stockId]);
+        $menu = StockMenu::findOne(['mStockId' => $stockId]);
+
+        return [
+            0 => $menu ? $menu->mStockName : '',
+            1 => $data['tOpen'] / 100,
+            3 => $data['tClose'] / 100,
+        ];
+    }
+
+    /**
+     * 解决 StockOrder::getStockPrice($stockId) 接口只能返回当天数据问题
+     *
+     * @time 2020-04-25 PM add
+     */
+    public static function update_price_repair($trans_on = '')
+    {
+        if (!$trans_on) {
+            $trans_on = date('Y-m-d');
+        } else {
+            $trans_on = date('Y-m-d', strtotime($trans_on));
+        }
+        $sql = " select * from im_stock_order where datediff(oAddedOn,:dt)=0 ";
+        $res = AppUtil::db()->createCommand($sql, [':dt' => $trans_on])->queryAll();
+
+        foreach ($res as $v) {
+            $stockId = $v['oStockId'];
+            $ret = StockOrder::getStockPrice2($trans_on, $stockId);
             self::update_price_des($ret, $v['oId']);
         }
     }
@@ -247,6 +296,7 @@ class StockOrder extends ActiveRecord
             default:
                 $city = "";
         }
+
         return $city;
     }
 
@@ -254,7 +304,7 @@ class StockOrder extends ActiveRecord
     {
 
         // https://blog.csdn.net/simon803/article/details/7784682
-        $base_url = "http://hq.sinajs.cn/list=" . self::get_stock_prefix($stockId) . $stockId;
+        $base_url = "http://hq.sinajs.cn/list=".self::get_stock_prefix($stockId).$stockId;
         $ret = AppUtil::httpGet($base_url);
         //echo $ret . PHP_EOL;;
         $pos = strpos($ret, "=");
@@ -268,6 +318,7 @@ class StockOrder extends ActiveRecord
         if ($stockId == '300377') {
             $ret[0] = '赢时胜';
         }
+
         return $ret;
 
     }
@@ -319,6 +370,7 @@ class StockOrder extends ActiveRecord
             }
 
         }
+
         return $cond;
     }
 
@@ -330,6 +382,7 @@ class StockOrder extends ActiveRecord
 				left join im_stock_user u on u.uPhone=o.oPhone
 				where o.oId>0 $cond
 				order by dt desc limit 10";
+
         //echo AppUtil::db()->createCommand($sql)->getRawSql();exit;
         return array_column(AppUtil::db()->createCommand($sql)->queryAll(), 'dt');
     }
@@ -348,7 +401,8 @@ class StockOrder extends ActiveRecord
 
         $sql = "delete from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') in ('$dt') $cond ";
         $res = AppUtil::db()->createCommand($sql)->execute();
-        return [0, '删除' . $res . '行数据'];
+
+        return [0, '删除'.$res.'行数据'];
     }
 
     public static function items($criteria, $params, $page, $pageSize = 20)
@@ -357,7 +411,7 @@ class StockOrder extends ActiveRecord
         $offset = ($page - 1) * $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
 
         $cond = StockOrder::channel_condition();
@@ -406,7 +460,7 @@ class StockOrder extends ActiveRecord
     {
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
 
 
@@ -460,11 +514,11 @@ class StockOrder extends ActiveRecord
         $sql = "select DATE_FORMAT(oAddedOn,'%Y-%m-%d') as dt from im_stock_order group by dt desc limit 6";
         $dts = $conn->createCommand($sql)->queryAll();
         $dts = array_column($dts, 'dt');
-        $dt_return = [$dts[5] . '_' . $dts[3], $dts[2] . '_' . $dts[0]];
-        $dt1_max = $dts[0] . ' 23:59:00';
-        $dt1_min = $dts[2] . ' 00:00:00';
-        $dt2_max = $dts[3] . ' 23:59:00';
-        $dt2_min = $dts[5] . ' 00:00:00';
+        $dt_return = [$dts[5].'_'.$dts[3], $dts[2].'_'.$dts[0]];
+        $dt1_max = $dts[0].' 23:59:00';
+        $dt1_min = $dts[2].' 00:00:00';
+        $dt2_max = $dts[3].' 23:59:00';
+        $dt2_min = $dts[5].' 00:00:00';
 
         $cond = StockOrder::channel_condition();
 
@@ -494,11 +548,12 @@ class StockOrder extends ActiveRecord
                 $v['left_amt'] = $loan_13_arr[$phone];
                 $v['text'] = $diff > 0 ? '增持' : "减持";
                 $v['diff_loan'] = $diff;
-                $v['percent'] = sprintf('%.2f', abs($diff) / $v['loan_amt']) * 100 . '%';
+                $v['percent'] = sprintf('%.2f', abs($diff) / $v['loan_amt']) * 100 .'%';
                 $reduce_users[] = $v;
             }
         }
         array_multisort(array_column($reduce_users, 'diff_loan'), SORT_ASC, $reduce_users);
+
         return [$reduce_users, $dt_return];
     }
 
@@ -520,14 +575,20 @@ class StockOrder extends ActiveRecord
 				order by uPtPhone desc";
 
         $users = $conn->createCommand($sql)->bindValues([':dt' => $dt])->queryAll();
+
         return $users;
     }
 
-    public static function cla_stock_hold_days()
+    public static function cla_stock_hold_days($dt = '')
     {
+        if (!$dt) {
+            $dt = date('Y-m-d');
+        } else {
+            $dt = date('Y-m-d', strtotime($dt));
+        }
         $conn = AppUtil::db();
-        $sql = "select * from im_stock_order where datediff(oAddedOn,now())=0";
-        $res = $conn->createCommand($sql)->queryAll();
+        $sql = "select * from im_stock_order where datediff(oAddedOn,:dt)=0";
+        $res = $conn->createCommand($sql, [':dt' => $dt])->queryAll();
 
         $sql = " select oAddedOn from im_stock_order where 
  				oPhone=:phone and oStockId=:oStockId and oStockAmt=:oStockAmt 
@@ -625,13 +686,14 @@ class StockOrder extends ActiveRecord
     public static function send_msg_on_stock_price_after($order, $stockPrice)
     {
         return false;
-        $content = "您好，我是客服。您的策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到策略，追加保证金即可，编号" . $order['oStockId'] . $order['oStockName'];
+        $content = "您好，我是客服。您的策略已低于递延线，请及时补充保证金至递延线上，如未补充，您策略将被卖出。充值资金以后，找到策略，追加保证金即可，编号".$order['oStockId'].$order['oStockName'];
         //发送短信
         if (Log::pre_reduce_warning_add($order, $stockPrice, $content)) {
             // 2019.05.23 21:43 正式开始发送短信
             // AppUtil::sendSMS($order['oPhone'], $content, '100001', 'yx', 0, 'send_msg_stock_reduce');
             return true;
         }
+
         return false;
     }
 
@@ -673,6 +735,7 @@ class StockOrder extends ActiveRecord
         if (in_array($dt, $closed_days)) {
             return true;
         }
+
         return false;
     }
 }

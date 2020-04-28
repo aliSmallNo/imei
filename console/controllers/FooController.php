@@ -1834,6 +1834,12 @@ class FooController extends Controller
 
     public function actionZp()
     {
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-22', 1);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-24', 1);
+
+        // StockMainTmp0::init_tmp0_data();
+        // StockOrder::cla_stock_hold_days('2020-04-22');
+        // StockOrder::update_price_repair('2020-04-22');
 
         /*//复制 im_stock_main_rule => im_stock_main_rule2
         $rules = StockMainRule::find()->where(['r_status' => StockMainRule::ST_ACTIVE])->asArray()->all();

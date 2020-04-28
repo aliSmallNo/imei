@@ -1868,7 +1868,7 @@ class ApiController extends Controller
                 $dt = self::postParam("dt");
                 StockOrder::delete_by_dt(date('Y-m-d'), StockOrder::ST_SOLD);
                 StockOrder::sold_stock($dt);
-                StockOrder::update_price();
+                StockOrder::update_price('');
 
                 return self::renderAPI(0, '操作成功');
             case "edit_source":
@@ -1893,7 +1893,7 @@ class ApiController extends Controller
                 return self::renderAPI($code, $msg);
                 break;
             case 'cal_hold_days':
-                StockOrder::cla_stock_hold_days();
+                StockOrder::cla_stock_hold_days('');
 
                 return self::renderAPI(0, '计算完成');
                 break;

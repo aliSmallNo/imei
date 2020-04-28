@@ -263,10 +263,14 @@ class CrontabController extends Controller
 
             $H = date("H");
             $m = date("i");
-            if ($H >= 13 && $H < 16 && StockMain::is_trans_date()) {
+            //if ($H >= 13 && $H < 16 && StockMain::is_trans_date()) {
+            // 2020-04-25 PM modify
+            if ($H >= 11 && $H < 16 && StockMain::is_trans_date()) {
                 Log::add(['oCategory' => Log::CAT_STOCK_MAIN_UPDATE, 'oBefore' => 'in 0']);
                 // 14:50到15:00 每一分钟更新下数据 其余时间段每5分钟更新下数据
-                if (in_array($H, [13, 15])) {
+                //if (in_array($H, [13, 15])) {
+                // 2020-04-25 PM modify
+                if (in_array($H, [11, 12, 13, 15])) {
                     if (($m % 5) != 0) {
                         return false;
                     }
