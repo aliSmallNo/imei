@@ -182,13 +182,13 @@ class StockOrder extends ActiveRecord
         return $order['oPhone'].'_'.$order['oStockId'].'_'.$order['oStockAmt'].'_'.$order['oLoan'];
     }
 
-    public static function sold_stock($curr_date = '',$last_dt = '')
+    public static function sold_stock($curr_date = '', $last_dt = '')
     {
         $conn = AppUtil::db();
         if (!$last_dt) {
             // 查询上一个交易日日期
-            $main = StockMain::find()->where("m_trans_on<$last_dt")->orderBy('m_trans_on desc')->limit(1)->asArray()->one();
-            $last_dt = $main['m_trans_on'];
+            $sql = "select m_trans_on from im_stock_main where m_trans_on<$curr_date order by m_trans_on desc limit 1";
+            $last_dt = $conn->createCommand($sql)->queryScalar();
         } else {
             $last_dt = date('Y-m-d', strtotime($last_dt));
         }
