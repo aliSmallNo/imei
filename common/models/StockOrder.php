@@ -269,8 +269,8 @@ class StockOrder extends ActiveRecord
 
         return [
             0 => $menu ? $menu->mStockName : '',
-            1 => $data['tOpen'] / 100,
-            3 => $data['tClose'] / 100,
+            1 => sprintf('%.2f', $data['tOpen'] / 100),
+            3 => sprintf('%.2f', $data['tClose'] / 100),
         ];
     }
 
