@@ -237,8 +237,8 @@ class StockOrder extends ActiveRecord
         if (!$data_date) {
             $data_date = date('Y-m-d');
         }
-        $sql = " select * from im_stock_order where datediff(oAddedOn,now())=0 ";
-        $res = AppUtil::db()->createCommand($sql)->queryAll();
+        $sql = " select * from im_stock_order where datediff(oAddedOn,:dt)=0 ";
+        $res = AppUtil::db()->createCommand($sql,[':dt'=>$data_date])->queryAll();
         foreach ($res as $v) {
             $stockId = $v['oStockId'];
             if (date('Y-m-d') == date('Y-m-d', strtotime($data_date))) {
