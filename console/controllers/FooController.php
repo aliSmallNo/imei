@@ -1836,8 +1836,9 @@ class FooController extends Controller
     {
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
-        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea686525b663.xls');
-        exit;
+//        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea686525b663.xls');
+        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea6863a64a51.xls');
+
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-22', 1);
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-24', 1);
 
