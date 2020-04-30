@@ -238,7 +238,7 @@ class StockOrder extends ActiveRecord
             $data_date = date('Y-m-d');
         }
         $sql = " select * from im_stock_order where datediff(oAddedOn,:dt)=0 ";
-        $res = AppUtil::db()->createCommand($sql,[':dt'=>$data_date])->queryAll();
+        $res = AppUtil::db()->createCommand($sql, [':dt' => $data_date])->queryAll();
         foreach ($res as $v) {
             $stockId = $v['oStockId'];
             if (date('Y-m-d') == date('Y-m-d', strtotime($data_date))) {
@@ -246,7 +246,14 @@ class StockOrder extends ActiveRecord
             } else {
                 $ret = StockOrder::getStockPrice2($data_date, $stockId);
             }
-            self::update_price_des($ret, $v['oId']);
+            try {
+                self::update_price_des($ret, $v['oId']);
+            } catch (\Exception $e) {
+                echo $e->getMessage().PHP_EOL;
+                print_r($ret);
+                exit;
+            }
+
         }
     }
 
