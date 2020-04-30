@@ -171,9 +171,9 @@ class StockOrder extends ActiveRecord
             if (date("d") == date("d", strtotime($data_date))) {
                 // 加入今天卖出的股票
                 self::sold_stock();
-                // 更新价格
-                self::update_price($data_date);
             }
+            // 更新价格
+            self::update_price($data_date);
         }
 
         return [$insertCount, $error];
