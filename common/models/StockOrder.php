@@ -185,6 +185,14 @@ class StockOrder extends ActiveRecord
     public static function sold_stock($curr_date = '', $last_dt = '')
     {
         $conn = AppUtil::db();
+        if (!$curr_date) {
+            $curr_date = date('Y-m-d H::s');
+        }
+        // 先删除今天的已卖出 避免重复添加
+        StockOrder::deleteAll([
+            'oAddedOn' => date('Y-m-d 00:00:00', strtotime($curr_date)),
+            "oStatus" => self::ST_SOLD,
+        ]);
         if (!$last_dt) {
             // 查询上一个交易日日期
             $sql = "select m_trans_on from im_stock_main where m_trans_on<:dt order by m_trans_on desc limit 1";
@@ -203,9 +211,6 @@ class StockOrder extends ActiveRecord
             $_yestoday[$key] = $v;
         }
 
-        if (!$curr_date) {
-            $curr_date = date('Y-m-d H::s');
-        }
         $sql = "select * from im_stock_order where datediff(oAddedOn,:dt)=0 and oStatus=1";
         $today = $conn->createCommand($sql, [':dt' => $curr_date])->queryAll();
         $_today = [];
@@ -229,7 +234,7 @@ class StockOrder extends ActiveRecord
                     "oStockAmt" => $v3['oStockAmt'],
                     "oLoan" => $v3['oLoan'],
                     "oStatus" => self::ST_SOLD,
-                    "oAddedOn" => date('Y-m-d',strtotime($curr_date)),
+                    "oAddedOn" => date('Y-m-d', strtotime($curr_date)),
                 ]);
             }
         }
