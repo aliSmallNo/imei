@@ -187,8 +187,8 @@ class StockOrder extends ActiveRecord
         $conn = AppUtil::db();
         if (!$last_dt) {
             // 查询上一个交易日日期
-            $sql = "select m_trans_on from im_stock_main where m_trans_on<$curr_date order by m_trans_on desc limit 1";
-            $last_dt = $conn->createCommand($sql)->queryScalar();
+            $sql = "select m_trans_on from im_stock_main where m_trans_on<:dt order by m_trans_on desc limit 1";
+            $last_dt = $conn->createCommand($sql, [':dt' => $curr_date])->queryScalar();
         } else {
             $last_dt = date('Y-m-d', strtotime($last_dt));
         }
