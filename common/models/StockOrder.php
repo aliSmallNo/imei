@@ -119,6 +119,13 @@ class StockOrder extends ActiveRecord
 				values (:oPhone,:oName,:oStockId,:oStockAmt,:oLoan,:oAddedOn)";
         $cmd = $conn->createCommand($sql);
 
+        // 删除当前日期的数据再导入
+        if (isset($result[1][5])) {
+            $data_date = date('Y-m-d 00:00:00', strtotime($result[1][5]));
+            self::deleteAll(['oAddedOn' => $data_date]);
+        }
+
+
         $data_date = "";
         foreach ($result as $key => $value) {
             $res = 0;

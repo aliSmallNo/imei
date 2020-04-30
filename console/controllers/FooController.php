@@ -1834,6 +1834,10 @@ class FooController extends Controller
 
     public function actionZp()
     {
+//        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
+//        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
+        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea686525b663.xls');
+        exit;
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-22', 1);
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-24', 1);
 
