@@ -168,10 +168,8 @@ class StockOrder extends ActiveRecord
             $transaction->rollBack();
         } else {
             $transaction->commit();
-            if (date("d") == date("d", strtotime($data_date))) {
-                // 加入今天卖出的股票
-                self::sold_stock();
-            }
+            // 加入今天卖出的股票
+            self::sold_stock($data_date);
             // 更新价格
             self::update_price($data_date);
         }
@@ -184,11 +182,13 @@ class StockOrder extends ActiveRecord
         return $order['oPhone'].'_'.$order['oStockId'].'_'.$order['oStockAmt'].'_'.$order['oLoan'];
     }
 
-    public static function sold_stock($last_dt = '')
+    public static function sold_stock($curr_date = '',$last_dt = '')
     {
         $conn = AppUtil::db();
         if (!$last_dt) {
-            $last_dt = date('Y-m-d', time() - 86400);
+            // 查询上一个交易日日期
+            $main = StockMain::find()->where("m_trans_on<$last_dt")->orderBy('m_trans_on desc')->limit(1)->asArray()->one();
+            $last_dt = $main['m_trans_on'];
         } else {
             $last_dt = date('Y-m-d', strtotime($last_dt));
         }
@@ -203,8 +203,12 @@ class StockOrder extends ActiveRecord
             $key = self::unique_stock_key($v);
             $_yestoday[$key] = $v;
         }
-        $sql = "select * from im_stock_order where datediff(oAddedOn,now())=0 and oStatus=1";
-        $today = $conn->createCommand($sql)->queryAll();
+
+        if (!$curr_date) {
+            $curr_date = date('Y-m-d H::s');
+        }
+        $sql = "select * from im_stock_order where datediff(oAddedOn,:dt)=0 and oStatus=1";
+        $today = $conn->createCommand($sql, [':dt' => $curr_date])->queryAll();
         $_today = [];
         foreach ($today as $k1 => $v1) {
             $key = self::unique_stock_key($v1);
@@ -241,19 +245,13 @@ class StockOrder extends ActiveRecord
         $res = AppUtil::db()->createCommand($sql, [':dt' => $data_date])->queryAll();
         foreach ($res as $v) {
             $stockId = $v['oStockId'];
+            // 2020-04-25 PM modify
             if (date('Y-m-d') == date('Y-m-d', strtotime($data_date))) {
                 $ret = StockOrder::getStockPrice($stockId);
             } else {
                 $ret = StockOrder::getStockPrice2($data_date, $stockId);
             }
-            try {
-                self::update_price_des($ret, $v['oId']);
-            } catch (\Exception $e) {
-                echo $e->getMessage().PHP_EOL;
-                print_r($ret);
-                exit;
-            }
-
+            self::update_price_des($ret, $v['oId']);
         }
     }
 

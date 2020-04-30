@@ -1732,7 +1732,7 @@ class ApiController extends Controller
                 // ini_set('max_execution_time', 300);// 5 min
                 StockMainResult2::reset();
 
-                return self::renderAPI(0, "重置数据成功！",ini_get("max_execution_time"));
+                return self::renderAPI(0, "重置数据成功！", ini_get("max_execution_time"));
                 break;
             case "edit_main_result2":
                 $data = [
@@ -1867,7 +1867,7 @@ class ApiController extends Controller
             case "cal_sold_order":
                 $dt = self::postParam("dt");
                 StockOrder::delete_by_dt(date('Y-m-d'), StockOrder::ST_SOLD);
-                StockOrder::sold_stock($dt);
+                StockOrder::sold_stock('', $dt);
                 StockOrder::update_price('');
 
                 return self::renderAPI(0, '操作成功');
