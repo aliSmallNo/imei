@@ -193,7 +193,6 @@ class StockOrder extends ActiveRecord
             $last_dt = date('Y-m-d', strtotime($last_dt));
         }
 
-        $st = self::ST_HOLD;
         $sql = "select * from im_stock_order where DATE_FORMAT(oAddedOn, '%Y-%m-%d') ='$last_dt' and oStatus=1 ";
 
         $yestoday = $conn->createCommand($sql)->queryAll();
@@ -230,7 +229,7 @@ class StockOrder extends ActiveRecord
                     "oStockAmt" => $v3['oStockAmt'],
                     "oLoan" => $v3['oLoan'],
                     "oStatus" => self::ST_SOLD,
-                    "oAddedOn" => date('Y-m-d'),
+                    "oAddedOn" => date('Y-m-d',strtotime($curr_date)),
                 ]);
             }
         }
