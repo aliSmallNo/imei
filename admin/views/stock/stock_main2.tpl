@@ -128,6 +128,7 @@
         <td>
           <div>均值 {{$item.s_sh_close_avg}}</div>
           <div>均值比例 {{$item.s_sh_close_avg_scale}}%</div>
+          <div>上证指数60日均值-上证指数10日均值: {{$item.avg60_avg10_offset}}</div>
         </td>
         <!-- 上证交易额 -->
         <td>

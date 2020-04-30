@@ -286,6 +286,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         // 算出所有的offset 上证指数60日均值-上证指数10日均值
         $offset_map = StockMainTmp0::sh_close_60avg_10avg_offset_map();
         foreach ($res as $k => $v) {
+            $m_trans_on = $v['m_trans_on'];
             $buy_name = $sold_name = [];
 
             foreach ($buys as $buy) {
@@ -301,6 +302,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             }
             $res[$k]['buys'] = $buy_name;
             $res[$k]['solds'] = $sold_name;
+            $res[$k]['avg60_avg10_offset'] = $offset_map[$m_trans_on] ?? '999';
         }
         $sql = "select count(1) as co
 				from im_stock_main as m
