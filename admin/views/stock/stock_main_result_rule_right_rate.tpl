@@ -47,7 +47,7 @@
         <tbody>
         {{foreach from=$buys item=item key=key}}
           <tr>
-            <td>{{if $key<=4}}{{$key}}次{{else}}大于4次{{/if}}</td>
+            <td>{{if $key<=4}}{{$key}}个{{else}}4个以上{{/if}}</td>
             <td>{{$item.yes}}次 - {{sprintf('%.2f',$item.yes/$item.sum*100)}}%</td>
             <td>{{$item.no}}次 - {{sprintf('%.2f',$item.no/$item.sum*100)}}%</td>
             <td>{{$item.mid}}次 - {{sprintf('%.2f',$item.mid/$item.sum*100)}}%</td>
@@ -76,7 +76,7 @@
         <tbody>
         {{foreach from=$solds item=item key=key}}
           <tr>
-            <td>{{if $key<=4}}{{$key}}次{{else}}大于4次{{/if}}</td>
+            <td>{{if $key<=4}}{{$key}}个{{else}}4个以上{{/if}}</td>
             <td>{{$item.yes}}次 - {{sprintf('%.2f',$item.yes/$item.sum*100)}}%</td>
             <td>{{$item.no}}次 - {{sprintf('%.2f',$item.no/$item.sum*100)}}%</td>
             <td>{{$item.mid}}次 - {{sprintf('%.2f',$item.mid/$item.sum*100)}}%</td>
