@@ -2335,4 +2335,24 @@ class StockController extends BaseController
             ]
         );
     }
+
+    /**
+     * 策略结果正确率
+     *
+     * @time 2020-05-02 PM
+     */
+    public function actionStock_main_result_rule_right_rate()
+    {
+        Admin::staffOnly();
+
+        list($buys, $solds) = StockMainResult2::rule_right_rate();
+
+        return $this->renderPage("stock_main_result_rule_right_rate.tpl",
+            [
+                'solds' => $solds,
+                'buys' => $buys,
+            ]
+        );
+    }
+
 }

@@ -434,6 +434,12 @@ class Menu
                         "revise" => 1,
                         "level" => 820,
                     ],
+                    [
+                        "name" => "正确率",
+                        "url" => "/stock/stock_main_result_rule_right_rate",
+                        "revise" => 1,
+                        "level" => 820,
+                    ],
                 ],
             ],
             [

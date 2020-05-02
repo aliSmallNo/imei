@@ -302,6 +302,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             }
             $res[$k]['buys'] = $buy_name;
             $res[$k]['solds'] = $sold_name;
+            // 上证指数60日均值-上证指数10日均值
             $res[$k]['avg60_avg10_offset'] = $offset_map[$m_trans_on] ?? '999';
         }
         $sql = "select count(1) as co

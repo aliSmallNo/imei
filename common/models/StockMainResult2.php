@@ -1634,4 +1634,104 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
     }
 
+    /**
+     * 计算每天策略结果的策略个数
+     *
+     * @time 2020-05-02 PM
+     */
+    public static function rule_right_rate()
+    {
+        $sql = "select concat(r_sold5,r_sold10,r_sold20) as str,r_note from im_stock_main_result2 
+                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
+        $sold_results = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $sql = "select concat(r_buy5,r_buy10,r_buy20) as str,r_note  from im_stock_main_result2 
+                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 ";
+        $buy_results = AppUtil::db()->createCommand($sql)->queryAll();
+
+        $buys = $solds = [
+            1 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+            2 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+            3 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+            4 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+            5 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+        ];
+
+        foreach ($buy_results as $v) {
+            $str_arr = array_unique(array_filter(explode(',', $v['str'])));
+            $note = $v['r_note'];
+            $co = count($str_arr);
+            switch ($note) {
+                case '对':
+                case '买对':
+                    if ($co <= 4) {
+                        $buys[$co]['yes']++;
+                    } else {
+                        $buys[5]['yes']++;
+                    }
+                    break;
+                case '错':
+                case '卖对':
+                    if ($co <= 4) {
+                        $buys[$co]['no']++;
+                    } else {
+                        $buys[5]['no']++;
+                    }
+                    break;
+                case '中性':
+                    if ($co <= 4) {
+                        $buys[$co]['mid']++;
+                    } else {
+                        $buys[5]['mid']++;
+                    }
+                    break;
+            }
+            if ($co <= 4) {
+                $buys[$co]['sum']++;
+            } else {
+                $buys[5]['sum']++;
+            }
+        }
+
+        foreach ($sold_results as $v) {
+            $str_arr = array_unique(array_filter(explode(',', $v['str'])));
+            $note = $v['r_note'];
+            $co = count($str_arr);
+            switch ($note) {
+                case '对':
+                case '卖对':
+                    if ($co <= 4) {
+                        $solds[$co]['yes']++;
+                    } else {
+                        $solds[5]['yes']++;
+                    }
+                    break;
+                case '错':
+                case '买对':
+                    if ($co <= 4) {
+                        $solds[$co]['no']++;
+                    } else {
+                        $solds[5]['no']++;
+                    }
+                    break;
+                case '中性':
+                    if ($co <= 4) {
+                        $solds[$co]['mid']++;
+                    } else {
+                        $solds[5]['mid']++;
+                    }
+                    break;
+            }
+            if ($co <= 4) {
+                $solds[$co]['sum']++;
+            } else {
+                $solds[5]['sum']++;
+            }
+        }
+
+        return [$buys, $solds];
+
+    }
+
+
 }
