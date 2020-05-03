@@ -1655,6 +1655,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             3 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
             4 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
             5 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+            6 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
+            7 => ['yes' => 0, 'no' => 0, 'mid' => 0, 'sum' => 0],
         ];
 
         foreach ($buy_results as $v) {
@@ -1664,32 +1666,32 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             switch ($note) {
                 case '对':
                 case '买对':
-                    if ($co <= 4) {
+                    if ($co <= 6) {
                         $buys[$co]['yes']++;
                     } else {
-                        $buys[5]['yes']++;
+                        $buys[7]['yes']++;
                     }
                     break;
                 case '错':
                 case '卖对':
-                    if ($co <= 4) {
+                    if ($co <= 6) {
                         $buys[$co]['no']++;
                     } else {
-                        $buys[5]['no']++;
+                        $buys[7]['no']++;
                     }
                     break;
                 case '中性':
-                    if ($co <= 4) {
+                    if ($co <= 6) {
                         $buys[$co]['mid']++;
                     } else {
-                        $buys[5]['mid']++;
+                        $buys[7]['mid']++;
                     }
                     break;
             }
-            if ($co <= 4) {
+            if ($co <= 6) {
                 $buys[$co]['sum']++;
             } else {
-                $buys[5]['sum']++;
+                $buys[7]['sum']++;
             }
         }
 
@@ -1700,32 +1702,32 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             switch ($note) {
                 case '对':
                 case '卖对':
-                    if ($co <= 4) {
+                    if ($co <= 6) {
                         $solds[$co]['yes']++;
                     } else {
-                        $solds[5]['yes']++;
+                        $solds[7]['yes']++;
                     }
                     break;
                 case '错':
                 case '买对':
-                    if ($co <= 4) {
+                    if ($co <= 6) {
                         $solds[$co]['no']++;
                     } else {
-                        $solds[5]['no']++;
+                        $solds[7]['no']++;
                     }
                     break;
                 case '中性':
-                    if ($co <= 4) {
+                    if ($co <= 6) {
                         $solds[$co]['mid']++;
                     } else {
-                        $solds[5]['mid']++;
+                        $solds[7]['mid']++;
                     }
                     break;
             }
-            if ($co <= 4) {
+            if ($co <= 6) {
                 $solds[$co]['sum']++;
             } else {
-                $solds[5]['sum']++;
+                $solds[7]['sum']++;
             }
         }
 
