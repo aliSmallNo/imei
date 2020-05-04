@@ -42,6 +42,7 @@ class StockTurn extends \yii\db\ActiveRecord
             if (isset($values['tTurnover']) && $values['tTurnover'] != 0) {
                 return self::edit($entity->tId, $values);
             }
+
             return [false, false];
         }
 
@@ -107,13 +108,13 @@ class StockTurn extends \yii\db\ActiveRecord
     {
         $limit_str = '';
         if ($limit) {
-            $limit_str = " limit " . intval($limit);
+            $limit_str = " limit ".intval($limit);
         }
         $sql = "select DISTINCT tTransOn from im_stock_turn 
                 where date_format(tTransOn,'%Y')=:y $where
                 order by tTransOn desc $limit_str ";
         $res = AppUtil::db()->createCommand($sql, [
-            ':y' => $year
+            ':y' => $year,
         ])->queryAll();
 
         return array_column($res, 'tTransOn');
@@ -135,8 +136,8 @@ class StockTurn extends \yii\db\ActiveRecord
         if (is_array($ret) && count($ret) > 40) {
             $dt = $ret[30];
             $trans_on = substr($dt, 0, 4)
-                . '-' . substr($dt, 4, 2)
-                . '-' . substr($dt, 6, 2);
+                .'-'.substr($dt, 4, 2)
+                .'-'.substr($dt, 6, 2);
 
             $data = [
                 "tStockId" => $stockId,
@@ -203,7 +204,7 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $cat = $v['mCat'];
-            echo 'update_current_day_all:' . $stockId . PHP_EOL;
+            echo 'update_current_day_all:'.$stockId.PHP_EOL;
 
             //用 sohu/腾讯 接口添加换手率等信息
             self::add_one_stock($stockId, $dt, $cat);
@@ -251,7 +252,7 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $mCat = $v['mCat'];
-            echo 'get_stime_etime_turnover_data:' . $stockId . PHP_EOL;
+            echo 'get_stime_etime_turnover_data:'.$stockId.PHP_EOL;
             list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $start, $end);
             if ($status == 0) {
                 $insertData = self::batch_process_data($hqs, $stockId);
@@ -264,6 +265,7 @@ class StockTurn extends \yii\db\ActiveRecord
             // 用k线接口补充遗漏
             self::update_one_stock_kline($stockId, $mCat, false, $year);
         }
+
         return true;
     }
 
@@ -292,6 +294,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 ];
             }
         }
+
         return $data;
     }
 
@@ -319,6 +322,7 @@ class StockTurn extends \yii\db\ActiveRecord
             ];
 
         }
+
         return $data;
     }
 
@@ -330,7 +334,7 @@ class StockTurn extends \yii\db\ActiveRecord
     public static function update_one_stock_kline($stockId, $cat, $today = true, $year = "19")
     {
         $api = "http://data.gtimg.cn/flashdata/hushen/daily/%s/%s.js";
-        $api = sprintf($api, $year, $cat . $stockId);
+        $api = sprintf($api, $year, $cat.$stockId);
         $data = AppUtil::httpGet($api);
 
         if (strpos($data, "html")) {
@@ -356,7 +360,7 @@ class StockTurn extends \yii\db\ActiveRecord
         // 只更新今日
         if ($today) {
             $prices = explode(" ", array_pop($data));
-            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            $dt = date('Y-m-d', strtotime("20".$prices[0]));
             StockTurn::add([
                 "tStockId" => $stockId,
                 "tOpen" => $prices[1] * 100,                        //开盘价
@@ -365,6 +369,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 "tLow" => $prices[4] * 100,                         //最低价
                 "tTransOn" => $dt,                                  //交易日
             ]);
+
             return 1;
         }
 
@@ -372,7 +377,7 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($data as $v) {
             // $v style => 190912 16.45 16.45 16.45 16.45 17459
             $prices = explode(" ", $v);
-            $dt = date('Y-m-d', strtotime("20" . $prices[0]));
+            $dt = date('Y-m-d', strtotime("20".$prices[0]));
             if (!StockTurn::unique_one($stockId, $dt)) {
                 $insert[] = [
                     "tStockId" => $stockId,
@@ -384,6 +389,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 ];
             }
         }
+
         return Yii::$app->db->createCommand()->batchInsert(StockTurn::tableName(),
             ['tStockId', 'tOpen', 'tClose', 'tHight', 'tLow', "tTransOn"],
             $insert)->execute();
@@ -400,10 +406,10 @@ class StockTurn extends \yii\db\ActiveRecord
         foreach ($ids as $v) {
             $stockId = $v['mStockId'];
             $mCat = $v['mCat'];
-            echo 'complete_lose_data:' . $stockId . PHP_EOL;
+            echo 'complete_lose_data:'.$stockId.PHP_EOL;
             $lose_turn_list = StockTurn::find()->where([
                 'tTurnover' => 0,
-                'tStockId' => $stockId
+                'tStockId' => $stockId,
             ])->asArray()->orderBy("tTransOn desc")->all();
 
             foreach ($lose_turn_list as $lose_turn) {
@@ -436,8 +442,9 @@ class StockTurn extends \yii\db\ActiveRecord
         if (!$dt) {
             $dt = date('Y-m-d');
         }
+        $year = date('Y', strtotime($dt));
         // 近 8 天
-        $days_8 = self::get_trans_days('2019', " and tTransOn<='$dt' ", 8);
+        $days_8 = self::get_trans_days($year, " and tTransOn<='$dt' ", 8);
         $days_8 = array_reverse($days_8);
 
         $select_1 = [];// 标准1
@@ -473,6 +480,7 @@ class StockTurn extends \yii\db\ActiveRecord
             }
         }
         $select_2[8] = array_values($select_2[8]);
+
         return [$select_1, $select_2];
     }
 
@@ -646,7 +654,7 @@ class StockTurn extends \yii\db\ActiveRecord
         '603214',
         '600759',
         '002357',
-        '000601'
+        '000601',
     ];
     static $stock_42 = [
         '002945',
@@ -1023,7 +1031,7 @@ class StockTurn extends \yii\db\ActiveRecord
         $stock_ids_1 = [];
         $stock_ids_2 = [];
         $stocks = self::get_stocks_by_cat($cat);
-        $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (" . implode(',', $stocks) . ") ");
+        $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (".implode(',', $stocks).") ");
 
         foreach ($stock_menu_select as $item) {
             $stock_id = $item['mStockId'];
@@ -1061,6 +1069,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 }
             }
         }
+
         return [$stock_ids_1, $stock_ids_2];
 
     }
