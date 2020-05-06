@@ -69,6 +69,7 @@ use Gregwar\Image\Image;
 use SebastianBergmann\CodeCoverage\Report\PHP;
 use Yii;
 use yii\console\Controller;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 
 class FooController extends Controller
@@ -1829,11 +1830,91 @@ class FooController extends Controller
     public function actionZp2()
     {
         StockMainResult2::reset(1);
+    }
 
+    public function actionZp3()
+    {
+        ini_set('memory_limit', '512M');
+
+        $dir = '/Users/b_tt/Downloads/baostock/';
+
+        $today = date('Y-m-d');
+        $files = scanDir($dir.$today.'/');
+        //$files = ['000001_2000-01-01_2020-05-06.csv'];
+        $fields = 'date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM,isST';
+        $fields = explode(',', $fields);
+        $fields[] = 'stock_id';
+        foreach ($files as $file) {
+            if (!in_array($file, ['.', '..'])) {
+                $file_path = $dir.$today.'/'.$file;
+                $res = file($file_path);
+                // print_r([$file, array_slice($res, 0, 10)]);exit;
+
+                $data = [];
+                foreach ($res as $k => $v) {
+                    if ($k == 0) {
+                        continue;
+                    }
+                    $item_tmp = explode(',', $v);
+                    $item_tmp[] = $stock_id = substr($item_tmp[1], 3);
+                    $item = array_combine($fields, $item_tmp);
+
+                    // print_r($item);
+                    foreach ($item as $k1 => $v1) {
+                        if (in_array($k1, ['date'])) {
+                            $item[$k1] = date('Y-m-d', strtotime($v1));
+                        }
+                        if (in_array($k1, ['open', "high", "low", "close", "preclose"])) {
+                            $item[$k1] = sprintf('%.2f', $item[$k1]);
+                        }
+                        if (in_array($k1, ['amount'])) {
+                            $item[$k1] = sprintf('%.1f', $item[$k1]);
+                        }
+                        if (in_array($k1, ['turn', 'pctChg', 'peTTM', 'pbMRQ', 'psTTM', 'pcfNcfTTM',])) {
+                            $item[$k1] = sprintf('%.2f', $item[$k1]);
+                        }
+                    }
+                    $data[] = array_values($item);
+                    unset($item_tmp);
+                    unset($item);
+                    // print_r($item);exit;
+
+                    /*try {
+                        Yii::$app->db->createCommand()->batchInsert('im_stock_bao', $fields, $data)->execute();
+                    } catch (\Exception $e) {
+                        file_put_contents('./err.txt',
+                            date('Y-m-d H:i:s')."\n".$stock_id."\n".$e->getMessage()."\n");
+                        break;
+                    }*/
+                }
+                echo $stock_id.PHP_EOL;
+                try {
+                    Yii::$app->db->createCommand()->batchInsert('im_stock_bao', $fields, $data)->execute();
+                } catch (\Exception $e) {
+                    file_put_contents('./err.txt',
+                        date('Y-m-d H:i:s')."\n".$stock_id."\n".$e->getMessage()."\n", FILE_APPEND);
+
+                    break;
+                }
+                unset($res);
+                unset($data);
+                $des_dir = $dir.'toDb/'.$today.'/';
+                if (!is_dir($des_dir)) {
+                    var_dump(mkdir($des_dir));
+                }
+                copy($file_path, $des_dir.$file); //拷贝到新目录
+                unlink($file_path); //删除旧目录下的文件
+            }
+
+        }
+        exit;
     }
 
     public function actionZp()
     {
+
+        StockTurn::get_stock_2_bao('000001');
+
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
 //        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea686525b663.xls');

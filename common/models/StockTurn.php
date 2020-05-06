@@ -24,6 +24,8 @@ use Yii;
 class StockTurn extends \yii\db\ActiveRecord
 {
     // 腾迅股票数据接口 https://blog.csdn.net/USTBHacker/article/details/8365756
+    // https://www.zhihu.com/question/21271405
+    // http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
 
     /**
      * @inheritdoc
@@ -236,6 +238,56 @@ class StockTurn extends \yii\db\ActiveRecord
         } elseif ($data = self::get_stock_turnover_bak1($stockId, $cat)) {
             self::add($data);
         }
+        // 更新 im_stock_bao 表的数据 => 市净率 市盈率
+        self::get_stock_2_bao($stockId, $cat);
+    }
+
+    /**
+     * 更新 im_stock_bao 表的数据
+     *
+     * @time 2020-05-06 PM
+     */
+    public static function get_stock_2_bao($stockId, $cat = 'sz')
+    {
+        $base_url = "http://qt.gtimg.cn/q=%s%s";
+        $ret = AppUtil::httpGet(sprintf($base_url, $cat, $stockId));
+        $ret = AppUtil::check_encode($ret);
+        $ret = explode('~', $ret);
+
+        $data = [];
+        if (is_array($ret) && count($ret) > 46) {
+            $dt = $ret[30];
+            $trans_on = substr($dt, 0, 4)
+                .'-'.substr($dt, 4, 2)
+                .'-'.substr($dt, 6, 2);
+            $data = [
+                "date" => $trans_on,                        //交易日
+                "code" => $cat.'.'.$stockId,                        //交易日
+                "stock_id" => $stockId,
+                "open" => sprintf('%.2f', $ret[5]),                       //开盘价
+                "close" => sprintf('%.2f', $ret[3]),                      //收盘价
+                "high" => sprintf('%.2f', $ret[33]),                     //最高价
+                "low" => sprintf('%.2f', $ret[34]),                       //最低价
+                "preclose" => sprintf('%.2f', $ret[4]),//前收盘价
+                "volume" => $ret[36] * 100,//成交量（累计 单位：股）
+                "amount" => $ret[37] * 10000,//成交额（单位：人民币元）
+                "adjustflag" => '0',//复权状态(1：后复权， 2：前复权，3：不复权）
+                "turn" => sprintf('%.2f', $ret[38]),//换手率
+                "tradestatus" => 1,//交易状态(1：正常交易 0：停牌）
+                "pctChg" => sprintf('%.2f', $ret[32]),//涨跌幅
+                "peTTM" => sprintf('%.2f', $ret[39]),// 滚动市盈率
+                "peStatic" => sprintf('%.2f', $ret[53]),// 静态市盈率
+                "pbMRQ" => sprintf('%.2f', $ret[46]),// 市净率
+                "psTTM" => '',// 滚动市销率
+                "pcfNcfTTM" => '',// 滚动市现率
+            ];
+        }
+        try {
+            StockBao::add($data);
+        } catch (\Exception $e) {
+
+        }
+
     }
 
 
