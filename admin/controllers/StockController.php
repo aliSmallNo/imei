@@ -1486,6 +1486,7 @@ class StockController extends BaseController
             [
                 'list1' => $select1,
                 'list2' => $select2,
+                'list3' => StockTurn::get_pb_pe_stock($dt,171),
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
@@ -1503,6 +1504,7 @@ class StockController extends BaseController
             [
                 'list1' => $select1,
                 'list2' => $select2,
+                'list3' => StockTurn::get_pb_pe_stock($dt,171),
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
@@ -1520,6 +1522,7 @@ class StockController extends BaseController
             [
                 'list1' => $select1,
                 'list2' => $select2,
+                'list3' => StockTurn::get_pb_pe_stock($dt,42),
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]

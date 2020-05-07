@@ -19,8 +19,8 @@
 <div class="row">
   <h4>{{$dt}} 股票300列表
     <span class="title_span">数据更新时间：{{$update_on}}</span>
-  <h4>
-  </h4>
+    <h4>
+    </h4>
 </div>
 <div class="row">
   <form action="/stock/stock_300" method="get" class="form-inline">
@@ -40,7 +40,8 @@
         {{foreach from=$list1 key=key item=items}}
           <th>第{{$key}}天
             <br><span class="title_span">{{$items[0].trans_on}}</span>
-            <br>({{count($items)}})</th>
+            <br>({{count($items)}})
+          </th>
         {{/foreach}}
       </tr>
       </thead>
@@ -58,7 +59,9 @@
     </table>
   </div>
   <div class="col-sm-12">
-    <h3>标准2 <span class="title_span">(最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过3%；2.换手率高于20日均线)</span></h3>
+    <h3>标准2 <span
+              class="title_span">(最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过3%；2.换手率高于20日均线)</span>
+    </h3>
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
@@ -83,7 +86,28 @@
       </tbody>
     </table>
   </div>
-
+  <div class="col-sm-12">
+    <h3>标准3（二选一）<span class="title_span">(1.市盈率小于15，且，市净率小于1.5 2.市盈率*市净率小于22.5)</span></h3>
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>
+          <br><span class="title_span">{{$dt}}</span>
+          <br>({{count($items)}})
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          {{foreach from=$list3 item=item}}
+            <span class="st_one">{{$item.mStockId}} {{$item.mStockName}}</span>
+          {{/foreach}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>
 

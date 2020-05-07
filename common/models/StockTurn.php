@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "im_stock_turn".
@@ -24,8 +25,8 @@ use Yii;
 class StockTurn extends \yii\db\ActiveRecord
 {
     // 腾迅股票数据接口 https://blog.csdn.net/USTBHacker/article/details/8365756
-    // https://www.zhihu.com/question/21271405
-    // http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
+    // 股票数据信息接口，哪里有比较全面的股票接口程序? https://www.zhihu.com/question/21271405
+    // 证券宝www.baostock.com是一个免费、开源的证券数据平台（无需注册）http://baostock.com/baostock/index.php/%E9%A6%96%E9%A1%B5
 
     /**
      * @inheritdoc
@@ -534,6 +535,46 @@ class StockTurn extends \yii\db\ActiveRecord
         $select_2[8] = array_values($select_2[8]);
 
         return [$select_1, $select_2];
+    }
+
+    /**
+     * 上面的这些股票，再加个“标准3”，二选一：
+     *      1.市盈率小于15，且，市净率小于1.5
+     *      2.市盈率*市净率小于22.5
+     * @param $dt
+     *
+     * @time 2020-05-07 PM
+     */
+    public static function get_pb_pe_stock($dt, $cat = 300)
+    {
+        $dt = date('Y-m-d', strtotime($dt));
+        $stocks = self::get_stocks_by_cat($cat);
+
+        $ids = "";
+        foreach ($stocks as $stock) {
+            //$ids .= ",'".$stock."'";
+            $ids .= ",".$stock;
+        }
+        $ids = trim($ids, ',');
+        $sql = "select * from im_stock_bao where `date`=:dt and stock_id in ($ids)";
+        $rows = AppUtil::db()->createCommand($sql, [
+            ':dt' => $dt,
+        ])->queryAll();
+
+        $res_stocks = [];
+        foreach ($rows as $row) {
+            $peTTM = $row['peTTM'];// 滚动市盈率
+            $peStatic = $row['peStatic'];//静态市盈率
+            $pbMRQ = $row['pbMRQ'];//市净率
+            if (($peStatic < 15 && $pbMRQ < 1.5) || $peStatic * $pbMRQ < 22.5) {
+                $res_stocks[] = $row['stock_id'];
+            }
+        }
+
+        $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (".implode(',', $res_stocks).") ");
+
+        return $stock_menu_select;
+
     }
 
     static $stock_171 = [

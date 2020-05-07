@@ -1834,6 +1834,7 @@ class FooController extends Controller
 
     public function actionZp3()
     {
+
         ini_set('memory_limit', '512M');
 
         $dir = '/Users/b_tt/Downloads/baostock/';
@@ -1877,15 +1878,6 @@ class FooController extends Controller
                     $data[] = array_values($item);
                     unset($item_tmp);
                     unset($item);
-                    // print_r($item);exit;
-
-                    /*try {
-                        Yii::$app->db->createCommand()->batchInsert('im_stock_bao', $fields, $data)->execute();
-                    } catch (\Exception $e) {
-                        file_put_contents('./err.txt',
-                            date('Y-m-d H:i:s')."\n".$stock_id."\n".$e->getMessage()."\n");
-                        break;
-                    }*/
                 }
                 echo $stock_id.PHP_EOL;
                 try {
@@ -1893,7 +1885,6 @@ class FooController extends Controller
                 } catch (\Exception $e) {
                     file_put_contents('./err.txt',
                         date('Y-m-d H:i:s')."\n".$stock_id."\n".$e->getMessage()."\n", FILE_APPEND);
-
                     break;
                 }
                 unset($res);
@@ -1913,14 +1904,13 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockTurn::get_stock_2_bao('000001');
 
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
 //        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea686525b663.xls');
 //        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea6863a64a51.xls');
 
-//        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-22', 1);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-05-06', 1);
 //        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend('2020-04-24', 1);
 
         // StockMainTmp0::init_tmp0_data();
