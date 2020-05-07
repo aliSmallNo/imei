@@ -566,12 +566,24 @@ class StockTurn extends \yii\db\ActiveRecord
             $peTTM = $row['peTTM'];// 滚动市盈率
             $peStatic = $row['peStatic'];//静态市盈率
             $pbMRQ = $row['pbMRQ'];//市净率
-            if (($peStatic < 15 && $pbMRQ < 1.5) || $peStatic * $pbMRQ < 22.5) {
-                $res_stocks[] = $row['stock_id'];
+
+            // 有静态市盈率用静态市盈率 没有静态市盈率用滚动市盈率
+            if ($peStatic) {
+                if (($peStatic < 15 && $pbMRQ < 1.5) || $peStatic * $pbMRQ < 22.5) {
+                    $res_stocks[] = $row['stock_id'];
+                }
+            } else {
+                if (($peTTM < 15 && $pbMRQ < 1.5) || $peTTM * $pbMRQ < 22.5) {
+                    $res_stocks[] = $row['stock_id'];
+                }
             }
         }
 
-        $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (".implode(',', $res_stocks).") ");
+        $stock_menu_select = [];
+        if ($res_stocks) {
+            $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (".implode(',', $res_stocks).") ");
+        }
+
 
         return $stock_menu_select;
 
