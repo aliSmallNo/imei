@@ -109,7 +109,7 @@
     </table>
   </div>
   <div class="col-sm-12">
-    <h3>标准4<span class="title_span">(标准3和标准4交集)</span></h3>
+    <h3>标准4<span class="title_span">(标准2和标准3交集)</span></h3>
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
