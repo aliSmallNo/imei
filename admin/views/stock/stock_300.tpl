@@ -93,7 +93,7 @@
       <tr>
         <th>
           <br><span class="title_span">{{$dt}}</span>
-          <br>({{count($items)}})
+          <br>({{count($list3)}})
         </th>
       </tr>
       </thead>
@@ -101,7 +101,29 @@
       <tr>
         <td>
           {{foreach from=$list3 item=item}}
-            <span class="st_one">{{$item.mStockId}} {{$item.mStockName}}</span>
+            <span class="st_one">{{$item.id}} {{$item.name}}</span>
+          {{/foreach}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-12">
+    <h3>标准4<span class="title_span">(标准3和标准4交集)</span></h3>
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th>
+          <br><span class="title_span">{{$dt}}</span>
+          <br>({{count($list4)}})
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          {{foreach from=$list4 item=item}}
+            <span class="st_one">{{$item.id}} {{$item.name}}</span>
           {{/foreach}}
         </td>
       </tr>

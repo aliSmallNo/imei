@@ -1482,11 +1482,15 @@ class StockController extends BaseController
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
+        $list3 = StockTurn::get_pb_pe_stock($dt, 171);
+        $list4 = StockTurn::get_intersect_2and3($select2, $list3);
+
         return $this->renderPage("stock_171.tpl",
             [
                 'list1' => $select1,
                 'list2' => $select2,
-                'list3' => StockTurn::get_pb_pe_stock($dt,171),
+                'list3' => $list3,
+                'list4' => $list4,
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
@@ -1500,11 +1504,15 @@ class StockController extends BaseController
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
+        $list3 = StockTurn::get_pb_pe_stock($dt, 300);
+        $list4 = StockTurn::get_intersect_2and3($select2, $list3);
+
         return $this->renderPage("stock_300.tpl",
             [
                 'list1' => $select1,
                 'list2' => $select2,
-                'list3' => StockTurn::get_pb_pe_stock($dt,171),
+                'list3' => $list3,
+                'list4' => $list4,
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
@@ -1518,11 +1526,15 @@ class StockController extends BaseController
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
+        $list3 = StockTurn::get_pb_pe_stock($dt, 42);
+        $list4 = StockTurn::get_intersect_2and3($select2, $list3);
+
         return $this->renderPage("stock_42.tpl",
             [
                 'list1' => $select1,
                 'list2' => $select2,
-                'list3' => StockTurn::get_pb_pe_stock($dt,42),
+                'list3' => $list3,
+                'list4' => $list4,
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]

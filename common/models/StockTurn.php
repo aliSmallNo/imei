@@ -567,7 +567,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $peStatic = $row['peStatic'];//静态市盈率
             $pbMRQ = $row['pbMRQ'];//市净率
 
-            // 有静态市盈率用静态市盈率 没有静态市盈率用滚动市盈率
+            // 有静态市盈率用静态市盈率 没有静态市盈率用滚动市盈率  静态市盈率昨天（2020-05-06）开始抓取的
             if ($peStatic) {
                 if (($peStatic < 15 && $pbMRQ < 1.5) || $peStatic * $pbMRQ < 22.5) {
                     $res_stocks[] = $row['stock_id'];
@@ -584,9 +584,28 @@ class StockTurn extends \yii\db\ActiveRecord
             $stock_menu_select = StockMenu::get_valid_stocks(" and mStockId in (".implode(',', $res_stocks).") ");
         }
 
+        $data = [];
+        foreach ($stock_menu_select as $v) {
+            $data[] = ['id' => $v['mStockId'], 'name' => $v['mStockName']];
+        }
 
-        return $stock_menu_select;
+        return $data;
+    }
 
+    /**
+     * 按KEY 求数组交集
+     *
+     * @time 2020-05-08 PM
+     */
+    public static function get_intersect_2and3($select2, $list3)
+    {
+        if (!$select2[8] && !$list3) {
+            return [];
+        }
+        $select2 = array_column($select2[8], null, 'id');
+        $list3 = array_column($list3, null, 'id');
+
+        return array_intersect_key($select2, $list3);
     }
 
     static $stock_171 = [
