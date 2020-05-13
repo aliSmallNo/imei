@@ -569,11 +569,11 @@ class StockTurn extends \yii\db\ActiveRecord
 
             // 有静态市盈率用静态市盈率 没有静态市盈率用滚动市盈率  静态市盈率昨天（2020-05-06）开始抓取的
             if ($peStatic) {
-                if (($peStatic < 15 && $pbMRQ < 1.5) || $peStatic * $pbMRQ < 22.5) {
+                if (($peStatic < 15 && $pbMRQ < 1.5) || ($peStatic * $pbMRQ < 22.5 && $peStatic * $pbMRQ > 0)) {
                     $res_stocks[] = $row['stock_id'];
                 }
             } else {
-                if (($peTTM < 15 && $pbMRQ < 1.5) || $peTTM * $pbMRQ < 22.5) {
+                if (($peTTM < 15 && $pbMRQ < 1.5) || ($peTTM * $pbMRQ < 22.5 && $peTTM * $pbMRQ > 0)) {
                     $res_stocks[] = $row['stock_id'];
                 }
             }
