@@ -87,7 +87,7 @@
     </table>
   </div>
   <div class="col-sm-12">
-    <h3>标准3（二选一）<span class="title_span">(1.市盈率小于15，且，市净率小于1.5 2.市盈率*市净率小于22.5)</span></h3>
+    <h3>标准3（二选一）<span class="title_span">(1.市盈率小于15，且，市净率小于1.5 2.市盈率*市净率小于22.5大于0)</span></h3>
     <table class="table table-striped table-bordered">
       <thead>
       <tr>
