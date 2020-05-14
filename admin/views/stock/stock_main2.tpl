@@ -40,6 +40,7 @@
           <option value="{{$key}}" {{if $key==$cat}}selected{{/if}}>{{$day}}</option>
         {{/foreach}}
       </select>
+      <input class="my-date-input form-control" name="dt" placeholder="日期" type="text" value="{{$dt}}">
     </div>
 
     <button class="btn btn-primary">查询</button>

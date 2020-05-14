@@ -1552,6 +1552,7 @@ class StockController extends BaseController
     {
         $page = self::getParam("page", 1);
         $cat = self::getParam("cat", StockMainStat::CAT_DAY_5);
+        $dt = self::getParam("dt", '');
 
         $criteria = [];
         $params = [];
@@ -1560,6 +1561,10 @@ class StockController extends BaseController
             $criteria[] = "  s.s_cat = :cat ";
             $params[':cat'] = $cat;
         }
+        if ($dt) {
+            $criteria[] = "  m.m_trans_on = :dt ";
+            $params[':dt'] = $dt;
+        }
 
         list($list, $count) = StockMainStat::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
@@ -1567,6 +1572,7 @@ class StockController extends BaseController
         return $this->renderPage("stock_main.tpl",
             [
                 'cat' => $cat,
+                'dt' => $dt,
                 'pagination' => $pagination,
                 'list' => $list,
                 'cats' => StockMainStat::$cats,
@@ -1586,6 +1592,7 @@ class StockController extends BaseController
     {
         $page = self::getParam("page", 1);
         $cat = self::getParam("cat", StockMainStat::CAT_DAY_5);
+        $dt = self::getParam("dt", '');
 
         $criteria = [];
         $params = [];
@@ -1594,6 +1601,10 @@ class StockController extends BaseController
             $criteria[] = "  s.s_cat = :cat ";
             $params[':cat'] = $cat;
         }
+        if ($dt) {
+            $criteria[] = "  m.m_trans_on = :dt ";
+            $params[':dt'] = $dt;
+        }
 
         list($list, $count) = StockMainStat::items2($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
@@ -1601,6 +1612,7 @@ class StockController extends BaseController
         return $this->renderPage("stock_main2.tpl",
             [
                 'cat' => $cat,
+                'dt' => $dt,
                 'pagination' => $pagination,
                 'list' => $list,
                 'cats' => StockMainStat::$cats,
