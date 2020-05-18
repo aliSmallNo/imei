@@ -270,6 +270,13 @@ class Menu
                         "revise" => 1,
                         "level" => 827,
                     ],
+                    [
+                        "name" => "股票所有",
+                        "url" => "/stock/stock_all",
+                        "revise" => 1,
+                        "level" => 827,
+                    ],
+
                 ],
             ],
             [

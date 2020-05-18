@@ -1551,7 +1551,7 @@ class StockController extends BaseController
         $list3 = StockTurn::get_pb_pe_stock($dt, 0);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage("stock_42.tpl",
+        return $this->renderPage("stock_all.tpl",
             [
                 'list1' => $select1,
                 'list2' => $select2,
