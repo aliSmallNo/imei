@@ -1524,7 +1524,8 @@ class StockController extends BaseController
     public function actionStock_42()
     {
         $dt = self::getParam("dt", date('Y-m-d'));
-        list($select1, $select2) = StockTurn::stock171($dt, 42);
+        //list($select1, $select2) = StockTurn::stock171($dt, 42);
+        list($select1, $select2) = StockTurn::stock171_new($dt, 42);
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
