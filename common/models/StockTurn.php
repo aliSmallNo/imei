@@ -1141,7 +1141,7 @@ class StockTurn extends \yii\db\ActiveRecord
                 $stocks = self::$stock_300;
                 break;
             case 0:
-                $stocks = array_column(StockMenu::get_valid_stocks(),'mStockId');
+                $stocks = array_column(StockMenu::get_valid_stocks(), 'mStockId');
                 break;
         }
 
@@ -1208,15 +1208,22 @@ class StockTurn extends \yii\db\ActiveRecord
      * @throws \yii\db\Exception
      * @time 2020-05-18 PM
      */
-    public static function select_from_all($k, $trans_on)
+    public static function select_from_171_new($k, $trans_on, $cat = 0)
     {
         $stock_ids_1 = [];
         $stock_ids_2 = [];
 
+        $where = "";
+        if ($cat) {
+            $stocks = self::get_stocks_by_cat($cat);
+            $where = " and m.mStockId in (".implode(',', $stocks).") ";
+        }
+
+
         $sql = "select mStockId,mStockName,t.*
                 from im_stock_menu as m 
                 left join im_stock_turn as t on t.tStockId=m.mStockId
-                where m.mStatus=:st and t.tTransOn=:dt ";
+                where m.mStatus=:st and t.tTransOn=:dt $where ";
         $res = AppUtil::db()->createCommand($sql, [
             ':st' => StockMenu::STATUS_USE,
             ':dt' => $trans_on,
@@ -1238,8 +1245,14 @@ class StockTurn extends \yii\db\ActiveRecord
             $item_data = ['id' => $stock_id, 'name' => $stock_name, 'trans_on' => $trans_on];
 
             if ($k < 7) {
-                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
-                    $stock_ids_1[] = $item_data;
+                if (in_array($cat, [171, 300, 0])) {
+                    if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
+                        $stock_ids_1[] = $item_data;
+                    }
+                } elseif ($cat == 42) {
+                    if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20 && $close < $avgprice60) {
+                        $stock_ids_1[] = $item_data;
+                    }
                 }
             }
             if ($k == 7) {
@@ -1260,7 +1273,7 @@ class StockTurn extends \yii\db\ActiveRecord
      *          1.涨幅超过3%；2.换手率低于20日均线
      * @time 2020-05-18 PM
      */
-    public static function stock_all($dt = '')
+    public static function stock171_new($dt = '', $cat = 0)
     {
         if (!$dt) {
             $dt = date('Y-m-d');
@@ -1273,7 +1286,7 @@ class StockTurn extends \yii\db\ActiveRecord
         $select_1 = [];// 标准1
         $select_2 = [];// 标准2
         foreach ($days_8 as $k => $trans_on) {
-            list($stock_ids_1, $stock_ids_2) = self::select_from_all($k, $trans_on);
+            list($stock_ids_1, $stock_ids_2) = self::select_from_171_new($k, $trans_on, $cat);
             if ($k < 7) {
                 $select_1[$k + 1] = $stock_ids_1;
             }

@@ -1478,7 +1478,8 @@ class StockController extends BaseController
     public function actionStock_171()
     {
         $dt = self::getParam("dt", date('Y-m-d'));
-        list($select1, $select2) = StockTurn::stock171($dt);
+        //list($select1, $select2) = StockTurn::stock171($dt);
+        list($select1, $select2) = StockTurn::stock171_new($dt,171);
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
@@ -1500,7 +1501,8 @@ class StockController extends BaseController
     public function actionStock_300()
     {
         $dt = self::getParam("dt", date('Y-m-d'));
-        list($select1, $select2) = StockTurn::stock171($dt, 300);
+        //list($select1, $select2) = StockTurn::stock171($dt, 300);
+        list($select1, $select2) = StockTurn::stock171_new($dt, 300);
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
@@ -1544,7 +1546,7 @@ class StockController extends BaseController
     public function actionStock_all()
     {
         $dt = self::getParam("dt", date('Y-m-d'));
-        list($select1, $select2) = StockTurn::stock_all($dt);
+        list($select1, $select2) = StockTurn::stock171_new($dt,0);
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
