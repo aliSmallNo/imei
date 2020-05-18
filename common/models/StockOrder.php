@@ -186,7 +186,9 @@ class StockOrder extends ActiveRecord
     {
         $conn = AppUtil::db();
         if (!$curr_date) {
-            $curr_date = date('Y-m-d H::s');
+            $curr_date = date('Y-m-d');
+        } else {
+            $curr_date = date('Y-m-d', strtotime($curr_date));
         }
         // 先删除今天的已卖出 避免重复添加
         StockOrder::deleteAll([
