@@ -23,7 +23,7 @@
     </h4>
 </div>
 <div class="row">
-  <form action="/stock/stock_300" method="get" class="form-inline">
+  <form action="/stock/stock_all" method="get" class="form-inline">
     <input class="my-date-input form-control" name="dt" placeholder="日期" type="text" value="{{$dt}}">
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>
