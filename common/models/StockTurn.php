@@ -1140,6 +1140,9 @@ class StockTurn extends \yii\db\ActiveRecord
             case 300:
                 $stocks = self::$stock_300;
                 break;
+            case 0:
+                $stocks = array_column(StockMenu::get_valid_stocks(),'mStockId');
+                break;
         }
 
         return $stocks;
@@ -1198,5 +1201,109 @@ class StockTurn extends \yii\db\ActiveRecord
 
     }
 
+    /**
+     * @param $k
+     * @param $trans_on
+     * @return array
+     * @throws \yii\db\Exception
+     * @time 2020-05-18 PM
+     */
+    public static function select_from_all($k, $trans_on)
+    {
+        $stock_ids_1 = [];
+        $stock_ids_2 = [];
 
+        $sql = "select mStockId,mStockName,t.*
+                from im_stock_menu as m 
+                left join im_stock_turn as t on t.tStockId=m.mStockId
+                where m.mStatus=:st and t.tTransOn=:dt ";
+        $res = AppUtil::db()->createCommand($sql, [
+            ':st' => StockMenu::STATUS_USE,
+            ':dt' => $trans_on,
+        ])->queryAll();
+        foreach ($res as $v) {
+            $stock_id = $v['mStockId'];
+            $stock_name = $v['mStockName'];
+            $turn = $v;
+            $close = $turn['tClose'];
+            $turnover = $turn['tTurnover'];
+            $change = $turn['tChangePercent'];
+            $stat = AppUtil::json_decode($turn['tStat']);
+            $avgprice5 = $stat[5]['sAvgClose'];
+            $avgprice10 = $stat[10]['sAvgClose'];
+            $avgprice20 = $stat[20]['sAvgClose'];
+            $avgprice60 = $stat[60]['sAvgClose'];
+            $avgturnover20 = $stat[20]['sAvgTurnover'];
+
+            $item_data = ['id' => $stock_id, 'name' => $stock_name, 'trans_on' => $trans_on];
+
+            if ($k < 7) {
+                if ($close < $avgprice5 && $close < $avgprice10 && $close < $avgprice20) {
+                    $stock_ids_1[] = $item_data;
+                }
+            }
+            if ($k == 7) {
+                if ($change > 300 && $turnover > $avgturnover20) {
+                    $stock_ids_2[] = $item_data;
+                }
+            }
+        }
+
+        return [$stock_ids_1, $stock_ids_2];
+    }
+
+    /**
+     * 1. 我筛选了 所有 只合适股票，见附件
+     * 2. 按照以下标准筛选出每天合适的股票
+     *      a) 标准1：第1天-第7天收盘价低于5，10，20日均线股票
+     *      b) 标准2：最近3天，任何一天有突破的股票。突破定义如下。
+     *          1.涨幅超过3%；2.换手率低于20日均线
+     * @time 2020-05-18 PM
+     */
+    public static function stock_all($dt = '')
+    {
+        if (!$dt) {
+            $dt = date('Y-m-d');
+        }
+        $year = date('Y', strtotime($dt));
+        // 近 8 天
+        $days_8 = self::get_trans_days($year, " and tTransOn<='$dt' ", 8);
+        $days_8 = array_reverse($days_8);
+
+        $select_1 = [];// 标准1
+        $select_2 = [];// 标准2
+        foreach ($days_8 as $k => $trans_on) {
+            list($stock_ids_1, $stock_ids_2) = self::select_from_all($k, $trans_on);
+            if ($k < 7) {
+                $select_1[$k + 1] = $stock_ids_1;
+            }
+            if ($k == 7) {
+                $select_2[$k + 1] = $stock_ids_2;
+            }
+        }
+
+        // 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过3%；2.换手率高于20日均线
+        foreach ($select_2[8] as $k => $item) {
+            $ids1 = array_column($select_1[1], 'id');
+            $ids2 = array_column($select_1[2], 'id');
+            $ids3 = array_column($select_1[3], 'id');
+            $ids4 = array_column($select_1[4], 'id');
+            $ids5 = array_column($select_1[5], 'id');
+            $ids6 = array_column($select_1[6], 'id');
+            $ids7 = array_column($select_1[7], 'id');
+            if (!in_array($item['id'], $ids1)
+                && !in_array($item['id'], $ids2)
+                && !in_array($item['id'], $ids3)
+                && !in_array($item['id'], $ids4)
+                && !in_array($item['id'], $ids5)
+                && !in_array($item['id'], $ids6)
+                && !in_array($item['id'], $ids7)
+            ) {
+                unset($select_2[8][$k]);
+            }
+        }
+        $select_2[8] = array_values($select_2[8]);
+
+        return [$select_1, $select_2];
+    }
 }

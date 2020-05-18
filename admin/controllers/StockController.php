@@ -1541,6 +1541,28 @@ class StockController extends BaseController
         );
     }
 
+    public function actionStock_all()
+    {
+        $dt = self::getParam("dt", date('Y-m-d'));
+        list($select1, $select2) = StockTurn::stock_all($dt);
+
+        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+
+        $list3 = StockTurn::get_pb_pe_stock($dt, 0);
+        $list4 = StockTurn::get_intersect_2and3($select2, $list3);
+
+        return $this->renderPage("stock_42.tpl",
+            [
+                'list1' => $select1,
+                'list2' => $select2,
+                'list3' => $list3,
+                'list4' => $list4,
+                'dt' => $dt,
+                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+            ]
+        );
+    }
+
     /************************************************************************************/
 
     /**
