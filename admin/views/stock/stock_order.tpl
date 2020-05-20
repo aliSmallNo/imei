@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-sm-6">
         <h4>订单列表
-            {{if $is_stock_leader || $is_xiaodao}}
+            {{if $is_stock_leader}}
                 <a href="javascript:;" class="opImport btn btn-outline btn-primary btn-xs">导入</a>
                 <a href="javascript:;" class="opDelete btn btn-outline btn-danger btn-xs">删除</a>
                 <a href="javascript:;" class="opCalSold btn btn-outline btn-primary btn-xs">计算今日卖出</a>
@@ -112,6 +112,7 @@
                     成本：{{$item.oCostPrice}}
                 </td>
                 {{if $is_staff}}{{/if}}
+                {{if $is_yuhui}}
                 <td>{{$item.st_t}}</td>
                 <td>
                     开盘：{{$item.oOpenPrice}}<br>
@@ -123,7 +124,7 @@
                     收益率：{{$item.oRate}}
                 </td>
                 <td>{{$item.oHoldDays}}</td>
-
+                {{/if}}
 
                 <td>{{$item.dt}}</td>
             </tr>

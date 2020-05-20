@@ -424,6 +424,20 @@ class Menu
                         "level" => 820,
                     ],
                     [
+                        "name" => "正确率",
+                        "url" => "/stock/stock_main_result_rule_right_rate",
+                        "revise" => 1,
+                        "level" => 820,
+                    ],
+                ],
+            ],
+            [
+                "name" => "市净率",
+                "id" => "stock_pb_info",
+                "icon" => "fa-users",
+                "staff" => 1,
+                'items'=>[
+                    [
                         "name" => "市净率",
                         "url" => "/stock/stock_main_pb",
                         "revise" => 1,
@@ -438,12 +452,6 @@ class Menu
                     [
                         "name" => "市净率图",
                         "url" => "/stock/stock_main_pb_chart",
-                        "revise" => 1,
-                        "level" => 820,
-                    ],
-                    [
-                        "name" => "正确率",
-                        "url" => "/stock/stock_main_result_rule_right_rate",
                         "revise" => 1,
                         "level" => 820,
                     ],
