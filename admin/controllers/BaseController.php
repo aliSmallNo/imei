@@ -121,7 +121,6 @@ class BaseController extends Controller
         $params['is_stock_leader'] = Admin::isGroupUser(Admin::GROUP_STOCK_LEADER);
         $params['is_saler'] = Admin::isGroupUser(Admin::GROUP_SALER);
         $params['is_xiaodao'] = Admin::getAdminId() == 1027;
-        $params['is_yuhui'] = in_array(Admin::getAdminId(), [1006, 1002]);
 
         return self::render($view, $params);
     }

@@ -112,7 +112,7 @@
                     成本：{{$item.oCostPrice}}
                 </td>
                 {{if $is_staff}}{{/if}}
-                {{if $is_yuhui}}
+                {{if $is_stock_leader}}
                 <td>{{$item.st_t}}</td>
                 <td>
                     开盘：{{$item.oOpenPrice}}<br>
