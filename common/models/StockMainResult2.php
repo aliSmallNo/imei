@@ -1472,7 +1472,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2018-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) 
+                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -1552,7 +1552,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2018-01-01' and (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0) 
+                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0) 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
