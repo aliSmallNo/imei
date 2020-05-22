@@ -30,6 +30,12 @@
           <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$type}}</option>
         {{/foreach}}
       </select>
+      <select class="form-control" name="note">
+        {{foreach from=$note_dict item=item key=key}}
+          <option value="{{$key}}" {{if $key==$note}}selected{{/if}}>{{$item}}</option>
+        {{/foreach}}
+      </select>
+      <input class="form-control" name="rule_name" placeholder="策略名称"/>
     </div>
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>
@@ -55,23 +61,28 @@
     <tr>
       <th>#</th>
       <th>交易日期</th>
-
+      <th>NOTE</th>
+      <th class="col-sm-4">策略</th>
       <th>
         后1天收益<br>
       {{$avgs[0]}}
       </th>
       <th>
         后2天收益<br>
-        {{$avgs[1]}}</th>
+        {{$avgs[1]}}
+      </th>
       <th>
         后3天收益<br>
-        {{$avgs[2]}}</th>
+        {{$avgs[2]}}
+      </th>
       <th>
         后4天收益<br>
-        {{$avgs[3]}}</th>
+        {{$avgs[3]}}
+      </th>
       <th>
         后5天收益<br>
-        {{$avgs[4]}}</th>
+        {{$avgs[4]}}
+      </th>
 
     </tr>
     </thead>
@@ -81,6 +92,13 @@
       <tr>
         <td>{{$key+1}}</td>
         <td>{{$item.dt}}</td>
+        <td>{{$item.note}}</td>
+        <td>
+          {{foreach from=$item.buy_type item=types key=day}}
+            {{$day}}日: {{$types}}
+            <br>
+          {{/foreach}}
+        </td>
 
         <td>{{$item[0]}}%</td>
         <td>{{$item[1]}}%</td>

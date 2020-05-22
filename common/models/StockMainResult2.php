@@ -1463,8 +1463,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-01-13 added
      * @time 2020-03-01 modify
+     * @time 2020-05-22 modify
      */
-    public static function get_5day_after_rate_r($price_type)
+    public static function get_5day_after_rate_r($price_type, $where = '')
     {
         $conn = AppUtil::db();
         $sql = "select 
@@ -1498,8 +1499,26 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $data = [];
+        $r_trans_on_str = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            $data[] = self::get_5day_after_rate_item($buy_dt, $price_type, $conn, 0);
+            $r_trans_on_str .= ",'".$buy_dt."'";
+        }
+        $r_trans_on_str = trim($r_trans_on_str, ',');
+
+        $sql = "select * from im_stock_main_result2 where r_trans_on in ($r_trans_on_str) $where";
+        $res = $conn->createCommand($sql)->queryAll();
+
+        foreach ($res as $v) {
+            $buy_dt = $v['r_trans_on'];
+            $item = self::get_5day_after_rate_item($buy_dt, $price_type, $conn,0);
+
+            $buy_type = self::get_buy_sold_item($v, self::TAG_SOLD);
+            $buy_type_t = implode(',', $buy_type);
+            $item['buy_type'] = $buy_type;
+            $item['buy_type_t'] = $buy_type_t;
+            $item['note'] = $v['r_note'];
+
+            $data[] = $item;
         }
 
         $avgs = [];
@@ -1524,8 +1543,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 2. 统计的收益率点，如果5天内出现卖点，那么后面的收益率就不统计了。因为卖点后继续统计，会影响数据。
      * @time 2020-01-13 modify
      * @time 2020-03-01 modify
+     * @time 2020-05-22 modify
      */
-    public static function get_5day_after_rate($price_type)
+    public static function get_5day_after_rate($price_type, $where = '')
     {
         $conn = AppUtil::db();
         $sql = "select 
@@ -1559,8 +1579,27 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $data = [];
+
+        $r_trans_on_str = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            $data[] = self::get_5day_after_rate_item($buy_dt, $price_type, $conn);
+            $r_trans_on_str .= ",'".$buy_dt."'";
+        }
+        $r_trans_on_str = trim($r_trans_on_str, ',');
+
+        $sql = "select * from im_stock_main_result2 where r_trans_on in ($r_trans_on_str) $where";
+        $res = $conn->createCommand($sql)->queryAll();
+
+        foreach ($res as $v) {
+            $buy_dt = $v['r_trans_on'];
+            $item = self::get_5day_after_rate_item($buy_dt, $price_type, $conn);
+
+            $buy_type = self::get_buy_sold_item($v, self::TAG_BUY);
+            $buy_type_t = implode(',', $buy_type);
+            $item['buy_type'] = $buy_type;
+            $item['buy_type_t'] = $buy_type_t;
+            $item['note'] = $v['r_note'];
+
+            $data[] = $item;
         }
 
         $avgs = [];
@@ -1604,6 +1643,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $sold = self::get_sold_point($buy_dt);
         } else {
             $sold = self::get_sold_point_r($buy_dt);
+            $data['rules'] = '';
         }
         $sold_dt = '';
         if ($sold) {

@@ -1479,7 +1479,7 @@ class StockController extends BaseController
     {
         $dt = self::getParam("dt", date('Y-m-d'));
         //list($select1, $select2) = StockTurn::stock171($dt);
-        list($select1, $select2) = StockTurn::stock171_new($dt,171);
+        list($select1, $select2) = StockTurn::stock171_new($dt, 171);
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
@@ -1547,7 +1547,7 @@ class StockController extends BaseController
     public function actionStock_all()
     {
         $dt = self::getParam("dt", date('Y-m-d'));
-        list($select1, $select2) = StockTurn::stock171_new($dt,0);
+        list($select1, $select2) = StockTurn::stock171_new($dt, 0);
 
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
@@ -2136,16 +2136,47 @@ class StockController extends BaseController
      * 买点出现后5天的【做空】收益率
      * @time 2020-01-13 PM
      * @time 2020-03-01 PM modify
+     *
+     * 这个页面，麻烦增加下“全部”，“对”，“错”
+     * 1.全部，指目前做好的页面内容
+     * 2.对，指这个日期，被标记为“对”的策略日期，后面5天的收益情况
+     * 3.错，指这个日期，被标记为“错”的策略日期，后面5天的收益情况
+     * 4.卖空的，也同步做下。
+     * @time 2020-05-22 PM modify
      */
     public function actionRate_5day_after2()
     {
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
         $is_go_short = self::getParam("is_go_short", 0);
 
+        // $note 0=>“全部” 1=>“对” 9=>“错”
+        $note_dict = [0 => '全部', 1 => '对', 9 => '错'];
+        $note = self::getParam("note", 0);
+        $rule_name = self::getParam("rule_name", '');
+
+        $where = "";
         if ($is_go_short) {
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type);
+            if ($note == 9) {
+                $where .= "  and (r_note='对' or r_note='买对')  ";
+            }
+            if ($note == 1) {
+                $where .= "  and (r_note='错' or r_note='卖对')  ";
+            }
+            if ($rule_name) {
+                $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%')";
+            }
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type,$where);
         } else {
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type);
+            if ($note == 1) {
+                $where .= "  and (r_note='对' or r_note='买对')  ";
+            }
+            if ($note == 9) {
+                $where .= "  and (r_note='错' or r_note='卖对')  ";
+            }
+            if ($rule_name) {
+                $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%')";
+            }
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where);
         }
 
         $tabs = [
@@ -2160,6 +2191,8 @@ class StockController extends BaseController
                 'price_type' => $price_type,
                 'avgs' => $avgs,
                 'tabs' => $tabs,
+                'note_dict' => $note_dict,
+                'note' => $note,
                 //'is_go_short' => $is_go_short,
             ]
         );
