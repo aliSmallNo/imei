@@ -2165,7 +2165,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type,$where);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where);
         } else {
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='买对')  ";
@@ -2179,9 +2179,13 @@ class StockController extends BaseController
             list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where);
         }
 
-        $tabs = [
+        /*$tabs = [
             ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => $is_go_short == 0 ? 'active' : ''],
             ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => $is_go_short == 1 ? 'active' : ''],
+        ];*/
+        $tabs = [
+            0 => '买点出现后5天的收益率',
+            1 => '买点出现后5天的【做空】收益率',
         ];
 
         return $this->renderPage("stock_main_rate_5day_rate2.tpl",
@@ -2193,7 +2197,7 @@ class StockController extends BaseController
                 'tabs' => $tabs,
                 'note_dict' => $note_dict,
                 'note' => $note,
-                //'is_go_short' => $is_go_short,
+                'is_go_short' => $is_go_short,
             ]
         );
     }

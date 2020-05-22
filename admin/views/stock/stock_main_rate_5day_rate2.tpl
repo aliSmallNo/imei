@@ -25,9 +25,9 @@
 <div class="row">
   <form action="/stock/rate_5day_after2" method="get" class="form-inline">
     <div class="form-group">
-      <select class="form-control" name="price_type">
-        {{foreach from=$price_types item=type key=key}}
-          <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$type}}</option>
+      <select class="form-control" name="is_go_short">
+        {{foreach from=$tabs item=item key=key}}
+          <option value="{{$key}}" {{if $key==$is_go_short}}selected{{/if}}>{{$item}}</option>
         {{/foreach}}
       </select>
       <select class="form-control" name="note">
@@ -35,23 +35,16 @@
           <option value="{{$key}}" {{if $key==$note}}selected{{/if}}>{{$item}}</option>
         {{/foreach}}
       </select>
+      <select class="form-control" name="price_type">
+        {{foreach from=$price_types item=type key=key}}
+          <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$type}}</option>
+        {{/foreach}}
+      </select>
       <input class="form-control" name="rule_name" placeholder="策略名称"/>
     </div>
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>
   </form>
-</div>
-
-<div class="row">
-  <ul class="nav nav-tabs">
-    {{foreach from=$tabs key=key item=tab}}
-      <li class="ng-scope {{$tab.cls}}">
-        <a href="/stock/rate_5day_after2?is_go_short={{$tab.is_go_short}}"
-           class="ng-binding">{{$tab.name}}
-        </a>
-      </li>
-    {{/foreach}}
-  </ul>
 </div>
 
 <div class="row-divider"></div>
