@@ -2157,10 +2157,10 @@ class StockController extends BaseController
         $where = "";
         if ($is_go_short) {
             if ($note == 9) {
-                $where .= "  and (r_note='对' or r_note='买对')  ";
+                $where .= "  and (r_note='对' or r_note='卖对')  ";
             }
             if ($note == 1) {
-                $where .= "  and (r_note='错' or r_note='卖对')  ";
+                $where .= "  and (r_note='错' or r_note='买对')  ";
             }
             if ($rule_name) {
                 $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%')";

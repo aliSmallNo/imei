@@ -78,7 +78,7 @@ class FooController extends Controller
     protected static function singles($pUId, $key, $sex = 1, $page = 1)
     {
         $skip = ($page - 1) * 30;
-        $url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id='.$key.'&sex='.$sex.'&page_count=30&skip='.$skip;
+        $url = 'https://1meipo.com/api/proxy/matchmaker/singles_info?matchmaker_id=' . $key . '&sex=' . $sex . '&page_count=30&skip=' . $skip;
         $ret = AppUtil::httpGet($url);
         $ret = json_decode($ret, 1);
         if ($ret && isset($ret['data']['singles'])) {
@@ -127,7 +127,7 @@ class FooController extends Controller
                     'uAvatar' => $avatar,
                     'uGender' => $sex == 1 ? User::GENDER_MALE : User::GENDER_FEMALE,
                     'uBirthYear' => substr($row['birthday'], 0, 4),
-                    'uLocation' => '[{"key":"","text":"'.$row['province'].'"},{"key":"","text":"'.$row['city'].'"}]',
+                    'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
                     'uIntro' => $row['monologue'],
                     'uInterest' => $row['hobby'],
                     'uEstate' => $fmtValue(User::$Estate, $row['realestate']),
@@ -159,7 +159,7 @@ class FooController extends Controller
                 ])->execute();
                 $count++;
             }
-            var_dump($count.' - '.$key);
+            var_dump($count . ' - ' . $key);
         }
     }
 
@@ -168,7 +168,7 @@ class FooController extends Controller
         $pageSize = 20;
         $skip = ($page - 1) * $pageSize;
         $cookie = 'UM_distinctid=15bf175beb5522-064458687c9093-153d655c-fa000-15bf175beb68aa; gr_user_id=85db4bee-33fb-457c-9a14-758e0b671178; token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqd3RfYXV0aCI6eyJpZCI6IjA4NzkwZTBlNzBkNTRiNDQ5MDJhNTVjNzU3NjU3ZWQzIiwicm9sZSI6MiwicGxhdGZvcm0iOiJ3ZWIifX0.cbQ-Y1RPVxxddJIW9Ge8tWNRvlOrh3byPDUCEMb38S0; CNZZDATA1260974692=2107170710-1494400798-%7C1500461129; gr_session_id_9e5d21f29bda5923=caa260d0-a0d5-4500-a6dd-896e03ac233c';
-        $url = 'https://1meipo.com/api/proxy/matchmaker/list_matchmaker?page_count='.$pageSize.'&type=recommend&skip='.$skip.'&order_by=singles_count';
+        $url = 'https://1meipo.com/api/proxy/matchmaker/list_matchmaker?page_count=' . $pageSize . '&type=recommend&skip=' . $skip . '&order_by=singles_count';
         $ret = AppUtil::httpGet($url, [], true, $cookie);
         $ret = json_decode($ret, 1);
         if ($ret && isset($ret['data']['matchmakers'])) {
@@ -207,7 +207,7 @@ class FooController extends Controller
                     'uName' => $name,
                     'uThumb' => $thumb,
                     'uAvatar' => $avatar,
-                    'uLocation' => '[{"key":"","text":"'.$row['province'].'"},{"key":"","text":"'.$row['city'].'"}]',
+                    'uLocation' => '[{"key":"","text":"' . $row['province'] . '"},{"key":"","text":"' . $row['city'] . '"}]',
                     'uIntro' => $row['description'],
                     'uNote' => 'dummy',
                     'uRawData' => json_encode($row, JSON_UNESCAPED_UNICODE),
@@ -223,7 +223,7 @@ class FooController extends Controller
                 $keys[] = [$uid, $openid];
                 $count++;
             }
-            var_dump($count.' - matcher');
+            var_dump($count . ' - matcher');
             foreach ($keys as $item) {
                 list($uId, $key) = $item;
                 self::singles($uId, $key, 1, 1);
@@ -233,7 +233,7 @@ class FooController extends Controller
             }
 
             $rel = UserNet::REL_BACKER;
-            $sql = 'update im_user as u join im_user_net as n on u.uId = n.nSubUId and nRelation='.$rel.' and n.nDeletedFlag=0
+            $sql = 'update im_user as u join im_user_net as n on u.uId = n.nSubUId and nRelation=' . $rel . ' and n.nDeletedFlag=0
 			  set u.uMPUId = n.nUId';
             $conn->createCommand($sql)->execute();
         }
@@ -252,18 +252,18 @@ class FooController extends Controller
         $contentType = $httpInfo["content_type"];
         $contentType = strtolower($contentType);
         $ext = AppUtil::getExtName($contentType);
-        $path = AppUtil::resDir().'avatar/'.$key;
+        $path = AppUtil::resDir() . 'avatar/' . $key;
         $ret = [];
         if ($ext && strlen($content) > 200) {
-            $fileName = $path.'.'.$ext;
+            $fileName = $path . '.' . $ext;
             file_put_contents($fileName, $content);
 //			$ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '.' . $ext;
-            $fileThumb = $path.'_t.'.$ext;
+            $fileThumb = $path . '_t.' . $ext;
             Image::open($fileName)->zoomCrop(120, 120, 0xffffff, 'center', 'center')->save($fileThumb);
-            $ret[] = AppUtil::imageUrl().'/avatar/'.$key.'_t.'.$ext;
-            $fileNormal = $path.'_n.'.$ext;
+            $ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_t.' . $ext;
+            $fileNormal = $path . '_n.' . $ext;
             Image::open($fileName)->zoomCrop(480, 480, 0xffffff, 'center', 'center')->save($fileNormal);
-            $ret[] = AppUtil::imageUrl().'/avatar/'.$key.'_n.'.$ext;
+            $ret[] = AppUtil::imageUrl() . '/avatar/' . $key . '_n.' . $ext;
         }
         if (!$ret) {
             $ret = [$imageUrl, $imageUrl];
@@ -408,7 +408,7 @@ class FooController extends Controller
         $cmd = $conn->createCommand($sql);
         $conn->createCommand("delete from im_week")->execute();
         for ($k = 0; $k < 300; $k++) {
-            $title = date("n月j日", $startTime)."~".date("n月j日", $startTime + 86400 * 6);
+            $title = date("n月j日", $startTime) . "~" . date("n月j日", $startTime + 86400 * 6);
             $monday = date("Y-m-d", $startTime);
             $sunday = date("Y-m-d", $startTime + 86400 * 6);
             $index = 1;
@@ -874,7 +874,7 @@ class FooController extends Controller
         $conn = AppUtil::db();
         $strCriteria = '';
         if ($testPhone) {
-            $strCriteria = ' AND uPhone='.$testPhone;
+            $strCriteria = ' AND uPhone=' . $testPhone;
         }
         $sql = "SELECT u.uId,u.uName,u.uPhone,u.uGender,u.uStatus,uLocation,
 					IFNULL(w.wSubscribe,0) as sub, DATEDIFF(Now(),uLogDate) as dc 
@@ -957,7 +957,7 @@ class FooController extends Controller
         $sql = 'select u.uName,u.uPhone,u.uGender,u.uAddedOn,u.uLogDate,w.wSubscribe
 		 from im_user as u 
 		 join im_user_wechat as w on u.uId=w.wUId and w.wSubscribe=1
-		 WHERE u.uGender>9 AND u.uRole=10 AND u.uLogDate<\''.$dt.'\' AND u.uStatus=1 and uPhone!=\'\';';
+		 WHERE u.uGender>9 AND u.uRole=10 AND u.uLogDate<\'' . $dt . '\' AND u.uStatus=1 and uPhone!=\'\';';
 
 
         $sql = 'SELECT u.uId, u.uName,u.uPhone 
@@ -1017,7 +1017,7 @@ class FooController extends Controller
         for ($k = $ceil - 9; $k < $ceil; $k++) {
             $url = UserQR::createQR($uid,
                 UserQR::CATEGORY_SALES,
-                $ucode.substr($k, 1),
+                $ucode . substr($k, 1),
                 '微信扫一扫 关注千寻恋恋',
                 true);
             echo $url;
@@ -1038,10 +1038,10 @@ class FooController extends Controller
         foreach ($ret as $row) {
             $count += Pin::regeo($row['pPId'], '', '', $conn) ? 1 : 0;
             if ($count % 50 == 0) {
-                var_dump($count.date(' Y-m-d H:i:s'));
+                var_dump($count . date(' Y-m-d H:i:s'));
             }
         }
-        var_dump($count.'/'.count($ret));
+        var_dump($count . '/' . count($ret));
     }
 
     public function actionMassmsg()
@@ -1099,7 +1099,7 @@ class FooController extends Controller
                 Log::add(['oCategory' => Log::CAT_SPREAD_MERMAIND, 'oUId' => $uid]);
             } catch (\Exception $e) {
                 sleep(1);
-                echo "Exception~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~".PHP_EOL;
+                echo "Exception~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" . PHP_EOL;
                 continue;
             }
 
@@ -1116,9 +1116,9 @@ class FooController extends Controller
 
             $cnt++;
             if ($cnt && $cnt % 50 == 0) {
-                var_dump($cnt.date('  m-d H:i:s'));
+                var_dump($cnt . date('  m-d H:i:s'));
             }
-            echo $cnt.'==='.date('  m-d H:i:s').' '.$uid.PHP_EOL;
+            echo $cnt . '===' . date('  m-d H:i:s') . ' ' . $uid . PHP_EOL;
 
         }
         var_dump($cnt);
@@ -1276,8 +1276,8 @@ class FooController extends Controller
 
         $openIds = array_column($ret, 'uOpenId');
 
-        $content = '🎉🎉福利来啦🎉🎉 '.PHP_EOL.PHP_EOL.
-            '提现功能重新上线，做任务赚【现金红包】'.PHP_EOL.'
+        $content = '🎉🎉福利来啦🎉🎉 ' . PHP_EOL . PHP_EOL .
+            '提现功能重新上线，做任务赚【现金红包】' . PHP_EOL . '
 👉<a href="https://wx.meipo100.com/wx/swallet#cash">点击进入 或 猛戳这里</a>👈';
 
         /*$content = '🎉双十二活动🎉倒计时，错过就等明年喽，购月度畅聊卡送120朵媒桂花，互相心动送更多
@@ -1290,10 +1290,10 @@ class FooController extends Controller
             $cnt += UserWechat::sendMsg($openId, $content);
             if ($k > 0 && $k % 15 == 0) {
                 $sl = random_int(1, 5);
-                echo 'sleep:'.$sl.PHP_EOL;
+                echo 'sleep:' . $sl . PHP_EOL;
                 sleep($sl);
             }
-            echo $cnt.' - '.$k.'/'.count($openIds).date('  m-d H:i:s').' '.$openId.PHP_EOL;
+            echo $cnt . ' - ' . $k . '/' . count($openIds) . date('  m-d H:i:s') . ' ' . $openId . PHP_EOL;
         }
 
     }
@@ -1490,7 +1490,7 @@ class FooController extends Controller
         ];
 
         $sheets[] = $data;
-        $fileName = AppUtil::catDir(false, 'excel').'用户充值分析'.date('Y-m-d').'(B).xlsx';
+        $fileName = AppUtil::catDir(false, 'excel') . '用户充值分析' . date('Y-m-d') . '(B).xlsx';
         ExcelUtil::make($fileName, $headers, $sheets);
         var_dump($fileName);
         /*foreach ($users as $user) {
@@ -1643,7 +1643,7 @@ class FooController extends Controller
             }
             $sheets[] = $sheet;
         }
-        $fileName = AppUtil::catDir(false, 'excel').'用户充值分析'.date('Y-m-d').'(A).xlsx';
+        $fileName = AppUtil::catDir(false, 'excel') . '用户充值分析' . date('Y-m-d') . '(A).xlsx';
         ExcelUtil::make($fileName, $headers, $sheets);
         var_dump($fileName);
     }
@@ -1655,7 +1655,7 @@ class FooController extends Controller
         $curTime = time();
         $step = 'week';
         for ($k = 0; $k < 50; $k++) {
-            $queryTime = strtotime('+'.$k.' '.$step, $startTime);
+            $queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
             if ($queryTime > $curTime) {
                 break;
             }
@@ -1666,7 +1666,7 @@ class FooController extends Controller
 
         $step = 'month';
         for ($k = 0; $k < 12; $k++) {
-            $queryTime = strtotime('+'.$k.' '.$step, $startTime);
+            $queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
             if ($queryTime > $curTime) {
                 break;
             }
@@ -1683,7 +1683,7 @@ class FooController extends Controller
         $curTime = time();
         $step = 'day';
         for ($k = 0; $k < 300; $k++) {
-            $queryTime = strtotime('+'.$k.' '.$step, $startTime);
+            $queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
             if ($queryTime > $curTime) {
                 break;
             }
@@ -1692,7 +1692,7 @@ class FooController extends Controller
 
         $step = 'week';
         for ($k = 0; $k < 50; $k++) {
-            $queryTime = strtotime('+'.$k.' '.$step, $startTime);
+            $queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
             if ($queryTime > $curTime) {
                 break;
             }
@@ -1701,7 +1701,7 @@ class FooController extends Controller
 
         $step = 'month';
         for ($k = 0; $k < 12; $k++) {
-            $queryTime = strtotime('+'.$k.' '.$step, $startTime);
+            $queryTime = strtotime('+' . $k . ' ' . $step, $startTime);
             if ($queryTime > $curTime) {
                 break;
             }
@@ -1732,12 +1732,12 @@ class FooController extends Controller
         $phones = [];
         foreach ($logs as $log) {
             if ($log) {
-                $phones[] = substr($log, 0, 19)."\t".substr($log, -12, 11);
+                $phones[] = substr($log, 0, 19) . "\t" . substr($log, -12, 11);
             }
         }
         print_r($phones);
         foreach ($phones as $phone) {
-            file_put_contents("/data/logs/imei/tryphone_yes.txt", $phone.PHP_EOL, FILE_APPEND);
+            file_put_contents("/data/logs/imei/tryphone_yes.txt", $phone . PHP_EOL, FILE_APPEND);
         }
     }
 
@@ -1793,9 +1793,9 @@ class FooController extends Controller
 
     public function actionImport_stock_data()
     {
-        $sz = require __DIR__.'/../data/stock_sz.php';
-        $sh = require __DIR__.'/../data/stock_sh.php';
-        $etf = require __DIR__.'/../data/stock_etf500.php';
+        $sz = require __DIR__ . '/../data/stock_sz.php';
+        $sh = require __DIR__ . '/../data/stock_sh.php';
+        $etf = require __DIR__ . '/../data/stock_etf500.php';
 
         foreach ($sh as $day => $sh_v) {
             $ctime = strtotime($day);
@@ -1822,7 +1822,7 @@ class FooController extends Controller
 
                        StockMainPrice::add(['p_sh_close' => $sh_close, 'p_etf500' => $stf_close, 'p_trans_on' => $trans_on,]);*/
 
-            echo $trans_on.PHP_EOL;
+            echo $trans_on . PHP_EOL;
 
         }
     }
@@ -1840,14 +1840,14 @@ class FooController extends Controller
         $dir = '/Users/b_tt/Downloads/baostock/';
 
         $today = date('Y-m-d');
-        $files = scanDir($dir.$today.'/');
+        $files = scanDir($dir . $today . '/');
         //$files = ['000001_2000-01-01_2020-05-06.csv'];
         $fields = 'date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,tradestatus,pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM,isST';
         $fields = explode(',', $fields);
         $fields[] = 'stock_id';
         foreach ($files as $file) {
             if (!in_array($file, ['.', '..'])) {
-                $file_path = $dir.$today.'/'.$file;
+                $file_path = $dir . $today . '/' . $file;
                 $res = file($file_path);
                 // print_r([$file, array_slice($res, 0, 10)]);exit;
 
@@ -1879,21 +1879,21 @@ class FooController extends Controller
                     unset($item_tmp);
                     unset($item);
                 }
-                echo $stock_id.PHP_EOL;
+                echo $stock_id . PHP_EOL;
                 try {
                     Yii::$app->db->createCommand()->batchInsert('im_stock_bao', $fields, $data)->execute();
                 } catch (\Exception $e) {
                     file_put_contents('./err.txt',
-                        date('Y-m-d H:i:s')."\n".$stock_id."\n".$e->getMessage()."\n", FILE_APPEND);
+                        date('Y-m-d H:i:s') . "\n" . $stock_id . "\n" . $e->getMessage() . "\n", FILE_APPEND);
                     break;
                 }
                 unset($res);
                 unset($data);
-                $des_dir = $dir.'toDb/'.$today.'/';
+                $des_dir = $dir . 'toDb/' . $today . '/';
                 if (!is_dir($des_dir)) {
                     var_dump(mkdir($des_dir));
                 }
-                copy($file_path, $des_dir.$file); //拷贝到新目录
+                copy($file_path, $des_dir . $file); //拷贝到新目录
                 unlink($file_path); //删除旧目录下的文件
             }
 
@@ -1903,7 +1903,6 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
 
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
@@ -2101,7 +2100,7 @@ select DISTINCT cPhone as co from im_crm_stock_client where cAddedDate BETWEEN :
                 ':et' => $et,
                 ':src' => $src,
             ])->queryScalar();
-            $src_arr[] = $src_t.' '.$src_co.' '.$order_user_co;
+            $src_arr[] = $src_t . ' ' . $src_co . ' ' . $order_user_co;
         }
 
         print_r($src_arr);

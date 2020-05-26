@@ -1767,4 +1767,17 @@ class StockMainResult extends \yii\db\ActiveRecord
 
         return [$data, $avgs];
     }
+
+    /**
+     * 同步note
+     *
+     * @time 2020-05-25 AM
+     */
+    public static function sync_note($result)
+    {
+        $self = self::findOne(['r_trans_on' => $result->r_trans_on]);
+        if ($self) {
+            self::edit($self->r_id, ['r_note' => $result->r_note]);
+        }
+    }
 }
