@@ -65,7 +65,7 @@ class Admin extends ActiveRecord
     const GROUP_LEADER = 140;
     const GROUP_FINANCE = 160;
     const GROUP_RUN_MGR = 180; // 运营管理员
-    const GROUP_STOCK_LEADER = 190; // 配资管理员
+    const GROUP_STOCK_LEADER = 190; //
     const GROUP_STOCK_EXCEL = 200; // 配资管理员
     const GROUP_SALER = 210; // 销售
 
@@ -406,7 +406,7 @@ class Admin extends ActiveRecord
                 $adminIDs = [1002];//zp
                 break;
             case self::GROUP_STOCK_LEADER:
-                $adminIDs = [1002, 1006, 1027]; // zp 于辉 罗文燕 1027=》小刀
+                $adminIDs = [1002, 1006]; // zp 于辉 1027=》小刀
                 break;
             case self::GROUP_STOCK_EXCEL:
                 $adminIDs = [1002, 1006, 1027];// zp 于辉 小刀
