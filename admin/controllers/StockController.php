@@ -1588,6 +1588,7 @@ class StockController extends BaseController
         $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 0);
+
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
         $select1 = $trans($select1);

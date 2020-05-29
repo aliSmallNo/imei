@@ -34,14 +34,12 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="col-sm-3">
-      <h3>标准1</h3>
+      <p>标准1 ({{count($list1)}})</p>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th>
-            <br><span class="title_span">{{$dt}}</span>
-            <br>({{count($list1)}})
-          </th>
+          <th>日期</th>
+          <th>股票</th>
         </tr>
         </thead>
         <tbody>
@@ -57,14 +55,12 @@
       </table>
     </div>
     <div class="col-sm-3">
-      <h3>标准2</h3>
+      <p>标准2 ({{count($list2)}})</p>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th>
-            <br><span class="title_span">{{$dt}}</span>
-            <br>({{count($list2)}})
-          </th>
+          <th>日期</th>
+          <th>股票</th>
         </tr>
         </thead>
         <tbody>
@@ -80,14 +76,12 @@
       </table>
     </div>
     <div class="col-sm-3">
-      <h3>标准3</h3>
+      <p>标准3 ({{count($list3)}})</p>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th>
-            <br><span class="title_span">{{$dt}}</span>
-            <br>({{count($list3)}})
-          </th>
+          <th>日期</th>
+          <th>股票</th>
         </tr>
         </thead>
         <tbody>
@@ -103,14 +97,12 @@
       </table>
     </div>
     <div class="col-sm-3">
-      <h3>标准4</h3>
+      <p>标准4 ({{count($list4)}})</p>
       <table class="table table-striped table-bordered">
         <thead>
         <tr>
-          <th>
-            <br><span class="title_span">{{$dt}}</span>
-            <br>({{count($list4)}})
-          </th>
+          <th>日期</th>
+          <th>股票</th>
         </tr>
         </thead>
         <tbody>
