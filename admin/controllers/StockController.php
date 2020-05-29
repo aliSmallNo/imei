@@ -72,63 +72,63 @@ class StockController extends BaseController
         $follow_again = self::getParam("follow_again", '');
         $perSize = 20;
 
-        $criteria = [" cCategory=".CRMStockClient::CATEGORY_YANXUAN];
+        $criteria = [" cCategory=" . CRMStockClient::CATEGORY_YANXUAN];
         $params = [];
         $urlParams = [];
         $alert = [];
         if ($dt1) {
             $criteria[] = " cAddedDate >= :dt1";
             $params[":dt1"] = $dt1;
-            $urlParams[] = "dt1=".$dt1;
-            $alert[] = "【".$dt1."】";
+            $urlParams[] = "dt1=" . $dt1;
+            $alert[] = "【" . $dt1 . "】";
         }
         if ($dt2) {
             $criteria[] = " cAddedDate <= :dt2";
-            $params[":dt2"] = $dt2.' 23:55:00';
-            $urlParams[] = "dt2=".$dt2;
-            $alert[] = "【".$dt2."】";
+            $params[":dt2"] = $dt2 . ' 23:55:00';
+            $urlParams[] = "dt2=" . $dt2;
+            $alert[] = "【" . $dt2 . "】";
         }
         if ($prov) {
             $criteria[] = " (cProvince like :prov or cCity like :prov)";
-            $params[":prov"] = "%".$prov."%";
-            $urlParams[] = "prov=".$prov;
-            $alert[] = "【".$prov."】";
+            $params[":prov"] = "%" . $prov . "%";
+            $urlParams[] = "prov=" . $prov;
+            $alert[] = "【" . $prov . "】";
         }
         if ($name) {
             $criteria[] = " cName like :name";
-            $params[":name"] = "%".$name."%";
-            $urlParams[] = "name=".$name;
-            $alert[] = "【".$name."】";
+            $params[":name"] = "%" . $name . "%";
+            $urlParams[] = "name=" . $name;
+            $alert[] = "【" . $name . "】";
         }
         if ($phone) {
             $criteria[] = "cPhone like :phone";
-            $params[":phone"] = $phone."%";
-            $urlParams[] = "phone=".$phone;
-            $alert[] = "【".$phone."】";
+            $params[":phone"] = $phone . "%";
+            $urlParams[] = "phone=" . $phone;
+            $alert[] = "【" . $phone . "】";
         }
         if ($action) {
             $criteria[] = "cStockAction = :action";
             $params[":action"] = $action;
-            $urlParams[] = "action=".$action;
-            $alert[] = "【".CRMStockClient::$actionDict[$action]."】";
+            $urlParams[] = "action=" . $action;
+            $alert[] = "【" . CRMStockClient::$actionDict[$action] . "】";
         }
         if ($bdassign) {
-            $criteria[] = " cBDAssign=".$bdassign;
-            $urlParams[] = "bdassign=".$bdassign;
+            $criteria[] = " cBDAssign=" . $bdassign;
+            $urlParams[] = "bdassign=" . $bdassign;
             $uInfo = Admin::findOne(["aId" => $bdassign]);
-            $alert[] = "【".$uInfo["aName"]."】";
+            $alert[] = "【" . $uInfo["aName"] . "】";
         }
         if ($src) {
             $criteria[] = "cSource = :cSource";
             $params[":cSource"] = $src;
-            $urlParams[] = "src=".$src;
-            $alert[] = "【".CRMStockClient::SourceMap()[$src]."】";
+            $urlParams[] = "src=" . $src;
+            $alert[] = "【" . CRMStockClient::SourceMap()[$src] . "】";
         }
         if ($follow_again) {
             $criteria[] = "cFollowAgain = :cFollowAgain";
             $params[":cFollowAgain"] = $follow_again;
-            $urlParams[] = "follow_again=".$follow_again;
-            $alert[] = "【二次跟进：".CRMStockClient::$followDict[$follow_again]."】";
+            $urlParams[] = "follow_again=" . $follow_again;
+            $alert[] = "【二次跟进：" . CRMStockClient::$followDict[$follow_again] . "】";
         }
 
         $counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
@@ -195,7 +195,7 @@ class StockController extends BaseController
         }
 
         if ($cat == "my") {
-            $criteria[] = " cBDAssign =".$this->admin_id;
+            $criteria[] = " cBDAssign =" . $this->admin_id;
         } elseif ($cat == "sea") {
             $criteria[] = " cBDAssign=0 ";
         } elseif ($cat == 'all') {
@@ -217,7 +217,7 @@ class StockController extends BaseController
 
         $alertMsg = "";
         if ($alert) {
-            $alertMsg = "搜索".implode("，", $alert)."，结果如下";
+            $alertMsg = "搜索" . implode("，", $alert) . "，结果如下";
         }
         $pagination = self::pagination($page, $count);
         $sources = CRMStockClient::SourceMap();
@@ -320,13 +320,13 @@ class StockController extends BaseController
         list($items, $client) = CRMStockTrack::tracks($cid);
         $options = CRMStockClient::$StatusMap;
         foreach ($options as $key => $option) {
-            $options[$key] = ($key - 100)."% ".$option;
+            $options[$key] = ($key - 100) . "% " . $option;
         }
         $isAssigner = Admin::isAssigner();
         if (!$isAssigner && !$client["bd"]) {
             $len = strlen($client["phone"]);
             if ($len > 4) {
-                $client["phone"] = substr($client["phone"], 0, $len - 4)."****";
+                $client["phone"] = substr($client["phone"], 0, $len - 4) . "****";
             }
         }
 
@@ -420,9 +420,9 @@ class StockController extends BaseController
         $params = [];
         if ($dt) {
             $criteria[] = "  o.oAddedOn between :st and :et ";
-            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt.'01 ');
-            $params[':st'] = $firstDate.' 00:00:00';
-            $params[':et'] = $lastDate.' 23:00:00';
+            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
+            $params[':st'] = $firstDate . ' 00:00:00';
+            $params[':et'] = $lastDate . ' 23:00:00';
         }
 
         list($list, $sum_income) = StockOrder::stat_items($criteria, $params);
@@ -449,9 +449,9 @@ class StockController extends BaseController
         $params = [];
         if ($dt) {
             $criteria[] = "  o.oAddedOn between :st and :et ";
-            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt.'01 ');
-            $params[':st'] = $firstDate.' 00:00:00';
-            $params[':et'] = $lastDate.' 23:00:00';
+            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
+            $params[':st'] = $firstDate . ' 00:00:00';
+            $params[':et'] = $lastDate . ' 23:00:00';
         }
 
         list($list, $sum_income, $sum_contribute) = StockOrder::stat_items($criteria, $params);
@@ -501,8 +501,8 @@ class StockController extends BaseController
         if ($dt) {
             $dt = date('Y-m-d', strtotime($dt));
             $criteria[] = "  o.oAddedOn between :st and :et ";
-            $params[':st'] = $dt.' 00:00:00';
-            $params[':et'] = $dt.' 23:59:59';
+            $params[':st'] = $dt . ' 00:00:00';
+            $params[':et'] = $dt . ' 23:59:59';
         }
         if ($status) {
             $criteria[] = "  o.oStatus = :status ";
@@ -643,7 +643,7 @@ class StockController extends BaseController
             return $arr;
         };
 
-        ExcelUtil::getYZExcel2('盈亏_'.$dt, [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]);
+        ExcelUtil::getYZExcel2('盈亏_' . $dt, [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]);
 
     }
 
@@ -664,7 +664,7 @@ class StockController extends BaseController
         }
         $filename_time = date("Y-m-d");
         if ($sdate && $edate) {
-            $filename_time = $sdate."_".$edate;
+            $filename_time = $sdate . "_" . $edate;
             $sdate .= " 00:00:00";
             $edate .= " 23:59:59";
             $condition .= " and o.oAddedOn between '$sdate' and '$edate' ";
@@ -672,7 +672,7 @@ class StockController extends BaseController
         $filename_satus = '';
         if (in_array($st, array_keys(StockOrder::$stDict))) {
             $condition .= " and o.oStatus=$st ";
-            $filename_satus = "【".StockOrder::$stDict[$st]."】";
+            $filename_satus = "【" . StockOrder::$stDict[$st] . "】";
         }
 
 
@@ -752,7 +752,7 @@ class StockController extends BaseController
             $content[] = $row;
         }
 
-        $filename = "客户订单".$filename_satus.$filename_time;
+        $filename = "客户订单" . $filename_satus . $filename_time;
 
         ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
         exit;
@@ -772,10 +772,10 @@ class StockController extends BaseController
             $itemname = "excel";
             if (isset($_FILES[$itemname])) {
                 $info = $_FILES[$itemname];
-                $uploads_dir = "/data/res/imei/excel/".date("Y").'/'.date('m');
+                $uploads_dir = "/data/res/imei/excel/" . date("Y") . '/' . date('m');
                 if ($info['error'] == UPLOAD_ERR_OK) {
                     $tmp_name = $info["tmp_name"];
-                    $name = uniqid().'.xls';
+                    $name = uniqid() . '.xls';
                     $filepath = "$uploads_dir/$name";
                     move_uploaded_file($tmp_name, $filepath);
                 }
@@ -806,12 +806,12 @@ class StockController extends BaseController
                     case 'order':
                         $redir = "stock_order";
                         list($insertCount, $error) = StockOrder::add_by_excel($filepath);
-                        $insertCount = $insertCount."行数据 ";
+                        $insertCount = $insertCount . "行数据 ";
                         break;
                     case 'action':
                         list($insertCount, $error) = StockAction::add_by_excel($filepath);
                         $redir = "stock_action";
-                        $insertCount = $insertCount."行数据 ";
+                        $insertCount = $insertCount . "行数据 ";
                         break;
                     case 'send_msg':
                         $content = self::postParam('content', '');
@@ -831,13 +831,13 @@ class StockController extends BaseController
                 }
 
                 if (!$error) {
-                    $success = "上传成功！".$insertCount;
+                    $success = "上传成功！" . $insertCount;
                 } else {
-                    $error = $error." 行错误数据".' 上传'.$insertCount;
+                    $error = $error . " 行错误数据" . ' 上传' . $insertCount;
                 }
             }
         }
-        header("location:/stock/".$redir."?error=".$error.'&success='.$success);
+        header("location:/stock/" . $redir . "?error=" . $error . '&success=' . $success);
     }
 
     public function actionStock_action()
@@ -987,8 +987,8 @@ class StockController extends BaseController
         }
         if ($st && $et) {
             $criteria[] = "  oAfter between :st and :et ";
-            $params[':st'] = $st.' 00:00';
-            $params[':et'] = $et.' 23:59';
+            $params[':st'] = $st . ' 00:00';
+            $params[':et'] = $et . ' 23:59';
         }
 
         list($list, $count) = Log::section_items($criteria, $params, $page);
@@ -1020,7 +1020,7 @@ class StockController extends BaseController
 
         $filename_time = date("Y-m-d");
         if ($sdate && $edate) {
-            $filename_time = $sdate."_".$edate;
+            $filename_time = $sdate . "_" . $edate;
             $sdate .= " 00:00:00";
             $edate .= " 23:59:59";
             $condition .= " and oDate between '$sdate' and '$edate' ";
@@ -1028,7 +1028,7 @@ class StockController extends BaseController
         $filename_satus = '';
         if ($cat) {
             $condition .= " and oBefore='$cat' ";
-            $filename_satus = "【".TryPhone::$catDict[$cat]."】";
+            $filename_satus = "【" . TryPhone::$catDict[$cat] . "】";
         }
 
         $cat2 = Log::CAT_PHONE_SECTION_YES;
@@ -1059,7 +1059,7 @@ class StockController extends BaseController
             $content[] = $row;
         }
 
-        $filename = "抓取手机号".$filename_satus.$filename_time;
+        $filename = "抓取手机号" . $filename_satus . $filename_time;
 
         ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
         exit;
@@ -1082,8 +1082,8 @@ class StockController extends BaseController
         }
         if ($st && $et) {
             $criteria[] = "  oAfter between :st and :et ";
-            $params[':st'] = $st.' 00:00';
-            $params[':et'] = $et.' 23:59';
+            $params[':st'] = $st . ' 00:00';
+            $params[':et'] = $et . ' 23:59';
         }
 
         list($list, $count) = Log::zdm_items($criteria, $params, $page);
@@ -1145,8 +1145,8 @@ class StockController extends BaseController
         }
         if ($st && $et) {
             $criteria[] = "  oAfter between :st and :et ";
-            $params[':st'] = $st.' 00:00';
-            $params[':et'] = $et.' 23:59';
+            $params[':st'] = $st . ' 00:00';
+            $params[':et'] = $et . ' 23:59';
         }
 
         list($list, $count) = CRMStockSource::items($criteria, $params, $page);
@@ -1208,9 +1208,9 @@ class StockController extends BaseController
         $fname = $_POST['name'];
         $truename = $_POST['trueName'];
 
-        $path = __DIR__."/../web/";
-        $dir = $path."source/".$truename."-".$fsize;
-        $save = $dir."/".$fname;
+        $path = __DIR__ . "/../web/";
+        $dir = $path . "source/" . $truename . "-" . $fsize;
+        $save = $dir . "/" . $fname;
 //		echo $dir . PHP_EOL;
 //		echo $save . PHP_EOL;
 //		exit;
@@ -1223,10 +1223,10 @@ class StockController extends BaseController
         $temp = fopen($fdata["tmp_name"], "r+");
         $filedata = fread($temp, filesize($fdata["tmp_name"]));
         //将分段内容存放到新建的临时文件里面
-        if (file_exists($dir."/".$findex.".tmp")) {
-            unlink($dir."/".$findex.".tmp");
+        if (file_exists($dir . "/" . $findex . ".tmp")) {
+            unlink($dir . "/" . $findex . ".tmp");
         }
-        $tempFile = fopen($dir."/".$findex.".tmp", "w+");
+        $tempFile = fopen($dir . "/" . $findex . ".tmp", "w+");
         fwrite($tempFile, $filedata);
         fclose($tempFile);
 
@@ -1238,8 +1238,8 @@ class StockController extends BaseController
             }
             //循环读取临时文件并将其合并置入新文件里面
             for ($i = 0; $i < $ftotal; $i++) {
-                $readData = fopen($dir."/".$i.".tmp", "r+");
-                $writeData = fread($readData, filesize($dir."/".$i.".tmp"));
+                $readData = fopen($dir . "/" . $i . ".tmp", "r+");
+                $writeData = fread($readData, filesize($dir . "/" . $i . ".tmp"));
 
                 $newFile = fopen($save, "a+");
                 fwrite($newFile, $writeData);
@@ -1247,10 +1247,10 @@ class StockController extends BaseController
 
                 fclose($readData);
 
-                $resu = @unlink($dir."/".$i.".tmp");
+                $resu = @unlink($dir . "/" . $i . ".tmp");
             }
             //$res = array("res" => "success", "url" => mb_convert_encoding($truename . "-" . $fsize . "/" . $fname, 'utf-8', 'gbk'));
-            $res = array("res" => "success", "url" => $truename."-".$fsize."/".$fname);
+            $res = array("res" => "success", "url" => $truename . "-" . $fsize . "/" . $fname);
             echo json_encode($res);
         }
 
@@ -1402,13 +1402,13 @@ class StockController extends BaseController
 
         $where = "";
         foreach ([5, 10, 15, 20, 30, 60] as $int) {
-            $var = 'avg'.$int;
+            $var = 'avg' . $int;
             if ($$var) {
-                $where .= " and tClose<s".$int.".sAvgClose ";
+                $where .= " and tClose<s" . $int . ".sAvgClose ";
             }
         }
         if ($day) {
-            $where .= ' and tTurnover<s'.$day.'.sAvgTurnover';
+            $where .= ' and tTurnover<s' . $day . '.sAvgTurnover';
         }
 
         $list = [];
@@ -1555,6 +1555,45 @@ class StockController extends BaseController
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
         return $this->renderPage("stock_all.tpl",
+            [
+                'list1' => $select1,
+                'list2' => $select2,
+                'list3' => $list3,
+                'list4' => $list4,
+                'dt' => $dt,
+                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+            ]
+        );
+    }
+
+    public function actionStock_all_list()
+    {
+        $dt = self::getParam("dt", date('Y-m-d'));
+        list($select1, $select2) = StockTurn::stock171_new($dt, 0);
+
+
+        $trans = function ($select1) {
+            $select1_list = [];
+            foreach ($select1 as $select1_item) {
+                foreach ($select1_item as $item) {
+                    $stock_id = $item['id'];
+                    if (!isset($item[$stock_id])) {
+                        $select1_list[] = $item;
+                    }
+                }
+            }
+            return $select1_list;
+        };
+
+        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+
+        $list3 = StockTurn::get_pb_pe_stock($dt, 0);
+        $list4 = StockTurn::get_intersect_2and3($select2, $list3);
+
+        $select1 = $trans($select1);
+        $select2 = $trans($select2);
+
+        return $this->renderPage("stock_all_list.tpl",
             [
                 'list1' => $select1,
                 'list2' => $select2,

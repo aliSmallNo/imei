@@ -1904,6 +1904,13 @@ class FooController extends Controller
     public function actionZp()
     {
 
+        $res = array_unique([
+            ['id' => '000001', 'name' => '平安银行'],
+            ['id' => '000001', 'name' => '平安银行'],
+            ['id' => '000001', 'name' => '平安银行'],
+        ]);
+        print_r($res);
+        exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
 //        StockOrder::add_by_excel('/data/res/imei/excel/2020/04/5ea686525b663.xls');
