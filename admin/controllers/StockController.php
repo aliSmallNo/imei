@@ -1578,7 +1578,7 @@ class StockController extends BaseController
                 foreach ($select1_item as $item) {
                     $stock_id = $item['id'];
                     if (!isset($select1_list[$stock_id])) {
-                        $select1_list[] = $item;
+                        $select1_list[$stock_id] = $item;
                     }
                 }
             }
