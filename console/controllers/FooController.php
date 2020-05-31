@@ -32,6 +32,7 @@ use common\models\StockMainStat;
 use common\models\StockMainTmp0;
 use common\models\StockMenu;
 use common\models\StockOrder;
+use common\models\StockStat2;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
@@ -1904,12 +1905,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        $res = array_unique([
-            ['id' => '000001', 'name' => '平安银行'],
-            ['id' => '000001', 'name' => '平安银行'],
-            ['id' => '000001', 'name' => '平安银行'],
-        ]);
-        print_r($res);
+        StockStat2::init_data();
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);

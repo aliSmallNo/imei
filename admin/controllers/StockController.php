@@ -2493,4 +2493,28 @@ class StockController extends BaseController
         );
     }
 
+    /**
+     * 买入策略 对 错 中性 平均收益率 平均策略数量
+     * 2天2次
+     * 3天2次
+     * 4天2次
+     *
+     * 帮我做个这样的表。
+     * 2天2次，指2天内出现2次买入信号
+     *
+     * @time 2020-05-31 PM
+     */
+    public function actionStock_main_result_stat0531()
+    {
+        Admin::staffOnly();
+
+        list($buys, $solds) = StockMainResult2::rule_right_rate();
+
+        return $this->renderPage("stock_main_result_rule_right_rate.tpl",
+            [
+                'solds' => $solds,
+                'buys' => $buys,
+            ]
+        );
+    }
 }
