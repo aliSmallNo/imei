@@ -123,12 +123,14 @@ class StockStat2 extends \yii\db\ActiveRecord
         list($select1, $select2) = StockTurn::stock171_new($dt, 0);
         $list3 = StockTurn::get_pb_pe_stock($dt, 0);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
-        foreach ($list4 as $v) {
-            self::add([
-                's_cat' => self::STANDARD_4,
-                's_stock_id' => $v['id'],
-                's_trans_on' => $dt,
-            ]);
+        if ($list4) {
+            foreach ($list4 as $v) {
+                self::add([
+                    's_cat' => self::STANDARD_4,
+                    's_stock_id' => $v['id'],
+                    's_trans_on' => $dt,
+                ]);
+            }
         }
         return true;
     }
@@ -145,6 +147,7 @@ class StockStat2 extends \yii\db\ActiveRecord
         $dts = AppUtil::db()->createCommand($sql)->queryColumn();
         foreach ($dts as $dt) {
             self::init_today_data($dt);
+            echo $dt . PHP_EOL;
         }
     }
 
