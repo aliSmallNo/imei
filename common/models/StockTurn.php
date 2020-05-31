@@ -1295,6 +1295,10 @@ class StockTurn extends \yii\db\ActiveRecord
             }
         }
 
+        if (!$select_2) {
+            return [$select_1, [8 => []]];
+        }
+
         // 最近1天，任何一天有突破的股票。突破定义如下。1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过3%；2.换手率高于20日均线
         foreach ($select_2[8] as $k => $item) {
             $ids1 = array_column($select_1[1], 'id');

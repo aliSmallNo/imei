@@ -149,8 +149,9 @@ class StockStat2 extends \yii\db\ActiveRecord
             if (strtotime($dt) >= strtotime('2020-01-13')) {
                 continue;
             }
-            self::init_today_data($dt);
             echo $dt . PHP_EOL;
+            self::init_today_data($dt);
+
         }
     }
 
