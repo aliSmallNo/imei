@@ -17,6 +17,7 @@ use common\models\StockMainPbStat;
 use common\models\StockMainPrice;
 use common\models\StockMainResult;
 use common\models\StockMainResult2;
+use common\models\StockStat2;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
@@ -170,6 +171,7 @@ class CrontabController extends Controller
                 StockTurn::update_current_day_all();
                 StockTurnStat::stat();
                 StockTurnStat::stat_to_turn();
+                StockStat2::init_today_data();
                 Log::add(['oCategory' => Log::CAT_STOCK_MENU_UPDATE, 'oBefore' => 'end']);
             }
         } catch (\Exception $e) {
