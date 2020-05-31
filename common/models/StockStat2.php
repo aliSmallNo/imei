@@ -146,6 +146,9 @@ class StockStat2 extends \yii\db\ActiveRecord
         $sql = "select m_trans_on from im_stock_main group by m_trans_on order by m_trans_on desc ";
         $dts = AppUtil::db()->createCommand($sql)->queryColumn();
         foreach ($dts as $dt) {
+            if (strtotime($dt) >= strtotime('2020-01-13')) {
+                continue;
+            }
             self::init_today_data($dt);
             echo $dt . PHP_EOL;
         }
