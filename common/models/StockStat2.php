@@ -146,7 +146,7 @@ class StockStat2 extends \yii\db\ActiveRecord
         $sql = "select m_trans_on from im_stock_main group by m_trans_on order by m_trans_on desc ";
         $dts = AppUtil::db()->createCommand($sql)->queryColumn();
         foreach ($dts as $dt) {
-            if (strtotime($dt) >= strtotime('2020-01-13')) {
+            if (strtotime($dt) < strtotime('2020-05-29')) {
                 continue;
             }
             echo $dt . PHP_EOL;
@@ -155,5 +155,40 @@ class StockStat2 extends \yii\db\ActiveRecord
         }
     }
 
+
+    public static function items($criteria, $params, $page, $pageSize = 20)
+    {
+        $conn = AppUtil::db();
+        $offset = ($page - 1) * $pageSize;
+        $strCriteria = '';
+        if ($criteria) {
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+        }
+
+        $sql = "select 
+                group_concat(m.mStockName,'-',s.s_stock_id) as stock ,s_trans_on
+				from im_stock_stat2 as s
+				left join im_stock_menu as m on m.mStockId=s.s_stock_id 
+				where s.s_id>0  $strCriteria
+				group by s_trans_on
+				order by s.s_trans_on desc
+				limit $offset,$pageSize";
+        $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
+        foreach ($res as $k => $v) {
+            $res[$k]['stock_arr'] = explode(',', $v['stock']);
+        }
+
+        $sql = "select count(1) from (
+                select 
+                s_trans_on
+				from im_stock_stat2 as s
+				left join im_stock_menu as m on m.mStockId=s.s_stock_id 
+				where s.s_id>0  $strCriteria
+				group by s_trans_on
+                ) as a";
+        $count = $conn->createCommand($sql, [])->bindValues($params)->queryScalar();
+
+        return [$res, $count];
+    }
 
 }

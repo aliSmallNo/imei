@@ -30,6 +30,7 @@ use common\models\StockMainRule2;
 use common\models\StockMainStat;
 use common\models\StockMenu;
 use common\models\StockOrder;
+use common\models\StockStat2;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
@@ -1577,36 +1578,25 @@ class StockController extends BaseController
      */
     public function actionStock_all_list()
     {
-        $dt = self::getParam("dt", date('Y-m-d'));
-        list($select1, $select2) = StockTurn::stock171_new($dt, 0);
+        $dt = self::getParam("dt", '');
+        $page = self::getParam("page", 1);
 
-        $trans = function ($select1) {
-            $select1_list = [];
-            foreach ($select1 as $select1_item) {
-                foreach ($select1_item as $item) {
-                    $stock_id = $item['id'];
-                    if (!isset($select1_list[$stock_id])) {
-                        $select1_list[$stock_id] = $item;
-                    }
-                }
-            }
-            return $select1_list;
-        };
-        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+        $criteria = [];
+        $params = [];
+        if ($dt) {
+            $criteria[] = "  s.s_trans_on = :dt ";
+            $params[':dt'] = $dt;
+        }
 
-        $list3 = StockTurn::get_pb_pe_stock($dt, 0);
-        $list4 = StockTurn::get_intersect_2and3($select2, $list3);
-        $select1 = $trans($select1);
-        $select2 = $trans($select2);
+        list($list, $count) = StockStat2::items($criteria, $params, $page,100);
+        $pagination = self::pagination($page, $count, 100);
+
 
         return $this->renderPage("stock_all_list.tpl",
             [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
+                'list' => $list,
+                'pagination' => $pagination,
                 'dt' => $dt,
-                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
         );
     }
