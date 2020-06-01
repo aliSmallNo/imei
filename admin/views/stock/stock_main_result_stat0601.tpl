@@ -45,7 +45,7 @@
         <tbody>
         {{foreach from=$list item=item key=key}}
           <tr>
-            <td>{{$item['name']}}次</td>
+            <td>{{$item['name']}}</td>
             <td>{{$item['yes']}}次</td>
             <td>{{$item['no']}}次</td>
             <td>{{$item['mid']}}次</td>

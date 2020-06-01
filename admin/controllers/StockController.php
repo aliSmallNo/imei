@@ -2500,6 +2500,8 @@ class StockController extends BaseController
 
         $list = StockMainResult2::result_stat0601();
 
+        print_r($list);exit;
+
         return $this->renderPage("stock_main_result_stat0601.tpl",
             [
                 'list' => $list,
