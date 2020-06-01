@@ -1870,12 +1870,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $note_no_flag = $note && in_array($note, [self::NOTE_NO_1, self::NOTE_NO_2]);
             $note_mid_flag = $note && in_array($note, [self::NOTE_MID_1]);
 
-            /*if ($trans_date == '2020-02-04') {
-                echo '<pre>';
-                print_r($data);
-                exit;
-            }*/
-
             // 2天2次
             if ($today_is_but_dt && $tomorrow_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]])) {
@@ -1898,7 +1892,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
 
             // 3天2次
-            if ($today_is_but_dt && $three_is_but_dt) {
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && $three_is_but_dt ) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
                     $list_today = $list[$trans_date];
                     $list_three = $list[$trans_dates[$k + 2]];
@@ -1919,7 +1913,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
 
             // 4天2次
-            if ($today_is_but_dt && $four_is_but_dt) {
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && $four_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]])) {
                     $list_today = $list[$trans_date];
                     $list_four = $list[$trans_dates[$k + 3]];
