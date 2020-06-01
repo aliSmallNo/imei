@@ -179,7 +179,7 @@ class StockStat2 extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
             $stock_ids = explode(',', $v['stock_ids']);
             foreach ($stock_ids as $stock_id) {
-                $stock_name = isset($stocks[$stock_id]) ?? '';
+                $stock_name = $stocks[$stock_id] ?? '';
                 $res[$k]['stock_arr'][] = ['id' => $stock_id, 'name' => $stock_name];
             }
         }
