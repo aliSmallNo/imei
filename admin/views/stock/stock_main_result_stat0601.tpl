@@ -40,6 +40,7 @@
           <th>中性</th>
           <th>平均收益率</th>
           <th>平均策略数量</th>
+          <th>日期</th>
         </tr>
         </thead>
         <tbody>
@@ -51,6 +52,11 @@
             <td>{{$item['mid']}}次</td>
             <td>{{$item['rate_avg']}}</td>
             <td>{{$item['rule_co_avg']}}</td>
+            <td class="col-sm-6">
+              {{foreach from=$item.items item=item2}}
+              <span>{{$item2[0]}}</span>
+              {{/foreach}}
+            </td>
           </tr>
         {{/foreach}}
         </tbody>
