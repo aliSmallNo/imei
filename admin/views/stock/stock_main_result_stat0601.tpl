@@ -20,6 +20,16 @@
   .sold_bg_color {
     background: green;
   }
+
+  .st_one {
+    display: inline-block;
+    font-size: 10px;
+    white-space: nowrap;
+    background: #ccc;
+    padding: 3px 3px;
+    margin: 6px 0;
+    border-radius: 3px;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -54,7 +64,7 @@
             <td>{{$item['rule_co_avg']}}</td>
             <td class="col-sm-6">
               {{foreach from=$item.items item=item2}}
-              <span>{{$item2[0]}}</span>
+              <span class="st_one">{{$item2[0]}}</span>
               {{/foreach}}
             </td>
           </tr>
