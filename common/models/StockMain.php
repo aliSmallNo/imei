@@ -113,8 +113,8 @@ class StockMain extends \yii\db\ActiveRecord
         if (is_array($ret) && count($ret) > 40) {
             $dt = $ret[30];
             $trans_on = substr($dt, 0, 4)
-                .'-'.substr($dt, 4, 2)
-                .'-'.substr($dt, 6, 2);
+                . '-' . substr($dt, 4, 2)
+                . '-' . substr($dt, 6, 2);
 
             $data = [
                 "turnover" => $ret[37],                             //交易量(单位：万)
@@ -136,6 +136,17 @@ class StockMain extends \yii\db\ActiveRecord
         $data1 = self::get_stock_data('510500', 'sh');
 
         return date('Y-m-d') == date('Y-m-d', strtotime($data1['m_trans_on']));
+    }
+
+    /**
+     * 获取 交易日期
+     *
+     * @time 2020-06-01 M
+     */
+    public static function get_trans_dates()
+    {
+        $sql = "select m_trans_on from im_stock_main  group by m_trans_on order by m_trans_on desc";
+        return AppUtil::db()->createCommand($sql)->queryColumn();
     }
 
     /**
@@ -246,7 +257,7 @@ class StockMain extends \yii\db\ActiveRecord
                 $sz ?? 0,
                 0,
                 $trans_on);
-            echo $trans_on.PHP_EOL;
+            echo $trans_on . PHP_EOL;
         }
     }
 

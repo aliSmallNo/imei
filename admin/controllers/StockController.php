@@ -2492,18 +2492,17 @@ class StockController extends BaseController
      * 帮我做个这样的表。
      * 2天2次，指2天内出现2次买入信号
      *
-     * @time 2020-05-31 PM
+     * @time 2020-06-01 PM
      */
-    public function actionStock_main_result_stat0531()
+    public function actionStock_main_result_stat0601()
     {
         Admin::staffOnly();
 
-        list($buys, $solds) = StockMainResult2::rule_right_rate();
+        $list = StockMainResult2::result_stat0601();
 
-        return $this->renderPage("stock_main_result_rule_right_rate.tpl",
+        return $this->renderPage("stock_main_result_stat0601.tpl",
             [
-                'solds' => $solds,
-                'buys' => $buys,
+                'list' => $list,
             ]
         );
     }

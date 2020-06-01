@@ -26,6 +26,21 @@ use yii\helpers\ArrayHelper;
  */
 class StockMainResult2 extends \yii\db\ActiveRecord
 {
+    // 对 错 中性 买对 卖对
+    const NOTE_YES_1 = '对';
+    const NOTE_YES_2 = '买对';
+    const NOTE_NO_1 = '错';
+    const NOTE_NO_2 = '卖对';
+    const NOTE_MID_1 = '中性';
+    static $note_dict = [
+        self::NOTE_YES_1 => '对',
+        self::NOTE_YES_2 => '买对',
+        self::NOTE_NO_1 => '错',
+        self::NOTE_NO_2 => '买对',
+        self::NOTE_MID_1 => '中性',
+    ];
+
+
     const TAG_BUY = 'tag_buy';
     const TAG_SOLD = 'tag_sold';
 
@@ -142,7 +157,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $cat = $v['s_cat'];                                             // 5 10,20
 
             if ($flag) {
-                echo ',== dt '.$trans_on.' cat'.$cat.PHP_EOL;
+                echo ',== dt ' . $trans_on . ' cat' . $cat . PHP_EOL;
             }
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
@@ -163,18 +178,18 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             if ($cat) {
                 foreach ($buys as $buy) {
                     if (StockMainStat::get_rule_flag2($v, $buy, $offset_map)) {
-                        $ret[$trans_on]['r_buy'.$cat] .= ','.$buy['r_name'];
+                        $ret[$trans_on]['r_buy' . $cat] .= ',' . $buy['r_name'];
                     }
                 }
 
                 foreach ($solds as $sold) {
                     if (StockMainStat::get_rule_flag2($v, $sold, $offset_map)) {
-                        $ret[$trans_on]['r_sold'.$cat] .= ','.$sold['r_name'];
+                        $ret[$trans_on]['r_sold' . $cat] .= ',' . $sold['r_name'];
                     }
                 }
                 foreach ($warns as $warn) {
                     if (StockMainStat::get_rule_flag2($v, $warn, $offset_map)) {
-                        $ret[$trans_on]['r_warn'.$cat] .= ','.$warn['r_name'];
+                        $ret[$trans_on]['r_warn' . $cat] .= ',' . $warn['r_name'];
                     }
                 }
             }
@@ -253,17 +268,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
             foreach ($buys as $buy) {
                 if (StockMainStat::get_rule_flag2($v, $buy, $offset_map)) {
-                    $data['r_buy'.$cat] .= ','.$buy['r_name'];
+                    $data['r_buy' . $cat] .= ',' . $buy['r_name'];
                 }
             }
             foreach ($solds as $sold) {
                 if (StockMainStat::get_rule_flag2($v, $sold, $offset_map)) {
-                    $data['r_sold'.$cat] .= ','.$sold['r_name'];
+                    $data['r_sold' . $cat] .= ',' . $sold['r_name'];
                 }
             }
             foreach ($warns as $warn) {
                 if (StockMainStat::get_rule_flag2($v, $warn, $offset_map)) {
-                    $data['r_warn'.$cat] .= ','.$warn['r_name'];
+                    $data['r_warn' . $cat] .= ',' . $warn['r_name'];
                 }
             }
         }
@@ -285,8 +300,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
-        $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
-        $end = strtotime(date('Y-m-d '.$model2['c_content'].':05'));
+        $start = strtotime(date('Y-m-d ' . $model1['c_content'] . ':00'));
+        $end = strtotime(date('Y-m-d ' . $model2['c_content'] . ':05'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
             return 0;
@@ -335,7 +350,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
 
             // 发送短信
-            $code = strval($prefix.mt_rand(1000, 9999).'8');
+            $code = strval($prefix . mt_rand(1000, 9999) . '8');
 
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
 
@@ -348,8 +363,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'oAfter' => $res,
             ]);
 
-            @file_put_contents("/data/logs/imei/tencent_sms_".date("Y-m-d").".log",
-                date(" [Y-m-d H:i:s] ").$phone." - ".$code." >>>>>> ".$res.PHP_EOL,
+            @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
+                date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . PHP_EOL,
                 FILE_APPEND);
         }
 
@@ -362,10 +377,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      */
     public static function items($criteria, $params, $page, $pageSize = 1000)
     {
-        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
+        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND '.implode(' AND ', $criteria);
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
 
         $sql = "select r.*,m_etf_close
@@ -457,8 +472,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'].$v['r_buy10'].$v['r_buy20'];
-            $sold = $v['r_sold5'].$v['r_sold10'].$v['r_sold20'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
             if ($buy && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -486,8 +501,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'].$v['r_buy10'].$v['r_buy20'];
-            $sold = $v['r_sold5'].$v['r_sold10'].$v['r_sold20'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
             if ($sold && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -811,17 +826,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_rule_names = trim($buy_rule_names, ',');
                     if (strpos($buy_rule_names, ',') === false) {
                         if ($rate > 0) {
-                            $ret[$buy_rule_names]['yes'.$buy_day_cat]++;
+                            $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
                         } else {
-                            $ret[$buy_rule_names]['no'.$buy_day_cat]++;
+                            $ret[$buy_rule_names]['no' . $buy_day_cat]++;
                         }
                         $ret[$buy_rule_names]['sum_rate'] += $rate;
                     } else {
                         foreach (explode(',', $buy_rule_names) as $buy_rule_name) {
                             if ($rate > 0) {
-                                $ret[$buy_rule_name]['yes'.$buy_day_cat]++;
+                                $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
                             } else {
-                                $ret[$buy_rule_name]['no'.$buy_day_cat]++;
+                                $ret[$buy_rule_name]['no' . $buy_day_cat]++;
                             }
                             $ret[$buy_rule_name]['sum_rate'] += $rate;
                         }
@@ -958,7 +973,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $sum_rate = $v['sum_rate'];
             $success_times = $v['success_times'];
             $sum_times = $success_times + $v['fail_times'];
-            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? (round($success_times / $sum_times, 3) * 100).'%' : 0;
+            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? (round($success_times / $sum_times,
+                        3) * 100) . '%' : 0;
             $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
         }
 
@@ -1248,7 +1264,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $rules_solds = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
         $rules_warns = StockMainRule2::get_rules(StockMainRule2::CAT_WARN);
 
-        $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1.'-01-01', $year2.'-12-31'] : [];
+        $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1 . '-01-01', $year2 . '-12-31'] : [];
         $results = self::find()->where($where)->asArray()->all();
 
         $list_buy = self::result_stat_item($rules_buys, $results);
@@ -1343,7 +1359,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                                  StockMainRule2::CAT_SOLD => 'r_sold',
                                  StockMainRule2::CAT_WARN => 'r_warn',
                              ] as $_rule_cat => $field) {
-                        if (strpos($result[$field.$day], $rule_name) !== false && $rule_cat == $_rule_cat) {
+                        if (strpos($result[$field . $day], $rule_name) !== false && $rule_cat == $_rule_cat) {
                             $item = $count($item, $result, $day, $rule_name, $rule_cat);
                         }
                     }
@@ -1501,7 +1517,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $data = [];
         $r_trans_on_str = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            $r_trans_on_str .= ",'".$buy_dt."'";
+            $r_trans_on_str .= ",'" . $buy_dt . "'";
         }
         $r_trans_on_str = trim($r_trans_on_str, ',');
 
@@ -1510,7 +1526,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         foreach ($res as $v) {
             $buy_dt = $v['r_trans_on'];
-            $item = self::get_5day_after_rate_item($buy_dt, $price_type, $conn,0);
+            $item = self::get_5day_after_rate_item($buy_dt, $price_type, $conn, 0);
 
             $buy_type = self::get_buy_sold_item($v, self::TAG_SOLD);
             $buy_type_t = implode(',', $buy_type);
@@ -1582,7 +1598,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $r_trans_on_str = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            $r_trans_on_str .= ",'".$buy_dt."'";
+            $r_trans_on_str .= ",'" . $buy_dt . "'";
         }
         $r_trans_on_str = trim($r_trans_on_str, ',');
 
@@ -1773,6 +1789,143 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         return [$buys, $solds];
 
+    }
+
+    /**
+     * 买入策略 对 错 中性 平均收益率 平均策略数量
+     * 2天2次
+     * 3天2次
+     * 4天2次
+     *
+     * 帮我做个这样的表。
+     * 2天2次，指2天内出现2次买入信号
+     *
+     * @time 2020-06-01 PM
+     */
+    public static function result_stat0601()
+    {
+        $start_dt = "2012-02-24";
+        $trans_dates = array_reverse(StockMain::get_trans_dates());
+
+        // 策略回测里的数据
+        list($list, $rate_year_sum, $stat_rule_right_rate) =
+            StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+        $list = array_column($list, null, 'buy_dt');
+
+        // 所有 买入日期
+        $criteria[] = ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_buy20)>0) ';
+        list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        $results = array_column($results, null, 'r_trans_on');
+
+        $data = [
+            22 => [
+                'name' => '2天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            32 => [
+                'name' => '3天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            42 => [
+                'name' => '4天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+        ];
+        foreach ($trans_dates as $k => $trans_date) {
+            if (strtotime($start_dt) < strtotime($trans_date)) {
+                continue;
+            }
+            $today_is_but_dt = isset($results[$trans_date]);// 今天是否是 买入日期
+            $tomorrow_is_but_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 买入日期
+            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 买入日期
+            $four_is_but_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 买入日期
+
+            $note = $results[$trans_date]['r_note'];
+            $note_yes_flag = $note && in_array($note, [self::NOTE_YES_1, self::NOTE_YES_2]);
+            $note_no_flag = $note && in_array($note, [self::NOTE_NO_1, self::NOTE_NO_2]);
+            $note_mid_flag = $note && in_array($note, [self::NOTE_MID_1]);
+            // 2天2次
+            if ($today_is_but_dt && $tomorrow_is_but_dt) {
+                $list_today = $list[$trans_date];
+                $list_tomorrow = $list[$trans_dates[$k + 1]];
+                if ($note_yes_flag) {
+                    $data[22]['yes']++;
+                }
+                if ($note_no_flag) {
+                    $data[22]['no']++;
+                }
+                if ($note_mid_flag) {
+                    $data[22]['mid']++;
+                }
+                $data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
+                $data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
+                $data[22]['items'][] = [$trans_date, [$list_today, $list_tomorrow], $note];
+            }
+
+            // 3天2次
+            if ($today_is_but_dt && $three_is_but_dt) {
+                $list_today = $list[$trans_date];
+                $list_three = $list[$trans_dates[$k + 2]];
+                if ($note_yes_flag) {
+                    $data[32]['yes']++;
+                }
+                if ($note_no_flag) {
+                    $data[32]['no']++;
+                }
+                if ($note_mid_flag) {
+                    $data[32]['mid']++;
+                }
+                $data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
+                $data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
+                $data[32]['items'][] = [$trans_date, [$list_today, $list_three], $note];
+            }
+
+            // 4天2次
+            if ($today_is_but_dt && $four_is_but_dt) {
+                $list_today = $list[$trans_date];
+                $list_four = $list[$trans_dates[$k + 3]];
+                if ($note_yes_flag) {
+                    $data[42]['yes']++;
+                }
+                if ($note_no_flag) {
+                    $data[42]['yes']++;
+                }
+                if ($note_mid_flag) {
+                    $data[42]['mid']++;
+                }
+                $data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
+                $data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
+                $data[42]['items'][] = [$trans_date, [$list_today, $list_four], $note];
+            }
+        }
+        foreach ($data as $type => $item) {
+            $co = $item['yes'] + $item['no'] + $item['mid'];
+            $data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
+            $data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
+        }
+
+        return $data;
     }
 
 
