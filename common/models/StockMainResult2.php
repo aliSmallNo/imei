@@ -1812,6 +1812,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
         $list = array_column($list, null, 'buy_dt');
 
+        echo '<pre>';
+        print_r($list);exit;
+
         // 所有 买入日期
         $criteria[] = ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_buy20)>0) ';
         list($results, $count) = StockMainResult2::items([], [], 1, 10000);
