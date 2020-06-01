@@ -282,6 +282,12 @@ class Menu
                         "revise" => 1,
                         "level" => 827,
                     ],
+                    [
+                        "name" => "统计0601",
+                        "url" => "/stock/stock_main_result_stat0601",
+                        "revise" => 1,
+                        "level" => 827,
+                    ],
                 ],
             ],
             [
