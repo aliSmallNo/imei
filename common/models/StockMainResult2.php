@@ -1817,9 +1817,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         list($results, $count) = StockMainResult2::items([], [], 1, 10000);
         $results = array_column($results, null, 'r_trans_on');
 
-        echo '<pre>';
-        print_r($results);exit;
-
         $data = [
             22 => [
                 'name' => '2天2次',
@@ -1930,6 +1927,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
                     $data[42]['items'][] = [$trans_date, [$list_today, $list_four], $note];
                 }
+            }
+
+            if ($trans_date == '2020-02-04') {
+                echo '<pre>';
+                print_r($data);
+                exit;
             }
         }
         foreach ($data as $type => $item) {
