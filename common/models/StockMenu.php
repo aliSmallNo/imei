@@ -4,6 +4,7 @@ namespace common\models;
 
 use common\utils\AppUtil;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "im_stock_menu".
@@ -145,7 +146,7 @@ class StockMenu extends \yii\db\ActiveRecord
         $data = $data['result']['data'] ?? [];
 
         if ($error_code == 0 && $result && $data) {
-            echo count($data).PHP_EOL;
+            echo count($data) . PHP_EOL;
             foreach ($data as $v) {
                 self::add([
                     'mCat' => $type,
@@ -168,6 +169,26 @@ class StockMenu extends \yii\db\ActiveRecord
         return AppUtil::db()->createCommand($sql, [
             ':st' => self::STATUS_USE,
         ])->queryAll();
+    }
+
+    /**
+     * 获取有效大盘股票
+     *
+     * @time 2020-6-1 PM
+     */
+    public static function get_all_stocks($where = "")
+    {
+        $sql = "select * from im_stock_menu where mStatus=:st $where order by mId asc ";
+
+        return AppUtil::db()->createCommand($sql, [
+            ':st' => self::STATUS_USE,
+        ])->queryAll();
+    }
+
+    public static function get_all_stocks_kv($where = "")
+    {
+        $stocks = self::get_all_stocks($where);
+        return ArrayHelper::map($stocks, 'mStockId', 'mStockName');
     }
 
 }

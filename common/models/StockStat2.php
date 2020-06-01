@@ -164,9 +164,9 @@ class StockStat2 extends \yii\db\ActiveRecord
         if ($criteria) {
             $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
-
+        // group_concat 有长度限制：show variables like 'group_concat_max_len'; =>  1024
         $sql = "select 
-                group_concat(m.mStockName,'-',s.s_stock_id) as stock ,s_trans_on
+                group_concat(s_stock_id) as stock_ids ,s_trans_on
 				from im_stock_stat2 as s
 				left join im_stock_menu as m on m.mStockId=s.s_stock_id 
 				where s.s_id>0  $strCriteria
@@ -174,8 +174,14 @@ class StockStat2 extends \yii\db\ActiveRecord
 				order by s.s_trans_on desc
 				limit $offset,$pageSize";
         $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
+
+        $stocks = StockMenu::get_all_stocks_kv();
         foreach ($res as $k => $v) {
-            $res[$k]['stock_arr'] = explode(',', $v['stock']);
+            $stock_ids = explode(',', $v['stock_ids']);
+            foreach ($stock_ids as $stock_id) {
+                $stock_name = isset($stocks[$stock_id]) ?? '';
+                $res[$k]['stock_arr'][] = ['id' => $stock_id, 'name' => $stock_name];
+            }
         }
 
         $sql = "select count(1) from (
