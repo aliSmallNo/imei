@@ -1870,11 +1870,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $note_no_flag = $note && in_array($note, [self::NOTE_NO_1, self::NOTE_NO_2]);
             $note_mid_flag = $note && in_array($note, [self::NOTE_MID_1]);
 
-            if ($trans_date == '2020-02-04') {
+            /*if ($trans_date == '2020-02-04') {
                 echo '<pre>';
                 print_r($data);
                 exit;
-            }
+            }*/
 
             // 2天2次
             if ($today_is_but_dt && $tomorrow_is_but_dt) {
@@ -1892,7 +1892,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
                     $data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
-                    $data[22]['items'][] = [$trans_date, [$list_today, $list_tomorrow], $note];
+                    //$data[22]['items'][] = [$trans_date, [$list_today, $list_tomorrow], $note];
+                    $data[22]['items'][] = [$trans_date];
                 }
             }
 
@@ -1912,7 +1913,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
                     $data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
-                    $data[32]['items'][] = [$trans_date, [$list_today, $list_three], $note];
+                    //$data[32]['items'][] = [$trans_date, [$list_today, $list_three], $note];
+                    $data[32]['items'][] = [$trans_date];
                 }
             }
 
@@ -1932,7 +1934,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
                     $data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
-                    $data[42]['items'][] = [$trans_date, [$list_today, $list_four], $note];
+                    //$data[42]['items'][] = [$trans_date, [$list_today, $list_four], $note];
+                    $data[42]['items'][] = [$trans_date];
                 }
             }
         }
