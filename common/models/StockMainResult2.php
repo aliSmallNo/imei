@@ -1853,7 +1853,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             ],
         ];
         foreach ($trans_dates as $k => $trans_date) {
-            if (strtotime($start_dt) < strtotime($trans_date)) {
+            if (strtotime($start_dt) > strtotime($trans_date)) {
                 continue;
             }
             if (!isset($results[$trans_date]['r_note'])) {
@@ -1869,6 +1869,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $note_yes_flag = $note && in_array($note, [self::NOTE_YES_1, self::NOTE_YES_2]);
             $note_no_flag = $note && in_array($note, [self::NOTE_NO_1, self::NOTE_NO_2]);
             $note_mid_flag = $note && in_array($note, [self::NOTE_MID_1]);
+
+            if ($trans_date == '2020-02-04') {
+                echo '<pre>';
+                print_r($data);
+                exit;
+            }
+
             // 2天2次
             if ($today_is_but_dt && $tomorrow_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]])) {
@@ -1927,12 +1934,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
                     $data[42]['items'][] = [$trans_date, [$list_today, $list_four], $note];
                 }
-            }
-
-            if ($trans_date == '2020-02-04') {
-                echo '<pre>';
-                print_r($data);
-                exit;
             }
         }
         foreach ($data as $type => $item) {
