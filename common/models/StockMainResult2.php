@@ -27,17 +27,17 @@ use yii\helpers\ArrayHelper;
 class StockMainResult2 extends \yii\db\ActiveRecord
 {
     // 对 错 中性 买对 卖对
-    const NOTE_YES_1 = '对';
-    const NOTE_YES_2 = '买对';
-    const NOTE_NO_1 = '错';
-    const NOTE_NO_2 = '卖对';
-    const NOTE_MID_1 = '中性';
+    const NOTE_RIGHT = '对';
+    const NOTE_BUY_RIGHT = '买对';
+    const NOTE_WRONG = '错';
+    const NOTE_SOLD_RIGHT = '卖对';
+    const NOTE_MID = '中性';
     static $note_dict = [
-        self::NOTE_YES_1 => '对',
-        self::NOTE_YES_2 => '买对',
-        self::NOTE_NO_1 => '错',
-        self::NOTE_NO_2 => '买对',
-        self::NOTE_MID_1 => '中性',
+        self::NOTE_RIGHT => '对',
+        self::NOTE_BUY_RIGHT => '买对',
+        self::NOTE_WRONG => '错',
+        self::NOTE_SOLD_RIGHT => '卖对',
+        self::NOTE_MID => '中性',
     ];
 
 
@@ -1866,9 +1866,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 买入日期
             $four_is_but_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 买入日期
 
-            $note_yes_flag = $note && in_array($note, [self::NOTE_YES_1, self::NOTE_YES_2]);
-            $note_no_flag = $note && in_array($note, [self::NOTE_NO_1, self::NOTE_NO_2]);
-            $note_mid_flag = $note && in_array($note, [self::NOTE_MID_1]);
+            $note_yes_flag = $note && in_array($note, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag = $note && in_array($note, [self::NOTE_MID]);
 
             // 2天2次
             if ($today_is_but_dt && $tomorrow_is_but_dt) {

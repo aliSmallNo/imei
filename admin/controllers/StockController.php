@@ -1792,6 +1792,7 @@ class StockController extends BaseController
                 'name' => $name,
                 'cats' => StockMainStat::$cats,
                 'cat' => $cat,
+                'notes' => StockMainResult2::$note_dict,
             ]
         );
     }
@@ -1842,6 +1843,7 @@ class StockController extends BaseController
                 'name' => $name,
                 'cats' => StockMainStat::$cats,
                 'cat' => $cat,
+                'notes' => StockMainResult2::$note_dict,
             ]
         );
     }

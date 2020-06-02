@@ -98,7 +98,7 @@
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>
         </td>
-        <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}">
+        <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}" data-r_note="{{$item.r_note}}">
           <a class="btnModify btn btn-xs btn-primary">修改</a>
         </td>
       </tr>
@@ -131,7 +131,12 @@
     <div class="form-group">
       <label class="col-sm-4 control-label">备注:</label>
       <div class="col-sm-7">
-        <textarea class="form-control r_note"></textarea>
+        <select class="form-control r_note">
+          <option value="">-=请选择=-</option>
+          {{foreach from=$notes item=item key=key}}
+            <option value="{{$key}}">{{$item}}</option>
+          {{/foreach}}
+        </select>
       </div>
     </div>
   </div>
