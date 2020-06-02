@@ -2033,9 +2033,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         foreach ($buy_data as $type => $item) {
             $co = $item['yes'] + $item['no'] + $item['mid'];
 
-            $sold_data[$type]['yes_rate'] = $co ? sprintf('%.2f', $item['yes'] / $co) : 0;
-            $sold_data[$type]['no_rate'] = $co ? sprintf('%.2f', $item['no'] / $co) : 0;
-            $sold_data[$type]['mid_rate'] = $co ? sprintf('%.2f', $item['mid'] / $co) : 0;
+            $buy_data[$type]['yes_rate'] = $co ? sprintf('%.2f', $item['yes'] / $co) : 0;
+            $buy_data[$type]['no_rate'] = $co ? sprintf('%.2f', $item['no'] / $co) : 0;
+            $buy_data[$type]['mid_rate'] = $co ? sprintf('%.2f', $item['mid'] / $co) : 0;
 
             $buy_data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
             $buy_data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
