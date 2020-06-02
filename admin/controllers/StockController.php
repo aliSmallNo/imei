@@ -2494,17 +2494,29 @@ class StockController extends BaseController
      * 帮我做个这样的表。
      * 2天2次，指2天内出现2次买入信号
      *
+     * 卖出策略 对 错 中性 平均收益率 平均策略数量
+     * 2天2次
+     * 3天2次
+     * 4天2次
+     * 5天2次
+     * 6天2次
+     *
+     * 帮我做个这样的表。
+     * 2天2次，指2天内出现2次买入信号
+     *
      * @time 2020-06-01 PM
+     * @time 2020-06-02 AM
      */
     public function actionStock_main_result_stat0601()
     {
         Admin::staffOnly();
 
-        $list = StockMainResult2::result_stat0601();
+        list($buy_data, $sold_data) = StockMainResult2::result_stat0601();
 
         return $this->renderPage("stock_main_result_stat0601.tpl",
             [
-                'list' => $list,
+                'buy_data' => $buy_data,
+                'sold_data' => $sold_data,
             ]
         );
     }

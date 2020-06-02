@@ -1796,6 +1796,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 2天2次
      * 3天2次
      * 4天2次
+     * 5天2次
+     * 6天2次
      *
      * 帮我做个这样的表。
      * 2天2次，指2天内出现2次买入信号
@@ -1810,6 +1812,28 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+
+        $buy_data = self::result_stat0601_buy($list, $trans_dates, $start_dt);
+        $sold_data = self::result_stat0601_sold($list, $trans_dates, $start_dt);
+
+        return [$buy_data, $sold_data];
+    }
+
+    /**
+     * 买入策略 对 错 中性 平均收益率 平均策略数量
+     * 2天2次
+     * 3天2次
+     * 4天2次
+     * 5天2次
+     * 6天2次
+     *
+     * 帮我做个这样的表。
+     * 2天2次，指2天内出现2次买入信号
+     *
+     * @time 2020-06-01 PM
+     */
+    public static function result_stat0601_buy($list, $trans_dates, $start_dt)
+    {
         $list = array_column($list, null, 'buy_dt');
 
         // 所有 买入日期
@@ -1817,12 +1841,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         list($results, $count) = StockMainResult2::items([], [], 1, 10000);
         $results = array_column($results, null, 'r_trans_on');
 
-        $data = [
+        $buy_data = [
             22 => [
                 'name' => '2天2次',
                 'yes' => 0,
                 'no' => 0,
                 'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
                 'rate_avg' => 0,
                 'rule_co_avg' => 0,
                 'rate_sum' => 0,
@@ -1834,6 +1861,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'yes' => 0,
                 'no' => 0,
                 'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
                 'rate_avg' => 0,
                 'rule_co_avg' => 0,
                 'rate_sum' => 0,
@@ -1845,6 +1875,37 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'yes' => 0,
                 'no' => 0,
                 'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            52 => [
+                'name' => '5天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            62 => [
+                'name' => '6天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
                 'rate_avg' => 0,
                 'rule_co_avg' => 0,
                 'rate_sum' => 0,
@@ -1865,6 +1926,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $tomorrow_is_but_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 买入日期
             $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 买入日期
             $four_is_but_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 买入日期
+            $five_is_but_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 买入日期
+            $six_is_but_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 买入日期
 
             $note_yes_flag = $note && in_array($note, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
             $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
@@ -1876,39 +1939,36 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_today = $list[$trans_date];
                     $list_tomorrow = $list[$trans_dates[$k + 1]];
                     if ($note_yes_flag) {
-                        $data[22]['yes']++;
+                        $buy_data[22]['yes']++;
                     }
                     if ($note_no_flag) {
-                        $data[22]['no']++;
+                        $buy_data[22]['no']++;
                     }
                     if ($note_mid_flag) {
-                        $data[22]['mid']++;
+                        $buy_data[22]['mid']++;
                     }
-                    $data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
-                    $data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
-                    //$data[22]['items'][] = [$trans_date, [$list_today, $list_tomorrow], $note];
-                    $data[22]['items'][] = [$trans_date];
+                    $buy_data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
+                    $buy_data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
+                    $buy_data[22]['items'][] = [$trans_date];
                 }
             }
-
             // 3天2次
-            if ($today_is_but_dt && !$tomorrow_is_but_dt && $three_is_but_dt ) {
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && $three_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
                     $list_today = $list[$trans_date];
                     $list_three = $list[$trans_dates[$k + 2]];
                     if ($note_yes_flag) {
-                        $data[32]['yes']++;
+                        $buy_data[32]['yes']++;
                     }
                     if ($note_no_flag) {
-                        $data[32]['no']++;
+                        $buy_data[32]['no']++;
                     }
                     if ($note_mid_flag) {
-                        $data[32]['mid']++;
+                        $buy_data[32]['mid']++;
                     }
-                    $data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
-                    $data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
-                    //$data[32]['items'][] = [$trans_date, [$list_today, $list_three], $note];
-                    $data[32]['items'][] = [$trans_date];
+                    $buy_data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
+                    $buy_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
+                    $buy_data[32]['items'][] = [$trans_date];
                 }
             }
 
@@ -1918,28 +1978,292 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_today = $list[$trans_date];
                     $list_four = $list[$trans_dates[$k + 3]];
                     if ($note_yes_flag) {
-                        $data[42]['yes']++;
+                        $buy_data[42]['yes']++;
                     }
                     if ($note_no_flag) {
-                        $data[42]['yes']++;
+                        $buy_data[42]['yes']++;
                     }
                     if ($note_mid_flag) {
-                        $data[42]['mid']++;
+                        $buy_data[42]['mid']++;
                     }
-                    $data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
-                    $data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
-                    //$data[42]['items'][] = [$trans_date, [$list_today, $list_four], $note];
-                    $data[42]['items'][] = [$trans_date];
+                    $buy_data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
+                    $buy_data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
+                    $buy_data[42]['items'][] = [$trans_date];
+                }
+            }
+            // 5天2次
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && $five_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $buy_data[52]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[52]['yes']++;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[52]['mid']++;
+                    }
+                    $buy_data[52]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
+                    $buy_data[52]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
+                    $buy_data[52]['items'][] = [$trans_date];
+                }
+            }
+            // 6天2次
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && !$five_is_but_dt && !$six_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $buy_data[62]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[62]['yes']++;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[62]['mid']++;
+                    }
+                    $buy_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
+                    $buy_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
+                    $buy_data[62]['items'][] = [$trans_date];
                 }
             }
         }
-        foreach ($data as $type => $item) {
+        foreach ($buy_data as $type => $item) {
             $co = $item['yes'] + $item['no'] + $item['mid'];
-            $data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
-            $data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
+
+            $sold_data[$type]['yes_rate'] = $co ? sprintf('%.2f', $item['yes'] / $co) : 0;
+            $sold_data[$type]['no_rate'] = $co ? sprintf('%.2f', $item['no'] / $co) : 0;
+            $sold_data[$type]['mid_rate'] = $co ? sprintf('%.2f', $item['mid'] / $co) : 0;
+
+            $buy_data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
+            $buy_data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
         }
 
-        return $data;
+        return $buy_data;
+    }
+
+    /**
+     * 卖出策略 对 错 中性 平均收益率 平均策略数量
+     * 2天2次
+     * 3天2次
+     * 4天2次
+     * 5天2次
+     * 6天2次
+     *
+     * 帮我做个这样的表。
+     * 2天2次，指2天内出现2次买入信号
+     *
+     * @time 2020-06-02 PM
+     */
+    public static function result_stat0601_sold($list, $trans_dates, $start_dt)
+    {
+        $list = array_column($list, null, 'sold_dt');
+
+        // 所有 买入日期
+        $criteria[] = ' (CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_sold20)>0) ';
+        list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        $results = array_column($results, null, 'r_trans_on');
+
+        $sold_data = [
+            22 => [
+                'name' => '2天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            32 => [
+                'name' => '3天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            42 => [
+                'name' => '4天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            52 => [
+                'name' => '5天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+            62 => [
+                'name' => '6天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => []
+            ],
+        ];
+        foreach ($trans_dates as $k => $trans_date) {
+            if (strtotime($start_dt) > strtotime($trans_date)) {
+                continue;
+            }
+            if (!isset($results[$trans_date]['r_note'])) {
+                continue;
+            }
+            $note = $results[$trans_date]['r_note'];
+
+            $today_is_sold_dt = isset($results[$trans_date]);// 今天是否是 买入日期
+            $tomorrow_is_sold_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 卖出 日期
+            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 卖出 日期
+            $four_is_sold_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 卖出 日期
+            $five_is_sold_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 卖出 日期
+            $six_is_sold_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 卖出 日期
+
+            $note_yes_flag = $note && in_array($note, [self::NOTE_SOLD_RIGHT, self::NOTE_WRONG]);
+            $note_no_flag = $note && in_array($note, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_mid_flag = $note && in_array($note, [self::NOTE_MID]);
+
+            // 2天2次
+            if ($today_is_sold_dt && $tomorrow_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]])) {
+                    $list_today = $list[$trans_date];
+                    $list_tomorrow = $list[$trans_dates[$k + 1]];
+                    if ($note_yes_flag) {
+                        $sold_data[22]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[22]['no']++;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[22]['mid']++;
+                    }
+                    $sold_data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
+                    $sold_data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
+                    $sold_data[22]['items'][] = [$trans_date];
+                }
+            }
+            // 3天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && $three_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
+                    $list_today = $list[$trans_date];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    if ($note_yes_flag) {
+                        $sold_data[32]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[32]['no']++;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[32]['mid']++;
+                    }
+                    $sold_data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
+                    $sold_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
+                    $sold_data[32]['items'][] = [$trans_date];
+                }
+            }
+
+            // 4天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && $four_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]])) {
+                    $list_today = $list[$trans_date];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    if ($note_yes_flag) {
+                        $sold_data[42]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[42]['yes']++;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[42]['mid']++;
+                    }
+                    $sold_data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
+                    $sold_data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
+                    $sold_data[42]['items'][] = [$trans_date];
+                }
+            }
+            // 5天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && !$four_is_sold_dt && $five_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $sold_data[52]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[52]['yes']++;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[52]['mid']++;
+                    }
+                    $sold_data[52]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
+                    $sold_data[52]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
+                    $sold_data[52]['items'][] = [$trans_date];
+                }
+            }
+            // 6天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && !$four_is_sold_dt && !$five_is_sold_dt && !$six_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $sold_data[62]['yes']++;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[62]['yes']++;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[62]['mid']++;
+                    }
+                    $sold_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
+                    $sold_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
+                    $sold_data[62]['items'][] = [$trans_date];
+                }
+            }
+        }
+        foreach ($sold_data as $type => $item) {
+            $co = $item['yes'] + $item['no'] + $item['mid'];
+
+            $sold_data[$type]['yes_rate'] = $co ? sprintf('%.2f', $item['yes'] / $co) : 0;
+            $sold_data[$type]['no_rate'] = $co ? sprintf('%.2f', $item['no'] / $co) : 0;
+            $sold_data[$type]['mid_rate'] = $co ? sprintf('%.2f', $item['mid'] / $co) : 0;
+
+            $sold_data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
+            $sold_data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
+        }
+
+        return $sold_data;
     }
 
 
