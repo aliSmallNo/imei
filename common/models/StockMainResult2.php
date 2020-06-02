@@ -1809,12 +1809,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $start_dt = "2012-02-24";
         $trans_dates = array_reverse(StockMain::get_trans_dates());
 
-        // 策略回测里的数据
-        list($list, $rate_year_sum, $stat_rule_right_rate) =
-            StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
-
-        $buy_data = self::result_stat0601_buy($list, $trans_dates, $start_dt);
-        $sold_data = self::result_stat0601_sold($list, $trans_dates, $start_dt);
+        $buy_data = self::result_stat0601_buy($trans_dates, $start_dt);
+        $sold_data = self::result_stat0601_sold($trans_dates, $start_dt);
 
         return [$buy_data, $sold_data];
     }
@@ -1832,8 +1828,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-01 PM
      */
-    public static function result_stat0601_buy($list, $trans_dates, $start_dt)
+    public static function result_stat0601_buy($trans_dates, $start_dt)
     {
+        // 策略回测里的数据
+        list($list, $rate_year_sum, $stat_rule_right_rate) =
+            StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
         $list = array_column($list, null, 'buy_dt');
 
         // 所有 买入日期
@@ -2057,9 +2056,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-02 PM
      */
-    public static function result_stat0601_sold($list, $trans_dates, $start_dt)
+    public static function result_stat0601_sold($trans_dates, $start_dt)
     {
-        $list = array_column($list, null, 'sold_dt');
+        // 策略回测里的数据
+        list($list, $rate_year_sum, $stat_rule_right_rate) =
+            StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
+        $list = array_column($list, null, 'buy_dt');
 
         // 所有 买入日期
         $criteria[] = ' (CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_sold20)>0) ';
