@@ -65,10 +65,10 @@
                     <td>{{$item['rate_avg']}}</td>
                     <td>{{$item['rule_co_avg']}}</td>
                     <td class="col-sm-6">
-                        {{foreach from=$item['items'] key=day_times item=item2}}
+                        {{foreach from=$item['items'] key=cat item=item2}}
                             <div>
                                 {{foreach from=$item2 item=item3}}
-                                    <span class="st_one dt_{{$day_times}}">{{$item3}}</span>
+                                    <span class="st_one dt_{{$cat}}">{{$item3}}</span>
                                 {{/foreach}}
                             </div>
                         {{/foreach}}
