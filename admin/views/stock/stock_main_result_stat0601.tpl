@@ -30,6 +30,18 @@
         margin: 6px 0;
         border-radius: 3px;
     }
+
+    .dt_yes {
+
+    }
+
+    .dt_no {
+
+    }
+
+    .dt_mid {
+
+    }
 </style>
 <div class="row">
     <div class="col-sm-6">
