@@ -40,6 +40,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         self::NOTE_MID => '中性',
     ];
 
+    // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
+    // 这是正常的：'对':'买对'+'对';'错':'错'+'卖对';'中性':'中性';
 
     const TAG_BUY = 'tag_buy';
     const TAG_SOLD = 'tag_sold';

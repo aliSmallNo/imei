@@ -123,6 +123,10 @@ class StockStat2 extends \yii\db\ActiveRecord
         list($select1, $select2) = StockTurn::stock171_new($dt, 0);
         $list3 = StockTurn::get_pb_pe_stock($dt, 0);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
+
+        // 删除旧的
+        self::deleteAll(['s_trans_on' => $dt,]);
+
         if ($list4) {
             foreach ($list4 as $v) {
                 self::add([
@@ -143,11 +147,10 @@ class StockStat2 extends \yii\db\ActiveRecord
      */
     public static function init_data()
     {
-        $sql = "select m_trans_on from im_stock_main group by m_trans_on order by m_trans_on desc ";
-        $dts = AppUtil::db()->createCommand($sql)->queryColumn();
+        $dts = StockMain::get_trans_dates();
         foreach ($dts as $dt) {
             if (strtotime($dt) < strtotime('2020-05-29')) {
-                continue;
+               // continue;
             }
             echo $dt . PHP_EOL;
             self::init_today_data($dt);
