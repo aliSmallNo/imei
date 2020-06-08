@@ -73,63 +73,63 @@ class StockController extends BaseController
         $follow_again = self::getParam("follow_again", '');
         $perSize = 20;
 
-        $criteria = [" cCategory=" . CRMStockClient::CATEGORY_YANXUAN];
+        $criteria = [" cCategory=".CRMStockClient::CATEGORY_YANXUAN];
         $params = [];
         $urlParams = [];
         $alert = [];
         if ($dt1) {
             $criteria[] = " cAddedDate >= :dt1";
             $params[":dt1"] = $dt1;
-            $urlParams[] = "dt1=" . $dt1;
-            $alert[] = "【" . $dt1 . "】";
+            $urlParams[] = "dt1=".$dt1;
+            $alert[] = "【".$dt1."】";
         }
         if ($dt2) {
             $criteria[] = " cAddedDate <= :dt2";
-            $params[":dt2"] = $dt2 . ' 23:55:00';
-            $urlParams[] = "dt2=" . $dt2;
-            $alert[] = "【" . $dt2 . "】";
+            $params[":dt2"] = $dt2.' 23:55:00';
+            $urlParams[] = "dt2=".$dt2;
+            $alert[] = "【".$dt2."】";
         }
         if ($prov) {
             $criteria[] = " (cProvince like :prov or cCity like :prov)";
-            $params[":prov"] = "%" . $prov . "%";
-            $urlParams[] = "prov=" . $prov;
-            $alert[] = "【" . $prov . "】";
+            $params[":prov"] = "%".$prov."%";
+            $urlParams[] = "prov=".$prov;
+            $alert[] = "【".$prov."】";
         }
         if ($name) {
             $criteria[] = " cName like :name";
-            $params[":name"] = "%" . $name . "%";
-            $urlParams[] = "name=" . $name;
-            $alert[] = "【" . $name . "】";
+            $params[":name"] = "%".$name."%";
+            $urlParams[] = "name=".$name;
+            $alert[] = "【".$name."】";
         }
         if ($phone) {
             $criteria[] = "cPhone like :phone";
-            $params[":phone"] = $phone . "%";
-            $urlParams[] = "phone=" . $phone;
-            $alert[] = "【" . $phone . "】";
+            $params[":phone"] = $phone."%";
+            $urlParams[] = "phone=".$phone;
+            $alert[] = "【".$phone."】";
         }
         if ($action) {
             $criteria[] = "cStockAction = :action";
             $params[":action"] = $action;
-            $urlParams[] = "action=" . $action;
-            $alert[] = "【" . CRMStockClient::$actionDict[$action] . "】";
+            $urlParams[] = "action=".$action;
+            $alert[] = "【".CRMStockClient::$actionDict[$action]."】";
         }
         if ($bdassign) {
-            $criteria[] = " cBDAssign=" . $bdassign;
-            $urlParams[] = "bdassign=" . $bdassign;
+            $criteria[] = " cBDAssign=".$bdassign;
+            $urlParams[] = "bdassign=".$bdassign;
             $uInfo = Admin::findOne(["aId" => $bdassign]);
-            $alert[] = "【" . $uInfo["aName"] . "】";
+            $alert[] = "【".$uInfo["aName"]."】";
         }
         if ($src) {
             $criteria[] = "cSource = :cSource";
             $params[":cSource"] = $src;
-            $urlParams[] = "src=" . $src;
-            $alert[] = "【" . CRMStockClient::SourceMap()[$src] . "】";
+            $urlParams[] = "src=".$src;
+            $alert[] = "【".CRMStockClient::SourceMap()[$src]."】";
         }
         if ($follow_again) {
             $criteria[] = "cFollowAgain = :cFollowAgain";
             $params[":cFollowAgain"] = $follow_again;
-            $urlParams[] = "follow_again=" . $follow_again;
-            $alert[] = "【二次跟进：" . CRMStockClient::$followDict[$follow_again] . "】";
+            $urlParams[] = "follow_again=".$follow_again;
+            $alert[] = "【二次跟进：".CRMStockClient::$followDict[$follow_again]."】";
         }
 
         $counters = CRMStockClient::counts($this->admin_id, $criteria, $params);
@@ -140,19 +140,20 @@ class StockController extends BaseController
 
 
         $tabs = [
-            "my" => [
+            "my"    => [
                 "title" => "我的客户",
                 "count" => $counters["mine"],
             ],
-            "sea" => [
+            "sea"   => [
                 "title" => "公海客户",
                 "count" => $counters["sea"],
             ],
-            "all" => [
+            "all"   => [
                 "title" => "全部客户",
-                "count" => !$is_jinzx ? $counters["cnt_all"] : $counters['cnt_jinzx'],
+                "count" => !$is_jinzx ? $counters["cnt_all"]
+                    : $counters['cnt_jinzx'],
             ],
-            "lose" => [
+            "lose"  => [
                 "title" => "无意向客户",
                 "count" => $counters["lose"],
             ],
@@ -179,7 +180,7 @@ class StockController extends BaseController
         if ($is_jinzx) {
             //2019.9.3 modify
             $tabs = [
-                "my" => [
+                "my"  => [
                     "title" => "我的客户",
                     "count" => $counters["mine"],
                 ],
@@ -196,7 +197,7 @@ class StockController extends BaseController
         }
 
         if ($cat == "my") {
-            $criteria[] = " cBDAssign =" . $this->admin_id;
+            $criteria[] = " cBDAssign =".$this->admin_id;
         } elseif ($cat == "sea") {
             $criteria[] = " cBDAssign=0 ";
         } elseif ($cat == 'all') {
@@ -204,7 +205,8 @@ class StockController extends BaseController
             if ($is_jinzx) {
                 $criteria[] = " cBDAssign in (1059,1056,1061) ";// 查俊 宋富城 吴淑霞
             } else {
-                $criteria[] = " cBDAssign >-1 ";// 无意向客户，不在公海显示，也不在“全部用户”里面显示 2019-06-12
+                $criteria[]
+                    = " cBDAssign >-1 ";// 无意向客户，不在公海显示，也不在“全部用户”里面显示 2019-06-12
             }
         } elseif ($cat == "lose") {
             $criteria[] = " cBDAssign=-1 ";
@@ -214,11 +216,13 @@ class StockController extends BaseController
         }
 
 
-        list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
+        list($items, $count) = CRMStockClient::clients(
+            $criteria, $params, $sort, $page, $perSize
+        );
 
         $alertMsg = "";
         if ($alert) {
-            $alertMsg = "搜索" . implode("，", $alert) . "，结果如下";
+            $alertMsg = "搜索".implode("，", $alert)."，结果如下";
         }
         $pagination = self::pagination($page, $count);
         $sources = CRMStockClient::SourceMap();
@@ -232,59 +236,66 @@ class StockController extends BaseController
             "sa" => ["sd", "fa-angle-double-up"],
         ];
         if (in_array($sort, ["dd", "da"])) {
-            list($dNext, $dIcon) = isset($sorts[$sort]) ? $sorts[$sort] : $sorts["dd"];
+            list($dNext, $dIcon) = isset($sorts[$sort]) ? $sorts[$sort]
+                : $sorts["dd"];
             list($sNext, $sIcon) = ["sd", "fa-angle-double-down"];
         } else {
             list($dNext, $dIcon) = ["dd", "fa-angle-double-down"];
-            list($sNext, $sIcon) = isset($sorts[$sort]) ? $sorts[$sort] : $sorts["sd"];
+            list($sNext, $sIcon) = isset($sorts[$sort]) ? $sorts[$sort]
+                : $sorts["sd"];
         }
 
         if ($sub_staff) {
             $userInfo = Admin::userInfo();
-            $staff[] = ['id' => Admin::getAdminId(), 'name' => $userInfo['aName']];
+            $staff[] = ['id'   => Admin::getAdminId(),
+                        'name' => $userInfo['aName']];
         } else {
             $staff = Admin::getStaffs();
         }
 
-        return $this->renderPage('stock_clients.tpl',
+        return $this->renderPage(
+            'stock_clients.tpl',
             [
                 'detailcategory' => self::getRequestUri(),
-                'items' => $items,
-                "strItems" => json_encode($items),
-                'page' => $page,
-                'pagination' => $pagination,
-                "alertMsg" => $alertMsg,
-                "urlParams" => trim(implode("&", $urlParams), '&'),
-                "name" => $name,
-                "phone" => $phone,
-                "prov" => $prov,
-                "dt1" => $dt1,
-                "dt2" => $dt2,
-                "cat" => $cat,
-                "tabs" => $tabs,
-                "staff" => $staff,
-                "sub_staff" => $sub_staff,
-                "bds" => Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'),
-                "bdassign" => $bdassign,
-                "src" => $src,
-                "follow_again" => $follow_again,
-                "action" => $action,
-                "sources" => $sources,
-                "bdDefault" => $bdDefault,
-                'isAssigner' => $isAssigner,
-                "sort" => $sort,
-                "sNext" => $sNext,
-                "sIcon" => $sIcon,
-                "dNext" => $dNext,
-                "dIcon" => $dIcon,
-                "ageMap" => CRMStockClient::$ageMap,
-                "SourceMap" => CRMStockClient::SourceMap(),
-                "stock_age_map" => CRMStockClient::$stock_age_map,
-                "actionDict" => CRMStockClient::$actionDict,
-                "followDict" => CRMStockClient::$followDict,
-                'success' => $success,
-                'error' => $error,
-            ]);
+                'items'          => $items,
+                "strItems"       => json_encode($items),
+                'page'           => $page,
+                'pagination'     => $pagination,
+                "alertMsg"       => $alertMsg,
+                "urlParams"      => trim(implode("&", $urlParams), '&'),
+                "name"           => $name,
+                "phone"          => $phone,
+                "prov"           => $prov,
+                "dt1"            => $dt1,
+                "dt2"            => $dt2,
+                "cat"            => $cat,
+                "tabs"           => $tabs,
+                "staff"          => $staff,
+                "sub_staff"      => $sub_staff,
+                "bds"            => Admin::getBDs(
+                    CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'
+                ),
+                "bdassign"       => $bdassign,
+                "src"            => $src,
+                "follow_again"   => $follow_again,
+                "action"         => $action,
+                "sources"        => $sources,
+                "bdDefault"      => $bdDefault,
+                'isAssigner'     => $isAssigner,
+                "sort"           => $sort,
+                "sNext"          => $sNext,
+                "sIcon"          => $sIcon,
+                "dNext"          => $dNext,
+                "dIcon"          => $dIcon,
+                "ageMap"         => CRMStockClient::$ageMap,
+                "SourceMap"      => CRMStockClient::SourceMap(),
+                "stock_age_map"  => CRMStockClient::$stock_age_map,
+                "actionDict"     => CRMStockClient::$actionDict,
+                "followDict"     => CRMStockClient::$followDict,
+                'success'        => $success,
+                'error'          => $error,
+            ]
+        );
 
     }
 
@@ -296,7 +307,9 @@ class StockController extends BaseController
             $cid = $postId;
             $images = [];
             $uploads = $_FILES["images"];
-            if ($uploads && isset($uploads["tmp_name"]) && isset($uploads["error"])) {
+            if ($uploads && isset($uploads["tmp_name"])
+                && isset($uploads["error"])
+            ) {
                 /*foreach ($uploads["tmp_name"] as $key => $file) {
                     if ($uploads["error"][$key] == UPLOAD_ERR_OK) {
                         $upName = $uploads["name"][$key];
@@ -309,53 +322,65 @@ class StockController extends BaseController
 
                 $images = $ret ? array_column($ret, 1) : [];
             }
-            CRMStockTrack::add($postId, [
+            CRMStockTrack::add(
+                $postId, [
                 "status" => trim(self::postParam("status")),
-                "note" => trim(self::postParam("note")),
-                "image" => json_encode($images),
-            ], $this->admin_id);
+                "note"   => trim(self::postParam("note")),
+                "image"  => json_encode($images),
+            ], $this->admin_id
+            );
 
             // follow_again
-            CRMStockClient::edit(['follow_again' => self::postParam("follow_again")], $postId);
+            CRMStockClient::edit(
+                ['follow_again' => self::postParam("follow_again")], $postId
+            );
         }
         list($items, $client) = CRMStockTrack::tracks($cid);
         $options = CRMStockClient::$StatusMap;
         foreach ($options as $key => $option) {
-            $options[$key] = ($key - 100) . "% " . $option;
+            $options[$key] = ($key - 100)."% ".$option;
         }
         $isAssigner = Admin::isAssigner();
         if (!$isAssigner && !$client["bd"]) {
             $len = strlen($client["phone"]);
             if ($len > 4) {
-                $client["phone"] = substr($client["phone"], 0, $len - 4) . "****";
+                $client["phone"] = substr($client["phone"], 0, $len - 4)."****";
             }
         }
 
-        return $this->renderPage('stock_detail.tpl',
+        return $this->renderPage(
+            'stock_detail.tpl',
             [
-                'base_url' => 'stock/clients',
-                'items' => $items,
-                'client' => $client,
-                "cid" => $cid,
-                "options" => $options,
+                'base_url'   => 'stock/clients',
+                'items'      => $items,
+                'client'     => $client,
+                "cid"        => $cid,
+                "options"    => $options,
                 "followDict" => CRMStockClient::$followDict,
-                "adminId" => $this->admin_id,
-            ]);
+                "adminId"    => $this->admin_id,
+            ]
+        );
     }
 
     public function actionStat()
     {
         Admin::staffOnly();
-        $staff = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client');
+        $staff = Admin::getBDs(
+            CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'
+        );
 
-        return $this->renderPage('stock_stat.tpl',
+        return $this->renderPage(
+            'stock_stat.tpl',
             [
                 "beginDate" => date("Y-m-d", time() - 15 * 86400),
-                "endDate" => date("Y-m-d"),
-                "staff" => $staff,
-                "options" => CRMStockClient::$StatusMap,
-                "colors" => json_encode(array_values(CRMStockClient::$StatusColors)),
-            ]);
+                "endDate"   => date("Y-m-d"),
+                "staff"     => $staff,
+                "options"   => CRMStockClient::$StatusMap,
+                "colors"    => json_encode(
+                    array_values(CRMStockClient::$StatusColors)
+                ),
+            ]
+        );
     }
 
     public function actionStock_user()
@@ -388,23 +413,26 @@ class StockController extends BaseController
             $params[':bdphone'] = $bdphone;
         }
 
-        list($list, $count) = StockUser::items($criteria, $params, $page, $order);
+        list($list, $count) = StockUser::items(
+            $criteria, $params, $page, $order
+        );
         $pagination = self::pagination($page, $count, 20);
 
         $orders = [
-            'update' => '正常排序',
-            'last_opt_asc' => '最近更新订单时间正序',
+            'update'        => '正常排序',
+            'last_opt_asc'  => '最近更新订单时间正序',
             'last_opt_desc' => '最近更新订单时间倒序',
         ];
 
-        return $this->renderPage("stock_user.tpl",
+        return $this->renderPage(
+            "stock_user.tpl",
             [
-                'getInfo' => $getInfo,
+                'getInfo'    => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list,
-                'types' => StockUser::$types,
-                'bds' => StockUser::bds(),
-                'orders' => $orders,
+                'list'       => $list,
+                'types'      => StockUser::$types,
+                'bds'        => StockUser::bds(),
+                'orders'     => $orders,
             ]
         );
     }
@@ -421,20 +449,23 @@ class StockController extends BaseController
         $params = [];
         if ($dt) {
             $criteria[] = "  o.oAddedOn between :st and :et ";
-            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
-            $params[':st'] = $firstDate . ' 00:00:00';
-            $params[':et'] = $lastDate . ' 23:00:00';
+            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo(
+                $dt.'01 '
+            );
+            $params[':st'] = $firstDate.' 00:00:00';
+            $params[':et'] = $lastDate.' 23:00:00';
         }
 
         list($list, $sum_income) = StockOrder::stat_items($criteria, $params);
 
-        return $this->renderPage("stock_order_stat.tpl",
+        return $this->renderPage(
+            "stock_order_stat.tpl",
             [
-                'getInfo' => \Yii::$app->request->get(),
-                'dt' => $dt,
-                'list' => $list,
+                'getInfo'    => \Yii::$app->request->get(),
+                'dt'         => $dt,
+                'list'       => $list,
                 'sum_income' => $sum_income,
-                'mouths' => StockOrder::order_year_mouth(),
+                'mouths'     => StockOrder::order_year_mouth(),
             ]
         );
     }
@@ -450,20 +481,25 @@ class StockController extends BaseController
         $params = [];
         if ($dt) {
             $criteria[] = "  o.oAddedOn between :st and :et ";
-            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo($dt . '01 ');
-            $params[':st'] = $firstDate . ' 00:00:00';
-            $params[':et'] = $lastDate . ' 23:00:00';
+            list($day, $firstDate, $lastDate) = AppUtil::getMonthInfo(
+                $dt.'01 '
+            );
+            $params[':st'] = $firstDate.' 00:00:00';
+            $params[':et'] = $lastDate.' 23:00:00';
         }
 
-        list($list, $sum_income, $sum_contribute) = StockOrder::stat_items($criteria, $params);
+        list($list, $sum_income, $sum_contribute) = StockOrder::stat_items(
+            $criteria, $params
+        );
 
-        return $this->renderPage("stock_contribute_income.tpl",
+        return $this->renderPage(
+            "stock_contribute_income.tpl",
             [
-                'getInfo' => \Yii::$app->request->get(),
-                'dt' => $dt,
-                'list' => $list,
+                'getInfo'        => \Yii::$app->request->get(),
+                'dt'             => $dt,
+                'list'           => $list,
                 'sum_contribute' => $sum_contribute,
-                'mouths' => StockOrder::order_year_mouth(),
+                'mouths'         => StockOrder::order_year_mouth(),
             ]
         );
     }
@@ -502,8 +538,8 @@ class StockController extends BaseController
         if ($dt) {
             $dt = date('Y-m-d', strtotime($dt));
             $criteria[] = "  o.oAddedOn between :st and :et ";
-            $params[':st'] = $dt . ' 00:00:00';
-            $params[':et'] = $dt . ' 23:59:59';
+            $params[':st'] = $dt.' 00:00:00';
+            $params[':et'] = $dt.' 23:59:59';
         }
         if ($status) {
             $criteria[] = "  o.oStatus = :status ";
@@ -515,20 +551,23 @@ class StockController extends BaseController
         }
 
 
-        list($list, $count, $bds) = StockOrder::items($criteria, $params, $page);
+        list($list, $count, $bds) = StockOrder::items(
+            $criteria, $params, $page
+        );
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage("stock_order.tpl",
+        return $this->renderPage(
+            "stock_order.tpl",
             [
-                'getInfo' => $getInfo,
+                'getInfo'    => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list,
-                'status' => $status,
-                'bdphone' => $bdphone,
-                'stDict' => StockOrder::$stDict,
-                'bds' => $bds,
-                'success' => $success,
-                'error' => $error,
+                'list'       => $list,
+                'status'     => $status,
+                'bdphone'    => $bdphone,
+                'stDict'     => StockOrder::$stDict,
+                'bds'        => $bds,
+                'success'    => $success,
+                'error'      => $error,
             ]
         );
     }
@@ -545,7 +584,8 @@ class StockController extends BaseController
             $dt = date('Y-m-d');
         }
         $conn = AppUtil::db();
-        $sql = "select 
+        $sql
+            = "select 
 				o.oPhone,o.oName,o.oStockId,o.oStockAmt,o.oLoan,o.oCostPrice,oAvgPrice,o.oIncome,oRate,oHoldDays,
 				(case when oStatus=1 then '持有' when oStatus=9 THEN '卖出' END ) as st,
 				a.aName,a.aId
@@ -566,12 +606,12 @@ class StockController extends BaseController
             if ($v['st'] == "持有") {
                 if (!isset($res2[$key])) {
                     $res2[$key] = [
-                        "oName" => $v['oName'],
+                        "oName"      => $v['oName'],
                         "income_sum" => $income,
-                        "load_sum" => $load,
-                        "stock_co" => 1,
-                        "stock_ids" => [$stockId],
-                        "bd" => $v['aName'],
+                        "load_sum"   => $load,
+                        "stock_co"   => 1,
+                        "stock_ids"  => [$stockId],
+                        "bd"         => $v['aName'],
                     ];
                 } else {
                     $res2[$key]['income_sum'] += $income;
@@ -584,12 +624,12 @@ class StockController extends BaseController
             } else {
                 if (!isset($res4[$key])) {
                     $res4[$key] = [
-                        "oName" => $v['oName'],
+                        "oName"      => $v['oName'],
                         "income_sum" => $income,
-                        "load_sum" => $load,
-                        "stock_co" => 1,
-                        "stock_ids" => [$stockId],
-                        "bd" => $v['aName'],
+                        "load_sum"   => $load,
+                        "stock_co"   => 1,
+                        "stock_ids"  => [$stockId],
+                        "bd"         => $v['aName'],
                     ];
                 } else {
                     $res4[$key]['income_sum'] += $income;
@@ -612,11 +652,11 @@ class StockController extends BaseController
             if ($v['st'] == "持有") {
                 if (!isset($res3[$key])) {
                     $res3[$key] = [
-                        "bd" => $v['aName'],
+                        "bd"         => $v['aName'],
                         "income_sum" => $income,
-                        "load_sum" => $load,
-                        "user_co" => 1,
-                        "users" => [$phone],
+                        "load_sum"   => $load,
+                        "user_co"    => 1,
+                        "users"      => [$phone],
 
                     ];
                 } else {
@@ -644,7 +684,10 @@ class StockController extends BaseController
             return $arr;
         };
 
-        ExcelUtil::getYZExcel2('盈亏_' . $dt, [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]);
+        ExcelUtil::getYZExcel2(
+            '盈亏_'.$dt,
+            [$trans($res1), $trans($res2), $trans($res4), $trans($res3)]
+        );
 
     }
 
@@ -665,7 +708,7 @@ class StockController extends BaseController
         }
         $filename_time = date("Y-m-d");
         if ($sdate && $edate) {
-            $filename_time = $sdate . "_" . $edate;
+            $filename_time = $sdate."_".$edate;
             $sdate .= " 00:00:00";
             $edate .= " 23:59:59";
             $condition .= " and o.oAddedOn between '$sdate' and '$edate' ";
@@ -673,11 +716,12 @@ class StockController extends BaseController
         $filename_satus = '';
         if (in_array($st, array_keys(StockOrder::$stDict))) {
             $condition .= " and o.oStatus=$st ";
-            $filename_satus = "【" . StockOrder::$stDict[$st] . "】";
+            $filename_satus = "【".StockOrder::$stDict[$st]."】";
         }
 
 
-        $sql = "select 
+        $sql
+            = "select 
 				a.aId,a.aName,
 				o.*
 				from im_stock_order as o
@@ -753,7 +797,7 @@ class StockController extends BaseController
             $content[] = $row;
         }
 
-        $filename = "客户订单" . $filename_satus . $filename_time;
+        $filename = "客户订单".$filename_satus.$filename_time;
 
         ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
         exit;
@@ -773,30 +817,34 @@ class StockController extends BaseController
             $itemname = "excel";
             if (isset($_FILES[$itemname])) {
                 $info = $_FILES[$itemname];
-                $uploads_dir = "/data/res/imei/excel/" . date("Y") . '/' . date('m');
+                $uploads_dir = "/data/res/imei/excel/".date("Y").'/'.date('m');
                 if ($info['error'] == UPLOAD_ERR_OK) {
                     $tmp_name = $info["tmp_name"];
-                    $name = uniqid() . '.xls';
+                    $name = uniqid().'.xls';
                     $filepath = "$uploads_dir/$name";
                     move_uploaded_file($tmp_name, $filepath);
                 }
                 // 记录表格数据
                 try {
-                    LogStock::add([
-                        'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
-                        'oKey' => $cat,
-                        'oBefore' => $filepath,
-                        'oAfter' => $info,
-                        'oUId' => Admin::getAdminId(),
-                    ]);
+                    LogStock::add(
+                        [
+                            'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
+                            'oKey'      => $cat,
+                            'oBefore'   => $filepath,
+                            'oAfter'    => $info,
+                            'oUId'      => Admin::getAdminId(),
+                        ]
+                    );
                 } catch (\Exception $e) {
-                    LogStock::add([
-                        'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
-                        'oKey' => $cat,
-                        'oBefore' => $e->getMessage(),
-                        'oAfter' => $info,
-                        'oUId' => Admin::getAdminId(),
-                    ]);
+                    LogStock::add(
+                        [
+                            'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
+                            'oKey'      => $cat,
+                            'oBefore'   => $e->getMessage(),
+                            'oAfter'    => $info,
+                            'oUId'      => Admin::getAdminId(),
+                        ]
+                    );
                 }
             }
             if (!$filepath) {
@@ -806,13 +854,17 @@ class StockController extends BaseController
                 switch ($cat) {
                     case 'order':
                         $redir = "stock_order";
-                        list($insertCount, $error) = StockOrder::add_by_excel($filepath);
-                        $insertCount = $insertCount . "行数据 ";
+                        list($insertCount, $error) = StockOrder::add_by_excel(
+                            $filepath
+                        );
+                        $insertCount = $insertCount."行数据 ";
                         break;
                     case 'action':
-                        list($insertCount, $error) = StockAction::add_by_excel($filepath);
+                        list($insertCount, $error) = StockAction::add_by_excel(
+                            $filepath
+                        );
                         $redir = "stock_action";
-                        $insertCount = $insertCount . "行数据 ";
+                        $insertCount = $insertCount."行数据 ";
                         break;
                     case 'send_msg':
                         $content = self::postParam('content', '');
@@ -824,7 +876,10 @@ class StockController extends BaseController
                         break;
                     case "add_clues":
                         $redir = "clients";
-                        list($insertCount, $error) = CRMStockClient::add_by_excel($filepath);
+                        list(
+                            $insertCount, $error
+                            )
+                            = CRMStockClient::add_by_excel($filepath);
                         break;
                     default:
                         $insertCount = 0;
@@ -832,13 +887,13 @@ class StockController extends BaseController
                 }
 
                 if (!$error) {
-                    $success = "上传成功！" . $insertCount;
+                    $success = "上传成功！".$insertCount;
                 } else {
-                    $error = $error . " 行错误数据" . ' 上传' . $insertCount;
+                    $error = $error." 行错误数据".' 上传'.$insertCount;
                 }
             }
         }
-        header("location:/stock/" . $redir . "?error=" . $error . '&success=' . $success);
+        header("location:/stock/".$redir."?error=".$error.'&success='.$success);
     }
 
     public function actionStock_action()
@@ -865,14 +920,15 @@ class StockController extends BaseController
         list($list, $count) = StockAction::items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage("stock_action.tpl",
+        return $this->renderPage(
+            "stock_action.tpl",
             [
-                'getInfo' => $getInfo,
+                'getInfo'    => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list,
-                'success' => $success,
-                'error' => $error,
-                'count' => $count,
+                'list'       => $list,
+                'success'    => $success,
+                'error'      => $error,
+                'count'      => $count,
             ]
         );
     }
@@ -896,14 +952,15 @@ class StockController extends BaseController
 
         $leftMsgCount = AppUtil::getSMSLeft();
 
-        return $this->renderPage("stock_send_msg.tpl",
+        return $this->renderPage(
+            "stock_send_msg.tpl",
             [
                 'leftMsgCount' => $leftMsgCount,
-                'getInfo' => $getInfo,
-                'success' => $success,
-                'error' => $error,
-                'list' => $list,
-                'pagination' => $pagination,
+                'getInfo'      => $getInfo,
+                'success'      => $success,
+                'error'        => $error,
+                'list'         => $list,
+                'pagination'   => $pagination,
             ]
         );
     }
@@ -919,11 +976,13 @@ class StockController extends BaseController
         list($list, $count) = Log::sms_tip_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('stock_msg_tip.tpl',
+        return $this->renderPage(
+            'stock_msg_tip.tpl',
             [
-                'list' => $list,
+                'list'       => $list,
                 'pagination' => $pagination,
-            ]);
+            ]
+        );
     }
 
     public function actionTrend()
@@ -935,15 +994,18 @@ class StockController extends BaseController
         if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
             //$reset = 1;
         }
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)
+            ->chartTrend($date, $reset);
 
 //		print_r($trends);exit;
-        return $this->renderPage('stock_trend.tpl',
+        return $this->renderPage(
+            'stock_trend.tpl',
             [
-                'today' => date('Y年n月j日', time()),
+                'today'  => date('Y年n月j日', time()),
                 'trends' => json_encode($trends),
-                'date' => $date,
-            ]);
+                'date'   => $date,
+            ]
+        );
     }
 
     /**
@@ -959,16 +1021,21 @@ class StockController extends BaseController
         if (AppUtil::isAccountDebugger(Admin::getAdminId())) {
             //$reset = 1;
         }
-        $trends = TrendStockService::init(TrendStockService::CAT_TREND)->chartTrend($date, $reset);
+        $trends = TrendStockService::init(TrendStockService::CAT_TREND)
+            ->chartTrend($date, $reset);
 
 //		print_r($trends);exit;
-        return $this->renderPage('stock_trend_new.tpl',
+        return $this->renderPage(
+            'stock_trend_new.tpl',
             [
-                'today' => date('Y年n月j日', time()),
-                'trends' => json_encode($trends),
-                'date' => $date,
-                'partners' => json_encode(StockUser::get_partners(), JSON_UNESCAPED_UNICODE),
-            ]);
+                'today'    => date('Y年n月j日', time()),
+                'trends'   => json_encode($trends),
+                'date'     => $date,
+                'partners' => json_encode(
+                    StockUser::get_partners(), JSON_UNESCAPED_UNICODE
+                ),
+            ]
+        );
     }
 
     public function actionPhones()
@@ -988,23 +1055,25 @@ class StockController extends BaseController
         }
         if ($st && $et) {
             $criteria[] = "  oAfter between :st and :et ";
-            $params[':st'] = $st . ' 00:00';
-            $params[':et'] = $et . ' 23:59';
+            $params[':st'] = $st.' 00:00';
+            $params[':et'] = $et.' 23:59';
         }
 
         list($list, $count) = Log::section_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('stock_phones.tpl',
+        return $this->renderPage(
+            'stock_phones.tpl',
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'count' => $count,
-                'cat' => $cat,
-                'st' => $st,
-                'et' => $et,
-                'cats' => TryPhone::$catDict,
-            ]);
+                'list'       => $list,
+                'count'      => $count,
+                'cat'        => $cat,
+                'st'         => $st,
+                'et'         => $et,
+                'cats'       => TryPhone::$catDict,
+            ]
+        );
     }
 
     /**
@@ -1021,7 +1090,7 @@ class StockController extends BaseController
 
         $filename_time = date("Y-m-d");
         if ($sdate && $edate) {
-            $filename_time = $sdate . "_" . $edate;
+            $filename_time = $sdate."_".$edate;
             $sdate .= " 00:00:00";
             $edate .= " 23:59:59";
             $condition .= " and oDate between '$sdate' and '$edate' ";
@@ -1029,11 +1098,12 @@ class StockController extends BaseController
         $filename_satus = '';
         if ($cat) {
             $condition .= " and oBefore='$cat' ";
-            $filename_satus = "【" . TryPhone::$catDict[$cat] . "】";
+            $filename_satus = "【".TryPhone::$catDict[$cat]."】";
         }
 
         $cat2 = Log::CAT_PHONE_SECTION_YES;
-        $sql = "select *
+        $sql
+            = "select *
 				from im_log 
 				where oCategory='$cat2' $condition limit 3000";
         $conn = AppUtil::db();
@@ -1060,7 +1130,7 @@ class StockController extends BaseController
             $content[] = $row;
         }
 
-        $filename = "抓取手机号" . $filename_satus . $filename_time;
+        $filename = "抓取手机号".$filename_satus.$filename_time;
 
         ExcelUtil::getYZExcel($filename, $header, $content, $cloum_w);
         exit;
@@ -1083,23 +1153,25 @@ class StockController extends BaseController
         }
         if ($st && $et) {
             $criteria[] = "  oAfter between :st and :et ";
-            $params[':st'] = $st . ' 00:00';
-            $params[':et'] = $et . ' 23:59';
+            $params[':st'] = $st.' 00:00';
+            $params[':et'] = $et.' 23:59';
         }
 
         list($list, $count) = Log::zdm_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('stock_zdm_reg.tpl',
+        return $this->renderPage(
+            'stock_zdm_reg.tpl',
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'count' => $count,
-                'phone' => $phone,
-                'st' => $st,
-                'et' => $et,
+                'list'       => $list,
+                'count'      => $count,
+                'phone'      => $phone,
+                'st'         => $st,
+                'et'         => $et,
 
-            ]);
+            ]
+        );
     }
 
     public function actionZdm_reg_link()
@@ -1119,14 +1191,16 @@ class StockController extends BaseController
         list($list, $count) = Log::zdm_link_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('stock_zdm_reg_link.tpl',
+        return $this->renderPage(
+            'stock_zdm_reg_link.tpl',
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'count' => $count,
-                'phone' => $phone,
+                'list'       => $list,
+                'count'      => $count,
+                'phone'      => $phone,
 
-            ]);
+            ]
+        );
     }
 
     public function actionSource()
@@ -1146,31 +1220,35 @@ class StockController extends BaseController
         }
         if ($st && $et) {
             $criteria[] = "  oAfter between :st and :et ";
-            $params[':st'] = $st . ' 00:00';
-            $params[':et'] = $et . ' 23:59';
+            $params[':st'] = $st.' 00:00';
+            $params[':et'] = $et.' 23:59';
         }
 
         list($list, $count) = CRMStockSource::items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage('stock_source.tpl',
+        return $this->renderPage(
+            'stock_source.tpl',
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'count' => $count,
-                'sts' => CRMStockSource::$stDict,
-            ]);
+                'list'       => $list,
+                'count'      => $count,
+                'sts'        => CRMStockSource::$stDict,
+            ]
+        );
     }
 
     public function actionReduce_stock()
     {
         list($list, $dts) = StockOrder::cla_reduce_stock_users();
 
-        return $this->renderPage('stock_reduce.tpl',
+        return $this->renderPage(
+            'stock_reduce.tpl',
             [
-                'dts' => $dts,
+                'dts'  => $dts,
                 'list' => $list,
-            ]);
+            ]
+        );
     }
 
     //-- 查询 上个月有操作 这个月没有操作 的用户
@@ -1180,20 +1258,24 @@ class StockController extends BaseController
 
         $list = StockOrder::cla_reduce_users_mouth($dt);
 
-        return $this->renderPage('stock_reduce_user.tpl',
+        return $this->renderPage(
+            'stock_reduce_user.tpl',
             [
-                'dt' => $dt,
+                'dt'   => $dt,
                 'list' => $list,
-            ]);
+            ]
+        );
     }
 
     // 断点续传
     public function actionUp()
     {
-        return $this->renderPage('up2.tpl',
+        return $this->renderPage(
+            'up2.tpl',
             [
 
-            ]);
+            ]
+        );
     }
 
     // 断点续传接口
@@ -1209,9 +1291,9 @@ class StockController extends BaseController
         $fname = $_POST['name'];
         $truename = $_POST['trueName'];
 
-        $path = __DIR__ . "/../web/";
-        $dir = $path . "source/" . $truename . "-" . $fsize;
-        $save = $dir . "/" . $fname;
+        $path = __DIR__."/../web/";
+        $dir = $path."source/".$truename."-".$fsize;
+        $save = $dir."/".$fname;
 //		echo $dir . PHP_EOL;
 //		echo $save . PHP_EOL;
 //		exit;
@@ -1224,10 +1306,10 @@ class StockController extends BaseController
         $temp = fopen($fdata["tmp_name"], "r+");
         $filedata = fread($temp, filesize($fdata["tmp_name"]));
         //将分段内容存放到新建的临时文件里面
-        if (file_exists($dir . "/" . $findex . ".tmp")) {
-            unlink($dir . "/" . $findex . ".tmp");
+        if (file_exists($dir."/".$findex.".tmp")) {
+            unlink($dir."/".$findex.".tmp");
         }
-        $tempFile = fopen($dir . "/" . $findex . ".tmp", "w+");
+        $tempFile = fopen($dir."/".$findex.".tmp", "w+");
         fwrite($tempFile, $filedata);
         fclose($tempFile);
 
@@ -1239,8 +1321,8 @@ class StockController extends BaseController
             }
             //循环读取临时文件并将其合并置入新文件里面
             for ($i = 0; $i < $ftotal; $i++) {
-                $readData = fopen($dir . "/" . $i . ".tmp", "r+");
-                $writeData = fread($readData, filesize($dir . "/" . $i . ".tmp"));
+                $readData = fopen($dir."/".$i.".tmp", "r+");
+                $writeData = fread($readData, filesize($dir."/".$i.".tmp"));
 
                 $newFile = fopen($save, "a+");
                 fwrite($newFile, $writeData);
@@ -1248,10 +1330,11 @@ class StockController extends BaseController
 
                 fclose($readData);
 
-                $resu = @unlink($dir . "/" . $i . ".tmp");
+                $resu = @unlink($dir."/".$i.".tmp");
             }
             //$res = array("res" => "success", "url" => mb_convert_encoding($truename . "-" . $fsize . "/" . $fname, 'utf-8', 'gbk'));
-            $res = array("res" => "success", "url" => $truename . "-" . $fsize . "/" . $fname);
+            $res = array("res" => "success",
+                         "url" => $truename."-".$fsize."/".$fname);
             echo json_encode($res);
         }
 
@@ -1293,20 +1376,21 @@ class StockController extends BaseController
         $pagination = self::pagination($page, $count, 20);
 
         $orders = [
-            'update' => '正常排序',
-            'last_opt_asc' => '最近更新订单时间正序',
+            'update'        => '正常排序',
+            'last_opt_asc'  => '最近更新订单时间正序',
             'last_opt_desc' => '最近更新订单时间倒序',
         ];
 
-        return $this->renderPage("stock_user_admin.tpl",
+        return $this->renderPage(
+            "stock_user_admin.tpl",
             [
-                'getInfo' => $getInfo,
+                'getInfo'    => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list,
-                'types' => StockUserAdmin::$types,
-                'sts' => StockUserAdmin::$stDict,
-                'bds' => StockUserAdmin::bds(),
-                'orders' => $orders,
+                'list'       => $list,
+                'types'      => StockUserAdmin::$types,
+                'sts'        => StockUserAdmin::$stDict,
+                'bds'        => StockUserAdmin::bds(),
+                'orders'     => $orders,
             ]
         );
     }
@@ -1345,37 +1429,43 @@ class StockController extends BaseController
             $params[':cBDAssign'] = $bdid;
         }
 
-        list($list, $count) = StockActionChange::items($criteria, $params, $page);
+        list($list, $count) = StockActionChange::items(
+            $criteria, $params, $page
+        );
         $pagination = self::pagination($page, $count, 20);
 
         $orders = [
-            'update' => '正常排序',
-            'last_opt_asc' => '最近更新订单时间正序',
+            'update'        => '正常排序',
+            'last_opt_asc'  => '最近更新订单时间正序',
             'last_opt_desc' => '最近更新订单时间倒序',
         ];
 
-        $bds = Admin::getBDs(CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client');
+        $bds = Admin::getBDs(
+            CRMStockClient::CATEGORY_YANXUAN, 'im_crm_stock_client'
+        );
 
-        return $this->renderPage("stock_action_change.tpl",
+        return $this->renderPage(
+            "stock_action_change.tpl",
             [
-                'getInfo' => $getInfo,
+                'getInfo'    => $getInfo,
                 'pagination' => $pagination,
-                'list' => $list,
-                'types' => StockActionChange::$types,
-                'sts' => StockUserAdmin::$stDict,
-                "bds" => $bds,
-                'orders' => $orders,
+                'list'       => $list,
+                'types'      => StockActionChange::$types,
+                'sts'        => StockUserAdmin::$stDict,
+                "bds"        => $bds,
+                'orders'     => $orders,
             ]
         );
     }
 
     /**
-     * @des 生成短连接
+     * @des   生成短连接
      * @since 2019.9.3
      */
     public function actionLong2short()
     {
-        return $this->renderPage("stock_long_2_short.tpl",
+        return $this->renderPage(
+            "stock_long_2_short.tpl",
             [
 
             ]
@@ -1386,6 +1476,7 @@ class StockController extends BaseController
 
     /**
      * 大盘 换手率符合要求股票
+     *
      * @time 2019.9.16
      */
     public function actionStock_turn()
@@ -1403,13 +1494,13 @@ class StockController extends BaseController
 
         $where = "";
         foreach ([5, 10, 15, 20, 30, 60] as $int) {
-            $var = 'avg' . $int;
+            $var = 'avg'.$int;
             if ($$var) {
-                $where .= " and tClose<s" . $int . ".sAvgClose ";
+                $where .= " and tClose<s".$int.".sAvgClose ";
             }
         }
         if ($day) {
-            $where .= ' and tTurnover<s' . $day . '.sAvgTurnover';
+            $where .= ' and tTurnover<s'.$day.'.sAvgTurnover';
         }
 
         $list = [];
@@ -1418,8 +1509,8 @@ class StockController extends BaseController
         //VarDumper::dump($list, 10, true);exit;
 
         $days = [
-            '0' => '-=请选择换手率=-',
-            '5' => '低于5日均值',
+            '0'  => '-=请选择换手率=-',
+            '5'  => '低于5日均值',
             '10' => '低于10日均值',
             '15' => '低于15日均值',
             '20' => '低于20日均值',
@@ -1427,14 +1518,15 @@ class StockController extends BaseController
             '60' => '低于60日均值',
         ];
 
-        return $this->renderPage("stock_turn.tpl",
+        return $this->renderPage(
+            "stock_turn.tpl",
             [
-                'list' => $list,
+                'list'  => $list,
                 'count' => count($list),
-                'days' => $days,
-                'day' => $day,
-                'dt' => $dt,
-                'avg5' => $avg5,
+                'days'  => $days,
+                'day'   => $day,
+                'dt'    => $dt,
+                'avg5'  => $avg5,
                 'avg10' => $avg10,
                 'avg15' => $avg15,
                 'avg20' => $avg20,
@@ -1446,6 +1538,7 @@ class StockController extends BaseController
 
     /**
      * 导出突破及突破后的统计数据
+     *
      * @time 2019.10.8
      */
     public function actionDownloadBreaks()
@@ -1474,6 +1567,7 @@ class StockController extends BaseController
      * 2. 按照以下标准筛选出每天合适的股票
      *      a) 标准1：第1天-第7天收盘价低于5，10，20日均线股票
      *      b) 标准2：1.最近1天，任何一天有突破的股票。突破定义如下：1.第1天-第7天任意一天收盘价低于5，10，20日均线股票 2.第8天涨幅超过3%；2.换手率高于20日均线
+     *
      * @time 2019.10.18
      */
     public function actionStock_171()
@@ -1482,18 +1576,21 @@ class StockController extends BaseController
         //list($select1, $select2) = StockTurn::stock171($dt);
         list($select1, $select2) = StockTurn::stock171_new($dt, 171);
 
-        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+        $StockTurn = StockTurn::findOne(
+            ['tStockId' => '000001', 'tTransOn' => $dt]
+        );
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 171);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage("stock_171.tpl",
+        return $this->renderPage(
+            "stock_171.tpl",
             [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
+                'list1'     => $select1,
+                'list2'     => $select2,
+                'list3'     => $list3,
+                'list4'     => $list4,
+                'dt'        => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
         );
@@ -1505,18 +1602,21 @@ class StockController extends BaseController
         //list($select1, $select2) = StockTurn::stock171($dt, 300);
         list($select1, $select2) = StockTurn::stock171_new($dt, 300);
 
-        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+        $StockTurn = StockTurn::findOne(
+            ['tStockId' => '000001', 'tTransOn' => $dt]
+        );
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 300);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage("stock_300.tpl",
+        return $this->renderPage(
+            "stock_300.tpl",
             [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
+                'list1'     => $select1,
+                'list2'     => $select2,
+                'list3'     => $list3,
+                'list4'     => $list4,
+                'dt'        => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
         );
@@ -1528,18 +1628,21 @@ class StockController extends BaseController
         //list($select1, $select2) = StockTurn::stock171($dt, 42);
         list($select1, $select2) = StockTurn::stock171_new($dt, 42);
 
-        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+        $StockTurn = StockTurn::findOne(
+            ['tStockId' => '000001', 'tTransOn' => $dt]
+        );
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 42);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage("stock_42.tpl",
+        return $this->renderPage(
+            "stock_42.tpl",
             [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
+                'list1'     => $select1,
+                'list2'     => $select2,
+                'list3'     => $list3,
+                'list4'     => $list4,
+                'dt'        => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
         );
@@ -1547,6 +1650,7 @@ class StockController extends BaseController
 
     /**
      * 股票所有列表
+     *
      * @return string
      */
     public function actionStock_all()
@@ -1554,18 +1658,21 @@ class StockController extends BaseController
         $dt = self::getParam("dt", date('Y-m-d'));
         list($select1, $select2) = StockTurn::stock171_new($dt, 0);
 
-        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
+        $StockTurn = StockTurn::findOne(
+            ['tStockId' => '000001', 'tTransOn' => $dt]
+        );
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 0);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage("stock_all.tpl",
+        return $this->renderPage(
+            "stock_all.tpl",
             [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
+                'list1'     => $select1,
+                'list2'     => $select2,
+                'list3'     => $list3,
+                'list4'     => $list4,
+                'dt'        => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
             ]
         );
@@ -1573,6 +1680,7 @@ class StockController extends BaseController
 
     /**
      * 股票所有列表 列表展示
+     *
      * @return string
      * @time 2020-05-29 PM
      */
@@ -1588,15 +1696,16 @@ class StockController extends BaseController
             $params[':dt'] = $dt;
         }
 
-        list($list, $count) = StockStat2::items($criteria, $params, $page,100);
+        list($list, $count) = StockStat2::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
 
-        return $this->renderPage("stock_all_list.tpl",
+        return $this->renderPage(
+            "stock_all_list.tpl",
             [
-                'list' => $list,
+                'list'       => $list,
                 'pagination' => $pagination,
-                'dt' => $dt,
+                'dt'         => $dt,
             ]
         );
     }
@@ -1626,17 +1735,20 @@ class StockController extends BaseController
             $params[':dt'] = $dt;
         }
 
-        list($list, $count) = StockMainStat::items($criteria, $params, $page, 100);
+        list($list, $count) = StockMainStat::items(
+            $criteria, $params, $page, 100
+        );
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage("stock_main.tpl",
+        return $this->renderPage(
+            "stock_main.tpl",
             [
-                'cat' => $cat,
-                'dt' => $dt,
+                'cat'        => $cat,
+                'dt'         => $dt,
                 'pagination' => $pagination,
-                'list' => $list,
-                'cats' => StockMainStat::$cats,
-                'update_on' => StockMain::get_latest_update_on(),
+                'list'       => $list,
+                'cats'       => StockMainStat::$cats,
+                'update_on'  => StockMain::get_latest_update_on(),
             ]
         );
     }
@@ -1666,17 +1778,20 @@ class StockController extends BaseController
             $params[':dt'] = $dt;
         }
 
-        list($list, $count) = StockMainStat::items2($criteria, $params, $page, 100);
+        list($list, $count) = StockMainStat::items2(
+            $criteria, $params, $page, 100
+        );
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage("stock_main2.tpl",
+        return $this->renderPage(
+            "stock_main2.tpl",
             [
-                'cat' => $cat,
-                'dt' => $dt,
+                'cat'        => $cat,
+                'dt'         => $dt,
                 'pagination' => $pagination,
-                'list' => $list,
-                'cats' => StockMainStat::$cats,
-                'update_on' => StockMain::get_latest_update_on(),
+                'list'       => $list,
+                'cats'       => StockMainStat::$cats,
+                'update_on'  => StockMain::get_latest_update_on(),
             ]
         );
     }
@@ -1698,17 +1813,20 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockMainRule::items($criteria, $params, $page, 100);
+        list($list, $count) = StockMainRule::items(
+            $criteria, $params, $page, 100
+        );
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage("stock_main_rule.tpl",
+        return $this->renderPage(
+            "stock_main_rule.tpl",
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'cats' => StockMainRule::$cats,
-                'sts' => StockMainRule::$stDict,
-                'cat' => $cat,
-                'scat' => StockMainStat::$cats_map,
+                'list'       => $list,
+                'cats'       => StockMainRule::$cats,
+                'sts'        => StockMainRule::$stDict,
+                'cat'        => $cat,
+                'scat'       => StockMainStat::$cats_map,
             ]
         );
     }
@@ -1730,17 +1848,20 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockMainRule2::items($criteria, $params, $page, 100);
+        list($list, $count) = StockMainRule2::items(
+            $criteria, $params, $page, 100
+        );
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage("stock_main_rule2.tpl",
+        return $this->renderPage(
+            "stock_main_rule2.tpl",
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'cats' => StockMainRule::$cats,
-                'sts' => StockMainRule::$stDict,
-                'cat' => $cat,
-                'scat' => StockMainStat::$cats_map,
+                'list'       => $list,
+                'cats'       => StockMainRule::$cats,
+                'sts'        => StockMainRule::$stDict,
+                'cat'        => $cat,
+                'scat'       => StockMainStat::$cats_map,
             ]
         );
     }
@@ -1761,10 +1882,10 @@ class StockController extends BaseController
 
         if ($name) {
             $nStr = [
-                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
+                0  => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
             or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name 
             or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name  ) ',
-                5 => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
+                5  => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
                 10 => ' (r.r_buy10 like :name or r.r_sold10 like :name or r.r_warn10 like :name) ',
                 20 => ' (r.r_buy20 like :name or r.r_sold20 like :name or r.r_warn20 like :name) ',
             ];
@@ -1773,7 +1894,7 @@ class StockController extends BaseController
         }
         if ($cat) {
             $cStr = [
-                5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
+                5  => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
                 10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
                 20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
             ];
@@ -1781,18 +1902,21 @@ class StockController extends BaseController
         }
 
 
-        list($list, $count) = StockMainResult::items($criteria, $params, $page, 10000);
+        list($list, $count) = StockMainResult::items(
+            $criteria, $params, $page, 10000
+        );
         $pagination = self::pagination($page, $count, 10000);
 
 
-        return $this->renderPage("stock_main_result.tpl",
+        return $this->renderPage(
+            "stock_main_result.tpl",
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'name' => $name,
-                'cats' => StockMainStat::$cats,
-                'cat' => $cat,
-                'notes' => StockMainResult2::$note_dict,
+                'list'       => $list,
+                'name'       => $name,
+                'cats'       => StockMainStat::$cats,
+                'cat'        => $cat,
+                'notes'      => StockMainResult2::$note_dict,
             ]
         );
     }
@@ -1813,10 +1937,10 @@ class StockController extends BaseController
 
         if ($name) {
             $nStr = [
-                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
+                0  => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
             or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name 
             or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name  ) ',
-                5 => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
+                5  => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
                 10 => ' (r.r_buy10 like :name or r.r_sold10 like :name or r.r_warn10 like :name) ',
                 20 => ' (r.r_buy20 like :name or r.r_sold20 like :name or r.r_warn20 like :name) ',
             ];
@@ -1825,25 +1949,28 @@ class StockController extends BaseController
         }
         if ($cat) {
             $cStr = [
-                5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
+                5  => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
                 10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
                 20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
             ];
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
+        list($list, $count) = StockMainResult2::items(
+            $criteria, $params, $page, 10000
+        );
         $pagination = self::pagination($page, $count, 10000);
 
 
-        return $this->renderPage("stock_main_result2.tpl",
+        return $this->renderPage(
+            "stock_main_result2.tpl",
             [
                 'pagination' => $pagination,
-                'list' => $list,
-                'name' => $name,
-                'cats' => StockMainStat::$cats,
-                'cat' => $cat,
-                'notes' => StockMainResult2::$note_dict,
+                'list'       => $list,
+                'name'       => $name,
+                'cats'       => StockMainStat::$cats,
+                'cat'        => $cat,
+                'notes'      => StockMainResult2::$note_dict,
             ]
         );
     }
@@ -1855,27 +1982,42 @@ class StockController extends BaseController
      */
     public function actionStock_main_back()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate)
+        list(
+            $list, $rate_year_sum, $stat_rule_right_rate
+            )
             = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
 
-        return $this->renderPage("stock_main_back.tpl",
+        return $this->renderPage(
+            "stock_main_back.tpl",
             [
-                'list' => StockMainResult::change_color_diff_sold_dt($list),
-                'rate_year_sum' => $rate_year_sum,
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'buy_times' => $buy_times,
-                'stop_rate' => $stop_rate,
+                'list'                 => StockMainResult::change_color_diff_sold_dt(
+                    $list
+                ),
+                'rate_year_sum'        => $rate_year_sum,
+                'price_types'          => StockMainPrice::$types,
+                'price_type'           => $price_type,
+                'buy_times'            => $buy_times,
+                'stop_rate'            => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'continue_errors' => StockMainResult::continue_errors($list),
-                'N1_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 1),
-                'N2_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 2),
-                'N3_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 3),
+                'continue_errors'      => StockMainResult::continue_errors(
+                    $list
+                ),
+                'N1_time_buy_ret'      => StockMainResult::N_times_buy_ret(
+                    $list, 1
+                ),
+                'N2_time_buy_ret'      => StockMainResult::N_times_buy_ret(
+                    $list, 2
+                ),
+                'N3_time_buy_ret'      => StockMainResult::N_times_buy_ret(
+                    $list, 3
+                ),
             ]
         );
     }
@@ -1888,27 +2030,42 @@ class StockController extends BaseController
      */
     public function actionStock_main_back2()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate)
+        list(
+            $list, $rate_year_sum, $stat_rule_right_rate
+            )
             = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
 
-        return $this->renderPage("stock_main_back2.tpl",
+        return $this->renderPage(
+            "stock_main_back2.tpl",
             [
-                'list' => StockMainResult2::change_color_diff_sold_dt($list),
-                'rate_year_sum' => $rate_year_sum,
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'buy_times' => $buy_times,
-                'stop_rate' => $stop_rate,
+                'list'                 => StockMainResult2::change_color_diff_sold_dt(
+                    $list
+                ),
+                'rate_year_sum'        => $rate_year_sum,
+                'price_types'          => StockMainPrice::$types,
+                'price_type'           => $price_type,
+                'buy_times'            => $buy_times,
+                'stop_rate'            => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'continue_errors' => StockMainResult2::continue_errors($list),
-                'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
-                'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),
-                'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 3),
+                'continue_errors'      => StockMainResult2::continue_errors(
+                    $list
+                ),
+                'N1_time_buy_ret'      => StockMainResult2::N_times_buy_ret(
+                    $list, 1
+                ),
+                'N2_time_buy_ret'      => StockMainResult2::N_times_buy_ret(
+                    $list, 2
+                ),
+                'N3_time_buy_ret'      => StockMainResult2::N_times_buy_ret(
+                    $list, 3
+                ),
             ]
         );
     }
@@ -1920,27 +2077,45 @@ class StockController extends BaseController
      */
     public function actionStock_main_back_r()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back_r_new($price_type, $buy_times,
-            $stop_rate);
+        list(
+            $list, $rate_year_sum, $stat_rule_right_rate
+            )
+            = StockMainResult::cal_back_r_new(
+            $price_type, $buy_times,
+            $stop_rate
+        );
 
-        return $this->renderPage("stock_main_back_r.tpl",
+        return $this->renderPage(
+            "stock_main_back_r.tpl",
             [
-                'list' => StockMainResult::change_color_diff_sold_dt($list),
-                'rate_year_sum' => $rate_year_sum,
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'buy_times' => $buy_times,
-                'stop_rate' => $stop_rate,
+                'list'                 => StockMainResult::change_color_diff_sold_dt(
+                    $list
+                ),
+                'rate_year_sum'        => $rate_year_sum,
+                'price_types'          => StockMainPrice::$types,
+                'price_type'           => $price_type,
+                'buy_times'            => $buy_times,
+                'stop_rate'            => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'continue_errors' => StockMainResult::continue_errors($list),
-                'N1_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 1),
-                'N2_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 2),
-                'N3_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 3),
+                'continue_errors'      => StockMainResult::continue_errors(
+                    $list
+                ),
+                'N1_time_buy_ret'      => StockMainResult::N_times_buy_ret(
+                    $list, 1
+                ),
+                'N2_time_buy_ret'      => StockMainResult::N_times_buy_ret(
+                    $list, 2
+                ),
+                'N3_time_buy_ret'      => StockMainResult::N_times_buy_ret(
+                    $list, 3
+                ),
             ]
         );
     }
@@ -1953,27 +2128,45 @@ class StockController extends BaseController
      */
     public function actionStock_main_back_r2()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, $buy_times,
-            $stop_rate);
+        list(
+            $list, $rate_year_sum, $stat_rule_right_rate
+            )
+            = StockMainResult2::cal_back_r_new(
+            $price_type, $buy_times,
+            $stop_rate
+        );
 
-        return $this->renderPage("stock_main_back_r2.tpl",
+        return $this->renderPage(
+            "stock_main_back_r2.tpl",
             [
-                'list' => StockMainResult2::change_color_diff_sold_dt($list),
-                'rate_year_sum' => $rate_year_sum,
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'buy_times' => $buy_times,
-                'stop_rate' => $stop_rate,
+                'list'                 => StockMainResult2::change_color_diff_sold_dt(
+                    $list
+                ),
+                'rate_year_sum'        => $rate_year_sum,
+                'price_types'          => StockMainPrice::$types,
+                'price_type'           => $price_type,
+                'buy_times'            => $buy_times,
+                'stop_rate'            => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'continue_errors' => StockMainResult2::continue_errors($list),
-                'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
-                'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),
-                'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 3),
+                'continue_errors'      => StockMainResult2::continue_errors(
+                    $list
+                ),
+                'N1_time_buy_ret'      => StockMainResult2::N_times_buy_ret(
+                    $list, 1
+                ),
+                'N2_time_buy_ret'      => StockMainResult2::N_times_buy_ret(
+                    $list, 2
+                ),
+                'N3_time_buy_ret'      => StockMainResult2::N_times_buy_ret(
+                    $list, 3
+                ),
             ]
         );
     }
@@ -1986,32 +2179,43 @@ class StockController extends BaseController
      */
     public function actionStock_main_back_merge()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
         // 回测列表
-        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
+        list(
+            $list1, $rate_year_sum1, $stat_rule_right_rate1
+            )
             = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
         // 卖空回测
-        list($list2, $rate_year_sum2, $stat_rule_right_rate2)
-            = StockMainResult::cal_back_r_new($price_type, $buy_times, $stop_rate);
+        list(
+            $list2, $rate_year_sum2, $stat_rule_right_rate2
+            )
+            = StockMainResult::cal_back_r_new(
+            $price_type, $buy_times, $stop_rate
+        );
 
         $list = array_merge($list1, $list2);
         ArrayHelper::multisort($list, 'buy_dt', SORT_DESC);
 
-        return $this->renderPage("stock_main_back_merge.tpl", [
-                'list' => $list,
-                'rate_year_sum1' => $rate_year_sum1,
-                'rate_year_sum2' => $rate_year_sum2,
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'buy_times' => $buy_times,
-                'stop_rate' => $stop_rate,
+        return $this->renderPage(
+            "stock_main_back_merge.tpl", [
+                'list'                  => $list,
+                'rate_year_sum1'        => $rate_year_sum1,
+                'rate_year_sum2'        => $rate_year_sum2,
+                'price_types'           => StockMainPrice::$types,
+                'price_type'            => $price_type,
+                'buy_times'             => $buy_times,
+                'stop_rate'             => $stop_rate,
                 'stat_rule_right_rate1' => $stat_rule_right_rate1,
                 'stat_rule_right_rate2' => $stat_rule_right_rate2,
-                'continue_errors' => StockMainResult::continue_errors(array_merge($list1, $list2)),
+                'continue_errors'       => StockMainResult::continue_errors(
+                    array_merge($list1, $list2)
+                ),
 
             ]
         );
@@ -2025,32 +2229,43 @@ class StockController extends BaseController
      */
     public function actionStock_main_back_merge2()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
         // 回测列表
-        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
+        list(
+            $list1, $rate_year_sum1, $stat_rule_right_rate1
+            )
             = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
         // 卖空回测
-        list($list2, $rate_year_sum2, $stat_rule_right_rate2)
-            = StockMainResult2::cal_back_r_new($price_type, $buy_times, $stop_rate);
+        list(
+            $list2, $rate_year_sum2, $stat_rule_right_rate2
+            )
+            = StockMainResult2::cal_back_r_new(
+            $price_type, $buy_times, $stop_rate
+        );
 
         $list = array_merge($list1, $list2);
         ArrayHelper::multisort($list, 'buy_dt', SORT_DESC);
 
-        return $this->renderPage("stock_main_back_merge2.tpl", [
-                'list' => $list,
-                'rate_year_sum1' => $rate_year_sum1,
-                'rate_year_sum2' => $rate_year_sum2,
-                'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'buy_times' => $buy_times,
-                'stop_rate' => $stop_rate,
+        return $this->renderPage(
+            "stock_main_back_merge2.tpl", [
+                'list'                  => $list,
+                'rate_year_sum1'        => $rate_year_sum1,
+                'rate_year_sum2'        => $rate_year_sum2,
+                'price_types'           => StockMainPrice::$types,
+                'price_type'            => $price_type,
+                'buy_times'             => $buy_times,
+                'stop_rate'             => $stop_rate,
                 'stat_rule_right_rate1' => $stat_rule_right_rate1,
                 'stat_rule_right_rate2' => $stat_rule_right_rate2,
-                'continue_errors' => StockMainResult2::continue_errors(array_merge($list1, $list2)),
+                'continue_errors'       => StockMainResult2::continue_errors(
+                    array_merge($list1, $list2)
+                ),
 
             ]
         );
@@ -2066,13 +2281,18 @@ class StockController extends BaseController
         $st_year = self::getParam("st_year", '');
         $et_year = self::getParam("et_year", '');
 
-        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat($st_year, $et_year);
+        list($list_buy, $list_sold, $list_warn) = StockMainResult::result_stat(
+            $st_year, $et_year
+        );
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
-            ['name' => '2018策略结果列表', 'st_year' => '2018', 'et_year' => '2018', 'cls' => ''],
-            ['name' => '2019策略结果列表', 'st_year' => '2019', 'et_year' => '2019', 'cls' => ''],
-            ['name' => '2018-2020策略结果列表', 'st_year' => '2018', 'et_year' => '2020', 'cls' => ''],
+            ['name' => '2018策略结果列表', 'st_year' => '2018', 'et_year' => '2018',
+             'cls'  => ''],
+            ['name' => '2019策略结果列表', 'st_year' => '2019', 'et_year' => '2019',
+             'cls'  => ''],
+            ['name'    => '2018-2020策略结果列表', 'st_year' => '2018',
+             'et_year' => '2020', 'cls' => ''],
         ];
         foreach ($tabs as $k => $v) {
             if ($st_year == $v['st_year'] && $et_year == $v['et_year']) {
@@ -2080,12 +2300,13 @@ class StockController extends BaseController
             }
         }
 
-        return $this->renderPage("stock_main_result_stat.tpl",
+        return $this->renderPage(
+            "stock_main_result_stat.tpl",
             [
-                'list_buy' => $list_buy,
+                'list_buy'  => $list_buy,
                 'list_sold' => $list_sold,
                 'list_warn' => $list_warn,
-                'tabs' => $tabs,
+                'tabs'      => $tabs,
                 //'st_year' => $st_year,
                 //'et_year' => $et_year,
             ]
@@ -2103,13 +2324,18 @@ class StockController extends BaseController
         $st_year = self::getParam("st_year", '');
         $et_year = self::getParam("et_year", '');
 
-        list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
+        list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat(
+            $st_year, $et_year
+        );
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
-            ['name' => '2018策略结果列表', 'st_year' => '2018', 'et_year' => '2018', 'cls' => ''],
-            ['name' => '2019策略结果列表', 'st_year' => '2019', 'et_year' => '2019', 'cls' => ''],
-            ['name' => '2018-2020策略结果列表', 'st_year' => '2018', 'et_year' => '2020', 'cls' => ''],
+            ['name' => '2018策略结果列表', 'st_year' => '2018', 'et_year' => '2018',
+             'cls'  => ''],
+            ['name' => '2019策略结果列表', 'st_year' => '2019', 'et_year' => '2019',
+             'cls'  => ''],
+            ['name'    => '2018-2020策略结果列表', 'st_year' => '2018',
+             'et_year' => '2020', 'cls' => ''],
         ];
         foreach ($tabs as $k => $v) {
             if ($st_year == $v['st_year'] && $et_year == $v['et_year']) {
@@ -2117,12 +2343,13 @@ class StockController extends BaseController
             }
         }
 
-        return $this->renderPage("stock_main_result_stat2.tpl",
+        return $this->renderPage(
+            "stock_main_result_stat2.tpl",
             [
-                'list_buy' => $list_buy,
+                'list_buy'  => $list_buy,
                 'list_sold' => $list_sold,
                 'list_warn' => $list_warn,
-                'tabs' => $tabs,
+                'tabs'      => $tabs,
                 //'st_year' => $st_year,
                 //'et_year' => $et_year,
             ]
@@ -2132,6 +2359,7 @@ class StockController extends BaseController
 
     /**
      * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
+     *
      * @time 2019-12-02
      *
      * 买点出现后5天的【做空】收益率
@@ -2140,27 +2368,36 @@ class StockController extends BaseController
      */
     public function actionRate_5day_after()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $is_go_short = self::getParam("is_go_short", 0);
 
         if ($is_go_short) {
-            list($list, $avgs) = StockMainResult::get_5day_after_rate_r($price_type);
+            list($list, $avgs) = StockMainResult::get_5day_after_rate_r(
+                $price_type
+            );
         } else {
-            list($list, $avgs) = StockMainResult::get_5day_after_rate($price_type);
+            list($list, $avgs) = StockMainResult::get_5day_after_rate(
+                $price_type
+            );
         }
 
         $tabs = [
-            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => $is_go_short == 0 ? 'active' : ''],
-            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => $is_go_short == 1 ? 'active' : ''],
+            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0,
+             'cls'  => $is_go_short == 0 ? 'active' : ''],
+            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1,
+             'cls'  => $is_go_short == 1 ? 'active' : ''],
         ];
 
-        return $this->renderPage("stock_main_rate_5day_rate.tpl",
+        return $this->renderPage(
+            "stock_main_rate_5day_rate.tpl",
             [
-                'list' => array_reverse($list),
+                'list'        => array_reverse($list),
                 'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'avgs' => $avgs,
-                'tabs' => $tabs,
+                'price_type'  => $price_type,
+                'avgs'        => $avgs,
+                'tabs'        => $tabs,
                 //'is_go_short' => $is_go_short,
             ]
         );
@@ -2168,6 +2405,7 @@ class StockController extends BaseController
 
     /**
      * 麻烦做下买点出现后5天的收益率，看下我们哪天做出买入会些。（只做2018和2019年就行）
+     *
      * @time 2019-12-02
      *
      * 买点出现后5天的【做空】收益率
@@ -2183,7 +2421,9 @@ class StockController extends BaseController
      */
     public function actionRate_5day_after2()
     {
-        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
+        $price_type = self::getParam(
+            "price_type", StockMainPrice::TYPE_ETF_500
+        );
         $is_go_short = self::getParam("is_go_short", 0);
 
         // $note 0=>“全部” 1=>“对” 9=>“错”
@@ -2202,7 +2442,9 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r(
+                $price_type, $where
+            );
         } else {
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='买对')  ";
@@ -2213,7 +2455,9 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate(
+                $price_type, $where
+            );
         }
 
         /*$tabs = [
@@ -2225,15 +2469,16 @@ class StockController extends BaseController
             1 => '买点出现后5天的【做空】收益率',
         ];
 
-        return $this->renderPage("stock_main_rate_5day_rate2.tpl",
+        return $this->renderPage(
+            "stock_main_rate_5day_rate2.tpl",
             [
-                'list' => array_reverse($list),
+                'list'        => array_reverse($list),
                 'price_types' => StockMainPrice::$types,
-                'price_type' => $price_type,
-                'avgs' => $avgs,
-                'tabs' => $tabs,
-                'note_dict' => $note_dict,
-                'note' => $note,
+                'price_type'  => $price_type,
+                'avgs'        => $avgs,
+                'tabs'        => $tabs,
+                'note_dict'   => $note_dict,
+                'note'        => $note,
                 'is_go_short' => $is_go_short,
             ]
         );
@@ -2250,14 +2495,18 @@ class StockController extends BaseController
     {
         $max_hold_days = self::getParam("max_hold_days", 10);
 
-        list($list, $rate_year_sum) = StockMainResult::random_buy_rate($max_hold_days);
+        list($list, $rate_year_sum) = StockMainResult::random_buy_rate(
+            $max_hold_days
+        );
 
-        return $this->renderPage("stock_main_random_rate.tpl",
+        return $this->renderPage(
+            "stock_main_random_rate.tpl",
             [
-                'list' => $list,
+                'list'          => $list,
                 'rate_year_sum' => $rate_year_sum,
                 'max_hold_days' => $max_hold_days,
-            ]);
+            ]
+        );
     }
 
     /**
@@ -2269,15 +2518,25 @@ class StockController extends BaseController
     {
         $list = StockMainConfig::get_items_by_cat();
 
-        return $this->renderPage("stock_main_config.tpl",
+        return $this->renderPage(
+            "stock_main_config.tpl",
             [
-                'list' => $list,
-                'stDict' => StockMainConfig::$stDict,
-                'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
-                'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
-                'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
-                'sms_interval' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_INTERVAL)[0],
-            ]);
+                'list'         => $list,
+                'stDict'       => StockMainConfig::$stDict,
+                'sms_st'       => StockMainConfig::get_items_by_cat(
+                    StockMainConfig::CAT_SMS_ST
+                )[0],
+                'sms_et'       => StockMainConfig::get_items_by_cat(
+                    StockMainConfig::CAT_SMS_ET
+                )[0],
+                'sms_times'    => StockMainConfig::get_items_by_cat(
+                    StockMainConfig::CAT_SMS_TIMES
+                )[0],
+                'sms_interval' => StockMainConfig::get_items_by_cat(
+                    StockMainConfig::CAT_SMS_INTERVAL
+                )[0],
+            ]
+        );
     }
 
     /**
@@ -2295,11 +2554,11 @@ class StockController extends BaseController
         $sh_close_avg = self::getParam("sh_close_avg", 0.8);
 
         $params = [
-            'sh_close' => $sh_close,
-            'cus' => $cus,
-            'turnover' => $turnover,
-            'sh_turnover' => $sh_turnover,
-            'diff_val' => $diff_val,
+            'sh_close'     => $sh_close,
+            'cus'          => $cus,
+            'turnover'     => $turnover,
+            'sh_turnover'  => $sh_turnover,
+            'diff_val'     => $diff_val,
             'sh_close_avg' => $sh_close_avg,
         ];
 
@@ -2307,17 +2566,18 @@ class StockController extends BaseController
 
         // print_r($curr_day);exit;
 
-        return $this->renderPage("stock_curr_day_trend2.tpl",
+        return $this->renderPage(
+            "stock_curr_day_trend2.tpl",
             [
-                'curr_day' => $curr_day,
-                'buys' => $buys,
-                'solds' => $solds,
-                'update_on' => StockMain::get_latest_update_on(),
-                'sh_close' => $sh_close,
-                'cus' => $cus,
-                'turnover' => $turnover,
-                'sh_turnover' => $sh_turnover,
-                'diff_val' => $diff_val,
+                'curr_day'     => $curr_day,
+                'buys'         => $buys,
+                'solds'        => $solds,
+                'update_on'    => StockMain::get_latest_update_on(),
+                'sh_close'     => $sh_close,
+                'cus'          => $cus,
+                'turnover'     => $turnover,
+                'sh_turnover'  => $sh_turnover,
+                'diff_val'     => $diff_val,
                 'sh_close_avg' => $sh_close_avg,
             ]
         );
@@ -2338,29 +2598,32 @@ class StockController extends BaseController
         $sh_close_avg = self::getParam("sh_close_avg", 0.08);
 
         $params = [
-            'sh_change' => $sh_change,
-            'cus' => $cus,
-            'turnover' => $turnover,
-            'sh_turnover' => $sh_turnover,
-            'diff_val' => $diff_val,
+            'sh_change'    => $sh_change,
+            'cus'          => $cus,
+            'turnover'     => $turnover,
+            'sh_turnover'  => $sh_turnover,
+            'diff_val'     => $diff_val,
             'sh_close_avg' => $sh_close_avg,
         ];
 
-        list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend2($params);
+        list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend2(
+            $params
+        );
 
         // print_r($curr_day);exit;
 
-        return $this->renderPage("stock_curr_day_trend.tpl",
+        return $this->renderPage(
+            "stock_curr_day_trend.tpl",
             [
-                'curr_day' => $curr_day,
-                'buys' => $buys,
-                'solds' => $solds,
-                'update_on' => StockMain::get_latest_update_on(),
-                'sh_change' => $sh_change,
-                'cus' => $cus,
-                'turnover' => $turnover,
-                'sh_turnover' => $sh_turnover,
-                'diff_val' => $diff_val,
+                'curr_day'     => $curr_day,
+                'buys'         => $buys,
+                'solds'        => $solds,
+                'update_on'    => StockMain::get_latest_update_on(),
+                'sh_change'    => $sh_change,
+                'cus'          => $cus,
+                'turnover'     => $turnover,
+                'sh_turnover'  => $sh_turnover,
+                'diff_val'     => $diff_val,
                 'sh_close_avg' => $sh_close_avg,
             ]
         );
@@ -2378,13 +2641,14 @@ class StockController extends BaseController
 
         $count = StockMainPb::get_pb_count($dt, $max_pb_val);
 
-        return $this->renderPage("stock_main_pb.tpl",
+        return $this->renderPage(
+            "stock_main_pb.tpl",
             [
-                'dt' => $dt,
-                'max_pb_val' => $max_pb_val,
-                'count' => $count,
+                'dt'          => $dt,
+                'max_pb_val'  => $max_pb_val,
+                'count'       => $count,
                 'stock_count' => count(StockMenu::get_valid_stocks()),
-                'update_dt' => StockMainPb::find()->max('p_update_on'),
+                'update_dt'   => StockMainPb::find()->max('p_update_on'),
             ]
         );
     }
@@ -2401,9 +2665,10 @@ class StockController extends BaseController
 
         $list = StockMainPb::items($max_pb_val);
 
-        return $this->renderPage("stock_main_pb_list.tpl",
+        return $this->renderPage(
+            "stock_main_pb_list.tpl",
             [
-                'list' => $list,
+                'list'       => $list,
                 'max_pb_val' => $max_pb_val,
             ]
         );
@@ -2419,12 +2684,15 @@ class StockController extends BaseController
         $page = self::getParam('page', 1);
 
         $criteria = $params = [];
-        list($list, $count) = StockMainPbStat::items($criteria, $params, $page, 100);
+        list($list, $count) = StockMainPbStat::items(
+            $criteria, $params, $page, 100
+        );
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage("stock_main_pb_stat.tpl",
+        return $this->renderPage(
+            "stock_main_pb_stat.tpl",
             [
-                'list' => $list,
+                'list'       => $list,
                 'pagination' => $pagination,
             ]
         );
@@ -2457,10 +2725,11 @@ class StockController extends BaseController
 
         list($pb_rates, $pb_cos, $pb_sh_closes) = StockMainPbStat::charts();
 
-        return $this->renderPage("stock_main_pb_chart.tpl",
+        return $this->renderPage(
+            "stock_main_pb_chart.tpl",
             [
-                'pb_rates' => AppUtil::json_encode($pb_rates),
-                'pb_cos' => AppUtil::json_encode($pb_cos),
+                'pb_rates'     => AppUtil::json_encode($pb_rates),
+                'pb_cos'       => AppUtil::json_encode($pb_cos),
                 'pb_sh_closes' => AppUtil::json_encode($pb_sh_closes),
             ]
         );
@@ -2477,10 +2746,11 @@ class StockController extends BaseController
 
         list($buys, $solds) = StockMainResult2::rule_right_rate();
 
-        return $this->renderPage("stock_main_result_rule_right_rate.tpl",
+        return $this->renderPage(
+            "stock_main_result_rule_right_rate.tpl",
             [
                 'solds' => $solds,
-                'buys' => $buys,
+                'buys'  => $buys,
             ]
         );
     }
@@ -2512,10 +2782,15 @@ class StockController extends BaseController
         Admin::staffOnly();
 
         list($buy_data, $sold_data) = StockMainResult2::result_stat0601();
+        if (Admin::getAdminId() == 1002) {
+            print_r($buy_data);
+            exit;
+        }
 
-        return $this->renderPage("stock_main_result_stat0601.tpl",
+        return $this->renderPage(
+            "stock_main_result_stat0601.tpl",
             [
-                'buy_data' => $buy_data,
+                'buy_data'  => $buy_data,
                 'sold_data' => $sold_data,
             ]
         );
