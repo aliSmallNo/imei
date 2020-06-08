@@ -1985,7 +1985,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $buy_data[42]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $buy_data[42]['yes']++;
+                        $buy_data[42]['no']++;
                         $buy_data[42]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
@@ -2006,7 +2006,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $buy_data[52]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $buy_data[52]['yes']++;
+                        $buy_data[52]['no']++;
                         $buy_data[52]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
@@ -2027,7 +2027,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $buy_data[62]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $buy_data[62]['yes']++;
+                        $buy_data[62]['no']++;
                         $buy_data[62]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
@@ -2220,7 +2220,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $sold_data[42]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $sold_data[42]['yes']++;
+                        $sold_data[42]['no']++;
                         $sold_data[42]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
@@ -2241,7 +2241,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $sold_data[52]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $sold_data[52]['yes']++;
+                        $sold_data[52]['no']++;
                         $sold_data[52]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
@@ -2262,7 +2262,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $sold_data[62]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $sold_data[62]['yes']++;
+                        $sold_data[62]['no']++;
                         $sold_data[62]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
