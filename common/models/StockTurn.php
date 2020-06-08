@@ -10,17 +10,17 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "im_stock_turn".
  *
  * @property integer $tId
- * @property string  $tStockId
+ * @property string $tStockId
  * @property integer $tTurnover
  * @property integer $tChangePercent
  * @property integer $tOpen
  * @property integer $tClose
  * @property integer $tHight
  * @property integer $tLow
- * @property string  $tTransOn
- * @property string  $tStat
- * @property string  $tAddedOn
- * @property string  $tUpdatedOn
+ * @property string $tTransOn
+ * @property string $tStat
+ * @property string $tAddedOn
+ * @property string $tUpdatedOn
  */
 class StockTurn extends \yii\db\ActiveRecord
 {
@@ -113,7 +113,9 @@ class StockTurn extends \yii\db\ActiveRecord
      * @return array
      * @time 2019.9.24
      */
-    public static function get_trans_days($year = '2019', $where = '',
+    public static function get_trans_days(
+        $year = '2019',
+        $where = '',
         $limit = 0
     ) {
         $limit_str = '';
@@ -126,8 +128,8 @@ class StockTurn extends \yii\db\ActiveRecord
                 order by tTransOn desc $limit_str ";
         $res = AppUtil::db()->createCommand(
             $sql, [
-            ':y' => $year,
-        ]
+                ':y' => $year,
+            ]
         )->queryAll();
 
         return array_column($res, 'tTransOn');
@@ -154,14 +156,14 @@ class StockTurn extends \yii\db\ActiveRecord
                 .'-'.substr($dt, 6, 2);
 
             $data = [
-                "tStockId"       => $stockId,
-                "tTurnover"      => $ret[38] * 100,                  //换手率
+                "tStockId" => $stockId,
+                "tTurnover" => $ret[38] * 100,                  //换手率
                 "tChangePercent" => $ret[32] * 100,             //涨跌幅
-                "tOpen"          => $ret[5] * 100,                       //开盘价
-                "tClose"         => $ret[3] * 100,                      //收盘价
-                "tHight"         => $ret[33] * 100,                     //最高价
-                "tLow"           => $ret[34] * 100,                       //最低价
-                "tTransOn"       => $trans_on,                        //交易日
+                "tOpen" => $ret[5] * 100,                       //开盘价
+                "tClose" => $ret[3] * 100,                      //收盘价
+                "tHight" => $ret[33] * 100,                     //最高价
+                "tLow" => $ret[34] * 100,                       //最低价
+                "tTransOn" => $trans_on,                        //交易日
             ];
         }
 
@@ -279,25 +281,25 @@ class StockTurn extends \yii\db\ActiveRecord
                 .'-'.substr($dt, 4, 2)
                 .'-'.substr($dt, 6, 2);
             $data = [
-                "date"        => $trans_on,                        //交易日
-                "code"        => $cat.'.'.$stockId,                        //交易日
-                "stock_id"    => $stockId,
-                "open"        => sprintf('%.2f', $ret[5]),//开盘价
-                "close"       => sprintf('%.2f', $ret[3]),//收盘价
-                "high"        => sprintf('%.2f', $ret[33]),//最高价
-                "low"         => sprintf('%.2f', $ret[34]),//最低价
-                "preclose"    => sprintf('%.2f', $ret[4]),//前收盘价
-                "volume"      => $ret[36] * 100,//成交量（累计 单位：股）
-                "amount"      => $ret[37] * 10000,//成交额（单位：人民币元）
-                "adjustflag"  => '0',//复权状态(1：后复权， 2：前复权，3：不复权）
-                "turn"        => sprintf('%.2f', $ret[38]),//换手率
+                "date" => $trans_on,                        //交易日
+                "code" => $cat.'.'.$stockId,                        //交易日
+                "stock_id" => $stockId,
+                "open" => sprintf('%.2f', $ret[5]),//开盘价
+                "close" => sprintf('%.2f', $ret[3]),//收盘价
+                "high" => sprintf('%.2f', $ret[33]),//最高价
+                "low" => sprintf('%.2f', $ret[34]),//最低价
+                "preclose" => sprintf('%.2f', $ret[4]),//前收盘价
+                "volume" => $ret[36] * 100,//成交量（累计 单位：股）
+                "amount" => $ret[37] * 10000,//成交额（单位：人民币元）
+                "adjustflag" => '0',//复权状态(1：后复权， 2：前复权，3：不复权）
+                "turn" => sprintf('%.2f', $ret[38]),//换手率
                 "tradestatus" => 1,//交易状态(1：正常交易 0：停牌）
-                "pctChg"      => sprintf('%.2f', $ret[32]),//涨跌幅
-                "peTTM"       => sprintf('%.2f', $ret[39]),// 滚动市盈率
-                "peStatic"    => sprintf('%.2f', $ret[53]),// 静态市盈率
-                "pbMRQ"       => sprintf('%.2f', $ret[46]),// 市净率
-                "psTTM"       => '',// 滚动市销率
-                "pcfNcfTTM"   => '',// 滚动市现率
+                "pctChg" => sprintf('%.2f', $ret[32]),//涨跌幅
+                "peTTM" => sprintf('%.2f', $ret[39]),// 滚动市盈率
+                "peStatic" => sprintf('%.2f', $ret[53]),// 静态市盈率
+                "pbMRQ" => sprintf('%.2f', $ret[46]),// 市净率
+                "psTTM" => '',// 滚动市销率
+                "pcfNcfTTM" => '',// 滚动市现率
             ];
         }
         try {
@@ -314,7 +316,9 @@ class StockTurn extends \yii\db\ActiveRecord
      *
      * @time 2019.9.23
      */
-    public static function get_stime_etime_turnover_data($year, $start = '',
+    public static function get_stime_etime_turnover_data(
+        $year,
+        $start = '',
         $end = ''
     ) {
         if (!$start || !$end) {
@@ -333,8 +337,16 @@ class StockTurn extends \yii\db\ActiveRecord
                 if ($insertData) {
                     Yii::$app->db->createCommand()->batchInsert(
                         self::tableName(),
-                        ["tStockId", "tTurnover", "tChangePercent", "tOpen",
-                         "tClose", "tHight", "tLow", "tTransOn"],
+                        [
+                            "tStockId",
+                            "tTurnover",
+                            "tChangePercent",
+                            "tOpen",
+                            "tClose",
+                            "tHight",
+                            "tLow",
+                            "tTransOn",
+                        ],
                         $insertData
                     )->execute();
                 }
@@ -360,14 +372,14 @@ class StockTurn extends \yii\db\ActiveRecord
 
             if (!self::unique_one($stockId, $trans_on)) {
                 $data[] = [
-                    "tStockId"       => $stockId,
-                    "tTurnover"      => $turnover * 100,             //换手率
+                    "tStockId" => $stockId,
+                    "tTurnover" => $turnover * 100,             //换手率
                     "tChangePercent" => $change_percent * 100,  //涨跌幅
-                    "tOpen"          => $open * 100,                     //开盘价
-                    "tClose"         => $close * 100,                   //收盘价
-                    "tHight"         => $hight * 100,                   //最高价
-                    "tLow"           => $low * 100,                       //最低价
-                    "tTransOn"       => $trans_on,                    //交易日
+                    "tOpen" => $open * 100,                     //开盘价
+                    "tClose" => $close * 100,                   //收盘价
+                    "tHight" => $hight * 100,                   //最高价
+                    "tLow" => $low * 100,                       //最低价
+                    "tTransOn" => $trans_on,                    //交易日
                 ];
             }
         }
@@ -388,14 +400,14 @@ class StockTurn extends \yii\db\ActiveRecord
             $turnover = floatval(substr($hq[9], 0, -1));
 
             $data[] = [
-                "tStockId"       => $stockId,
-                "tTurnover"      => $turnover * 100,             //换手率
+                "tStockId" => $stockId,
+                "tTurnover" => $turnover * 100,             //换手率
                 "tChangePercent" => $change_percent * 100,  //涨跌幅
-                "tOpen"          => $open * 100,                     //开盘价
-                "tClose"         => $close * 100,                   //收盘价
-                "tHight"         => $hight * 100,                   //最高价
-                "tLow"           => $low * 100,                       //最低价
-                "tTransOn"       => $trans_on,                    //交易日
+                "tOpen" => $open * 100,                     //开盘价
+                "tClose" => $close * 100,                   //收盘价
+                "tHight" => $hight * 100,                   //最高价
+                "tLow" => $low * 100,                       //最低价
+                "tTransOn" => $trans_on,                    //交易日
             ];
 
         }
@@ -408,7 +420,10 @@ class StockTurn extends \yii\db\ActiveRecord
      * 日K线数据    http://data.gtimg.cn/flashdata/hushen/daily/13/sh600519.js
      * 获取月K线数据 http://data.gtimg.cn/flashdata/hushen/monthly/sh600519.js
      */
-    public static function update_one_stock_kline($stockId, $cat, $today = true,
+    public static function update_one_stock_kline(
+        $stockId,
+        $cat,
+        $today = true,
         $year = "19"
     ) {
         $api = "http://data.gtimg.cn/flashdata/hushen/daily/%s/%s.js";
@@ -442,10 +457,10 @@ class StockTurn extends \yii\db\ActiveRecord
             StockTurn::add(
                 [
                     "tStockId" => $stockId,
-                    "tOpen"    => $prices[1] * 100,                        //开盘价
-                    "tClose"   => $prices[2] * 100,                       //收盘价
-                    "tHight"   => $prices[3] * 100,                       //最高价
-                    "tLow"     => $prices[4] * 100,//最低价
+                    "tOpen" => $prices[1] * 100,                        //开盘价
+                    "tClose" => $prices[2] * 100,                       //收盘价
+                    "tHight" => $prices[3] * 100,                       //最高价
+                    "tLow" => $prices[4] * 100,//最低价
                     "tTransOn" => $dt,                                  //交易日
                 ]
             );
@@ -461,10 +476,10 @@ class StockTurn extends \yii\db\ActiveRecord
             if (!StockTurn::unique_one($stockId, $dt)) {
                 $insert[] = [
                     "tStockId" => $stockId,
-                    "tOpen"    => $prices[1] * 100,                        //开盘价
-                    "tClose"   => $prices[2] * 100,                       //收盘价
-                    "tHight"   => $prices[3] * 100,                       //最高价
-                    "tLow"     => $prices[4] * 100,//最低价
+                    "tOpen" => $prices[1] * 100,                        //开盘价
+                    "tClose" => $prices[2] * 100,                       //收盘价
+                    "tHight" => $prices[3] * 100,                       //最高价
+                    "tLow" => $prices[4] * 100,//最低价
                     "tTransOn" => $dt,                                  //交易日
                 ];
             }
@@ -493,7 +508,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $lose_turn_list = StockTurn::find()->where(
                 [
                     'tTurnover' => 0,
-                    'tStockId'  => $stockId,
+                    'tStockId' => $stockId,
                 ]
             )->asArray()->orderBy("tTransOn desc")->all();
 
@@ -584,6 +599,11 @@ class StockTurn extends \yii\db\ActiveRecord
      * @param $dt
      *
      * @time 2020-05-07 PM
+     *
+     * 标准三（二选一）：
+     * 1.市盈率小于15，且，市净率小于1.5 , 且市盈率>0，且市净率>0
+     * 2.市盈率*市净率小于22.5大于0, 且市盈率>0，且市净率>0；
+     * @time 2020-06-08 PM
      */
     public static function get_pb_pe_stock($dt, $cat = 300)
     {
@@ -600,8 +620,8 @@ class StockTurn extends \yii\db\ActiveRecord
             = "select * from im_stock_bao where `date`=:dt and stock_id in ($ids)";
         $rows = AppUtil::db()->createCommand(
             $sql, [
-            ':dt' => $dt,
-        ]
+                ':dt' => $dt,
+            ]
         )->queryAll();
 
         $res_stocks = [];
@@ -612,21 +632,16 @@ class StockTurn extends \yii\db\ActiveRecord
 
             // 有静态市盈率用静态市盈率 没有静态市盈率用滚动市盈率  静态市盈率昨天（2020-05-06）开始抓取的
             if ($peStatic) {
-                if (($peStatic < 15 && $pbMRQ < 1.5)
-                    || ($peStatic > 0
-                        && $pbMRQ > 0
-                        && $peStatic * $pbMRQ < 22.5
-                        && $peStatic * $pbMRQ > 0)
-                ) {
-                    $res_stocks[] = $row['stock_id'];
+                if ($peStatic > 0 && $pbMRQ > 0) {
+                    if (($peStatic < 15 && $pbMRQ < 1.5) || ($peStatic * $pbMRQ < 22.5 && $peStatic * $pbMRQ > 0)) {
+                        $res_stocks[] = $row['stock_id'];
+                    }
                 }
             } else {
-                if (($peTTM < 15 && $pbMRQ < 1.5)
-                    || ($peTTM > 0 && $pbMRQ > 0
-                        && $peTTM * $pbMRQ < 22.5
-                        && $peTTM * $pbMRQ > 0)
-                ) {
-                    $res_stocks[] = $row['stock_id'];
+                if ($peTTM > 0 && $pbMRQ > 0) {
+                    if (($peTTM < 15 && $pbMRQ < 1.5) || ($peTTM * $pbMRQ < 22.5 && $peTTM * $pbMRQ > 0)) {
+                        $res_stocks[] = $row['stock_id'];
+                    }
                 }
             }
         }
@@ -640,8 +655,11 @@ class StockTurn extends \yii\db\ActiveRecord
 
         $data = [];
         foreach ($stock_menu_select as $v) {
-            $data[] = ['id'       => $v['mStockId'], 'name' => $v['mStockName'],
-                       'trans_on' => $dt];
+            $data[] = [
+                'id' => $v['mStockId'],
+                'name' => $v['mStockName'],
+                'trans_on' => $dt,
+            ];
         }
 
         return $data;
@@ -1240,8 +1258,11 @@ class StockTurn extends \yii\db\ActiveRecord
             $avgprice60 = $stat[60]['sAvgClose'];
             $avgturnover20 = $stat[20]['sAvgTurnover'];
 
-            $item_data = ['id'       => $stock_id, 'name' => $stock_name,
-                          'trans_on' => $trans_on];
+            $item_data = [
+                'id' => $stock_id,
+                'name' => $stock_name,
+                'trans_on' => $trans_on,
+            ];
 
             if ($k < 7) {
                 if (in_array($cat, [171, 300])) {
@@ -1297,9 +1318,9 @@ class StockTurn extends \yii\db\ActiveRecord
                 where m.mStatus=:st and t.tTransOn=:dt $where ";
         $res = AppUtil::db()->createCommand(
             $sql, [
-            ':st' => StockMenu::STATUS_USE,
-            ':dt' => $trans_on,
-        ]
+                ':st' => StockMenu::STATUS_USE,
+                ':dt' => $trans_on,
+            ]
         )->queryAll();
         foreach ($res as $v) {
             $stock_id = $v['mStockId'];
@@ -1315,8 +1336,11 @@ class StockTurn extends \yii\db\ActiveRecord
             $avgprice60 = $stat[60]['sAvgClose'];
             $avgturnover20 = $stat[20]['sAvgTurnover'];
 
-            $item_data = ['id'       => $stock_id, 'name' => $stock_name,
-                          'trans_on' => $trans_on];
+            $item_data = [
+                'id' => $stock_id,
+                'name' => $stock_name,
+                'trans_on' => $trans_on,
+            ];
 
             if ($k < 7) {
                 if (in_array($cat, [171, 300, 0])) {
