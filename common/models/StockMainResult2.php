@@ -1948,7 +1948,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $buy_data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
                     $buy_data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
-                    $buy_data[22]['items'][] = [$trans_date];
+                    $buy_data[22]['items'][22][] = $trans_date;
                 }
             }
             // 3天2次
@@ -1967,7 +1967,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $buy_data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
                     $buy_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
-                    $buy_data[32]['items'][] = [$trans_date];
+                    $buy_data[32]['items'][32][] = $trans_date;
                 }
             }
 
@@ -1987,7 +1987,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $buy_data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
                     $buy_data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
-                    $buy_data[42]['items'][] = [$trans_date];
+                    $buy_data[42]['items'][42][] = $trans_date;
                 }
             }
             // 5天2次
@@ -2006,7 +2006,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $buy_data[52]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
                     $buy_data[52]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
-                    $buy_data[52]['items'][] = [$trans_date];
+                    $buy_data[52]['items'][52][] = [$trans_date];
                 }
             }
             // 6天2次
@@ -2025,7 +2025,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $buy_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
                     $buy_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
-                    $buy_data[62]['items'][] = [$trans_date];
+                    $buy_data[62]['items'][62][] = $trans_date;
                 }
             }
         }
@@ -2173,7 +2173,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
                     $sold_data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
-                    $sold_data[22]['items'][] = [$trans_date];
+                    $sold_data[22]['items'][22][] = $trans_date;
                 }
             }
             // 3天2次
@@ -2192,7 +2192,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
                     $sold_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
-                    $sold_data[32]['items'][] = [$trans_date];
+                    $sold_data[32]['items'][32][] = $trans_date;
                 }
             }
 
@@ -2212,7 +2212,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
                     $sold_data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
-                    $sold_data[42]['items'][] = [$trans_date];
+                    $sold_data[42]['items'][42][] = $trans_date;
                 }
             }
             // 5天2次
@@ -2231,7 +2231,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[52]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
                     $sold_data[52]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
-                    $sold_data[52]['items'][] = [$trans_date];
+                    $sold_data[52]['items'][52][] = $trans_date;
                 }
             }
             // 6天2次
@@ -2250,7 +2250,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
                     $sold_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
-                    $sold_data[62]['items'][] = [$trans_date];
+                    $sold_data[62]['items'][62][] = $trans_date;
                 }
             }
         }
