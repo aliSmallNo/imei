@@ -32,11 +32,11 @@
     }
 
     .dt_yes {
-
+        background: #f7e8e8;
     }
 
     .dt_no {
-
+        background: #b4e4b5;
     }
 
     .dt_mid {
