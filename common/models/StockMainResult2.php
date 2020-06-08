@@ -1939,15 +1939,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_tomorrow = $list[$trans_dates[$k + 1]];
                     if ($note_yes_flag) {
                         $buy_data[22]['yes']++;
-                        $sold_data[22]['items']['yes'][] = $trans_date;
+                        $buy_data[22]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
                         $buy_data[22]['no']++;
-                        $sold_data[22]['items']['no'][] = $trans_date;
+                        $buy_data[22]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
                         $buy_data[22]['mid']++;
-                        $sold_data[22]['items']['mid'][] = $trans_date;
+                        $buy_data[22]['items']['mid'][] = $trans_date;
                     }
                     $buy_data[22]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
                     $buy_data[22]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
@@ -1960,15 +1960,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_three = $list[$trans_dates[$k + 2]];
                     if ($note_yes_flag) {
                         $buy_data[32]['yes']++;
-                        $sold_data[32]['items']['yes'][] = $trans_date;
+                        $buy_data[32]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
                         $buy_data[32]['no']++;
-                        $sold_data[32]['items']['no'][] = $trans_date;
+                        $buy_data[32]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
                         $buy_data[32]['mid']++;
-                        $sold_data[32]['items']['mid'][] = $trans_date;
+                        $buy_data[32]['items']['mid'][] = $trans_date;
                     }
                     $buy_data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
                     $buy_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
@@ -1982,15 +1982,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_four = $list[$trans_dates[$k + 3]];
                     if ($note_yes_flag) {
                         $buy_data[42]['yes']++;
-                        $sold_data[42]['items']['yes'][] = $trans_date;
+                        $buy_data[42]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
                         $buy_data[42]['yes']++;
-                        $sold_data[42]['items']['no'][] = $trans_date;
+                        $buy_data[42]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
                         $buy_data[42]['mid']++;
-                        $sold_data[42]['items']['mid'][] = $trans_date;
+                        $buy_data[42]['items']['mid'][] = $trans_date;
                     }
                     $buy_data[42]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
                     $buy_data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
@@ -2003,15 +2003,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_five = $list[$trans_dates[$k + 4]];
                     if ($note_yes_flag) {
                         $buy_data[52]['yes']++;
-                        $sold_data[52]['items']['yes'][] = $trans_date;
+                        $buy_data[52]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
                         $buy_data[52]['yes']++;
-                        $sold_data[52]['items']['no'][] = $trans_date;
+                        $buy_data[52]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
                         $buy_data[52]['mid']++;
-                        $sold_data[52]['items']['mid'][] = $trans_date;
+                        $buy_data[52]['items']['mid'][] = $trans_date;
                     }
                     $buy_data[52]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
                     $buy_data[52]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
@@ -2024,15 +2024,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_six = $list[$trans_dates[$k + 5]];
                     if ($note_yes_flag) {
                         $buy_data[62]['yes']++;
-                        $sold_data[62]['items']['yes'][] = $trans_date;
+                        $buy_data[62]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
                         $buy_data[62]['yes']++;
-                        $sold_data[62]['items']['no'][] = $trans_date;
+                        $buy_data[62]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
                         $buy_data[62]['mid']++;
-                        $sold_data[62]['items']['mid'][] = $trans_date;
+                        $buy_data[62]['items']['mid'][] = $trans_date;
                     }
                     $buy_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
                     $buy_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
