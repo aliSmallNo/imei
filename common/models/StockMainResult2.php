@@ -2271,7 +2271,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
                     $sold_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
-                    $sold_data[62]['items'][62][] = $trans_date;
                 }
             }
         }
