@@ -2163,8 +2163,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $five_is_sold_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 卖出 日期
             $six_is_sold_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 卖出 日期
 
-            $note_yes_flag = $note && in_array($note, [self::NOTE_SOLD_RIGHT, self::NOTE_WRONG]);
-            $note_no_flag = $note && in_array($note, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_yes_flag = $note && in_array($note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
+            $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
             $note_mid_flag = $note && in_array($note, [self::NOTE_MID]);
 
             // 2天2次
