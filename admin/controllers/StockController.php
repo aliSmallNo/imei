@@ -2000,7 +2000,7 @@ class StockController extends BaseController
                 if (isset($stat_rule_right_rate[$rule_name])) {
                     $co++;
                     try {
-                        $sum += $stat_rule_right_rate[$rule_name];
+                        $sum += $stat_rule_right_rate[$rule_name]['right_rate'];
                     } catch (\Exception $e) {
                         var_dump($rule_name);exit;
                     }
