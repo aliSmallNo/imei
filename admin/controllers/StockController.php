@@ -1999,7 +1999,12 @@ class StockController extends BaseController
             foreach ($rules as $rule_name) {
                 if (isset($stat_rule_right_rate[$rule_name])) {
                     $co++;
-                    $sum += $stat_rule_right_rate[$rule_name];
+                    try {
+                        $sum += $stat_rule_right_rate[$rule_name];
+                    } catch (\Exception $e) {
+                        var_dump($rule_name);exit;
+                    }
+
                 }
             }
             $list[$k]['avg_right_rate'] = $co > 0 ? sprintf('%.2f', $sum / $co) : 0;
