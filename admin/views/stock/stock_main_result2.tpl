@@ -75,6 +75,8 @@
             <div>10日:{{$item.r_buy10}}</div>{{/if}}
           {{if $item.r_buy20}}
             <div>20日:{{$item.r_buy20}}</div>{{/if}}
+
+          <div>{{$item.avg_right_rate}}%</div>
         </td>
         <td class="bot_line">
           {{if $item.r_sold5}}
@@ -214,7 +216,7 @@
             layer.msg(resp.msg);
             if (resp.code == 0) {
                 setTimeout(function () {
-                   location.reload();
+                    location.reload();
                 }, 800);
             }
         }, 'json');
