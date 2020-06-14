@@ -1968,10 +1968,6 @@ class StockController extends BaseController
         list($list2, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
 
-        if (Admin::getAdminId() == 1002) {
-            print_r($stat_rule_right_rate);
-            exit;
-        }
         foreach ($list as $k => $v) {
             $name = $v['name'];
             $r_buy5 = $v['r_buy5'];
@@ -2001,9 +1997,9 @@ class StockController extends BaseController
             $co = 0;
             $sum = 0;
             foreach ($rules as $rule_name) {
-                if (isset($right_rate_arr[$rule_name])) {
+                if (isset($stat_rule_right_rate[$rule_name])) {
                     $co++;
-                    $sum += $right_rate_arr[$rule_name];
+                    $sum += $stat_rule_right_rate[$rule_name];
                 }
             }
             $list[$k]['avg_right_rate'] = $co > 0 ? sprintf('%.2f', $sum / $co) : 0;
