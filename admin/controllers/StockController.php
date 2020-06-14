@@ -1968,6 +1968,10 @@ class StockController extends BaseController
         list($list2, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
         $right_rate_arr = ArrayHelper::map($stat_rule_right_rate, 'name', 'right_rate');
+        if (Admin::getAdminId() == 1002) {
+            print_r($right_rate_arr);
+            exit;
+        }
         foreach ($list as $k => $v) {
             $name = $v['name'];
             $r_buy5 = $v['r_buy5'];
