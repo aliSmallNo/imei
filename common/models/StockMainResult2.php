@@ -472,8 +472,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
 
 
-            $list[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-            $list[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+            $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+            $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
         }
 
         $sql = "select count(1) as co
