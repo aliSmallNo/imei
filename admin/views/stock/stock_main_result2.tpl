@@ -76,7 +76,7 @@
           {{if $item.r_buy20}}
             <div>20日:{{$item.r_buy20}}</div>{{/if}}
 
-          <div>{{$item.buy_avg_right_rate}}%</div>
+          {{if $item.buy_avg_right_rate}}<div>{{$item.buy_avg_right_rate}}%</div>{{/if}}
         </td>
         <td class="bot_line">
           {{if $item.r_sold5}}
@@ -86,7 +86,7 @@
           {{if $item.r_sold20}}
             <div>20日:{{$item.r_sold20}}</div>{{/if}}
 
-          <div>{{$item.sold_avg_right_rate}}%</div>
+          {{if $item.sold_avg_right_rate}}<div>{{$item.sold_avg_right_rate}}%</div>{{/if}}
         </td>
         <td class="bot_line">
           {{if $item.r_warn5}}
