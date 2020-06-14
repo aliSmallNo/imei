@@ -1965,51 +1965,6 @@ class StockController extends BaseController
         );
         $pagination = self::pagination($page, $count, 10000);
 
-        list($list2, $rate_year_sum, $stat_rule_right_rate) =
-            StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
-
-        foreach ($list as $k => $v) {
-            $name = $v['name'];
-            $r_buy5 = $v['r_buy5'];
-            $r_buy10 = $v['r_buy10'];
-            $r_buy20 = $v['r_buy20'];
-
-            $rules = [];
-            $add_rule = function ($rules, $rule_str) {
-                if ($rule_str) {
-                    if (strpos($rule_str, ',') !== false) {
-                        $rule_str_arr = explode(',', $rule_str);
-                        foreach ($rule_str_arr as $item) {
-                            $rules[] = $item;
-                        }
-                    } else {
-                        $rules[] = $rule_str;
-                    }
-                }
-
-                return $rules;
-            };
-            $rules = $add_rule($rules, $r_buy5);
-            $rules = $add_rule($rules, $r_buy10);
-            $rules = $add_rule($rules, $r_buy20);
-            $rules = array_unique($rules);
-
-            $co = 0;
-            $sum = 0;
-            foreach ($rules as $rule_name) {
-                if (isset($stat_rule_right_rate[$rule_name])) {
-                    $co++;
-                    try {
-                        $sum += $stat_rule_right_rate[$rule_name]['right_rate'];
-                    } catch (\Exception $e) {
-                        var_dump($rule_name);exit;
-                    }
-
-                }
-            }
-            $list[$k]['avg_right_rate'] = $co > 0 ? sprintf('%.2f', $sum / $co) : 0;
-        }
-
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
