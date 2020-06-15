@@ -473,7 +473,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
 
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+            $res[$k]['buy_avg_right_rate_2p'] = $buy_co > 0 ? 2 * sprintf('%.2f', $buy_sum / $buy_co) - 1 : 0;
             $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+            $res[$k]['sold_avg_right_rate_2p'] = $sold_co > 0 ? 2 * sprintf('%.2f', $sold_sum / $sold_co) - 1 : 0;
         }
 
         $sql = "select count(1) as co
@@ -1378,22 +1380,32 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($result['r_note'] == '对') {
                     $item[$rule_name][$day]['times_yes'] += 1;
                     $item[$rule_name]['SUM']['times_yes'] += 1;
+                    $item[$rule_name][$day]['yes_dts'][] = $result['r_trans_on'];
+                    $item[$rule_name]['SUM']['yes_dts'][] = $result['r_trans_on'];
                 }
                 if ($result['r_note'] == '错') {
                     $item[$rule_name][$day]['times_no'] += 1;
+                    $item[$rule_name][$day]['no_dts'][] = $result['r_trans_on'];
                     $item[$rule_name]['SUM']['times_no'] += 1;
+                    $item[$rule_name]['SUM']['no_dts'][] = $result['r_trans_on'];
                 }
                 if ($result['r_note'] == '中性') {
                     $item[$rule_name][$day]['times_mid'] += 1;
+                    $item[$rule_name][$day]['mid_dts'][] = $result['r_trans_on'];
                     $item[$rule_name]['SUM']['times_mid'] += 1;
+                    $item[$rule_name]['SUM']['mid_dts'][] = $result['r_trans_on'];
                 }
                 if (in_array($result['r_note'], ['买错', '卖对'])) {
                     if ($rule_cat == StockMainRule2::CAT_BUY) {
                         $item[$rule_name][$day]['times_no'] += 1;
+                        $item[$rule_name][$day]['no_dts'][] = $result['r_trans_on'];
                         $item[$rule_name]['SUM']['times_no'] += 1;
+                        $item[$rule_name]['SUM']['no_dts'][] = $result['r_trans_on'];
                     } elseif ($rule_cat == StockMainRule2::CAT_SOLD) {
                         $item[$rule_name][$day]['times_yes'] += 1;
+                        $item[$rule_name][$day]['yes_dts'][] = $result['r_trans_on'];
                         $item[$rule_name]['SUM']['times_yes'] += 1;
+                        $item[$rule_name]['SUM']['yes_dts'][] = $result['r_trans_on'];
                     }
 
                 }
@@ -1401,11 +1413,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     if ($rule_cat == StockMainRule2::CAT_BUY) {
                         $item[$rule_name][$day]['times_yes'] += 1;
                         $item[$rule_name]['SUM']['times_yes'] += 1;
+                        $item[$rule_name]['SUM']['dts'][] = $result['r_trans_on'];
                     } elseif ($rule_cat == StockMainRule2::CAT_SOLD) {
                         $item[$rule_name][$day]['times_no'] += 1;
                         $item[$rule_name]['SUM']['times_no'] += 1;
+                        $item[$rule_name]['SUM']['dts'][] = $result['r_trans_on'];
                     }
-
                 }
 
                 return $item;
@@ -1439,6 +1452,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
         }
+
 
         //print_r($data);exit;
         return $data;

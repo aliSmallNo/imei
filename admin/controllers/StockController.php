@@ -1960,9 +1960,7 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items(
-            $criteria, $params, $page, 10000
-        );
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
         $pagination = self::pagination($page, $count, 10000);
 
         return $this->renderPage("stock_main_result2.tpl", [
@@ -2325,9 +2323,8 @@ class StockController extends BaseController
         $st_year = self::getParam("st_year", '');
         $et_year = self::getParam("et_year", '');
 
-        list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat(
-            $st_year, $et_year
-        );
+        list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
+
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
@@ -2356,9 +2353,7 @@ class StockController extends BaseController
             }
         }
 
-        return $this->renderPage(
-            "stock_main_result_stat2.tpl",
-            [
+        return $this->renderPage("stock_main_result_stat2.tpl", [
                 'list_buy' => $list_buy,
                 'list_sold' => $list_sold,
                 'list_warn' => $list_warn,
@@ -2537,23 +2532,13 @@ class StockController extends BaseController
     {
         $list = StockMainConfig::get_items_by_cat();
 
-        return $this->renderPage(
-            "stock_main_config.tpl",
-            [
+        return $this->renderPage("stock_main_config.tpl", [
                 'list' => $list,
                 'stDict' => StockMainConfig::$stDict,
-                'sms_st' => StockMainConfig::get_items_by_cat(
-                    StockMainConfig::CAT_SMS_ST
-                )[0],
-                'sms_et' => StockMainConfig::get_items_by_cat(
-                    StockMainConfig::CAT_SMS_ET
-                )[0],
-                'sms_times' => StockMainConfig::get_items_by_cat(
-                    StockMainConfig::CAT_SMS_TIMES
-                )[0],
-                'sms_interval' => StockMainConfig::get_items_by_cat(
-                    StockMainConfig::CAT_SMS_INTERVAL
-                )[0],
+                'sms_st' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0],
+                'sms_et' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0],
+                'sms_times' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_TIMES)[0],
+                'sms_interval' => StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_INTERVAL)[0],
             ]
         );
     }

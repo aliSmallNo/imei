@@ -76,7 +76,8 @@
           {{if $item.r_buy20}}
             <div>20日:{{$item.r_buy20}}</div>{{/if}}
 
-          {{if $item.buy_avg_right_rate}}<div>{{$item.buy_avg_right_rate}}%</div>{{/if}}
+          {{if $item.buy_avg_right_rate}}<div>平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
+          {{if $item.buy_avg_right_rate_2p}}<div>2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
         </td>
         <td class="bot_line">
           {{if $item.r_sold5}}
@@ -87,6 +88,7 @@
             <div>20日:{{$item.r_sold20}}</div>{{/if}}
 
           {{if $item.sold_avg_right_rate}}<div>{{$item.sold_avg_right_rate}}%</div>{{/if}}
+          {{if $item.sold_avg_right_rate_2p}}<div>2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
         </td>
         <td class="bot_line">
           {{if $item.r_warn5}}
