@@ -2224,9 +2224,7 @@ class StockController extends BaseController
         $stop_rate = trim($stop_rate, '%');
 
         // 回测列表
-        list(
-            $list1, $rate_year_sum1, $stat_rule_right_rate1
-            )
+        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
             = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
         // 卖空回测
         list(
@@ -2324,6 +2322,13 @@ class StockController extends BaseController
         $et_year = self::getParam("et_year", '');
 
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
+
+        // 追加 平均收益率 期望收益率
+        list($list, $rate_year_sum, $stat_rule_right_rate)
+            = StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+        $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+        $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
+        $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],

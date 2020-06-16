@@ -1523,19 +1523,58 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        foreach ($data as $k11 => $v11) {
-            foreach ($v11 as $r_name => $v12) {
-                $item = [
-                    '',
-                ];
-                foreach ($v12 as $_day => $v13) {
-
-                }
-            }
-        }
-
         //print_r($data);exit;
         return $data;
+    }
+
+    /**
+     * 平均收益率 对的平均收益率 错的平均收益率 中性的平均收益率
+     * 期望收益率 对的概率*对的收益率+错的概率*错的收益率+中性概率*中性收益率
+     *
+     * @time 2020-06-16 PM
+     */
+    public static function append_avg_rate($list_buy, $list)
+    {
+        $list = array_column($list, null, 'buy_dt');
+        $cal = function ($yes_dts) use ($list) {
+            $co = 0;
+            $sum = 0;
+            foreach ($yes_dts as $yes_dt) {
+                $co++;
+                $sum += $list[$yes_dt]['rate'];
+            }
+
+            return sprintf('%.2f', $sum / $co);
+        };
+        foreach ($list_buy as $k1 => $v1) {
+            foreach ($v1 as $rule_name => $v2) {
+                $yes_dts = $v2['SUM']['yes_dts'] ?? [];
+                $no_dts = $v2['SUM']['no_dts'] ?? [];
+                $mid_dts = $v2['SUM']['mid_dts'] ?? [];
+
+                $item_avg = ['name' => '平均收益率', 'yes_avg_rate' => 0, 'no_avg_rate' => 0, 'mid_avg_rate' => 0];
+                $item_hope = ['name' => '期望收益率', 'val' => 0];
+                if ($yes_dts) {
+                    $item_avg['yes_avg_rate'] = $cal($yes_dts);
+                }
+                if ($no_dts) {
+                    $item_avg['no_avg_rate'] = $cal($no_dts);
+                }
+                if ($mid_dts) {
+                    $item_avg['mid_avg_rate'] = $cal($mid_dts);
+                }
+                $times_yes_rate = $v2['SUM']['times_yes_rate'] / 100;// 对的概率
+                $times_no_rate = $v2['SUM']['times_no_rate'] / 100;//错的概率
+                $times_mid_rate = $v2['SUM']['times_mid_rate'] / 100;//中性概率
+
+                $item_hope['val'] = sprintf('%.2f', $times_yes_rate * $item_avg['yes_avg_rate']
+                    + $times_no_rate * $item_avg['no_avg_rate']
+                    + $times_mid_rate * $item_avg['mid_avg_rate']);
+
+                $list_buy[$k1][$rule_name]['SUM']['append_avg'] = $item_avg;
+                $list_buy[$k1][$rule_name]['SUM']['append_hope'] = $item_hope;
+            }
+        }
     }
 
     /**
