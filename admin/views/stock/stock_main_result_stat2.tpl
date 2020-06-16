@@ -58,13 +58,13 @@
             {{/foreach}}
             <tr>
               <td>{{$it1.SUM.append_avg.name}}</td>
-              <td>{{$it1.SUM.append_avg.yes_avg_rate}}</td>
-              <td>{{$it1.SUM.append_avg.no_avg_rate}}</td>
-              <td>{{$it1.SUM.append_avg.mid_avg_rate}}</td>
+              <td>{{$it1.SUM.append_avg.yes_avg_rate}}%</td>
+              <td>{{$it1.SUM.append_avg.no_avg_rate}}%</td>
+              <td>{{$it1.SUM.append_avg.mid_avg_rate}}%</td>
             </tr>
             <tr>
               <td>{{$it1.SUM.append_hope.name}}</td>
-              <td colspan="3">{{$it1.SUM.append_hope.val}}</td>
+              <td colspan="3">{{$it1.SUM.append_hope.val}}%</td>
             </tr>
           {{/foreach}}
           </tbody>
@@ -97,13 +97,13 @@
             {{/foreach}}
             <tr>
               <td>{{$it1.SUM.append_avg.name}}</td>
-              <td>{{$it1.SUM.append_avg.yes_avg_rate}}</td>
-              <td>{{$it1.SUM.append_avg.no_avg_rate}}</td>
-              <td>{{$it1.SUM.append_avg.mid_avg_rate}}</td>
+              <td>{{$it1.SUM.append_avg.yes_avg_rate}}%</td>
+              <td>{{$it1.SUM.append_avg.no_avg_rate}}%</td>
+              <td>{{$it1.SUM.append_avg.mid_avg_rate}}%</td>
             </tr>
             <tr>
               <td>{{$it1.SUM.append_hope.name}}</td>
-              <td colspan="3">{{$it1.SUM.append_hope.val}}</td>
+              <td colspan="3">{{$it1.SUM.append_hope.val}}%</td>
             </tr>
           {{/foreach}}
           </tbody>
