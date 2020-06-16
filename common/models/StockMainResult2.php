@@ -1575,6 +1575,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $list_buy[$k1][$rule_name]['SUM']['append_hope'] = $item_hope;
             }
         }
+        return $list_buy;
     }
 
     /**
