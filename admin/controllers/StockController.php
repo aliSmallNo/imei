@@ -2122,13 +2122,8 @@ class StockController extends BaseController
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list(
-            $list, $rate_year_sum, $stat_rule_right_rate
-            )
-            = StockMainResult2::cal_back_r_new(
-            $price_type, $buy_times,
-            $stop_rate
-        );
+        list($list, $rate_year_sum, $stat_rule_right_rate)
+            = StockMainResult2::cal_back_r_new($price_type, $buy_times, $stop_rate);
 
         return $this->renderPage(
             "stock_main_back_r2.tpl",
@@ -2327,8 +2322,12 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+        // $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
+
+        list($list, $rate_year_sum, $stat_rule_right_rate)
+            = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
-        $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
+
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
