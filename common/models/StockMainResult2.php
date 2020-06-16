@@ -493,7 +493,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $list_buy_indexs = $list_buy_indexs_f($list_buy);
         $list_sold_indexs = $list_buy_indexs_f($list_sold);
 
-
         foreach ($res as $k => $v) {
             $r_buy5 = $v['r_buy5'];
             $r_buy10 = $v['r_buy10'];
@@ -536,7 +535,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
             foreach ($sold_rules as $rule_name) {
-                if (isset($list_sold[$rule_name])) {
+                if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
                     $sold_co++;
                     $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
                 }
