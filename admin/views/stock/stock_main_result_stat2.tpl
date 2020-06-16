@@ -56,6 +56,7 @@
                 <td>{{$it.times_mid}}次 - {{$it.times_mid_rate}}%</td>
               </tr>
             {{/foreach}}
+
           {{/foreach}}
           </tbody>
         </table>

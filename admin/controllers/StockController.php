@@ -2325,7 +2325,6 @@ class StockController extends BaseController
 
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
 
-
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
             [
