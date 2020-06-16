@@ -2324,9 +2324,9 @@ class StockController extends BaseController
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
         // $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
 
-        list($list, $rate_year_sum, $stat_rule_right_rate)
+        /*list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
-        $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
+        $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);*/
 
 
         $tabs = [
