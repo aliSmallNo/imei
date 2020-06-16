@@ -419,66 +419,81 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 unset($res[$k]);
             }
         }
-/*
-        list($list2, $rate_year_sum, $stat_rule_right_rate) =
-            StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+        /*
+                list($list2, $rate_year_sum, $stat_rule_right_rate) =
+                    StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
 
-        foreach ($res as $k => $v) {
-            $r_buy5 = $v['r_buy5'];
-            $r_buy10 = $v['r_buy10'];
-            $r_buy20 = $v['r_buy20'];
-            $r_sold5 = $v['r_sold5'];
-            $r_sold10 = $v['r_sold10'];
-            $r_sold20 = $v['r_sold20'];
+                foreach ($res as $k => $v) {
+                    $r_buy5 = $v['r_buy5'];
+                    $r_buy10 = $v['r_buy10'];
+                    $r_buy20 = $v['r_buy20'];
+                    $r_sold5 = $v['r_sold5'];
+                    $r_sold10 = $v['r_sold10'];
+                    $r_sold20 = $v['r_sold20'];
 
-            $buy_rules = $sold_rules = [];
-            $add_rule = function ($rules, $rule_str) {
-                if ($rule_str) {
-                    if (strpos($rule_str, ',') !== false) {
-                        $rule_str_arr = explode(',', $rule_str);
-                        foreach ($rule_str_arr as $item) {
-                            $rules[] = $item;
+                    $buy_rules = $sold_rules = [];
+                    $add_rule = function ($rules, $rule_str) {
+                        if ($rule_str) {
+                            if (strpos($rule_str, ',') !== false) {
+                                $rule_str_arr = explode(',', $rule_str);
+                                foreach ($rule_str_arr as $item) {
+                                    $rules[] = $item;
+                                }
+                            } else {
+                                $rules[] = $rule_str;
+                            }
                         }
-                    } else {
-                        $rules[] = $rule_str;
+
+                        return $rules;
+                    };
+                    $buy_rules = $add_rule($buy_rules, $r_buy5);
+                    $buy_rules = $add_rule($buy_rules, $r_buy10);
+                    $buy_rules = $add_rule($buy_rules, $r_buy20);
+                    $buy_rules = array_unique($buy_rules);
+
+                    $sold_rules = $add_rule($sold_rules, $r_sold5);
+                    $sold_rules = $add_rule($sold_rules, $r_sold10);
+                    $sold_rules = $add_rule($sold_rules, $r_sold20);
+                    $sold_rules = array_unique($sold_rules);
+
+                    $buy_co = $sold_co = 0;
+                    $buy_sum = $sold_sum = 0;
+                    foreach ($buy_rules as $rule_name) {
+                        if (isset($stat_rule_right_rate[$rule_name])) {
+                            $buy_co++;
+                            $buy_sum += $stat_rule_right_rate[$rule_name]['right_rate'];
+                        }
                     }
-                }
-
-                return $rules;
-            };
-            $buy_rules = $add_rule($buy_rules, $r_buy5);
-            $buy_rules = $add_rule($buy_rules, $r_buy10);
-            $buy_rules = $add_rule($buy_rules, $r_buy20);
-            $buy_rules = array_unique($buy_rules);
-
-            $sold_rules = $add_rule($sold_rules, $r_sold5);
-            $sold_rules = $add_rule($sold_rules, $r_sold10);
-            $sold_rules = $add_rule($sold_rules, $r_sold20);
-            $sold_rules = array_unique($sold_rules);
-
-            $buy_co = $sold_co = 0;
-            $buy_sum = $sold_sum = 0;
-            foreach ($buy_rules as $rule_name) {
-                if (isset($stat_rule_right_rate[$rule_name])) {
-                    $buy_co++;
-                    $buy_sum += $stat_rule_right_rate[$rule_name]['right_rate'];
-                }
-            }
-            foreach ($sold_rules as $rule_name) {
-                if (isset($stat_rule_right_rate[$rule_name])) {
-                    $sold_co++;
-                    $sold_sum += $stat_rule_right_rate[$rule_name]['right_rate'];
-                }
-            }
+                    foreach ($sold_rules as $rule_name) {
+                        if (isset($stat_rule_right_rate[$rule_name])) {
+                            $sold_co++;
+                            $sold_sum += $stat_rule_right_rate[$rule_name]['right_rate'];
+                        }
+                    }
 
 
-            $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-            $res[$k]['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
-            $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-            $res[$k]['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-        }*/
+                    $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+                    $res[$k]['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+                    $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+                    $res[$k]['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+                }*/
 
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
+
+        $list_buy_indexs_f = function ($list) {
+            $indexs = [];
+            foreach ($list as $k11 => $v11) {
+                foreach ($v11 as $_r_name => $v12) {
+                    $indexs[$k11] = $_r_name;
+                }
+            }
+
+            return array_flip($indexs);
+        };
+        $list_buy_indexs = $list_buy_indexs_f($list_buy);
+        $list_sold_indexs = $list_buy_indexs_f($list_sold);
+
+
         foreach ($res as $k => $v) {
             $r_buy5 = $v['r_buy5'];
             $r_buy10 = $v['r_buy10'];
@@ -515,15 +530,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $buy_co = $sold_co = 0;
             $buy_sum = $sold_sum = 0;
             foreach ($buy_rules as $rule_name) {
-                if (isset($list_buy[$rule_name])) {
+                if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                     $buy_co++;
-                    $buy_sum += $list_buy[$rule_name]['SUM']['times_yes_rate'];
+                    $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
                 }
             }
             foreach ($sold_rules as $rule_name) {
                 if (isset($list_sold[$rule_name])) {
                     $sold_co++;
-                    $sold_sum += $list_sold[$rule_name]['SUM']['times_yes_rate'];
+                    $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
                 }
             }
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
