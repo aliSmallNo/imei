@@ -15,7 +15,8 @@
   }
 
   .color_green {
-    color: #00aa00;
+    background: #00aa00;
+    color: #fff;
   }
 </style>
 <div class="row">
