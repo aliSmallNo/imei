@@ -1567,6 +1567,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $times_no_rate = $v2['SUM']['times_no_rate'] / 100;//错的概率
                 $times_mid_rate = $v2['SUM']['times_mid_rate'] / 100;//中性概率
 
+                // 期望收益率 对的概率*对的收益率+错的概率*错的收益率+中性概率*中性收益率
                 $item_hope['val'] = sprintf('%.2f', $times_yes_rate * $item_avg['yes_avg_rate']
                     + $times_no_rate * $item_avg['no_avg_rate']
                     + $times_mid_rate * $item_avg['mid_avg_rate']);

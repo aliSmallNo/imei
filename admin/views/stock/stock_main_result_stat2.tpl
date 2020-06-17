@@ -13,6 +13,10 @@
     color: #f80;
     font-weight: 400;
   }
+
+  .color_green {
+    color: #00aa00;
+  }
 </style>
 <div class="row">
   <div class="col-sm-6">
@@ -58,13 +62,21 @@
             {{/foreach}}
             <tr>
               <td>{{$it1.SUM.append_avg.name}}</td>
-              <td>{{$it1.SUM.append_avg.yes_avg_rate}}%</td>
-              <td>{{$it1.SUM.append_avg.no_avg_rate}}%</td>
-              <td>{{$it1.SUM.append_avg.mid_avg_rate}}%</td>
+              <td class="{{if $it1.SUM.append_avg.yes_avg_rate<0}}color_green{{/if}}">{{$it1.SUM.append_avg.yes_avg_rate}}
+                %
+              </td>
+              <td class="{{if $it1.SUM.append_avg.no_avg_rate<0}}color_green{{/if}}">{{$it1.SUM.append_avg.no_avg_rate}}
+                %
+              </td>
+              <td class="{{if $it1.SUM.append_avg.mid_avg_rate<0}}color_green{{/if}}">{{$it1.SUM.append_avg.mid_avg_rate}}
+                %
+              </td>
             </tr>
             <tr>
               <td>{{$it1.SUM.append_hope.name}}</td>
-              <td colspan="3">{{$it1.SUM.append_hope.val}}%</td>
+              <td colspan="3" class="{{if $it1.SUM.append_hope.val<0}}color_green{{/if}}">{{$it1.SUM.append_hope.val}}
+                %
+              </td>
             </tr>
           {{/foreach}}
           </tbody>
@@ -97,13 +109,21 @@
             {{/foreach}}
             <tr>
               <td>{{$it1.SUM.append_avg.name}}</td>
-              <td>{{$it1.SUM.append_avg.yes_avg_rate}}%</td>
-              <td>{{$it1.SUM.append_avg.no_avg_rate}}%</td>
-              <td>{{$it1.SUM.append_avg.mid_avg_rate}}%</td>
+              <td class="{{if $it1.SUM.append_avg.yes_avg_rate<0}}color_green{{/if}}">{{$it1.SUM.append_avg.yes_avg_rate}}
+                %
+              </td>
+              <td class="{{if $it1.SUM.append_avg.no_avg_rate<0}}color_green{{/if}}">{{$it1.SUM.append_avg.no_avg_rate}}
+                %
+              </td>
+              <td class="{{if $it1.SUM.append_avg.mid_avg_rate<0}}color_green{{/if}}">{{$it1.SUM.append_avg.mid_avg_rate}}
+                %
+              </td>
             </tr>
             <tr>
               <td>{{$it1.SUM.append_hope.name}}</td>
-              <td colspan="3">{{$it1.SUM.append_hope.val}}%</td>
+              <td colspan="3" class="{{if $it1.SUM.append_hope.val<0}}color_green{{/if}}">{{$it1.SUM.append_hope.val}}
+                %
+              </td>
             </tr>
           {{/foreach}}
           </tbody>
