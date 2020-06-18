@@ -558,7 +558,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         foreach ($res as $k1 => $v1) {
             $r_note = $v1['r_note'];
             $r_trans_on = $v1['r_trans_on'];
-            $res[$k]['cls'] = '';
+            $res[$k1]['cls'] = '';
 
             if ($v['r_buy5'] || $v['r_buy10'] || $v['r_buy20']) {
                 // 这是正常的：'对':'买对'+'对';'错':'错'+'卖对';'中性':'中性';
@@ -567,10 +567,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
                 $rate = $data1[$r_trans_on] ?? 0;
                 if ($flag_yes && $rate < 0) {
-                    $res[$k]['cls'] = "bg_err";
+                    $res[$k1]['cls'] = "bg_err";
                 }
                 if ($flag_no && $rate > 0) {
-                    $res[$k]['cls'] = "bg_err";
+                    $res[$k1]['cls'] = "bg_err";
                 }
             }
             if ($v['r_sold5'] || $v['r_sold10'] || $v['r_sold20']) {
@@ -579,10 +579,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
                 $rate = $data2[$r_trans_on] ?? 0;
                 if ($flag_yes && $rate < 0) {
-                    $res[$k]['cls'] = "bg_err";
+                    $res[$k1]['cls'] = "bg_err";
                 }
                 if ($flag_no && $rate > 0) {
-                    $res[$k]['cls'] = "bg_err";
+                    $res[$k1]['cls'] = "bg_err";
                 }
             }
         }
