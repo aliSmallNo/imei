@@ -565,7 +565,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $flag_yes = in_array($r_note, [self::NOTE_BUY_RIGHT, self::NOTE_RIGHT]);
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
 
-                $rate = $data1[$r_trans_on] ?? '';
+                $rate = $data1[$r_trans_on] ?? 0;
                 if ($flag_yes && $rate < 0) {
                     $res[$k]['cls'] = "bg_err";
                 }
@@ -577,7 +577,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
                 $flag_yes = in_array($r_note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
-                $rate = $data2[$r_trans_on] ?? '';
+                $rate = $data2[$r_trans_on] ?? 0;
                 if ($flag_yes && $rate < 0) {
                     $res[$k]['cls'] = "bg_err";
                 }
