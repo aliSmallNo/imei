@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use admin\models\Admin;
 use common\utils\AppUtil;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -572,6 +573,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($flag_no && $rate > 0) {
                     $res[$k1]['cls'] = "bg_err";
                 }
+                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
+                    var_dump([1, $flag_yes, $flag_no, $rate]);
+                }
             }
             if ($v['r_sold5'] || $v['r_sold10'] || $v['r_sold20']) {
                 // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
@@ -584,6 +588,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($flag_no && $rate > 0) {
                     $res[$k1]['cls'] = "bg_err";
                 }
+                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
+                    var_dump([2, $flag_yes, $flag_no, $rate]);
+                }
+            }
+            if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
+                exit;
             }
         }
 
