@@ -2315,6 +2315,7 @@ class StockController extends BaseController
     {
         $st_year = self::getParam("st_year", '');
         $et_year = self::getParam("et_year", '');
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_SH_CLOSE);
 
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
 
@@ -2361,6 +2362,8 @@ class StockController extends BaseController
                 'list_sold' => $list_sold,
                 'list_warn' => $list_warn,
                 'tabs' => $tabs,
+                'price_types' => StockMainPrice::$types,
+                'price_type' => $price_type,
                 //'st_year' => $st_year,
                 //'et_year' => $et_year,
             ]

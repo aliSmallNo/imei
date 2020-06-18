@@ -26,6 +26,20 @@
   </div>
 </div>
 <div class="row">
+  <form action="/stock/stock_result_stat2" method="get" class="form-inline">
+    <div class="form-group">
+      <select class="form-control" name="price_type">
+        <option value="">-=请选择价格类型=-</option>
+        {{foreach from=$price_types item=price_type_name key=key}}
+          <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$price_type_name}}</option>
+        {{/foreach}}
+      </select>
+    </div>
+    <button class="btn btn-primary">查询</button>
+    <span class="space"></span>
+  </form>
+</div>
+<div class="row">
   <ul class="nav nav-tabs">
     {{foreach from=$tabs key=key item=tab}}
       <li class="ng-scope {{$tab.cls}}">
