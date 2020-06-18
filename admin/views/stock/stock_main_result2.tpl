@@ -13,13 +13,20 @@
     color: #f80;
     font-weight: 400;
   }
+
   .bot_line div {
     border-bottom: 1px solid #aaa;
   }
+
   .avg_font {
     color: #ff3c08;
     font-weight: 500;
     border: none !important;
+  }
+
+  .bg_err {
+    background: rgba(0, 128, 0, 0.78);
+    color: #fff;
   }
 </style>
 <div class="row">
@@ -80,8 +87,10 @@
           {{if $item.r_buy20}}
             <div>20日:{{$item.r_buy20}}</div>{{/if}}
 
-          {{if $item.buy_avg_right_rate}}<div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
-          {{if $item.buy_avg_right_rate_2p}}<div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
+          {{if $item.buy_avg_right_rate}}
+            <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
+          {{if $item.buy_avg_right_rate_2p}}
+            <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
         </td>
         <td class="bot_line">
           {{if $item.r_sold5}}
@@ -91,8 +100,10 @@
           {{if $item.r_sold20}}
             <div>20日:{{$item.r_sold20}}</div>{{/if}}
 
-          {{if $item.sold_avg_right_rate}}<div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
-          {{if $item.sold_avg_right_rate_2p}}<div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
+          {{if $item.sold_avg_right_rate}}
+            <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
+          {{if $item.sold_avg_right_rate_2p}}
+            <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
         </td>
         <td class="bot_line">
           {{if $item.r_warn5}}
@@ -103,7 +114,7 @@
             <div>20日:{{$item.r_warn20}}</div>{{/if}}
         </td>
 
-        <td>{{$item.r_note}}</td>
+        <td class="{{$item.cls}}">{{$item.r_note}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>

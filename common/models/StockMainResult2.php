@@ -545,7 +545,46 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
             $res[$k]['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
 
+        }
 
+
+        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
+            = StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+        list($list2, $rate_year_sum2, $stat_rule_right_rate2)
+            = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
+        $data1 = ArrayHelper::map($list1, 'buy_dt', 'rate');
+        $data2 = ArrayHelper::map($list2, 'buy_dt', 'rate');
+
+        foreach ($res as $k1 => $v1) {
+            $r_note = $v1['r_note'];
+            $r_trans_on = $v1['r_trans_on'];
+            $res[$k]['cls'] = '';
+
+            if ($v['r_buy5'] || $v['r_buy10'] || $v['r_buy20']) {
+                // 这是正常的：'对':'买对'+'对';'错':'错'+'卖对';'中性':'中性';
+                $flag_yes = in_array($r_note, [self::NOTE_BUY_RIGHT, self::NOTE_RIGHT]);
+                $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+
+                $rate = isset($data1[$r_trans_on]) ?? '';
+                if ($flag_yes && $rate < 0) {
+                    $res[$k]['cls'] = "bg_err";
+                }
+                if ($flag_no && $rate > 0) {
+                    $res[$k]['cls'] = "bg_err";
+                }
+            }
+            if ($v['r_sold5'] || $v['r_sold10'] || $v['r_sold20']) {
+                // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
+                $flag_yes = in_array($r_note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
+                $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
+                $rate = isset($data2[$r_trans_on]) ?? '';
+                if ($flag_yes && $rate < 0) {
+                    $res[$k]['cls'] = "bg_err";
+                }
+                if ($flag_no && $rate > 0) {
+                    $res[$k]['cls'] = "bg_err";
+                }
+            }
         }
 
         $sql = "select count(1) as co
@@ -1576,6 +1615,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $list_buy[$k1][$rule_name]['SUM']['append_hope'] = $item_hope;
             }
         }
+
         return $list_buy;
     }
 
