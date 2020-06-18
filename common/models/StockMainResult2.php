@@ -561,7 +561,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $r_trans_on = $v1['r_trans_on'];
             $res[$k1]['cls'] = '';
 
-            if ($v['r_buy5'] || $v['r_buy10'] || $v['r_buy20']) {
+            if ($v1['r_buy5'] || $v1['r_buy10'] || $v1['r_buy20']) {
                 // 这是正常的：'对':'买对'+'对';'错':'错'+'卖对';'中性':'中性';
                 $flag_yes = in_array($r_note, [self::NOTE_BUY_RIGHT, self::NOTE_RIGHT]);
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
@@ -573,11 +573,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($flag_no && $rate > 0) {
                     $res[$k1]['cls'] = "bg_err";
                 }
-                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
-                    var_dump([1, $flag_yes, $flag_no, $rate]);
-                }
+//                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
+//                    var_dump([1, $flag_yes, $flag_no, $rate]);
+//                }
             }
-            if ($v['r_sold5'] || $v['r_sold10'] || $v['r_sold20']) {
+            if ($v1['r_sold5'] || $v1['r_sold10'] || $v1['r_sold20']) {
                 // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
                 $flag_yes = in_array($r_note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
@@ -588,13 +588,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($flag_no && $rate > 0) {
                     $res[$k1]['cls'] = "bg_err";
                 }
-                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
-                    var_dump([2, $flag_yes, $flag_no, $rate]);
-                }
+//                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
+//                    var_dump([2, $flag_yes, $flag_no, $rate]);
+//                }
             }
-            if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
-                exit;
-            }
+//            if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
+//                exit;
+//            }
         }
 
         $sql = "select count(1) as co
