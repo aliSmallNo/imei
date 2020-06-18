@@ -1962,10 +1962,6 @@ class StockController extends BaseController
 
         list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
         $pagination = self::pagination($page, $count, 10000);
-        if (Admin::getAdminId() == 1002) {
-            print_r($list);
-            exit;
-        }
 
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
