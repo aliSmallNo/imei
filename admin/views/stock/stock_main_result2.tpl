@@ -49,6 +49,12 @@
           <option value="{{$key}}" {{if $key==$cat}}selected{{/if}}>{{$day}}</option>
         {{/foreach}}
       </select>
+      <select class="form-control" name="price_type">
+        <option value="">-=请选择价格类型=-</option>
+        {{foreach from=$price_types item=price_type_name key=key}}
+          <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$price_type_name}}</option>
+        {{/foreach}}
+      </select>
     </div>
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>

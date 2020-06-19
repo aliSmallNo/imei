@@ -548,11 +548,25 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         }
 
+        $sql = "select count(1) as co
+				from im_stock_main_result2 as r
+				where r_id>0 $strCriteria  ";
+        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
+        return [array_values($res), $count];
+    }
+
+    /**
+     * 获取错误的 r_note
+     *
+     * @time 2020-06-18 PM
+     */
+    public static function get_err_note_cls($res, $price_type)
+    {
         list($list1, $rate_year_sum1, $stat_rule_right_rate1)
-            = StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+            = StockMainResult2::cal_back($price_type, 0, 0);
         list($list2, $rate_year_sum2, $stat_rule_right_rate2)
-            = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
+            = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $data1 = ArrayHelper::map($list1, 'buy_dt', 'rate');
         $data2 = ArrayHelper::map($list2, 'buy_dt', 'rate');
 
@@ -573,9 +587,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($flag_no && $rate > 0) {
                     $res[$k1]['cls'] = "bg_err";
                 }
-//                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
-//                    var_dump([1, $flag_yes, $flag_no, $rate]);
-//                }
             }
             if ($v1['r_sold5'] || $v1['r_sold10'] || $v1['r_sold20']) {
                 // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
@@ -588,21 +599,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if ($flag_no && $rate > 0) {
                     $res[$k1]['cls'] = "bg_err";
                 }
-//                if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
-//                    var_dump([2, $flag_yes, $flag_no, $rate]);
-//                }
             }
-//            if ($r_trans_on == '2019-12-17' && Admin::getAdminId() == 1002) {
-//                exit;
-//            }
         }
 
-        $sql = "select count(1) as co
-				from im_stock_main_result2 as r
-				where r_id>0 $strCriteria  ";
-        $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
-
-        return [array_values($res), $count];
+        return $res;
     }
 
     /**

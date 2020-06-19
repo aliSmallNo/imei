@@ -1935,6 +1935,7 @@ class StockController extends BaseController
         $page = self::getParam("page", 1);
         $name = self::getParam("name", '');
         $cat = self::getParam("cat", '');
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_SH_CLOSE);
 
         $criteria = [];
         $params = [];
@@ -1961,6 +1962,7 @@ class StockController extends BaseController
         }
 
         list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
+        $list = StockMainResult2::get_err_note_cls($list, $price_type);
         $pagination = self::pagination($page, $count, 10000);
 
         return $this->renderPage("stock_main_result2.tpl", [
@@ -1970,6 +1972,8 @@ class StockController extends BaseController
                 'cats' => StockMainStat::$cats,
                 'cat' => $cat,
                 'notes' => StockMainResult2::$note_dict,
+                'price_type' => $price_type,
+                'price_types' => StockMainPrice::$types,
             ]
         );
     }
