@@ -570,6 +570,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $data1 = ArrayHelper::map($list1, 'buy_dt', 'rate');
         $data2 = ArrayHelper::map($list2, 'buy_dt', 'rate');
 
+        $critical_val = -0.005;
         foreach ($res as $k1 => $v1) {
             $r_note = $v1['r_note'];
             $r_trans_on = $v1['r_trans_on'];
@@ -581,10 +582,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
 
                 $rate = $data1[$r_trans_on] ?? 0;
-                if ($flag_yes && $rate < 0) {
+                if ($flag_yes && $rate < $critical_val) {
                     $res[$k1]['cls'] = "bg_err";
                 }
-                if ($flag_no && $rate > 0) {
+                if ($flag_no && $rate > $critical_val) {
                     $res[$k1]['cls'] = "bg_err";
                 }
             }
@@ -593,10 +594,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $flag_yes = in_array($r_note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
                 $flag_no = in_array($r_note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
                 $rate = $data2[$r_trans_on] ?? 0;
-                if ($flag_yes && $rate < 0) {
+                if ($flag_yes && $rate < $critical_val) {
                     $res[$k1]['cls'] = "bg_err";
                 }
-                if ($flag_no && $rate > 0) {
+                if ($flag_no && $rate > $critical_val) {
                     $res[$k1]['cls'] = "bg_err";
                 }
             }
