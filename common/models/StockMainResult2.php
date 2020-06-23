@@ -386,9 +386,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
 
-        $sql = "select r.*,m_etf_close
+        $sql = "select r.*,m_etf_close,p.*
 				from im_stock_main_result2 as r
 				left join im_stock_main m on m.m_trans_on=r.r_trans_on
+				left join im_stock_main_price p on p.p_trans_on=r.r_trans_on
 				where r_id>0 $strCriteria 
 				order by r_trans_on desc 
 				$limit ";
@@ -572,6 +573,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $critical_val = -0.005;
         foreach ($res as $k1 => $v1) {
+            $res[$k1]['m_etf_close'] = $v1[$price_type];
+
             $r_note = $v1['r_note'];
             $r_trans_on = $v1['r_trans_on'];
             $res[$k1]['cls'] = '';
