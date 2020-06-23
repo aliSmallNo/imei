@@ -68,7 +68,7 @@
       <th>#</th>
       <th>交易日期</th>
 
-      <th>{{$price_type_t}}}</th>
+      <th>{{$price_type_t}}</th>
       <th class="col-sm-3">买入</th>
       <th class="col-sm-3">卖出</th>
       <th class="col-sm-3">预警</th>
