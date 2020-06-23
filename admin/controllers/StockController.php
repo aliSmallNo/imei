@@ -1965,6 +1965,7 @@ class StockController extends BaseController
         $list = StockMainResult2::get_err_note_cls($list, $price_type);
         $pagination = self::pagination($page, $count, 10000);
 
+        $price_types=StockMainPrice::$types;
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -1973,7 +1974,8 @@ class StockController extends BaseController
                 'cat' => $cat,
                 'notes' => StockMainResult2::$note_dict,
                 'price_type' => $price_type,
-                'price_types' => StockMainPrice::$types,
+                'price_type_t' => $price_types[$price_type]??'',
+                'price_types' => $price_types,
             ]
         );
     }
