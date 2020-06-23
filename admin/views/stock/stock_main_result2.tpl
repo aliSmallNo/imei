@@ -68,7 +68,7 @@
       <th>#</th>
       <th>交易日期</th>
 
-      <th>500etf</th>
+      <th>{{isset($price_types[$price_type])?$price_types[$price_type]:''}}</th>
       <th class="col-sm-3">买入</th>
       <th class="col-sm-3">卖出</th>
       <th class="col-sm-3">预警</th>
