@@ -573,7 +573,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $critical_val = -0.005;
         foreach ($res as $k1 => $v1) {
-            $res[$k1]['m_etf_close'] = $v1[$price_type];
+            $res[$k1]['m_etf_close'] = sprintf('%.2f', $v1[$price_type]);
 
             $r_note = $v1['r_note'];
             $r_trans_on = $v1['r_trans_on'];
