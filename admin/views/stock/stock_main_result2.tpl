@@ -4,10 +4,6 @@
     font-size: 12px;
   }
 
-  th {
-    max-width: 40px;
-  }
-
   .form_tip {
     font-size: 10px;
     color: #f80;
