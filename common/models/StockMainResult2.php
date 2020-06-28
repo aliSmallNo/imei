@@ -554,7 +554,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list1);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list2);
-        $list_buy_map = $list_sold_map = [];
+
         $map = function ($list) {
             $map = [];
             foreach ($list as $v1) {
@@ -581,11 +581,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $buy_sum += $list_buy_map[$buy_rule];
                     }
                 }
-                $list['buy_avg_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-                $list['buy_avg_rate_buy_co'] = $buy_co;
+                $list[$k]['buy_avg_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+                $list[$k]['buy_avg_rate_buy_co'] = $buy_co;
             } else {
-                $list['buy_avg_rate'] = 0;
-                $list['buy_avg_rate_buy_co'] = $buy_co;
+                $list[$k]['buy_avg_rate'] = 0;
+                $list[$k]['buy_avg_rate_buy_co'] = $buy_co;
             }
 
             if ($sold_rules) {
@@ -595,11 +595,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $sold_sum += $list_sold_map[$sold_rule];
                     }
                 }
-                $list['sold_avg_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-                $list['sold_avg_rate_buy_co'] = $sold_co;
+                $list[$k]['sold_avg_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+                $list[$k]['sold_avg_rate_buy_co'] = $sold_co;
             } else {
-                $list['sold_avg_rate'] = 0;
-                $list['sold_avg_rate_buy_co'] = $sold_co;
+                $list[$k]['sold_avg_rate'] = 0;
+                $list[$k]['sold_avg_rate_buy_co'] = $sold_co;
             }
         }
 
