@@ -93,6 +93,7 @@
             <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
           {{if $item.buy_avg_right_rate_2p}}
             <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
+            <div class="avg_font" data-co="{{$item.sold_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}</div>
         </td>
         <td class="bot_line">
           {{if $item.r_sold5}}
@@ -106,6 +107,7 @@
             <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
           {{if $item.sold_avg_right_rate_2p}}
             <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
+          <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}</div>
         </td>
         <td class="bot_line">
           {{if $item.r_warn5}}

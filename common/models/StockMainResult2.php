@@ -596,10 +596,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                 }
                 $list[$k]['sold_avg_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-                $list[$k]['sold_avg_rate_buy_co'] = $sold_co;
+                $list[$k]['sold_avg_rate_sold_co'] = $sold_co;
             } else {
                 $list[$k]['sold_avg_rate'] = 0;
-                $list[$k]['sold_avg_rate_buy_co'] = $sold_co;
+                $list[$k]['sold_avg_rate_sold_co'] = $sold_co;
             }
         }
 
