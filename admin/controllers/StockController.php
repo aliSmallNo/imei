@@ -1971,7 +1971,7 @@ class StockController extends BaseController
         // 找出错误的 r_note
         $list = StockMainResult2::get_err_note_cls($list, $price_type,$list1,$list2);
         // 计算平均收益率
-        $list = StockMainResult2::get_avg_rate($list,$price_type,$list1,$list2);
+        //$list = StockMainResult2::get_avg_rate($list,$price_type,$list1,$list2);
 
         $pagination = self::pagination($page, $count, 10000);
 
