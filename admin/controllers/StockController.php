@@ -1962,10 +1962,21 @@ class StockController extends BaseController
         }
 
         list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
-        $list = StockMainResult2::get_err_note_cls($list, $price_type);
+
+        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
+            = StockMainResult2::cal_back($price_type, 0, 0);
+        list($list2, $rate_year_sum2, $stat_rule_right_rate2)
+            = StockMainResult2::cal_back_r_new($price_type, 0, 0);
+
+        // 找出错误的 r_note
+        $list = StockMainResult2::get_err_note_cls($list, $price_type,$list1,$list2);
+        // 计算平均收益率
+        $list = StockMainResult2::get_avg_rate($list,$price_type,$list1,$list2);
+
         $pagination = self::pagination($page, $count, 10000);
 
-        $price_types=StockMainPrice::$types;
+        $price_types = StockMainPrice::$types;
+
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -1974,7 +1985,7 @@ class StockController extends BaseController
                 'cat' => $cat,
                 'notes' => StockMainResult2::$note_dict,
                 'price_type' => $price_type,
-                'price_type_t' => $price_types[$price_type]??'',
+                'price_type_t' => $price_types[$price_type] ?? '',
                 'price_types' => $price_types,
             ]
         );
@@ -2329,12 +2340,10 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult2::cal_back($price_type, 0, 0);
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
-        // $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
 
         list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
-
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
