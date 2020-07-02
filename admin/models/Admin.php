@@ -57,7 +57,7 @@ class Admin extends ActiveRecord
         self::LEVEL_MODIFY => "修改权限",
         self::LEVEL_STAFF => "微媒员工权限",
         self::LEVEL_LEADER => "微媒领导权限",
-        self::LEVEL_HIGH => "高级权限"
+        self::LEVEL_HIGH => "高级权限",
     ];
 
     const GROUP_DEBUG = 100;
@@ -89,7 +89,7 @@ class Admin extends ActiveRecord
         $token = [
             "aid" => $uid,
             "iat" => time(),
-            "exp" => time() + self::$Duration
+            "exp" => time() + self::$Duration,
         ];
         $jwt = AppUtil::encrypt(json_encode($token));
         AppUtil::setCookie("jwt", $jwt, self::$Duration);
@@ -110,6 +110,7 @@ class Admin extends ActiveRecord
             $userObj->$key = $value;
         }
         $userObj->save();
+
         return $userObj->aId;
     }
 
@@ -119,13 +120,15 @@ class Admin extends ActiveRecord
             "aId" => $id,
             "aStatus" => self::STATUS_DELETE,
             "aDeletedOn" => date('Y-m-d H:i:s'),
-            "aDeletedBy" => $adminId
+            "aDeletedBy" => $adminId,
         ];
         $result = self::saveUser($data);
         if ($result) {
             self::clearById($id);
+
             return ["code" => 0, "msg" => "删除成功！"];
         }
+
         return ["code" => 159, "msg" => "删除失败！"];
     }
 
@@ -135,6 +138,7 @@ class Admin extends ActiveRecord
         if (!$userInfo) {
             return self::LEVEL_VIEW;
         }
+
         return $userInfo['aLevel'];
     }
 
@@ -144,6 +148,7 @@ class Admin extends ActiveRecord
         if (!$userInfo) {
             return self::LEVEL_VIEW;
         }
+
         return $userInfo['level'];
     }
 
@@ -153,6 +158,7 @@ class Admin extends ActiveRecord
         if (!$userInfo) {
             return '';
         }
+
         return $userInfo['aPhone'];
     }
 
@@ -171,6 +177,7 @@ class Admin extends ActiveRecord
         if (!isset($decoded['aid']) || !isset($decoded['exp']) || $decoded['exp'] < time()) {
             return '';
         }
+
         return $decoded['aid'];
     }
 
@@ -207,6 +214,7 @@ class Admin extends ActiveRecord
             header("location:/site/deny");
             exit;
         }
+
         return true;
     }
 
@@ -233,6 +241,7 @@ class Admin extends ActiveRecord
         }
 
         self::$userInfo = $info;
+
         return $info;
     }
 
@@ -252,7 +261,7 @@ class Admin extends ActiveRecord
             "aUpdatedDate",
             "aAddedBy",
             "aAddedDate",
-            "aExpire"
+            "aExpire",
         ];
         foreach ($fields as $field) {
             unset($userInfo[$field]);
@@ -260,6 +269,7 @@ class Admin extends ActiveRecord
         list($leftMenus, $exclMenus) = self::resetMenus($userInfo);
         $userInfo['menus'] = $leftMenus;
         $userInfo['menusExcl'] = $exclMenus;
+
         return $userInfo;
     }
 
@@ -309,6 +319,7 @@ class Admin extends ActiveRecord
         if ($key) {
             $cnt = AppUtil::db()->createCommand($key)->queryScalar();
         }
+
         return $cnt;
     }
 
@@ -326,6 +337,7 @@ class Admin extends ActiveRecord
         $adminId = $data['aId'];
         self::setAdminId($adminId);
         $info->save();
+
         return $adminId;
     }
 
@@ -351,6 +363,7 @@ class Admin extends ActiveRecord
         if (!$userInfo) {
             return false;
         }
+
         return $userInfo["aLevel"] >= self::LEVEL_STAFF;
     }
 
@@ -362,13 +375,14 @@ class Admin extends ActiveRecord
             list($wxMessages) = UserBuzz::wxMessages($adminId, 1, 5, true);
             foreach ($wxMessages as $key => $item) {
                 if (mb_strlen($item["bContent"]) > 38) {
-                    $wxMessages[$key]["bContent"] = mb_substr($item["bContent"], 0, 38) . '...';
+                    $wxMessages[$key]["bContent"] = mb_substr($item["bContent"], 0, 38).'...';
                 }
                 if ($item["readFlag"] == "0") {
                     $unreadFlag = 1;
                 }
             }
         }
+
         return [$wxMessages, $unreadFlag];
     }
 
@@ -387,6 +401,7 @@ class Admin extends ActiveRecord
             return [];
         }
         $res = self::find()->where($where)->asArray()->all();
+
         return array_column($res, "aId");
     }
 
@@ -418,6 +433,7 @@ class Admin extends ActiveRecord
         if (!$adminId) {
             $adminId = self::getAdminId();
         }
+
         return in_array($adminId, $adminIDs);
     }
 
@@ -431,6 +447,7 @@ class Admin extends ActiveRecord
         if (!$adminId) {
             $adminId = self::getAdminId();
         }
+
         return in_array($adminId, [1001, 1002, 1006, 1017, 1026, 1027]);// dsx zp yuhui qiujx luoweny xiaodao
     }
 
@@ -467,9 +484,9 @@ class Admin extends ActiveRecord
             }
             foreach ($menus as $k => $menu) {
                 if (in_array($k, $arr)) {
-                    $result[$key]['menu_' . $k] = 1;
+                    $result[$key]['menu_'.$k] = 1;
                 } else {
-                    $result[$key]['menu_' . $k] = 0;
+                    $result[$key]['menu_'.$k] = 0;
                 }
             }
 
@@ -477,6 +494,7 @@ class Admin extends ActiveRecord
 
             $result[$key]['levelDesc'] = self::$accessLevels[$result[$key]['aLevel']];
         }
+
         return is_array($result) ? $result : [];
     }
 
@@ -492,6 +510,7 @@ class Admin extends ActiveRecord
         usort($result, function ($a, $b) {
             return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
         });
+
         return array_values($result);
     }
 
@@ -506,6 +525,7 @@ class Admin extends ActiveRecord
         usort($result, function ($a, $b) {
             return iconv('UTF-8', 'GBK//IGNORE', $a['name']) > iconv('UTF-8', 'GBK//IGNORE', $b['name']);
         });
+
         return array_values($result);
     }
 
@@ -526,8 +546,10 @@ class Admin extends ActiveRecord
         if ($ret) {
             $redis->set($redisKey, json_encode($ret));
             $redis->expire($redisKey, 3600 * 8);
+
             return $ret;
         }
+
         return [];
     }
 
@@ -546,6 +568,7 @@ class Admin extends ActiveRecord
         foreach ($res as $v) {
             $ret[$v['aid']] = $v['name'];
         }
+
         return $ret;
     }
 

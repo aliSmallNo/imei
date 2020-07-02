@@ -570,6 +570,7 @@ class StockController extends BaseController
                 'bds' => $bds,
                 'success' => $success,
                 'error' => $error,
+                'see_more' => in_array(Admin::getAdminId(), [1047, 1002, 1006]),
             ]
         );
     }
@@ -1969,9 +1970,9 @@ class StockController extends BaseController
             = StockMainResult2::cal_back_r_new($price_type, 0, 0);
 
         // 找出错误的 r_note
-        $list = StockMainResult2::get_err_note_cls($list, $price_type,$list1,$list2);
+        $list = StockMainResult2::get_err_note_cls($list, $price_type, $list1, $list2);
         // 计算平均收益率
-        $list = StockMainResult2::get_avg_rate($list,$price_type,$list1,$list2);
+        $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
 
         $pagination = self::pagination($page, $count, 10000);
 
