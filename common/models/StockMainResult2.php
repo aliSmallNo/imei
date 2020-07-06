@@ -2251,7 +2251,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                         $buy_data[33]['items']['mid'][] = $trans_date;
                     }
                     $buy_data[33]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate'] + $list_three['rate']);
-                    $buy_data[33]['rule_co_sum'] += (count($list_today['buy_type']) + $list_tomorrow['buy_type'] + count($list_three['buy_type']));
+                    $buy_data[33]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']) + count($list_three['buy_type']));
                 }
             }
             // 4天2次
