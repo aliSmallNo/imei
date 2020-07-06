@@ -2113,6 +2113,20 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'rule_co_sum' => 0,
                 'items' => [],
             ],
+            33 => [
+                'name' => '3天3次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => [],
+            ],
             42 => [
                 'name' => '4天2次',
                 'yes' => 0,
@@ -2218,7 +2232,28 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
                 }
             }
-
+            // 3天3次
+            if ($today_is_but_dt && $tomorrow_is_but_dt && $three_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
+                    $list_today = $list[$trans_date];
+                    $list_tomorrow = $list[$trans_dates[$k + 1]];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    if ($note_yes_flag) {
+                        $buy_data[33]['yes']++;
+                        $buy_data[33]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[33]['no']++;
+                        $buy_data[33]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[33]['mid']++;
+                        $buy_data[33]['items']['mid'][] = $trans_date;
+                    }
+                    $buy_data[33]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate'] + $list_three['rate']);
+                    $buy_data[33]['rule_co_sum'] += (count($list_today['buy_type']) + $list_tomorrow['buy_type'] + count($list_three['buy_type']));
+                }
+            }
             // 4天2次
             if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && $four_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]])) {
