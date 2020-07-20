@@ -573,6 +573,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list1);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list2);
+        $list_warn = StockMainResult2::append_avg_rate($list_warn, $list1);
 
         $map = function ($list) {
             $map = [];
@@ -587,12 +588,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         };
         $list_buy_map = $map($list_buy);
         $list_sold_map = $map($list_sold);
+        $list_warn_map = $map($list_warn);
         foreach ($list as $k => $v) {
             $buy_rules = $v['buy_rules'];
             $sold_rules = $v['sold_rules'];
+            $warn_rules = $v['warn_rules'];
 
             $buy_co = $buy_sum = 0;
             $sold_co = $sold_sum = 0;
+            $warn_co = $warn_sum = 0;
             if ($buy_rules) {
                 foreach ($buy_rules as $buy_rule) {
                     if (isset($list_buy_map[$buy_rule])) {
@@ -620,6 +624,23 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $list[$k]['sold_avg_rate'] = 0;
                 $list[$k]['sold_avg_rate_sold_co'] = $sold_co;
             }
+
+            if ($warn_rules) {
+                foreach ($warn_rules as $warn_rule) {
+                    if (isset($list_warn_map[$warn_rule])) {
+                        $warn_co++;
+                        $warn_sum += $list_warn_map[$warn_rule];
+                    }
+                }
+                $list[$k]['warn_avg_rate'] = $warn_co > 0 ? sprintf('%.2f', $warn_sum / $warn_co) : 0;
+                $list[$k]['warn_avg_rate_warn_co'] = $warn_co;
+            } else {
+                $list[$k]['warn_avg_rate'] = 0;
+                $list[$k]['warn_avg_rate_warn_co'] = $warn_co;
+            }
+
+
+            //
         }
 
         return $list;
