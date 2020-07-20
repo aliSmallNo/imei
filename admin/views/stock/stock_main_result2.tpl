@@ -118,6 +118,11 @@
             <div>10日:{{$item.r_warn10}}</div>{{/if}}
           {{if $item.r_warn20}}
             <div>20日:{{$item.r_warn20}}</div>{{/if}}
+
+          {{if $item.warn_avg_right_rate}}
+            <div class="avg_font">平均正确率{{$item.warn_avg_right_rate}}%</div>{{/if}}
+          {{if $item.warn_avg_right_rate_2p}}
+            <div class="avg_font">2P-1：{{$item.warn_avg_right_rate_2p}}%</div>{{/if}}
         </td>
 
         <td class="{{$item.cls}}">{{$item.r_note}}</td>

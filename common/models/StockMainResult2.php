@@ -436,6 +436,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         };
         $list_buy_indexs = $list_buy_indexs_f($list_buy);
         $list_sold_indexs = $list_buy_indexs_f($list_sold);
+        $list_warn_indexs = $list_buy_indexs_f($list_warn);
 
         foreach ($res as $k => $v) {
             $r_buy5 = $v['r_buy5'];
@@ -444,8 +445,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $r_sold5 = $v['r_sold5'];
             $r_sold10 = $v['r_sold10'];
             $r_sold20 = $v['r_sold20'];
+            $r_warn5 = $v['r_warn5'];
+            $r_warn10 = $v['r_warn10'];
+            $r_warn20 = $v['r_warn20'];
 
-            $buy_rules = $sold_rules = [];
+            $buy_rules = $sold_rules = $warn_rules = [];
             $add_rule = function ($rules, $rule_str) {
                 if ($rule_str) {
                     if (strpos($rule_str, ',') !== false) {
@@ -470,8 +474,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $sold_rules = $add_rule($sold_rules, $r_sold20);
             $sold_rules = array_unique($sold_rules);
 
-            $buy_co = $sold_co = 0;
-            $buy_sum = $sold_sum = 0;
+            $warn_rules = $add_rule($warn_rules, $r_warn5);
+            $warn_rules = $add_rule($warn_rules, $r_warn10);
+            $warn_rules = $add_rule($warn_rules, $r_warn20);
+            $warn_rules = array_unique($warn_rules);
+
+            $buy_co = $sold_co = $warn_co = 0;
+            $buy_sum = $sold_sum = $warn_sum = 0;
             foreach ($buy_rules as $rule_name) {
                 if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                     $buy_co++;
@@ -484,12 +493,22 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
                 }
             }
+            foreach ($warn_rules as $rule_name) {
+                if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
+                    $warn_co++;
+                    $warn_sum += $list_warn[$list_warn_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+                }
+            }
+
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
             $res[$k]['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
             $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
             $res[$k]['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+            $res[$k]['warn_avg_right_rate'] = $warn_co > 0 ? sprintf('%.2f', $warn_sum / $warn_co) : 0;
+            $res[$k]['warn_avg_right_rate_2p'] = $warn_co > 0 ? (2 * sprintf('%.2f', $warn_sum / $warn_co) - 100) : 0;
             $res[$k]['buy_rules'] = $buy_rules;
             $res[$k]['sold_rules'] = $sold_rules;
+            $res[$k]['warn_rules'] = $warn_rules;
 
         }
 

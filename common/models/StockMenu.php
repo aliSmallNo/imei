@@ -124,18 +124,19 @@ class StockMenu extends \yii\db\ActiveRecord
     {
         $base_url = "http://web.juhe.cn:8080/finance/stock/%sall?key=%s&page=%s&type=4";
 
-        $pages = $type == "sz" ? 28 : 19;
-        //sz totalCount: 2206 pagesize=80 page=28
-        //sh totalCount: 1446 pagesize=80 page=19
-        for ($page = 1; $page <= $pages; $page++) {
+        $pages = $type == "sz" ? 30 : 20;
+        //sz totalCount: 2268 pagesize=80 page=29
+        //sh totalCount: 1452 pagesize=80 page=19
+        for ($page = 28; $page <= $pages; $page++) {
             $url = sprintf($base_url, $type, self::APPKEY, $page);
             $ret = AppUtil::httpGet($url);
-            self::pre_add($type, $ret);
+            self::pre_add($type, $ret, $page);
         }
+
 
     }
 
-    public static function pre_add($type = "sz", $data)
+    public static function pre_add($type = "sz", $data, $page = 1)
     {
         // sz=深圳股市 sh=>上海股市 数据demo
 
@@ -146,7 +147,7 @@ class StockMenu extends \yii\db\ActiveRecord
         $data = $data['result']['data'] ?? [];
 
         if ($error_code == 0 && $result && $data) {
-            echo count($data) . PHP_EOL;
+            echo $type.' page:'.$page.' '.count($data).PHP_EOL;
             foreach ($data as $v) {
                 self::add([
                     'mCat' => $type,
@@ -188,6 +189,7 @@ class StockMenu extends \yii\db\ActiveRecord
     public static function get_all_stocks_kv($where = "")
     {
         $stocks = self::get_all_stocks($where);
+
         return ArrayHelper::map($stocks, 'mStockId', 'mStockName');
     }
 
