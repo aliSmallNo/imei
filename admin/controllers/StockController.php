@@ -2143,9 +2143,7 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult2::cal_back_r_new($price_type, $buy_times, $stop_rate);
 
-        return $this->renderPage(
-            "stock_main_back_r2.tpl",
-            [
+        return $this->renderPage("stock_main_back_r2.tpl", [
                 'list' => StockMainResult2::change_color_diff_sold_dt(
                     $list
                 ),
@@ -2237,21 +2235,16 @@ class StockController extends BaseController
         $stop_rate = trim($stop_rate, '%');
 
         // 回测列表
-        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
-            = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
+        list($list1, $rate_year_sum1, $stat_rule_right_rate1) = StockMainResult2::cal_back($price_type, $buy_times,
+            $stop_rate);
         // 卖空回测
-        list(
-            $list2, $rate_year_sum2, $stat_rule_right_rate2
-            )
-            = StockMainResult2::cal_back_r_new(
-            $price_type, $buy_times, $stop_rate
-        );
+        list($list2, $rate_year_sum2, $stat_rule_right_rate2) = StockMainResult2::cal_back_r_new(
+            $price_type, $buy_times, $stop_rate);
 
         $list = array_merge($list1, $list2);
         ArrayHelper::multisort($list, 'buy_dt', SORT_DESC);
 
-        return $this->renderPage(
-            "stock_main_back_merge2.tpl", [
+        return $this->renderPage("stock_main_back_merge2.tpl", [
                 'list' => $list,
                 'rate_year_sum1' => $rate_year_sum1,
                 'rate_year_sum2' => $rate_year_sum2,
