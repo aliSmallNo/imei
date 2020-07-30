@@ -1905,7 +1905,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        StockMenu::getAllStock();
+        StockMainStat::init_main_stat_data();
         //StockStat2::init_today_data('2020-01-10');
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);

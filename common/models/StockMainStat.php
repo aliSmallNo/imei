@@ -57,7 +57,8 @@ class StockMainStat extends \yii\db\ActiveRecord
             return [false, false];
         }
         if ($entity = self::unique_one($values['s_trans_on'], $values['s_cat'])) {
-            return self::edit($entity->s_id, $values);
+            return [false, false];
+            //return self::edit($entity->s_id, $values);
         }
 
         $entity = new self();
@@ -103,11 +104,12 @@ class StockMainStat extends \yii\db\ActiveRecord
      */
     public static function init_main_stat_data()
     {
-        return false;
+        //return false;
 
         $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on asc';
         $dts = AppUtil::db()->createCommand($sql)->queryAll();
         foreach (array_column($dts, 'm_trans_on') as $dt) {
+            echo $dt.PHP_EOL;
             self::cal($dt);
         }
     }
@@ -115,10 +117,12 @@ class StockMainStat extends \yii\db\ActiveRecord
     const CAT_DAY_5 = 5;
     const CAT_DAY_10 = 10;
     const CAT_DAY_20 = 20;
+    const CAT_DAY_60 = 60;
     static $cats = [
         self::CAT_DAY_5 => '5日',
         self::CAT_DAY_10 => '10日',
         self::CAT_DAY_20 => '20日',
+        self::CAT_DAY_60 => '60日',
     ];
     static $cats_map = [
         self::CAT_DAY_5 => '5日',
@@ -141,19 +145,21 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         //echo $trans_on.PHP_EOL;
 
-        $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 21';
+        $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 61';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();
 
         $curr = array_slice($data, 0, 1)[0];
-        $data = array_slice($data, 1, 20);
+        $data = array_slice($data, 1, 60);
 
         $data_5 = array_slice($data, 0, 5);
         $data_10 = array_slice($data, 0, 10);
-        $data_20 = $data;
+        $data_20 = array_slice($data, 0, 20);
+        $data_60 = $data;
 
         self::pre_insert($trans_on, $data_5, $curr, self::CAT_DAY_5);
         self::pre_insert($trans_on, $data_10, $curr, self::CAT_DAY_10);
         self::pre_insert($trans_on, $data_20, $curr, self::CAT_DAY_20);
+        self::pre_insert($trans_on, $data_60, $curr, self::CAT_DAY_60);
 
     }
 
