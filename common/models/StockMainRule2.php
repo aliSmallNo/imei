@@ -65,7 +65,7 @@ class StockMainRule2 extends \yii\db\ActiveRecord
 
             'r_date_gt' => '日期大于',
             'r_date_lt' => '日期小于',
-            'r_scat' => 'day类型 5日，10日，20日',
+            'r_scat' => 'day类型 5日，10日，20日,，60日',
             'r_note' => '备注',
             'r_added_on' => 'add',
             'r_update_on' => 'update',
