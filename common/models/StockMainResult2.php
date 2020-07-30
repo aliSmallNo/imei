@@ -14,12 +14,15 @@ use yii\helpers\ArrayHelper;
  * @property string $r_buy5
  * @property string $r_buy10
  * @property string $r_buy20
+ * @property string $r_buy60
  * @property string $r_sold5
  * @property string $r_sold10
  * @property string $r_sold20
+ * @property string $r_sold60
  * @property string $r_warn5
  * @property string $r_warn10
  * @property string $r_warn20
+ * @property string $r_warn60
  * @property string $r_trans_on
  * @property string $r_note
  * @property string $r_added_on
@@ -66,12 +69,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             'r_buy5' => '5日买入',
             'r_buy10' => '10日买入',
             'r_buy20' => '20日买入',
+            'r_buy60' => '60日买入',
             'r_sold5' => '5日卖出',
             'r_sold10' => '10日卖出',
             'r_sold20' => '20日卖出',
+            'r_sold60' => '60日卖出',
             'r_warn5' => '5日预警',
             'r_warn10' => '10日预警',
             'r_warn20' => '20日预警',
+            'r_warn60' => '60日预警',
             'r_trans_on' => '交易日期',
             'r_note' => '备注',
             'r_added_on' => 'add时间',
@@ -168,12 +174,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     'r_buy5' => '',
                     'r_buy10' => '',
                     'r_buy20' => '',
+                    'r_buy60' => '',
                     'r_sold5' => '',
                     'r_sold10' => '',
                     'r_sold20' => '',
+                    'r_sold60' => '',
                     'r_warn5' => '',
                     'r_warn10' => '',
                     'r_warn20' => '',
+                    'r_warn60' => '',
                     'r_note' => '',
                 ];
             }
@@ -203,12 +212,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'r_buy5' => $v['r_buy5'],
                 'r_buy10' => $v['r_buy10'],
                 'r_buy20' => $v['r_buy20'],
+                'r_buy60' => $v['r_buy60'],
                 'r_sold5' => $v['r_sold5'],
                 'r_sold10' => $v['r_sold10'],
                 'r_sold20' => $v['r_sold20'],
+                'r_sold60' => $v['r_sold60'],
                 'r_warn5' => $v['r_warn5'],
                 'r_warn10' => $v['r_warn10'],
                 'r_warn20' => $v['r_warn20'],
+                'r_warn60' => $v['r_warn60'],
                 'r_trans_on' => $v['r_trans_on'],
             ]);
         }

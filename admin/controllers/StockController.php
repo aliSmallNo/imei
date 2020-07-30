@@ -1912,14 +1912,14 @@ class StockController extends BaseController
         );
         $pagination = self::pagination($page, $count, 10000);
 
+        $cats = StockMainStat::$cats;
+        array_pop($cats);
 
-        return $this->renderPage(
-            "stock_main_result.tpl",
-            [
+        return $this->renderPage("stock_main_result.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
                 'name' => $name,
-                'cats' => StockMainStat::$cats,
+                'cats' => $cats,
                 'cat' => $cat,
                 'notes' => StockMainResult2::$note_dict,
             ]
