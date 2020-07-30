@@ -57,8 +57,8 @@ class StockMainStat extends \yii\db\ActiveRecord
             return [false, false];
         }
         if ($entity = self::unique_one($values['s_trans_on'], $values['s_cat'])) {
-            return [false, false];
-            //return self::edit($entity->s_id, $values);
+//            return [false, false];
+            return self::edit($entity->s_id, $values);
         }
 
         $entity = new self();
@@ -104,7 +104,7 @@ class StockMainStat extends \yii\db\ActiveRecord
      */
     public static function init_main_stat_data()
     {
-        //return false;
+        return false;
 
         $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on asc';
         $dts = AppUtil::db()->createCommand($sql)->queryAll();
