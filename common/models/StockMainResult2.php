@@ -1539,6 +1539,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     'times_no' => 0,
                     'times_mid' => 0,
                 ],
+                60 => [
+                    'times' => 0,
+                    'times_yes' => 0,
+                    'times_no' => 0,
+                    'times_mid' => 0,
+                ],
                 'SUM' => [
                     'times' => 0,
                     'times_yes' => 0,
@@ -1596,7 +1602,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 return $item;
             };
             foreach ($results as $result) {
-                foreach ([5, 10, 20] as $day) {
+                foreach ([5, 10, 20, 60] as $day) {
                     foreach ([
                                  StockMainRule2::CAT_BUY => 'r_buy',
                                  StockMainRule2::CAT_SOLD => 'r_sold',
