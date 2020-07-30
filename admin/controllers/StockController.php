@@ -1943,12 +1943,13 @@ class StockController extends BaseController
 
         if ($name) {
             $nStr = [
-                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name 
-            or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name 
-            or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name  ) ',
+                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name or r.r_buy60 like :name
+            or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name or r.r_sold60 like :name
+            or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name or r.r_warn60 like :name) ',
                 5 => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
                 10 => ' (r.r_buy10 like :name or r.r_sold10 like :name or r.r_warn10 like :name) ',
                 20 => ' (r.r_buy20 like :name or r.r_sold20 like :name or r.r_warn20 like :name) ',
+                60 => ' (r.r_buy60 like :name or r.r_sold60 like :name or r.r_warn60 like :name) ',
             ];
             $criteria[] = isset($nStr[$cat]) ? $nStr[$cat] : $nStr[0];
             $params[':name'] = "%$name%";
@@ -1958,6 +1959,7 @@ class StockController extends BaseController
                 5 => ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_warn5)>0) ',
                 10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
                 20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
+                60 => ' (CHAR_LENGTH(r.r_buy60)>0 or CHAR_LENGTH(r.r_sold60)>0 or CHAR_LENGTH(r.r_warn60)>0) ',
             ];
             $criteria[] = $cStr[$cat];
         }
