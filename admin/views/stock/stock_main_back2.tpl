@@ -98,9 +98,11 @@
       <th>5日</th>
       <th>10日</th>
       <th>20日</th>
+      <th>60日</th>
       <th>5日</th>
       <th>10日</th>
       <th>20日</th>
+      <th>60日</th>
       <th>总次数</th>
       <th>准确率</th>
       <th>平均收益率</th>
@@ -112,9 +114,11 @@
         <td>{{$item.yes5}}</td>
         <td>{{$item.yes10}}</td>
         <td>{{$item.yes20}}</td>
+        <td>{{$item.yes60}}</td>
         <td>{{$item.no5}}</td>
         <td>{{$item.no10}}</td>
         <td>{{$item.no20}}</td>
+        <td>{{$item.no60}}</td>
         <td>{{$item.sum}}</td>
         <td>{{$item.right_rate}}%</td>
         <td>{{$item.avg_rate}}%</td>

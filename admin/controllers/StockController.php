@@ -2059,9 +2059,7 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate)
             = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
 
-        return $this->renderPage(
-            "stock_main_back2.tpl",
-            [
+        return $this->renderPage("stock_main_back2.tpl", [
                 'list' => StockMainResult2::change_color_diff_sold_dt($list),
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,

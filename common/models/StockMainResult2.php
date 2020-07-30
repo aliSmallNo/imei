@@ -1030,9 +1030,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'yes5' => 0,
                 'yes10' => 0,
                 'yes20' => 0,
+                'yes60' => 0,
                 'no5' => 0,
                 'no10' => 0,
                 'no20' => 0,
+                'no60' => 0,
                 'sum' => 0,
                 'sum_rate' => 0,
             ];
@@ -1087,12 +1089,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $yes5 = $ret[$k3]['yes5'];
             $yes10 = $ret[$k3]['yes10'];
             $yes20 = $ret[$k3]['yes20'];
-            $yes = $yes5 + $yes10 + $yes20;
+            $yes60 = $ret[$k3]['yes60'];
+            $yes = $yes5 + $yes10 + $yes20 + $yes60;
 
             $no5 = $ret[$k3]['no5'];
             $no10 = $ret[$k3]['no10'];
             $no20 = $ret[$k3]['no20'];
-            $no = $no5 + $no10 + $no20;
+            $no60 = $ret[$k3]['no60'];
+            $no = $no5 + $no10 + $no20 + $no60;
 
             $sum = $yes + $no;
             $ret[$k3]['sum'] = $sum;
