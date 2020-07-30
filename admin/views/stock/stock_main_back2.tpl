@@ -88,10 +88,9 @@
     <thead>
     <tr>
       <th>正确率</th>
-      <th colspan="3">正确次数</th>
-      <th colspan="3">错误次数</th>
-      <th></th>
-      <th></th>
+      <th colspan="4">正确次数</th>
+      <th colspan="4">错误次数</th>
+      <th colspan="3">统计</th>
     </tr>
     <tr>
       <th>策略</th>
