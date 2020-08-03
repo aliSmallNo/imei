@@ -260,12 +260,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             'r_buy5' => '',
             'r_buy10' => '',
             'r_buy20' => '',
+            'r_buy60' => '',
             'r_sold5' => '',
             'r_sold10' => '',
             'r_sold20' => '',
+            'r_sold60' => '',
             'r_warn5' => '',
             'r_warn10' => '',
             'r_warn20' => '',
+            'r_warn60' => '',
         ];
         if (!$res) {
             return $data;
@@ -368,6 +371,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $code = strval($prefix.mt_rand(1000, 9999).'8');
 
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
+            //$res = 'sys test';
 
             Log::add([
                 'oCategory' => Log::CAT_STOCK_MAIN_SMS_SEND,
@@ -677,10 +681,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     {
         switch ($cat) {
             case self::TAG_BUY:
-                $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20'];
+                $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20', 60 => 'r_buy60'];
                 break;
             case self::TAG_SOLD:
-                $arr = [5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20'];
+                $arr = [5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20', 60 => 'r_sold60'];
                 break;
             default:
                 $arr = [];
