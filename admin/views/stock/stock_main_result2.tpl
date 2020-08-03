@@ -88,6 +88,8 @@
             <div>10日:{{$item.r_buy10}}</div>{{/if}}
           {{if $item.r_buy20}}
             <div>20日:{{$item.r_buy20}}</div>{{/if}}
+          {{if $item.r_buy60}}
+            <div>60日:{{$item.r_buy60}}</div>{{/if}}
 
           {{if $item.buy_avg_right_rate}}
             <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
@@ -103,6 +105,8 @@
             <div>10日:{{$item.r_sold10}}</div>{{/if}}
           {{if $item.r_sold20}}
             <div>20日:{{$item.r_sold20}}</div>{{/if}}
+          {{if $item.r_sold60}}
+            <div>20日:{{$item.r_sold60}}</div>{{/if}}
 
           {{if $item.sold_avg_right_rate}}
             <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
@@ -119,6 +123,8 @@
             <div>10日:{{$item.r_warn10}}</div>{{/if}}
           {{if $item.r_warn20}}
             <div>20日:{{$item.r_warn20}}</div>{{/if}}
+          {{if $item.r_warn60}}
+            <div>20日:{{$item.r_warn60}}</div>{{/if}}
 
           {{if $item.warn_avg_right_rate}}
             <div class="avg_font">平均正确率{{$item.warn_avg_right_rate}}%</div>{{/if}}
