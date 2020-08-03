@@ -414,21 +414,24 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     'r_buy5',
                     'r_buy10',
                     'r_buy20',
+                    'r_buy60',
                     'r_sold5',
                     'r_sold10',
                     'r_sold20',
+                    'r_sold60',
                     'r_warn5',
                     'r_warn10',
                     'r_warn20',
+                    'r_warn60',
                 ])) {
                     $res[$k][$f] = trim($res[$k][$f], ',');
                 }
             }
             $r_trans_on = $v['r_trans_on'];
             if ($r_trans_on != date('Y-m-d')
-                && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20']
-                && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20']
-                && !$v['r_warn5'] && !$v['r_warn10'] && !$v['r_warn20']
+                && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20'] && !$v['r_buy60']
+                && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20'] && !$v['r_sold60']
+                && !$v['r_warn5'] && !$v['r_warn10'] && !$v['r_warn20'] && !$v['r_warn60']
             ) {
                 unset($res[$k]);
             }
@@ -454,12 +457,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $r_buy5 = $v['r_buy5'];
             $r_buy10 = $v['r_buy10'];
             $r_buy20 = $v['r_buy20'];
+            $r_buy60 = $v['r_buy60'];
             $r_sold5 = $v['r_sold5'];
             $r_sold10 = $v['r_sold10'];
             $r_sold20 = $v['r_sold20'];
+            $r_sold60 = $v['r_sold60'];
             $r_warn5 = $v['r_warn5'];
             $r_warn10 = $v['r_warn10'];
             $r_warn20 = $v['r_warn20'];
+            $r_warn60 = $v['r_warn60'];
 
             $buy_rules = $sold_rules = $warn_rules = [];
             $add_rule = function ($rules, $rule_str) {
@@ -479,16 +485,19 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $buy_rules = $add_rule($buy_rules, $r_buy5);
             $buy_rules = $add_rule($buy_rules, $r_buy10);
             $buy_rules = $add_rule($buy_rules, $r_buy20);
+            $buy_rules = $add_rule($buy_rules, $r_buy60);
             $buy_rules = array_unique($buy_rules);
 
             $sold_rules = $add_rule($sold_rules, $r_sold5);
             $sold_rules = $add_rule($sold_rules, $r_sold10);
             $sold_rules = $add_rule($sold_rules, $r_sold20);
+            $sold_rules = $add_rule($sold_rules, $r_sold60);
             $sold_rules = array_unique($sold_rules);
 
             $warn_rules = $add_rule($warn_rules, $r_warn5);
             $warn_rules = $add_rule($warn_rules, $r_warn10);
             $warn_rules = $add_rule($warn_rules, $r_warn20);
+            $warn_rules = $add_rule($warn_rules, $r_warn60);
             $warn_rules = array_unique($warn_rules);
 
             $buy_co = $sold_co = $warn_co = 0;
