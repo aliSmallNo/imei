@@ -315,7 +315,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      */
     public static function send_sms2()
     {
-        /*$model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
+        $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
         $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
@@ -323,7 +323,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $curr = time();
         if ($curr < $start || $curr > $end) {
             return 0;
-        }*/
+        }
 
         $ret = self::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
         if (!$ret) {
