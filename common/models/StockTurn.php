@@ -631,7 +631,7 @@ class StockTurn extends \yii\db\ActiveRecord
             $pbMRQ = $row['pbMRQ'];//市净率
 
             // 有静态市盈率用静态市盈率 没有静态市盈率用滚动市盈率  静态市盈率昨天（2020-05-06）开始抓取的
-            if ($peStatic) {
+            /*if ($peStatic) {
                 if ($peStatic > 0 && $pbMRQ > 0) {
                     if (($peStatic < 15 && $pbMRQ < 1.5) || ($peStatic * $pbMRQ < 22.5 && $peStatic * $pbMRQ > 0)) {
                         $res_stocks[] = $row['stock_id'];
@@ -642,6 +642,13 @@ class StockTurn extends \yii\db\ActiveRecord
                     if (($peTTM < 15 && $pbMRQ < 1.5) || ($peTTM * $pbMRQ < 22.5 && $peTTM * $pbMRQ > 0)) {
                         $res_stocks[] = $row['stock_id'];
                     }
+                }
+            }*/
+
+            // 改为滚动市盈率  静态市盈率于哥说不准 2020-08-17 PM
+            if ($peTTM > 0 && $pbMRQ > 0) {
+                if (($peTTM < 15 && $pbMRQ < 1.5) || ($peTTM * $pbMRQ < 22.5 && $peTTM * $pbMRQ > 0)) {
+                    $res_stocks[] = $row['stock_id'];
                 }
             }
         }

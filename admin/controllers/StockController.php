@@ -1614,17 +1614,14 @@ class StockController extends BaseController
         $list3 = StockTurn::get_pb_pe_stock($dt, 300);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage(
-            "stock_300.tpl",
-            [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
-                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
-            ]
-        );
+        return $this->renderPage("stock_300.tpl", [
+            'list1' => $select1,
+            'list2' => $select2,
+            'list3' => $list3,
+            'list4' => $list4,
+            'dt' => $dt,
+            'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+        ]);
     }
 
     public function actionStock_42()
@@ -1640,17 +1637,14 @@ class StockController extends BaseController
         $list3 = StockTurn::get_pb_pe_stock($dt, 42);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage(
-            "stock_42.tpl",
-            [
+        return $this->renderPage("stock_42.tpl", [
                 'list1' => $select1,
                 'list2' => $select2,
                 'list3' => $list3,
                 'list4' => $list4,
                 'dt' => $dt,
                 'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
-            ]
-        );
+            ]);
     }
 
     /**
