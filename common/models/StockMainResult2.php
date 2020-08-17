@@ -2216,6 +2216,20 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'rule_co_sum' => 0,
                 'items' => [],
             ],
+            43 => [
+                'name' => '4天3次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => [],
+            ],
             52 => [
                 'name' => '5天2次',
                 'yes' => 0,
@@ -2230,8 +2244,36 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'rule_co_sum' => 0,
                 'items' => [],
             ],
+            53 => [
+                'name' => '5天3次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => [],
+            ],
             62 => [
                 'name' => '6天2次',
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => [],
+            ],
+            63 => [
+                'name' => '6天3次',
                 'yes' => 0,
                 'no' => 0,
                 'mid' => '0',
@@ -2309,7 +2351,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
             // 3天3次
             if ($today_is_but_dt && $tomorrow_is_but_dt && $three_is_but_dt) {
-                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]]) && isset($list[$trans_dates[$k + 2]])) {
                     $list_today = $list[$trans_date];
                     $list_tomorrow = $list[$trans_dates[$k + 1]];
                     $list_three = $list[$trans_dates[$k + 2]];
@@ -2350,6 +2392,28 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_data[42]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
                 }
             }
+            // 4天3次，2020-08-17 PM
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && $three_is_but_dt && $four_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]]) && isset($list[$trans_dates[$k + 3]])) {
+                    $list_today = $list[$trans_date];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    if ($note_yes_flag) {
+                        $buy_data[43]['yes']++;
+                        $buy_data[43]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[43]['no']++;
+                        $buy_data[43]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[43]['mid']++;
+                        $buy_data[43]['items']['mid'][] = $trans_date;
+                    }
+                    $buy_data[43]['rate_sum'] += ($list_today['rate'] + $list_three['rate'] + $list_four['rate']);
+                    $buy_data[43]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']) + count($list_four['buy_type']));
+                }
+            }
             // 5天2次
             if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && $five_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]])) {
@@ -2371,8 +2435,30 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_data[52]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
                 }
             }
+            // 5天3次，2020-08-17 PM
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && $four_is_but_dt && $five_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $buy_data[53]['yes']++;
+                        $buy_data[53]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[53]['no']++;
+                        $buy_data[53]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[53]['mid']++;
+                        $buy_data[53]['items']['mid'][] = $trans_date;
+                    }
+                    $buy_data[53]['rate_sum'] += ($list_today['rate'] + $list_four['rate'] + $list_five['rate']);
+                    $buy_data[53]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']) + count($list_five['buy_type']));
+                }
+            }
             // 6天2次
-            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && !$five_is_but_dt && !$six_is_but_dt) {
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && !$five_is_but_dt && $six_is_but_dt) {
                 if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 5]])) {
                     $list_today = $list[$trans_date];
                     $list_six = $list[$trans_dates[$k + 5]];
@@ -2390,6 +2476,29 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $buy_data[62]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
                     $buy_data[62]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
+                }
+
+            }
+            // 6天3次 2020-08-17 PM
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && $five_is_but_dt && $six_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $buy_data[63]['yes']++;
+                        $buy_data[63]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[63]['no']++;
+                        $buy_data[63]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[63]['mid']++;
+                        $buy_data[63]['items']['mid'][] = $trans_date;
+                    }
+                    $buy_data[63]['rate_sum'] += ($list_today['rate'] + $list_five['date'] + $list_six['rate']);
+                    $buy_data[63]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']) + count($list_six['buy_type']));
                 }
             }
         }
