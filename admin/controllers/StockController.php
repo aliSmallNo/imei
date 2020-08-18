@@ -1638,13 +1638,13 @@ class StockController extends BaseController
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
         return $this->renderPage("stock_42.tpl", [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
-                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
-            ]);
+            'list1' => $select1,
+            'list2' => $select2,
+            'list3' => $list3,
+            'list4' => $list4,
+            'dt' => $dt,
+            'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+        ]);
     }
 
     /**
@@ -1685,8 +1685,10 @@ class StockController extends BaseController
      */
     public function actionStock_all_list()
     {
-        $dt = self::getParam("dt", '');
         $page = self::getParam("page", 1);
+        $dt = self::getParam("dt", '');
+        $stock_id = self::getParam("stock_id", '');
+        $color = self::getParam("color", '');
 
         $criteria = [];
         $params = [];
@@ -1698,15 +1700,27 @@ class StockController extends BaseController
         list($list, $count) = StockStat2::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
+        /**
+         * 1.可以，底色红色
+         * 2.贵，底色紫色
+         * 3.放弃，绿色
+         * 4.观望，黄色
+         */
+        $colors = [
+            1 => '可以',
+            2 => '贵',
+            3 => '放弃',
+            4 => '观望',
+        ];
 
-        return $this->renderPage(
-            "stock_all_list.tpl",
-            [
-                'list' => $list,
-                'pagination' => $pagination,
-                'dt' => $dt,
-            ]
-        );
+        return $this->renderPage("stock_all_list.tpl", [
+            'list' => $list,
+            'pagination' => $pagination,
+            'dt' => $dt,
+            'stock_id' => $stock_id,
+            'color' => $color,
+            'colors' => $colors,
+        ]);
     }
 
     /************************************************************************************/
@@ -1734,22 +1748,17 @@ class StockController extends BaseController
             $params[':dt'] = $dt;
         }
 
-        list($list, $count) = StockMainStat::items(
-            $criteria, $params, $page, 100
-        );
+        list($list, $count) = StockMainStat::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage(
-            "stock_main.tpl",
-            [
-                'cat' => $cat,
-                'dt' => $dt,
-                'pagination' => $pagination,
-                'list' => $list,
-                'cats' => StockMainStat::$cats,
-                'update_on' => StockMain::get_latest_update_on(),
-            ]
-        );
+        return $this->renderPage("stock_main.tpl", [
+            'cat' => $cat,
+            'dt' => $dt,
+            'pagination' => $pagination,
+            'list' => $list,
+            'cats' => StockMainStat::$cats,
+            'update_on' => StockMain::get_latest_update_on(),
+        ]);
     }
 
     /**

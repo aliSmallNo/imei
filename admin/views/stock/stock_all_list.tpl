@@ -9,6 +9,26 @@
     margin: 6px 0;
     border-radius: 3px;
   }
+
+  .bg_color_1 {
+    background: red;
+    color: #fff;
+  }
+
+  .bg_color_2 {
+    background: purple;
+    color: #fff;
+  }
+
+  .bg_color_3 {
+    background: green;
+    color: #fff;
+  }
+
+  .bg_color_4 {
+    background: #f80;
+    color: #fff;
+  }
 </style>
 <div class="row">
   <h4>所有股票</h4>
@@ -17,8 +37,15 @@
   <form action="/stock/stock_all_list" method="get" class="form-inline">
     <div class="form-group">
       <input class="form-control autoW endDate my-date-input" placeholder="日期" name="dt" value="{{$dt}}">
-    <button class="btn btn-primary">查询</button>
-    <span class="space"></span>
+      <input class="form-control autoW endDate " placeholder="股票代码" name="stock_id" value="{{$stock_id}}">
+      <select class="form-control" name="color">
+        <option value="">-=请选择=-</option>
+        {{foreach from=$colors item=item key=key}}
+          <option value="{{$key}}" {{if $key==$color}}selected{{/if}}>{{$item}}</option>
+        {{/foreach}}
+      </select>
+      <button class="btn btn-primary">查询</button>
+      <span class="space"></span>
   </form>
 </div>
 
@@ -41,7 +68,7 @@
         </td>
         <td>
           {{foreach from=$item.stock_arr item=stock_item}}
-          <span class="st_one">{{$stock_item.id}}-{{$stock_item.name}}</span>
+            <span class="st_one {{if $stock_item.id==$stock_id}}bg_color_{{$color}}{{/if}}">{{$stock_item.id}}-{{$stock_item.name}}</span>
           {{/foreach}}
         </td>
       </tr>
@@ -53,9 +80,9 @@
 
 
 <script>
-  $sls = {
-    loadflag: 0,
-  };
+    $sls = {
+        loadflag: 0,
+    };
 
 </script>
 {{include file="layouts/footer.tpl"}}
