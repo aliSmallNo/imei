@@ -149,8 +149,8 @@ class StockStat2 extends \yii\db\ActiveRecord
     {
         $dts = StockMain::get_trans_dates();
         foreach ($dts as $dt) {
-            if (strtotime($dt) < strtotime('2020-05-29')) {
-               // continue;
+            if (strtotime($dt) < strtotime('2020-08-10')) {
+                continue;
             }
             echo $dt . PHP_EOL;
             self::init_today_data($dt);

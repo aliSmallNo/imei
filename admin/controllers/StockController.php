@@ -1588,17 +1588,14 @@ class StockController extends BaseController
         $list3 = StockTurn::get_pb_pe_stock($dt, 171);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage(
-            "stock_171.tpl",
-            [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
-                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
-            ]
-        );
+        return $this->renderPage("stock_171.tpl", [
+            'list1' => $select1,
+            'list2' => $select2,
+            'list3' => $list3,
+            'list4' => $list4,
+            'dt' => $dt,
+            'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+        ]);
     }
 
     public function actionStock_300()
@@ -1630,9 +1627,7 @@ class StockController extends BaseController
         //list($select1, $select2) = StockTurn::stock171($dt, 42);
         list($select1, $select2) = StockTurn::stock171_new($dt, 42);
 
-        $StockTurn = StockTurn::findOne(
-            ['tStockId' => '000001', 'tTransOn' => $dt]
-        );
+        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 42);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
@@ -1657,24 +1652,19 @@ class StockController extends BaseController
         $dt = self::getParam("dt", date('Y-m-d'));
         list($select1, $select2) = StockTurn::stock171_new($dt, 0);
 
-        $StockTurn = StockTurn::findOne(
-            ['tStockId' => '000001', 'tTransOn' => $dt]
-        );
+        $StockTurn = StockTurn::findOne(['tStockId' => '000001', 'tTransOn' => $dt]);
 
         $list3 = StockTurn::get_pb_pe_stock($dt, 0);
         $list4 = StockTurn::get_intersect_2and3($select2, $list3);
 
-        return $this->renderPage(
-            "stock_all.tpl",
-            [
-                'list1' => $select1,
-                'list2' => $select2,
-                'list3' => $list3,
-                'list4' => $list4,
-                'dt' => $dt,
-                'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
-            ]
-        );
+        return $this->renderPage("stock_all.tpl", [
+            'list1' => $select1,
+            'list2' => $select2,
+            'list3' => $list3,
+            'list4' => $list4,
+            'dt' => $dt,
+            'update_on' => $StockTurn ? $StockTurn->tUpdatedOn : '',
+        ]);
     }
 
     /**
