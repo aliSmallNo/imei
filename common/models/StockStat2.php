@@ -180,12 +180,12 @@ class StockStat2 extends \yii\db\ActiveRecord
         $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
 
         $stocks = StockMenu::get_all_stocks_kv();
-        $stock_ids = StockStat2Mark::get_all_stock_ids();
+        $stock_ids_c = StockStat2Mark::get_all_stock_ids();
         foreach ($res as $k => $v) {
             $stock_ids = explode(',', $v['stock_ids']);
             foreach ($stock_ids as $stock_id) {
                 $stock_name = $stocks[$stock_id] ?? '';
-                $stock_bg = $stock_ids[$stock_id] ?? '';
+                $stock_bg = $stock_ids_c[$stock_id] ?? '';
 
                 $res[$k]['stock_arr'][] = ['id' => $stock_id, 'name' => $stock_name, 'stock_bg' => $stock_bg];
             }
