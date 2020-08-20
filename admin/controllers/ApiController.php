@@ -34,7 +34,9 @@ use common\models\StockMainResult;
 use common\models\StockMainResult2;
 use common\models\StockMainRule;
 use common\models\StockMainRule2;
+use common\models\StockMenu;
 use common\models\StockOrder;
+use common\models\StockStat2Mark;
 use common\models\StockUser;
 use common\models\StockUserAdmin;
 use common\models\User;
@@ -1738,14 +1740,35 @@ class ApiController extends Controller
                 $data = [
                     'r_note' => trim(self::postParam("r_note")),
                 ];
-                list($res,$model) = StockMainResult2::edit($id, $data);
+                list($res, $model) = StockMainResult2::edit($id, $data);
                 if ($res) {
                     StockMainResult::sync_note($model);
+
                     return self::renderAPI(0, "保存成功！", $data);
                 } else {
                     return self::renderAPI(129, '保存失败', $data);
                 }
                 break;
+            case "edit_stat2_mark":
+                $m_stock_id = trim(self::postParam("m_stock_id"));
+                $m_cat = trim(self::postParam("m_cat"));
+                $data = [
+                    'm_cat' => $m_cat,
+                    'm_stock_id' => $m_stock_id,
+                ];
+                if (!StockMenu::findOne(['mStockId' => $m_stock_id])) {
+                    return self::renderAPI(129, '保存失败:股票代码不对', $data);
+                }
+                if ($id) {
+                    list($res) = StockStat2Mark::edit($id, $data);
+                } else {
+                    list($res) = StockStat2Mark::add($data);
+                }
+                if ($res) {
+                    return self::renderAPI(0, "保存成功！", $data);
+                } else {
+                    return self::renderAPI(129, '保存失败', $data);
+                }
         }
 
         return self::renderAPI(self::CODE_MESSAGE, "什么操作也没做啊！");

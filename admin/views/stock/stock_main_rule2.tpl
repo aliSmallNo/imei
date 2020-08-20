@@ -359,6 +359,7 @@
         $('#modModal').modal('show');
 
     });
+
     $(document).on('click', '.btnSaveMod', function () {
         var self = $(this);
         var tag = self.attr('tag');

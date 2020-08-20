@@ -10,6 +10,10 @@
     border-radius: 3px;
   }
 
+  .bg_color_0 {
+    background: #ccc;
+  }
+
   .bg_color_1 {
     background: red;
     color: #fff;
@@ -37,13 +41,6 @@
   <form action="/stock/stock_all_list" method="get" class="form-inline">
     <div class="form-group">
       <input class="form-control autoW endDate my-date-input" placeholder="日期" name="dt" value="{{$dt}}">
-      <input class="form-control autoW endDate " placeholder="股票代码" name="stock_id" value="{{$stock_id}}">
-      <select class="form-control" name="color">
-        <option value="">-=请选择=-</option>
-        {{foreach from=$colors item=item key=key}}
-          <option value="{{$key}}" {{if $key==$color}}selected{{/if}}>{{$item}}</option>
-        {{/foreach}}
-      </select>
       <button class="btn btn-primary">查询</button>
       <span class="space"></span>
   </form>
@@ -68,7 +65,7 @@
         </td>
         <td>
           {{foreach from=$item.stock_arr item=stock_item}}
-            <span class="st_one {{if $stock_item.id==$stock_id}}bg_color_{{$color}}{{/if}}">{{$stock_item.id}}-{{$stock_item.name}}</span>
+            <span class="st_one {{$stock_item.bg}}">{{$stock_item.id}}-{{$stock_item.name}}</span>
           {{/foreach}}
         </td>
       </tr>

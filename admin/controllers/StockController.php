@@ -31,6 +31,7 @@ use common\models\StockMainStat;
 use common\models\StockMenu;
 use common\models\StockOrder;
 use common\models\StockStat2;
+use common\models\StockStat2Mark;
 use common\models\StockTurn;
 use common\models\StockTurnStat;
 use common\models\StockUser;
@@ -979,13 +980,10 @@ class StockController extends BaseController
         list($list, $count) = Log::sms_tip_items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage(
-            'stock_msg_tip.tpl',
-            [
-                'list' => $list,
-                'pagination' => $pagination,
-            ]
-        );
+        return $this->renderPage('stock_msg_tip.tpl', [
+            'list' => $list,
+            'pagination' => $pagination,
+        ]);
     }
 
     public function actionTrend()
@@ -1690,26 +1688,34 @@ class StockController extends BaseController
         list($list, $count) = StockStat2::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
-        /**
-         * 1.可以，底色红色
-         * 2.贵，底色紫色
-         * 3.放弃，绿色
-         * 4.观望，黄色
-         */
-        $colors = [
-            1 => '可以',
-            2 => '贵',
-            3 => '放弃',
-            4 => '观望',
-        ];
 
         return $this->renderPage("stock_all_list.tpl", [
             'list' => $list,
             'pagination' => $pagination,
             'dt' => $dt,
+        ]);
+    }
+
+    public function actionStock_all_list_mark()
+    {
+        Admin::staffOnly();
+
+        $page = self::getParam('page', 1);
+        $stock_id = self::getParam('stock_id', '');
+        $cat = self::getParam('cat', '');
+
+        $criteria = [];
+        $params = [];
+
+        list($list, $count) = StockStat2Mark::items($criteria, $params, $page);
+        $pagination = self::pagination($page, $count, 20);
+
+        return $this->renderPage("stock_all_list_mark.tpl", [
+            'list' => $list,
+            'pagination' => $pagination,
+            'cats' => StockStat2Mark::$cat_dict,
             'stock_id' => $stock_id,
-            'color' => $color,
-            'colors' => $colors,
+            'cat' => $cat,
         ]);
     }
 
@@ -1851,17 +1857,14 @@ class StockController extends BaseController
         );
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage(
-            "stock_main_rule2.tpl",
-            [
-                'pagination' => $pagination,
-                'list' => $list,
-                'cats' => StockMainRule::$cats,
-                'sts' => StockMainRule::$stDict,
-                'cat' => $cat,
-                'scat' => StockMainStat::$cats_map,
-            ]
-        );
+        return $this->renderPage("stock_main_rule2.tpl", [
+            'pagination' => $pagination,
+            'list' => $list,
+            'cats' => StockMainRule::$cats,
+            'sts' => StockMainRule::$stDict,
+            'cat' => $cat,
+            'scat' => StockMainStat::$cats_map,
+        ]);
     }
 
     /**

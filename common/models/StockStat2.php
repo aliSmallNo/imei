@@ -136,6 +136,7 @@ class StockStat2 extends \yii\db\ActiveRecord
                 ]);
             }
         }
+
         return true;
     }
 
@@ -152,7 +153,7 @@ class StockStat2 extends \yii\db\ActiveRecord
             if (strtotime($dt) < strtotime('2020-08-10')) {
                 continue;
             }
-            echo $dt . PHP_EOL;
+            echo $dt.PHP_EOL;
             self::init_today_data($dt);
 
         }
@@ -165,7 +166,7 @@ class StockStat2 extends \yii\db\ActiveRecord
         $offset = ($page - 1) * $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND ' . implode(' AND ', $criteria);
+            $strCriteria = ' AND '.implode(' AND ', $criteria);
         }
         // group_concat 有长度限制：show variables like 'group_concat_max_len'; =>  1024
         $sql = "select 
@@ -179,11 +180,14 @@ class StockStat2 extends \yii\db\ActiveRecord
         $res = $conn->createCommand($sql, [])->bindValues($params)->queryAll();
 
         $stocks = StockMenu::get_all_stocks_kv();
+        $stock_ids = StockStat2Mark::get_all_stock_ids();
         foreach ($res as $k => $v) {
             $stock_ids = explode(',', $v['stock_ids']);
             foreach ($stock_ids as $stock_id) {
                 $stock_name = $stocks[$stock_id] ?? '';
-                $res[$k]['stock_arr'][] = ['id' => $stock_id, 'name' => $stock_name];
+                $stock_bg = $stock_ids[$stock_id] ?? '';
+
+                $res[$k]['stock_arr'][] = ['id' => $stock_id, 'name' => $stock_name, 'stock_bg' => $stock_bg];
             }
         }
 
