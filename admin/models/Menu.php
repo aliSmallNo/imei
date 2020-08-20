@@ -282,6 +282,13 @@ class Menu
                         "revise" => 1,
                         "level" => 827,
                     ],
+                    [
+                        "name" => "股票标记",
+                        "url" => "/stock/stock_all_list_mark",
+                        "revise" => 1,
+                        "level" => 827,
+                    ],
+
                 ],
             ],
             [

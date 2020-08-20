@@ -1706,6 +1706,14 @@ class StockController extends BaseController
 
         $criteria = [];
         $params = [];
+        if ($stock_id) {
+            $criteria[] = "  m.m_stock_id = :stock_id ";
+            $params[':stock_id'] = $stock_id;
+        }
+        if ($cat) {
+            $criteria[] = "  m.m_cat = :cat ";
+            $params[':cat'] = $cat;
+        }
 
         list($list, $count) = StockStat2Mark::items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);

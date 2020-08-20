@@ -39,12 +39,14 @@ class StockStat2Mark extends \yii\db\ActiveRecord
         ];
     }
 
+    const CAT_DEFAULT = 100;
     const CAT_OK = 1;
     const CAT_EXPENSIVE = 2;
     const CAT_GIVE_UP = 3;
     const CAT_WATCH = 4;
 
     static $cat_dict = [
+        self::CAT_DEFAULT => '默认',
         self::CAT_OK => '可以',
         self::CAT_EXPENSIVE => '贵',
         self::CAT_GIVE_UP => '放弃',
@@ -52,6 +54,7 @@ class StockStat2Mark extends \yii\db\ActiveRecord
     ];
 
     static $cat_colors = [
+        self::CAT_DEFAULT => '灰色',
         self::CAT_OK => '红色',
         self::CAT_EXPENSIVE => '紫色',
         self::CAT_GIVE_UP => '绿色',

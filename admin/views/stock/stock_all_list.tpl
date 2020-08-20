@@ -10,7 +10,7 @@
     border-radius: 3px;
   }
 
-  .bg_color_0 {
+  .bg_color_100 {
     background: #ccc;
   }
 

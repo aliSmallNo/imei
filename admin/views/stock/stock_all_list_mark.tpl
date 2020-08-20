@@ -33,7 +33,7 @@
   </div>
 </div>
 <div class="row">
-  <form action="/stock/stock_main_result_stat0601_mark" method="get" class="form-inline">
+  <form action="/stock/stock_all_list_mark" method="get" class="form-inline">
     <div class="form-group">
       <input type="text" name="stock_id" class="form-control" placeholder="策略名称" value="{{$stock_id}}">
       <select class="form-control" name="cat">
