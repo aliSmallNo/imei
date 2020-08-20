@@ -65,7 +65,7 @@
         </td>
         <td>
           {{foreach from=$item.stock_arr item=stock_item}}
-            <span class="st_one {{$stock_item.bg}}">{{$stock_item.id}}-{{$stock_item.name}}</span>
+            <span class="st_one {{$stock_item.stock_bg}}">{{$stock_item.id}}-{{$stock_item.name}}</span>
           {{/foreach}}
         </td>
       </tr>
