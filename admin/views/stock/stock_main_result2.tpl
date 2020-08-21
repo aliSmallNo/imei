@@ -63,7 +63,6 @@
     <tr>
       <th>#</th>
       <th>交易日期</th>
-
       <th>{{$price_type_t}}</th>
       <th class="col-sm-3">买入</th>
       <th class="col-sm-3">卖出</th>
@@ -81,6 +80,8 @@
         <td>{{$key+1}}</td>
         <td>{{$item.r_trans_on}}</td>
         <td>{{$item.m_etf_close}}</td>
+
+        <!-- 买入 -->
         <td class="bot_line">
           {{if $item.r_buy5}}
             <div>5日:{{$item.r_buy5}}</div>{{/if}}
@@ -98,6 +99,7 @@
           {{if $item.buy_avg_rate}}
           <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
         </td>
+        <!-- 卖出 -->
         <td class="bot_line">
           {{if $item.r_sold5}}
             <div>5日:{{$item.r_sold5}}</div>{{/if}}
@@ -106,7 +108,7 @@
           {{if $item.r_sold20}}
             <div>20日:{{$item.r_sold20}}</div>{{/if}}
           {{if $item.r_sold60}}
-            <div>20日:{{$item.r_sold60}}</div>{{/if}}
+            <div>60日:{{$item.r_sold60}}</div>{{/if}}
 
           {{if $item.sold_avg_right_rate}}
             <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
@@ -124,7 +126,7 @@
           {{if $item.r_warn20}}
             <div>20日:{{$item.r_warn20}}</div>{{/if}}
           {{if $item.r_warn60}}
-            <div>20日:{{$item.r_warn60}}</div>{{/if}}
+            <div>60日:{{$item.r_warn60}}</div>{{/if}}
 
           {{if $item.warn_avg_right_rate}}
             <div class="avg_font">平均正确率{{$item.warn_avg_right_rate}}%</div>{{/if}}
