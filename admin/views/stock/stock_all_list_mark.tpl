@@ -53,9 +53,10 @@
     <thead>
     <tr>
       <th>#</th>
+      <th>股票名称</th>
       <th>股票代码</th>
-      <th >标记</th>
-      <th >说明</th>
+      <th>标记</th>
+      <th>说明</th>
       <th>时间</th>
       <th>操作</th>
     </tr>
@@ -65,11 +66,12 @@
     {{foreach from=$list item=item key=key}}
       <tr>
         <td>{{$key+1}}</td>
-        <td>{{$item.m_stock_id}}</td>
+        <td>{{$item.mStockName}}</td>
         <td>{{$item.m_cat_t}}-{{$item.m_cat_c}}</td>
         <td>{{$item.m_desc}}</td>
         <td>{{$item.m_updated_on}}</td>
-        <td data-id="{{$item.m_id}}" data-m_stock_id="{{$item.m_stock_id}}" data-m_cat="{{$item.m_cat}}" data-m_desc="{{$item.m_desc}}">
+        <td data-id="{{$item.m_id}}" data-m_stock_id="{{$item.m_stock_id}}" data-m_cat="{{$item.m_cat}}"
+            data-m_desc="{{$item.m_desc}}">
           <a class="btnModify btn btn-xs btn-primary">修改</a>
         </td>
       </tr>
@@ -119,7 +121,7 @@
     <div class="form-group">
       <label class="col-sm-4 control-label">说明:</label>
       <div class="col-sm-7">
-        <input type="text" class="form-control m_desc">
+        <textarea class="form-control m_desc"></textarea>
       </div>
     </div>
   </div>
