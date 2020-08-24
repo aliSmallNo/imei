@@ -1715,8 +1715,9 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockStat2Mark::items($criteria, $params, $page);
-        $pagination = self::pagination($page, $count, 20);
+        $pageSize = 100;
+        list($list, $count) = StockStat2Mark::items($criteria, $params, $page, $pageSize);
+        $pagination = self::pagination($page, $count, $pageSize);
 
         return $this->renderPage("stock_all_list_mark.tpl", [
             'list' => $list,

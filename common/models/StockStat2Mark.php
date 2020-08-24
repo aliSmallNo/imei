@@ -141,7 +141,7 @@ class StockStat2Mark extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
-    public static function items($criteria, $params, $page, $pageSize = 1000)
+    public static function items($criteria, $params, $page, $pageSize = 20)
     {
         $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
         $strCriteria = '';
