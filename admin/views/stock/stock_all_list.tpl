@@ -8,6 +8,7 @@
     padding: 3px 3px;
     margin: 6px 0;
     border-radius: 3px;
+    color: #000;
   }
 
   .bg_color_100 {
