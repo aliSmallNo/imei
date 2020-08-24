@@ -1752,12 +1752,17 @@ class ApiController extends Controller
             case "edit_stat2_mark":
                 $m_stock_id = trim(self::postParam("m_stock_id"));
                 $m_cat = trim(self::postParam("m_cat"));
+                $m_desc = trim(self::postParam("m_desc"));
                 $data = [
                     'm_cat' => $m_cat,
                     'm_stock_id' => $m_stock_id,
+                    'm_desc' => $m_desc,
                 ];
                 if (!StockMenu::findOne(['mStockId' => $m_stock_id])) {
                     return self::renderAPI(129, '保存失败:股票代码不对', $data);
+                }
+                if (!$id && StockStat2Mark::unique_stock($m_stock_id)) {
+                    return self::renderAPI(129, '保存失败:股票代码已存在', $data);
                 }
                 if ($id) {
                     list($res) = StockStat2Mark::edit($id, $data);

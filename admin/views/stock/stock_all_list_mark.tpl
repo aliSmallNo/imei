@@ -55,6 +55,7 @@
       <th>#</th>
       <th>股票代码</th>
       <th >标记</th>
+      <th >说明</th>
       <th>时间</th>
       <th>操作</th>
     </tr>
@@ -66,8 +67,9 @@
         <td>{{$key+1}}</td>
         <td>{{$item.m_stock_id}}</td>
         <td>{{$item.m_cat_t}}-{{$item.m_cat_c}}</td>
+        <td>{{$item.m_desc}}</td>
         <td>{{$item.m_updated_on}}</td>
-        <td data-id="{{$item.m_id}}" data-m_stock_id="{{$item.m_stock_id}}" data-m_cat="{{$item.m_cat}}">
+        <td data-id="{{$item.m_id}}" data-m_stock_id="{{$item.m_stock_id}}" data-m_cat="{{$item.m_cat}}" data-m_desc="{{$item.m_desc}}">
           <a class="btnModify btn btn-xs btn-primary">修改</a>
         </td>
       </tr>
@@ -114,6 +116,12 @@
         <input type="text" class="form-control m_stock_id">
       </div>
     </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">说明:</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control m_desc">
+      </div>
+    </div>
   </div>
 </script>
 <script>
@@ -144,6 +152,7 @@
                     tag: tag,
                     m_cat: $.trim($('.m_cat').val()),
                     m_stock_id: $.trim($('.m_stock_id').val()),
+                    m_desc: $.trim($('.m_desc').val()),
                     id: self.attr("id")
                 };
                 console.log(postData);
@@ -181,8 +190,9 @@
             id: td.attr("data-id")
         });
 
-        $('.m_cat').val(td.attr("data-m_cat"))
-        $('.m_stock_id').val(td.attr("data-m_stock_id"))
+        $('.m_cat').val(td.attr("data-m_cat"));
+        $('.m_stock_id').val(td.attr("data-m_stock_id"));
+        $('.m_desc').val(td.attr("data-m_desc"));
 
         $('#modModal').modal('show');
 

@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $m_id
  * @property integer $m_cat
  * @property string $m_stock_id
+ * @property string $m_desc
  * @property string $m_added_on
  * @property string $m_updated_on
  */
@@ -33,7 +34,8 @@ class StockStat2Mark extends \yii\db\ActiveRecord
         return [
             'm_id' => 'M ID',
             'm_cat' => '1.可以，底色红色2.贵，底色紫色3.放弃，绿色4.观望，黄色',
-            'm_stock_id' => 'M Stock ID',
+            'm_desc' => '描述',
+            'm_stock_id' => 'Stock ID',
             'm_added_on' => '添加时间',
             'm_updated_on' => '修改时间',
         ];
@@ -99,6 +101,18 @@ class StockStat2Mark extends \yii\db\ActiveRecord
     }
 
     /**
+     * one
+     *
+     * @time 2020-08-24 PM
+     */
+    public static function unique_stock($stock_id)
+    {
+        return self::findOne([
+            'm_stock_id' => $stock_id,
+        ]);
+    }
+
+    /**
      * edit
      *
      * @time 2020-08-20 PM
@@ -159,13 +173,14 @@ class StockStat2Mark extends \yii\db\ActiveRecord
 
     public static function get_all_stock_ids()
     {
-        $all = self::find()->select('m_stock_id,m_cat')->asArray()->all();
+        $all = self::find()->select('m_stock_id,m_cat,m_desc')->asArray()->all();
         $data = [];
         foreach ($all as $v) {
             $m_stock_id = $v['m_stock_id'];
             $m_cat = $v['m_cat'];
+            $m_desc = $v['m_desc'];
             if (!isset($data[$m_stock_id])) {
-                $data[$m_stock_id] = 'bg_color_'.$m_cat;
+                $data[$m_stock_id] = ['bg_color' => 'bg_color_'.$m_cat, 'desc' => $m_desc];
             }
         }
 

@@ -185,9 +185,16 @@ class StockStat2 extends \yii\db\ActiveRecord
             $stock_ids = explode(',', $v['stock_ids']);
             foreach ($stock_ids as $stock_id) {
                 $stock_name = $stocks[$stock_id] ?? '';
-                $stock_bg = $stock_ids_c[$stock_id] ?? '';
+                $stock_item = $stock_ids_c[$stock_id] ?? '';
+                $stock_bg = $stock_item ? $stock_item['bg_color'] : '';
+                $stock_desc = $stock_item ? $stock_item['desc'] : '';
 
-                $res[$k]['stock_arr'][] = ['id' => $stock_id, 'name' => $stock_name, 'stock_bg' => $stock_bg];
+                $res[$k]['stock_arr'][] = [
+                    'id' => $stock_id,
+                    'name' => $stock_name,
+                    'stock_bg' => $stock_bg,
+                    'desc' => $stock_desc,
+                ];
             }
         }
 
