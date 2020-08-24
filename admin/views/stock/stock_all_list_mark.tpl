@@ -67,6 +67,7 @@
       <tr>
         <td>{{$key+1}}</td>
         <td>{{$item.mStockName}}</td>
+        <td>{{$item.m_stock_id}}</td>
         <td>{{$item.m_cat_t}}-{{$item.m_cat_c}}</td>
         <td>{{$item.m_desc}}</td>
         <td>{{$item.m_updated_on}}</td>
