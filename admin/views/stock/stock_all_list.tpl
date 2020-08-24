@@ -34,6 +34,11 @@
     background: #f80;
     color: #fff;
   }
+
+  .bg_color_5 {
+    background: blue;
+    color: #fff;
+  }
 </style>
 <div class="row">
   <h4>所有股票</h4>
@@ -66,7 +71,8 @@
         </td>
         <td>
           {{foreach from=$item.stock_arr item=stock_item}}
-            <a class="st_one {{$stock_item.stock_bg}}" {{if $stock_item.desc}}title="{{$stock_item.desc}}"{{/if}}>{{$stock_item.id}}-{{$stock_item.name}}</a>
+            <a class="st_one {{$stock_item.stock_bg}}"
+               {{if $stock_item.desc}}title="{{$stock_item.desc}}"{{/if}}>{{$stock_item.id}}-{{$stock_item.name}}</a>
           {{/foreach}}
         </td>
       </tr>
