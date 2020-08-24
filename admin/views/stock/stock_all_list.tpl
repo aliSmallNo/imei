@@ -11,6 +11,10 @@
     color: #000;
   }
 
+  .st_one:hover {
+    color: #000;
+  }
+
   .bg_color_100 {
     background: #ccc;
   }
@@ -37,6 +41,10 @@
 
   .bg_color_5 {
     background: blue;
+    color: #fff;
+  }
+
+  .bg_color_1:hover, .bg_color_2:hover, .bg_color_3:hover, .bg_color_4:hover, .bg_color_5:hover {
     color: #fff;
   }
 </style>
