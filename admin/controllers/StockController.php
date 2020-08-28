@@ -2474,7 +2474,7 @@ class StockController extends BaseController
                 $where .= "  and (r_note='错' or r_note='买对')  ";
             }
             if ($rule_name) {
-                $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%')";
+                $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%' or r_sold60 like '%$rule_name%')";
             }
             list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where);
         } else {
@@ -2485,7 +2485,7 @@ class StockController extends BaseController
                 $where .= "  and (r_note='错' or r_note='卖对')  ";
             }
             if ($rule_name) {
-                $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%')";
+                $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%' or r_buy60 like '%$rule_name%')";
             }
             list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where);
         }

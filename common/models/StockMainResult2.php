@@ -1799,6 +1799,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-01-13 added
      * @time 2020-03-01 modify
      * @time 2020-05-22 modify
+     * @time 2020-08-28 modify  去掉 【1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计】
      */
     public static function get_5day_after_rate_r($price_type, $where = '')
     {
@@ -1807,7 +1808,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) 
+                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0) 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -1888,7 +1889,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0) 
+                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -1900,6 +1901,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $buy_sold_dts[$dt] = $sold['r_trans_on'];
             }
         }
+
         // 卖出点后出现的“第一次买点”
         /*$sold_dt_flag = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
@@ -1946,7 +1948,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             //echo $avg_k.' = '.$co.'<br>';
             $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
         }
-
         return [$data, $avgs];
     }
 
