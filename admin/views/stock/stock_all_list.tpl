@@ -77,10 +77,19 @@
         <td class="col-sm-2">
           {{$item.s_trans_on}}
         </td>
-        <td>
+        <td class="hidden">
           {{foreach from=$item.stock_arr item=stock_item}}
             <a class="st_one {{$stock_item.stock_bg}}"
                {{if $stock_item.desc}}title="{{$stock_item.desc}}"{{/if}}>{{$stock_item.id}}-{{$stock_item.name}}</a>
+          {{/foreach}}
+        </td>
+        <td class="">
+          {{foreach from=$item.stock_arr item=stock_item}}
+            <a class="st_one {{$stock_item.stock_bg}}"
+               data-title="提示" data-container="body" data-toggle="popover" data-html="true" data-placement="top"
+               data-content="{{$stock_item.desc}}" onmouseover="_onmouseover(this)" onmouseout="_onmouseout(this)">
+              {{$stock_item.id}}-{{$stock_item.name}}
+            </a>
           {{/foreach}}
         </td>
       </tr>
@@ -95,6 +104,25 @@
     $sls = {
         loadflag: 0,
     };
+    $(document).on('click', ".btn-alert", function () {
+        var self = $(this);
+        self.popover({
+            placement: 'top',
+            title: '说明',
+            content: self.attr('data-content'),
+        })
+    });
 
+    function _onmouseover(t) {
+        if ($(t).attr('data-content')) {
+            $(t).popover({html: true}).popover('show');
+        }
+    }
+
+    function _onmouseout(t) {
+        if ($(t).attr('data-content')) {
+            $(t).popover('hide');
+        }
+    }
 </script>
 {{include file="layouts/footer.tpl"}}
