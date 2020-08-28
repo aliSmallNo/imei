@@ -2476,9 +2476,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r(
-                $price_type, $where
-            );
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where);
         } else {
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='买对')  ";
@@ -2489,9 +2487,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate(
-                $price_type, $where
-            );
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where);
         }
 
         /*$tabs = [
@@ -2503,9 +2499,7 @@ class StockController extends BaseController
             1 => '买点出现后5天的【做空】收益率',
         ];
 
-        return $this->renderPage(
-            "stock_main_rate_5day_rate2.tpl",
-            [
+        return $this->renderPage("stock_main_rate_5day_rate2.tpl", [
                 'list' => array_reverse($list),
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
