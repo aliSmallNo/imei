@@ -9,6 +9,7 @@
     margin: 6px 0;
     border-radius: 3px;
     color: #000;
+    cursor: pointer;
   }
 
   .st_one:hover {
