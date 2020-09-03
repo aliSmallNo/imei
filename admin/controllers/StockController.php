@@ -2459,6 +2459,7 @@ class StockController extends BaseController
             "price_type", StockMainPrice::TYPE_ETF_500
         );
         $is_go_short = self::getParam("is_go_short", 0);
+        $dt_type = self::getParam("dt_type", 1);
 
         // $note 0=>“全部” 1=>“对” 9=>“错”
         $note_dict = [0 => '全部', 1 => '对', 9 => '错'];
@@ -2476,7 +2477,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%' or r_sold60 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where,$dt_type);
         } else {
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='买对')  ";
@@ -2487,7 +2488,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%' or r_buy60 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where,$dt_type);
         }
 
         /*$tabs = [
@@ -2499,8 +2500,17 @@ class StockController extends BaseController
             1 => '买点出现后5天的【做空】收益率',
         ];
 
+        $dt_types = [
+            1 => '第一次信号',
+            0 => '全部',
+        ];
+
+        usort($list, function ($a, $b) {
+            return strtotime($a['dt']) < strtotime($b['dt']);
+        });
+
         return $this->renderPage("stock_main_rate_5day_rate2.tpl", [
-                'list' => array_reverse($list),
+                'list' => $list,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
                 'avgs' => $avgs,
@@ -2508,6 +2518,8 @@ class StockController extends BaseController
                 'note_dict' => $note_dict,
                 'note' => $note,
                 'is_go_short' => $is_go_short,
+                'dt_types' => $dt_types,
+                'dt_type' => $dt_type,
             ]
         );
     }

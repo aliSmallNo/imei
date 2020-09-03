@@ -40,6 +40,11 @@
           <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$type}}</option>
         {{/foreach}}
       </select>
+      <select class="form-control" name="dt_type">
+        {{foreach from=$dt_types item=$item key=key}}
+          <option value="{{$key}}" {{if $key==$dt_type}}selected{{/if}}>{{$item}}</option>
+        {{/foreach}}
+      </select>
       <input class="form-control" name="rule_name" placeholder="策略名称"/>
     </div>
     <button class="btn btn-primary">查询</button>

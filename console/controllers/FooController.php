@@ -1904,8 +1904,19 @@ class FooController extends Controller
 
     public function actionZp()
     {
+        $list=[
+            ['dt'=>'2020-01-01'],
+            ['dt'=>'2020-01-03'],
+            ['dt'=>'2020-01-02'],
+            ['dt'=>'2020-01-04'],
+            ['dt'=>'2020-01-06'],
+            ['dt'=>'2020-01-05'],
+        ];
+        usort($list, function ($a, $b) {
+            return strtotime($a['dt']) > strtotime($b['dt']);
+        });
+        print_r($list);
 
-        StockStat2::init_data();
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);

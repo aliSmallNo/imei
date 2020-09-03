@@ -1801,7 +1801,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-05-22 modify
      * @time 2020-08-28 modify  去掉 【1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计】
      */
-    public static function get_5day_after_rate_r($price_type, $where = '')
+    public static function get_5day_after_rate_r($price_type, $where = '', $dt_type)
     {
         $conn = AppUtil::db();
         $sql = "select 
@@ -1821,18 +1821,20 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
         // 卖出点后出现的“第一次买点”
-        /*$sold_dt_flag = '';
-        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            if (!$sold_dt_flag) {
-                $sold_dt_flag = $sold_dt;
-                continue;
+        if ($dt_type) {
+            $sold_dt_flag = '';
+            foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+                if (!$sold_dt_flag) {
+                    $sold_dt_flag = $sold_dt;
+                    continue;
+                }
+                if ($sold_dt == $sold_dt_flag) {
+                    unset($buy_sold_dts[$buy_dt]);
+                } else {
+                    $sold_dt_flag = $sold_dt;
+                }
             }
-            if ($sold_dt == $sold_dt_flag) {
-                unset($buy_sold_dts[$buy_dt]);
-            } else {
-                $sold_dt_flag = $sold_dt;
-            }
-        }*/
+        }
 
         $data = [];
         $r_trans_on_str = '';
@@ -1882,7 +1884,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-05-22 modify
      * @time 2020-08-28 modify  去掉 【1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计】
      */
-    public static function get_5day_after_rate($price_type, $where = '')
+    public static function get_5day_after_rate($price_type, $where = '', $dt_type)
     {
         $conn = AppUtil::db();
         $sql = "select 
@@ -1903,18 +1905,20 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         // 卖出点后出现的“第一次买点”
-        /*$sold_dt_flag = '';
-        foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            if (!$sold_dt_flag) {
-                $sold_dt_flag = $sold_dt;
-                continue;
+        if ($dt_type) {
+            $sold_dt_flag = '';
+            foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
+                if (!$sold_dt_flag) {
+                    $sold_dt_flag = $sold_dt;
+                    continue;
+                }
+                if ($sold_dt == $sold_dt_flag) {
+                    unset($buy_sold_dts[$buy_dt]);
+                } else {
+                    $sold_dt_flag = $sold_dt;
+                }
             }
-            if ($sold_dt == $sold_dt_flag) {
-                unset($buy_sold_dts[$buy_dt]);
-            } else {
-                $sold_dt_flag = $sold_dt;
-            }
-        }*/
+        }
 
         $data = [];
 
@@ -1948,6 +1952,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             //echo $avg_k.' = '.$co.'<br>';
             $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
         }
+
         return [$data, $avgs];
     }
 
