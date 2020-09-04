@@ -1898,10 +1898,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         // 买点找出卖出
         $buy_sold_dts = [];
         foreach ($dts as $dt) {
+            // 2020-09-04 modify  不用考虑卖点
             $sold = self::get_sold_point($dt);
+            /*if ($sold) {
+                $buy_sold_dts[$dt] = $sold['r_trans_on'];
+            }*/
             if ($sold) {
                 $buy_sold_dts[$dt] = $sold['r_trans_on'];
+            } else {
+                $buy_sold_dts[$dt] = '-';
             }
+
         }
 
         // 卖出点后出现的“第一次买点”
