@@ -69,7 +69,7 @@ class AppUtil
                 "title" => "长得很像吴孟达",
                 "src" => "/images/op/m_wumd.jpg",
                 "comment" => "对，就是你！",
-            ]
+            ],
         ],
         "male" => [
             [
@@ -96,7 +96,7 @@ class AppUtil
                 "title" => "长得很像吉泽",
                 "src" => "/images/op/f_jiz.jpg",
                 "comment" => "此人是谁？好面熟，好像是个演员！",
-            ]
+            ],
         ],
     ];
 
@@ -344,6 +344,7 @@ class AppUtil
         if (self::isDev()) {
             return '127.0.0.1';
         }
+
         return self::getParam('ip');
     }
 
@@ -384,7 +385,7 @@ class AppUtil
             return $folder;
         }
         if ($cat) {
-            $folder .= $cat . '/';
+            $folder .= $cat.'/';
             if (!is_dir($folder)) {
                 mkdir($folder);
             }
@@ -394,13 +395,14 @@ class AppUtil
             mkdir($folder);
         }
         //$folder .= '/' . date('n') . mt_rand(10, 30);
-        $folder .= '/' . date('m');
+        $folder .= '/'.date('m');
 
 
         if (!is_dir($folder)) {
             mkdir($folder);
         }
-        return $folder . '/';
+
+        return $folder.'/';
     }
 
     protected static function getParam($key, $subKey = '')
@@ -408,6 +410,7 @@ class AppUtil
         if ($subKey) {
             return Yii::$app->params[$key][$subKey];
         }
+
         return Yii::$app->params[$key];
     }
 
@@ -451,6 +454,7 @@ class AppUtil
         if (preg_match("/^1[2-9][0-9]{9}$/", $mobile)) {
             return true;
         }
+
         return false;
     }
 
@@ -477,12 +481,13 @@ class AppUtil
         $xml = "<xml>";
         foreach ($params as $key => $val) {
             if (is_numeric($val)) {
-                $xml .= "<" . $key . ">" . $val . "</" . $key . ">";
+                $xml .= "<".$key.">".$val."</".$key.">";
             } else {
-                $xml .= "<" . $key . "><![CDATA[" . $val . "]]></" . $key . ">";
+                $xml .= "<".$key."><![CDATA[".$val."]]></".$key.">";
             }
         }
         $xml .= "</xml>";
+
         return $xml;
     }
 
@@ -495,6 +500,7 @@ class AppUtil
         //禁止引用外部xml实体
         libxml_disable_entity_loader(true);
         $data = json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+
         return $data;
     }
 
@@ -525,6 +531,7 @@ class AppUtil
                 }
             }
         }
+
         return $ip;
     }
 
@@ -544,6 +551,7 @@ class AppUtil
             $deviceInfo['mode'] = self::MODE_PC;
             $deviceInfo['name'] = $deviceInfo["id"];
         }
+
         return $deviceInfo;
     }
 
@@ -577,6 +585,7 @@ class AppUtil
         $lst['rst'] = curl_exec($ch);
         $lst['info'] = curl_getinfo($ch);
         curl_close($ch);
+
         return $lst['rst'];
     }
 
@@ -593,7 +602,7 @@ class AppUtil
         curl_setopt($ch, CURLOPT_HTTPHEADER,
             [
                 'Content-Type: application/json',
-                'Content-Length: ' . strlen($jsonString)
+                'Content-Length: '.strlen($jsonString),
             ]);
         if ($sslFlag) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -601,6 +610,7 @@ class AppUtil
         }
         $ret = curl_exec($ch);
         curl_close($ch);
+
         return $ret;
     }
 
@@ -619,7 +629,7 @@ class AppUtil
             if (defined("CURLOPT_SAFE_UPLOAD")) {
                 curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
             }
-            $data = ["media" => "@" . realpath($file_url)];
+            $data = ["media" => "@".realpath($file_url)];
         }
         curl_setopt($ch, CURLOPT_URL, $api);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -629,6 +639,7 @@ class AppUtil
 
         $ret = curl_exec($ch);
         curl_close($ch);
+
         return $ret;
     }
 
@@ -651,6 +662,7 @@ class AppUtil
         }
         $ret = curl_exec($ch);
         curl_close($ch);
+
         return $ret;
     }
 
@@ -667,6 +679,7 @@ class AppUtil
         $ret = curl_exec($ch);
         //释放curl句柄
         curl_close($ch);
+
         return $ret;
     }
 
@@ -678,6 +691,7 @@ class AppUtil
             $ret = mb_convert_encoding($ret, 'UTF-8', ['ASCII', 'GB2312', 'GBK', 'UTF-8', 'unicode']);
             //$ret = mb_convert_encoding($ret, 'UTF-8', $encoding);
         }
+
         return $ret;
     }
 
@@ -700,6 +714,7 @@ class AppUtil
         }
         $thisY = date('Y年');
         $newDate = str_replace($thisY, '', $newDate);
+
         return $newDate;
     }
 
@@ -722,6 +737,7 @@ class AppUtil
         }
         $thisY = date('Y年');
         $newDate = str_replace($thisY, '', $newDate);
+
         return $newDate;
     }
 
@@ -739,18 +755,19 @@ class AppUtil
         $diffHou = floor($diff / 3600);
         $diffMin = floor($diff / 60);
         if ($diffYear) {
-            $newDate = $diffYear . "年前";
+            $newDate = $diffYear."年前";
         } elseif ($diffMouth) {
-            $newDate = $diffMouth . "月前";
+            $newDate = $diffMouth."月前";
         } elseif ($diffDay) {
-            $newDate = $diffDay . "天前";
+            $newDate = $diffDay."天前";
         } elseif ($diffHou) {
-            $newDate = $diffHou . "小时前";
+            $newDate = $diffHou."小时前";
         } elseif ($diffMin) {
-            $newDate = $diffMin . "分钟前";
+            $newDate = $diffMin."分钟前";
         } else {
             $newDate = "刚刚";
         }
+
         return trim($newDate);
     }
 
@@ -771,9 +788,10 @@ class AppUtil
         $newDate = date("Y-m-d H:i", $curTime);
         foreach ($replaceDates as $key => $val) {
             if (date("Y-m-d", $curTime) == $key) {
-                $newDate = $val . " " . date("H:i", $curTime);
+                $newDate = $val." ".date("H:i", $curTime);
             }
         }
+
         return $newDate;
     }
 
@@ -792,6 +810,7 @@ class AppUtil
         foreach ($replaceDates as $key => $val) {
             $newDate = str_replace($key, $val, $newDate);
         }
+
         return $newDate;
     }
 
@@ -825,7 +844,8 @@ class AppUtil
         $ord_1 = decbin(0xe0 | ($code >> 12));
         $ord_2 = decbin(0x80 | (($code >> 6) & 0x3f));
         $ord_3 = decbin(0x80 | ($code & 0x3f));
-        $utf8_str = chr(bindec($ord_1)) . chr(bindec($ord_2)) . chr(bindec($ord_3));
+        $utf8_str = chr(bindec($ord_1)).chr(bindec($ord_2)).chr(bindec($ord_3));
+
         return $utf8_str;
     }
 
@@ -845,10 +865,10 @@ class AppUtil
         $points = [];
         foreach ($wayPoints as $point) {
             list($lat, $lng) = $point;
-            $points[] = $lng . "," . $lat;
+            $points[] = $lng.",".$lat;
         }
         $strPoints = implode(";", $points);
-        $redisField = md5("$baseLng,$baseLat;" . $strPoints);
+        $redisField = md5("$baseLng,$baseLat;".$strPoints);
         $redis = RedisUtil::init(RedisUtil::KEY_DISTANCE, $redisField);
         $ret = json_decode($redis->getCache(), 1);
         if ($ret && $ret["expire"] > time()) {
@@ -861,8 +881,10 @@ class AppUtil
         if ($ret && isset($ret["route"]["paths"]) && $ret["status"] == 1) {
             $ret["expire"] = time() + 86400 * 25;
             $redis->setCache($ret);
+
             return $ret["route"]["paths"][0]["distance"];
         }
+
         return 0;
     }
 
@@ -897,9 +919,9 @@ class AppUtil
         $day = date("j", $time);
         $firstDate = date("Y-m-01", $time);
         if ($month == 12) {
-            $lastDate = date("Y-m-d", strtotime(($year + 1) . "-1-1") - 86400);
+            $lastDate = date("Y-m-d", strtotime(($year + 1)."-1-1") - 86400);
         } else {
-            $lastDate = date("Y-m-d", strtotime($year . "-" . ($month + 1) . "-1") - 86400);
+            $lastDate = date("Y-m-d", strtotime($year."-".($month + 1)."-1") - 86400);
         }
 
         return [$day, $firstDate, $lastDate, $dt];
@@ -917,9 +939,9 @@ class AppUtil
 
         $firstDate = date("Y-m-01", $time);
         if ($month == 12) {
-            $lastDate = date("Y-m-d", strtotime(($year + 1) . "-1-1") - 86400);
+            $lastDate = date("Y-m-d", strtotime(($year + 1)."-1-1") - 86400);
         } else {
-            $lastDate = date("Y-m-d", strtotime($year . "-" . ($month + 1) . "-1") - 86400);
+            $lastDate = date("Y-m-d", strtotime($year."-".($month + 1)."-1") - 86400);
         }
 
         return [$day, $firstDate, $lastDate, $dt];
@@ -938,10 +960,10 @@ class AppUtil
             if ($info['error'] == UPLOAD_ERR_OK) {
                 $tmp_name = $info["tmp_name"];
                 $key = RedisUtil::getImageSeq();
-                $ext = pathinfo($_FILES[$fieldName]['tmp_name'] . '/' . $_FILES[$fieldName]['name'],
+                $ext = pathinfo($_FILES[$fieldName]['tmp_name'].'/'.$_FILES[$fieldName]['name'],
                     PATHINFO_EXTENSION);
                 //$name = $key . '.xls';
-                $name = $key . '.' . $ext;
+                $name = $key.'.'.$ext;
                 $filePath = "$uploads_dir/$name";
                 move_uploaded_file($tmp_name, $filePath);
             }
@@ -949,6 +971,7 @@ class AppUtil
         if ($filePath) {
             return ["code" => 0, "msg" => $filePath, "key" => $key];
         }
+
         return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
     }
 
@@ -978,17 +1001,17 @@ class AppUtil
                     $silkFlag = true;
                     $extension = '.slk';
                 }
-                $filePath = $uploads_dir . $key . $extension;
-                $fileWav = $uploads_dir . $key . '.wav';
+                $filePath = $uploads_dir.$key.$extension;
+                $fileWav = $uploads_dir.$key.'.wav';
                 //AppUtil::logFile($uploadData, 5, __FUNCTION__, __LINE__);
                 if ($silkFlag) {
                     file_put_contents($filePath, $uploadData);
-                    exec('sh /data/code/silk-v3/converter.sh ' . $filePath . ' wav', $out);
+                    exec('sh /data/code/silk-v3/converter.sh '.$filePath.' wav', $out);
                 } else {
                     $uploadData = explode(",", $uploadData);
                     $uploadData = base64_decode($uploadData[1]);
                     file_put_contents($filePath, $uploadData);
-                    exec('/usr/bin/ffmpeg -i ' . $filePath . ' -ab 12.2k -ar 8000 -ac 1 ' . $fileWav, $out);
+                    exec('/usr/bin/ffmpeg -i '.$filePath.' -ab 12.2k -ar 8000 -ac 1 '.$fileWav, $out);
                 }
                 AppUtil::logFile($filePath, 5, __FUNCTION__, __LINE__);
                 AppUtil::logFile($out, 5, __FUNCTION__, __LINE__);
@@ -999,8 +1022,10 @@ class AppUtil
         if ($fileWav) {
             $rootPath = self::catDir(true);
             $fileWav = str_replace($rootPath, 'https://img.meipo100.com/', $fileWav);
+
             return ["code" => 0, "msg" => $fileWav, "key" => $key];
         }
+
         return ["code" => 159, "msg" => "上传文件失败，请稍后重试"];
     }
 
@@ -1011,11 +1036,11 @@ class AppUtil
         }
         $prefix = self::resDir();
         $paths = [
-            'default' => $prefix . 'default',
-            'person' => $prefix . 'person',
-            'excel' => $prefix . 'excel',
-            'upload' => $prefix . 'upload',
-            'voice' => $prefix . 'voice',
+            'default' => $prefix.'default',
+            'person' => $prefix.'person',
+            'excel' => $prefix.'excel',
+            'upload' => $prefix.'upload',
+            'voice' => $prefix.'voice',
         ];
         foreach ($paths as $path) {
             if (is_dir($path)) {
@@ -1023,6 +1048,7 @@ class AppUtil
             }
             mkdir($path, 0777, true);
         }
+
         return isset($paths[$category]) ? $paths[$category] : $paths['default'];
     }
 
@@ -1047,6 +1073,7 @@ class AppUtil
                 }
                 $arr[] = $total - $avg * $co;
                 shuffle($arr);
+
                 return $arr;
             }
         }
@@ -1058,13 +1085,14 @@ class AppUtil
         }
         $arr[] = $total;
         shuffle($arr);
+
         return $arr;
     }
 
 
     public static function weatherImage($cond_day, $code = 99)
     {
-        $iconUrl = '/images/weather/' . $code . '.png';
+        $iconUrl = '/images/weather/'.$code.'.png';
 
         $bgUrl = '/images/weather/b_qing.jpg';
         if (strpos($cond_day, '晴') !== false && strpos($cond_day, '晴') >= 0) {
@@ -1100,13 +1128,15 @@ class AppUtil
         if ($ret && isset($ret["retData"]["district"])) {
             return $ret["retData"]["district"];
         }
-        $ret = AppUtil::httpGet("http://apis.baidu.com/apistore/iplookupservice/iplookup?ip=" . $ip,
+        $ret = AppUtil::httpGet("http://apis.baidu.com/apistore/iplookupservice/iplookup?ip=".$ip,
             ["apikey:eaae340d496d883c14df61447fcc2e22"]);
         $ret = json_decode($ret, true);
         if ($ret && isset($ret["retData"]["district"])) {
             $redis->setCache($ret);
+
             return $ret["retData"]["district"];
         }
+
         return '';
     }
 
@@ -1139,9 +1169,9 @@ class AppUtil
             $p1 = substr($c1, 3 * $n, 3);
             $p2 = substr($c2, 3 * $i, 3);
             if ($n != '0' || ($n == '0' && ($p2 == '亿' || $p2 == '万' || $p2 == '元'))) {
-                $c = $p1 . $p2 . $c;
+                $c = $p1.$p2.$c;
             } else {
-                $c = $p1 . $c;
+                $c = $p1.$c;
             }
             $i = $i + 1;
             //去掉数字最后一位了
@@ -1161,7 +1191,7 @@ class AppUtil
             if ($m == '零元' || $m == '零万' || $m == '零亿' || $m == '零零') {
                 $left = substr($c, 0, $j);
                 $right = substr($c, $j + 3);
-                $c = $left . $right;
+                $c = $left.$right;
                 $j = $j - 3;
                 $slen = $slen - 3;
             }
@@ -1175,7 +1205,7 @@ class AppUtil
         if (empty($c)) {
             return "零元整";
         } else {
-            return $c . "整";
+            return $c."整";
         }
     }
 
@@ -1196,7 +1226,7 @@ class AppUtil
         }
         $sdkAppId = "1400017078";
         $appKey = "a0c32529533ed1b052abc8c965c82874";
-        $sigKey = $appKey . implode(",", $phones);
+        $sigKey = $appKey.implode(",", $phones);
         $sig = md5($sigKey);
 
         if (count($phones) == 1) {
@@ -1214,7 +1244,7 @@ class AppUtil
             "type" => $type,
             "sig" => $sig,
             "extend" => "",
-            "ext" => ""
+            "ext" => "",
         ];
         if (isset($params["params"])) {
             $postData["tpl_id"] = isset($params["tpl_id"]) ? $params["tpl_id"] : self::$SMS_TMP_ID;
@@ -1244,6 +1274,7 @@ class AppUtil
             }
         }
         curl_close($ch);
+
         return $ret;
     }
 
@@ -1260,7 +1291,7 @@ class AppUtil
         if ($firstNum == 1) {
             $prefix = "十";
         } elseif ($firstNum > 1) {
-            $prefix = $hans[$firstNum] . "十";
+            $prefix = $hans[$firstNum]."十";
         }
         $yuNum = $num % 10;
         $suffix = "";
@@ -1270,7 +1301,8 @@ class AppUtil
         if (!$prefix && !$suffix) {
             return "零";
         }
-        return $prefix . $suffix;
+
+        return $prefix.$suffix;
 
     }
 
@@ -1279,7 +1311,7 @@ class AppUtil
         if ($level < 2) {
             return false;
         }
-        $file = self::logDir() . date("Ymd") . '.log';
+        $file = self::logDir().date("Ymd").'.log';
         $txt = [];
         if ($func) {
             $txt[] = $func;
@@ -1288,21 +1320,23 @@ class AppUtil
             $txt[] = $line;
         }
         $txt[] = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
-        $ret = @file_put_contents($file, date('ymd H:i:s') . PHP_EOL . implode(" - ", $txt) . PHP_EOL, 8);
+        $ret = @file_put_contents($file, date('ymd H:i:s').PHP_EOL.implode(" - ", $txt).PHP_EOL, 8);
+
         /*if (!$hasLog) {
             chmod($file, 0666);
         }*/
+
         return $ret;
     }
 
     public static function logByFile($msg, $tag, $func = '', $line = 0)
     {
-        $file = self::logDir() . $tag . date("Ymd") . '.log';
+        $file = self::logDir().$tag.date("Ymd").'.log';
 
         $msg = is_array($msg) ? json_encode($msg, JSON_UNESCAPED_UNICODE) : $msg;
 
         @file_put_contents($file,
-            date('Ymd H:i:s') . PHP_EOL . $func . " - " . $line . PHP_EOL . $msg . PHP_EOL . PHP_EOL, FILE_APPEND);
+            date('Ymd H:i:s').PHP_EOL.$func." - ".$line.PHP_EOL.$msg.PHP_EOL.PHP_EOL, FILE_APPEND);
 
     }
 
@@ -1328,6 +1362,7 @@ class AppUtil
         if (isset($reqCookies) && $reqCookies) {
             return $reqCookies->getValue($name, $defaultValue);
         }
+
         return $defaultValue;
     }
 
@@ -1344,6 +1379,7 @@ class AppUtil
         if (!$string) {
             return "";
         }
+
         //return self::crypt($string, "D", self::$SecretKey);
         return self::tiriDecode($string);
     }
@@ -1353,6 +1389,7 @@ class AppUtil
         if ($string == "") {
             return "";
         }
+
         //return self::crypt($string, "E", self::$SecretKey);
         return self::tiriEncode($string);
     }
@@ -1361,7 +1398,7 @@ class AppUtil
 
     protected static function tiriEncode($str, $factor = 0)
     {
-        $str = self::$CryptSalt . $str . self::$CryptSalt;
+        $str = self::$CryptSalt.$str.self::$CryptSalt;
         $len = strlen($str);
         if (!$len) {
             return "";
@@ -1377,7 +1414,8 @@ class AppUtil
                 $slice[$i][$j] = chr(ord($slice[$i][$j]) + $c + $i);
             }
         }
-        $ret = pack('C', $factor) . implode('', $slice);
+        $ret = pack('C', $factor).implode('', $slice);
+
         return self::base64URLEncode($ret);
     }
 
@@ -1410,6 +1448,7 @@ class AppUtil
         if (strpos($ret, self::$CryptSalt) === 0 && strrpos($ret, self::$CryptSalt) === $end) {
             return substr($ret, $saltLen, $end - $saltLen);
         }
+
         return "";
     }
 
@@ -1437,13 +1476,14 @@ class AppUtil
             $weeks[] = array_values($res);
         }
         date_default_timezone_set('Asia/Shanghai');
-        $t = strtotime(date('Y-m', time()) . '-01 00:00:01');
+        $t = strtotime(date('Y-m', time()).'-01 00:00:01');
         for ($k = 11; $k >= 0; $k--) {
             $res = self::getMonthInfo(date("Y-m-d", strtotime("- $k month", $t)));
             unset($res[0]);
             unset($res[3]);
             $months[] = array_values($res);
         }
+
         return [
             81 => $days,
             83 => $weeks,
@@ -1466,6 +1506,7 @@ class AppUtil
         $heaps[] = $num;
         $rest -= $num;
         $heaps[] = $rest;
+
         return $heaps;
     }
 
@@ -1497,6 +1538,7 @@ class AppUtil
             default:
                 break;
         }
+
         return $fileExt;
     }
 
@@ -1514,6 +1556,7 @@ class AppUtil
         if ($kmFlag) {
             $s /= 1000.0;
         }
+
         return round($s, $decimal);
     }
 
@@ -1586,6 +1629,7 @@ class AppUtil
             $times[0] = date('Y-m-d H:i:s', $times[0]);
             $times[1] = date('Y-m-d H:i:s', $times[1]);
         }
+
         return $times;
     }
 
@@ -1601,6 +1645,7 @@ class AppUtil
         if (in_array(intval(date('w', strtotime($dt))), [0, 6])) {
             return true;
         }
+
         return false;
 
     }
@@ -1611,6 +1656,7 @@ class AppUtil
         if ($length == 0) {
             return true;
         }
+
         return (substr($haystack, -$length) === $needle);
     }
 
@@ -1626,6 +1672,7 @@ class AppUtil
                     $tree[] = &$items[$item['id']];
                 }
             }
+
             return $tree;
         }
 
@@ -1647,6 +1694,7 @@ class AppUtil
             foreach ($items as $item) {
                 $items[$item['pid']]['son'][$item['id']] = &$items[$item['id']];
             }
+
             return isset($items[0]['son']) ? $items[0]['son'] : array();
         }
 
@@ -1660,6 +1708,7 @@ class AppUtil
                     $tree[] = &$items[$item['id']];
                 }
             }
+
             return $tree;
         }
 
@@ -1699,9 +1748,9 @@ class AppUtil
         $file_name = "send_msg_"
     ) {
         $formatMsg = $msg;
-		if (mb_strpos($msg, '【准点买】') == false) {
-			$formatMsg = '【准点买】' . $msg;
-		}
+        if (mb_strpos($msg, '【准点买】') == false) {
+            $formatMsg = '【准点买】'.$msg;
+        }
         $openId = "benpao";
         $openPwd = "bpbHD2015";
         if ($type != 'real') {
@@ -1717,9 +1766,10 @@ class AppUtil
         //$url = "http://221.179.172.68:8000/QxtSms/QxtFirewall?OperID=$openId&OperPass=$openPwd&SendTime=&ValidTime=&AppendID=$appendId&DesMobile=$phone&Content=$msg&ContentType=8";
 
         $res = file_get_contents($url);
-        @file_put_contents("/data/logs/imei/$file_name" . date("Y-m-d") . ".log",
-            date(" [Y-m-d H:i:s] ") . $phone . " - " . $formatMsg . " >>>>>> " . $res . ' left_count: ' . $left_count . PHP_EOL,
+        @file_put_contents("/data/logs/imei/$file_name".date("Y-m-d").".log",
+            date(" [Y-m-d H:i:s] ").$phone." - ".$formatMsg." >>>>>> ".$res.' left_count: '.$left_count.PHP_EOL,
             FILE_APPEND);
+
         return $res;
     }
 
@@ -1740,7 +1790,7 @@ class AppUtil
                 $success++;
             }
             $co++;
-            echo '$co:' . $co . ' $success:' . $success . PHP_EOL;
+            echo '$co:'.$co.' $success:'.$success.PHP_EOL;
         }
 
 //		$phone = 17611629667;
@@ -1759,6 +1809,7 @@ class AppUtil
         if (is_array($ret) && isset($ret['rcode']) && $ret['rcode']) {
             return intval($ret['rcode']);
         }
+
         return 0;
 
     }
@@ -1840,7 +1891,7 @@ class AppUtil
         if (!self::checkPhone($phone)) {
             return ['', '', ''];
         }
-        $url = "http://mobsec-dianhua.baidu.com/dianhua_api/open/location?tel=" . $phone;
+        $url = "http://mobsec-dianhua.baidu.com/dianhua_api/open/location?tel=".$phone;
         $ret = AppUtil::httpGet($url);
         $ret = json_decode($ret, 1);
 
@@ -1851,8 +1902,22 @@ class AppUtil
             $province = $detail['province'] ?? '';
             $operator = $detail['operator'] ?? '';// 联通、移动、电信
         }
+
         return [$province, $city, $operator];
     }
 
+    /**
+     * 获取数组中位数
+     *
+     * @param $arr
+     * @time 2020-09-07 PM
+     */
+    public static function get_median($numbers)
+    {
+        sort($numbers);
+        $totalNumbers = count($numbers);
+        $mid = floor($totalNumbers / 2);
+        return ($totalNumbers % 2) === 0 ? ($numbers[$mid - 1] + $numbers[$mid]) / 2 : $numbers[$mid];
 
+    }
 }

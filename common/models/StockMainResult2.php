@@ -1967,16 +1967,23 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $data[] = $item;
         }
 
+
         $avgs = [];
+        $median = [];
+        $max = [];
+        $min = [];
         foreach ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as $avg_k) {
             $column = array_column($data, $avg_k);
             $sum = array_sum($column);
             $co = count(array_filter($column));
             //echo $avg_k.' = '.$co.'<br>';
-            $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
+            $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;// 均值
+            $median[$avg_k] = AppUtil::get_median($column);
+            $max[$avg_k] = max($column);
+            $min[$avg_k] = min($column);
         }
 
-        return [$data, $avgs];
+        return [$data, $avgs, $median, $max, $min];
     }
 
     /**
