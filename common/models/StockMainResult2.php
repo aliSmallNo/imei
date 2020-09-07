@@ -57,6 +57,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         self::BACK_DIR_2 => '做空回测',
     ];
 
+    const BUY_WHERE_STR = '(CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0)';
+    const SOLD_WHERE_STR = '(CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0)';
+
     public static function tableName()
     {
         return 'im_stock_main_result2';
@@ -810,7 +813,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0 order by r_trans_on asc";
+                where ".self::BUY_WHERE_STR." order by r_trans_on asc";
         $ret = AppUtil::db()->createCommand($sql)->queryAll();
 
         $data = [];
@@ -1245,12 +1248,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-11-26
      * @time 2020-03-01 PM modify
+     * @time 2020-09-07 PM modify
      */
     public static function get_sold_point($buy_dt)
     {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0) and r_trans_on>:r_trans_on 
+                where ".self::SOLD_WHERE_STR." and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
 
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
@@ -1299,7 +1303,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) and r_trans_on>:r_trans_on 
+                where ".self::BUY_WHERE_STR." and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
 
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
@@ -1412,6 +1416,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-01-08 AM
      * @time 2020-03-01 PM modify
+     * @time 2020-09-07 PM modify
      */
     public static function cal_back_r_new($price_type, $buy_times, $stop_rate)
     {
@@ -1421,7 +1426,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
+                where  ".self::SOLD_WHERE_STR;
         $ret = AppUtil::db()->createCommand($sql)->queryAll();
 
         $data = [];
@@ -1819,7 +1824,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0) 
+                where p_trans_on > '2000-01-01' and ".self::SOLD_WHERE_STR." 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -1902,7 +1907,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) 
+                where p_trans_on > '2000-01-01' and ".self::BUY_WHERE_STR." 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -2038,15 +2043,16 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * 计算每天策略结果的策略个数
      *
      * @time 2020-05-02 PM
+     * @time 2020-09-07 PM
      */
     public static function rule_right_rate()
     {
         $sql = "select concat(r_sold5,r_sold10,r_sold20) as str,r_note from im_stock_main_result2 
-                where CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 ";
+                where ".self::SOLD_WHERE_STR;
         $sold_results = AppUtil::db()->createCommand($sql)->queryAll();
 
         $sql = "select concat(r_buy5,r_buy10,r_buy20) as str,r_note  from im_stock_main_result2 
-                where CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 ";
+                where ".self::BUY_WHERE_STR;
         $buy_results = AppUtil::db()->createCommand($sql)->queryAll();
 
         $buys = $solds = [
@@ -2184,8 +2190,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $list = array_column($list, null, 'buy_dt');
 
         // 所有 买入日期
-        $criteria[] = ' (CHAR_LENGTH(r.r_buy5)>0 or CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_buy20)>0) ';
-        list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        $criteria[] = self::BUY_WHERE_STR;
+        //list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        list($results, $count) = StockMainResult2::items($criteria, [], 1, 10000);
         $results = array_column($results, null, 'r_trans_on');
 
         $buy_data = [
@@ -2566,8 +2573,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $list = array_column($list, null, 'buy_dt');
 
         // 所有 买入日期
-        $criteria[] = ' (CHAR_LENGTH(r.r_sold5)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_sold20)>0) ';
-        list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        $criteria[] = self::SOLD_WHERE_STR;
+        //list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        list($results, $count) = StockMainResult2::items($criteria, [], 1, 10000);
         $results = array_column($results, null, 'r_trans_on');
 
         $sold_data = [
@@ -2920,17 +2928,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return $sold_data;
     }
 
-
-    public static function get_other_sold_point($buy_dt, $sold_dt)
-    {
-        $sql = "select r.* from im_stock_main_result2 r
-                where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0)
-                 and r_trans_on BETWEEN :st and :et 
-                order by r_trans_on asc ";
-
-        return AppUtil::db()->createCommand($sql, [':st' => $buy_dt, ':et' => $sold_dt])->queryAll();
-    }
-
     /**
      * 是否是第一买点
      *
@@ -2940,7 +2937,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public static function wether_first_buy_point($buy_dt)
     {
         $sql = "select r.* from im_stock_main_result2 r
-                where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0) 
+                where ".self::SOLD_WHERE_STR." 
                 and r_trans_on<:r_trans_on 
                 order by r_trans_on desc limit 1 ";
 
@@ -2950,7 +2947,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $sql = "select r.* from im_stock_main_result2 r
-                where (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0)
+                where ".self::BUY_WHERE_STR."
                  and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 
@@ -2972,14 +2969,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public static function wether_first_sold_point($sold_dt)
     {
         $sql = "select r.* from im_stock_main_result2 r
-                where (CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) 
+                where ".self::BUY_WHERE_STR." 
                 and r_trans_on<:r_trans_on 
                 order by r_trans_on desc limit 1 ";
         // 卖点获取最近的买点
         $buy_point = AppUtil::db()->createCommand($sql, [':r_trans_on' => $sold_dt])->queryOne();
 
         $sql = "select r.* from im_stock_main_result2 r
-                where (CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0)
+                where ".self::SOLD_WHERE_STR."
                  and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 
