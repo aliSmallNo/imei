@@ -2477,7 +2477,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%' or r_sold60 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where,$dt_type);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate_r($price_type, $where, $dt_type);
         } else {
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='买对')  ";
@@ -2488,7 +2488,7 @@ class StockController extends BaseController
             if ($rule_name) {
                 $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%' or r_buy60 like '%$rule_name%')";
             }
-            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where,$dt_type);
+            list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where, $dt_type);
         }
 
         /*$tabs = [
@@ -2776,13 +2776,10 @@ class StockController extends BaseController
 
         list($buys, $solds) = StockMainResult2::rule_right_rate();
 
-        return $this->renderPage(
-            "stock_main_result_rule_right_rate.tpl",
-            [
-                'solds' => $solds,
-                'buys' => $buys,
-            ]
-        );
+        return $this->renderPage("stock_main_result_rule_right_rate.tpl", [
+            'solds' => $solds,
+            'buys' => $buys,
+        ]);
     }
 
     /**
