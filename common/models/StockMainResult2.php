@@ -1816,6 +1816,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 modify
      * @time 2020-05-22 modify
      * @time 2020-08-28 modify  去掉 【1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计】
+     *
+     *
+     * @time 2020-09-07 PM
      */
     public static function get_5day_after_rate_r($price_type, $where = '', $dt_type)
     {
@@ -1876,15 +1879,21 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $avgs = [];
+        $median = [];
+        $max = [];
+        $min = [];
         foreach ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as $avg_k) {
             $column = array_column($data, $avg_k);
             $sum = array_sum($column);
             $co = count(array_filter($column));
             //echo $avg_k.' = '.$co.'<br>';
             $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
+            $median[$avg_k] = AppUtil::get_median($column);
+            $max[$avg_k] = max($column);
+            $min[$avg_k] = min($column);
         }
 
-        return [$data, $avgs];
+        return [$data, $avgs, $median, $max, $min];
     }
 
     /**
@@ -1899,6 +1908,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 modify
      * @time 2020-05-22 modify
      * @time 2020-08-28 modify  去掉 【1. 只统计“第一买点”，即卖出点后出现的“第一次买点”，后面出现的买点不统计】
+     *
+     * @time 2020-09-07 PM
      */
     public static function get_5day_after_rate($price_type, $where = '', $dt_type)
     {
