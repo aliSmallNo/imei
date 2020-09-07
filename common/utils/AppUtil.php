@@ -1914,9 +1914,11 @@ class AppUtil
      */
     public static function get_median($numbers)
     {
+        $numbers = array_filter($numbers);
         sort($numbers);
         $totalNumbers = count($numbers);
         $mid = floor($totalNumbers / 2);
+
         return ($totalNumbers % 2) === 0 ? ($numbers[$mid - 1] + $numbers[$mid]) / 2 : $numbers[$mid];
 
     }
