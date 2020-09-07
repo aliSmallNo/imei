@@ -82,59 +82,56 @@
     </tr>
     <tr>
       <th>平均值</th>
-      <th>{{$avgs[0]}}</th>
-      <th>{{$avgs[1]}}</th>
-      <th>{{$avgs[2]}}</th>
-      <th>{{$avgs[3]}}</th>
-      <th>{{$avgs[4]}}</th>
-      <th>{{$avgs[5]}}</th>
-      <th>{{$avgs[6]}}</th>
-      <th>{{$avgs[7]}}</th>
-      <th>{{$avgs[8]}}</th>
-      <th>{{$avgs[9]}}</th>
+      <th>{{$avgs[0]}}%</th>
+      <th>{{$avgs[1]}}%</th>
+      <th>{{$avgs[2]}}%</th>
+      <th>{{$avgs[3]}}%</th>
+      <th>{{$avgs[4]}}%</th>
+      <th>{{$avgs[5]}}%</th>
+      <th>{{$avgs[6]}}%</th>
+      <th>{{$avgs[7]}}%</th>
+      <th>{{$avgs[8]}}%</th>
+      <th>{{$avgs[9]}}%</th>
     </tr>
     <tr>
       <th>中位数</th>
-      <th>{{$median[0]}}</th>
-      <th>{{$median[1]}}</th>
-      <th>{{$median[2]}}</th>
-      <th>{{$median[3]}}</th>
-      <th>{{$median[4]}}</th>
-      <th>{{$median[5]}}</th>
-      <th>{{$median[6]}}</th>
-      <th>{{$median[7]}}</th>
-      <th>{{$median[8]}}</th>
-      <th>{{$median[9]}}</th>
+      <th>{{$median[0]}}%</th>
+      <th>{{$median[1]}}%</th>
+      <th>{{$median[2]}}%</th>
+      <th>{{$median[3]}}%</th>
+      <th>{{$median[4]}}%</th>
+      <th>{{$median[5]}}%</th>
+      <th>{{$median[6]}}%</th>
+      <th>{{$median[7]}}%</th>
+      <th>{{$median[8]}}%</th>
+      <th>{{$median[9]}}%</th>
     </tr>
     <tr>
       <th>最大值</th>
-      <th>{{$max[0]}}</th>
-      <th>{{$max[1]}}</th>
-      <th>{{$max[2]}}</th>
-      <th>{{$max[3]}}</th>
-      <th>{{$max[4]}}</th>
-      <th>{{$max[5]}}</th>
-      <th>{{$max[6]}}</th>
-      <th>{{$max[7]}}</th>
-      <th>{{$max[8]}}</th>
-      <th>{{$max[9]}}</th>
+      <th>{{$max[0]}}%</th>
+      <th>{{$max[1]}}%</th>
+      <th>{{$max[2]}}%</th>
+      <th>{{$max[3]}}%</th>
+      <th>{{$max[4]}}%</th>
+      <th>{{$max[5]}}%</th>
+      <th>{{$max[6]}}%</th>
+      <th>{{$max[7]}}%</th>
+      <th>{{$max[8]}}%</th>
+      <th>{{$max[9]}}%</th>
     </tr>
     <tr>
       <th>最小值</th>
-      <th>{{$min[0]}}</th>
-      <th>{{$min[1]}}</th>
-      <th>{{$min[2]}}</th>
-      <th>{{$min[3]}}</th>
-      <th>{{$min[4]}}</th>
-      <th>{{$min[5]}}</th>
-      <th>{{$min[6]}}</th>
-      <th>{{$min[7]}}</th>
-      <th>{{$min[8]}}</th>
-      <th>{{$min[9]}}</th>
+      <th>{{$min[0]}}%</th>
+      <th>{{$min[1]}}%</th>
+      <th>{{$min[2]}}%</th>
+      <th>{{$min[3]}}%</th>
+      <th>{{$min[4]}}%</th>
+      <th>{{$min[5]}}%</th>
+      <th>{{$min[6]}}%</th>
+      <th>{{$min[7]}}%</th>
+      <th>{{$min[8]}}%</th>
+      <th>{{$min[9]}}%</th>
     </tr>
-
-
-
 
     </thead>
     <tbody>
