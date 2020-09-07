@@ -67,26 +67,16 @@
       <th>交易日期</th>
       <th>NOTE</th>
       <th class="col-sm-4">策略</th>
-      <th>
-        后1天收益<br>
-      {{$avgs[0]}}
-      </th>
-      <th>
-        后2天收益<br>
-        {{$avgs[1]}}
-      </th>
-      <th>
-        后3天收益<br>
-        {{$avgs[2]}}
-      </th>
-      <th>
-        后4天收益<br>
-        {{$avgs[3]}}
-      </th>
-      <th>
-        后5天收益<br>
-        {{$avgs[4]}}
-      </th>
+      <th>后1天收益<br>{{$avgs[0]}}</th>
+      <th>后2天收益<br>{{$avgs[1]}}</th>
+      <th>后3天收益<br>{{$avgs[2]}}</th>
+      <th>后4天收益<br>{{$avgs[3]}}</th>
+      <th>后5天收益<br>{{$avgs[4]}}</th>
+      <th>后6天收益<br>{{$avgs[5]}}</th>
+      <th>后7天收益<br>{{$avgs[6]}}</th>
+      <th>后8天收益<br>{{$avgs[7]}}</th>
+      <th>后9天收益<br>{{$avgs[8]}}</th>
+      <th>后10天收益<br>{{$avgs[9]}}</th>
 
     </tr>
     </thead>
