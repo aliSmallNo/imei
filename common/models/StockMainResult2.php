@@ -1988,7 +1988,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public static function get_5day_after_rate_item($buy_dt, $price_type, $conn, $flag = 1)
     {
         $conn = $conn ? $conn : AppUtil::db();
-        $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 6";
+        $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 11";
         $res = $conn->createCommand($sql, [':dt' => $buy_dt])->queryAll();
 
         $today = array_shift($res);
