@@ -45,6 +45,12 @@
           <option value="{{$key}}" {{if $key==$dt_type}}selected{{/if}}>{{$item}}</option>
         {{/foreach}}
       </select>
+      <select class="form-control" name="rate_next1day">
+        {{foreach from=$rate_next1day_dict item=$item key=key}}
+          <option value="{{$key}}" {{if $key==$rate_next1day}}selected{{/if}}>{{$item}}</option>
+        {{/foreach}}
+      </select>
+
       <input class="form-control" name="rule_name" placeholder="策略名称"/>
     </div>
     <button class="btn btn-primary">查询</button>

@@ -2455,11 +2455,10 @@ class StockController extends BaseController
      */
     public function actionRate_5day_after2()
     {
-        $price_type = self::getParam(
-            "price_type", StockMainPrice::TYPE_ETF_500
-        );
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
         $is_go_short = self::getParam("is_go_short", 0);
         $dt_type = self::getParam("dt_type", 1);
+        $rate_next1day = self::getParam("rate_next1day", 0);
 
         // $note 0=>“全部” 1=>“对” 9=>“错”
         $note_dict = [0 => '全部', 1 => '对', 9 => '错'];
@@ -2491,10 +2490,6 @@ class StockController extends BaseController
             list($list, $avgs) = StockMainResult2::get_5day_after_rate($price_type, $where, $dt_type);
         }
 
-        /*$tabs = [
-            ['name' => '买点出现后5天的收益率', 'is_go_short' => 0, 'cls' => $is_go_short == 0 ? 'active' : ''],
-            ['name' => '买点出现后5天的【做空】收益率', 'is_go_short' => 1, 'cls' => $is_go_short == 1 ? 'active' : ''],
-        ];*/
         $tabs = [
             0 => '买点出现后5天的收益率',
             1 => '买点出现后5天的【做空】收益率',
@@ -2504,6 +2499,20 @@ class StockController extends BaseController
             1 => '第一次信号',
             0 => '全部',
         ];
+
+        $rate_next1day_dict = [
+            0 => '-=请选择=-',
+            1 => '后一天收益率>=0',
+            2 => '后一天收益率<0',
+        ];
+        foreach ($list as $k => $v) {
+            if ($rate_next1day == 1 && $v[0] < 0) {
+                unset($list[$k]);
+            }
+            if ($rate_next1day == 2 && $v[0] >= 0) {
+                unset($list[$k]);
+            }
+        }
 
         usort($list, function ($a, $b) {
             return strtotime($a['dt']) < strtotime($b['dt']);
@@ -2520,6 +2529,8 @@ class StockController extends BaseController
                 'is_go_short' => $is_go_short,
                 'dt_types' => $dt_types,
                 'dt_type' => $dt_type,
+                'rate_next1day_dict' => $rate_next1day_dict,
+                'rate_next1day' => $rate_next1day,
             ]
         );
     }
