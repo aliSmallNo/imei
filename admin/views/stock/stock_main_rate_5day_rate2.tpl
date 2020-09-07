@@ -119,6 +119,21 @@
         <td>
           {{if $item[4]}}{{$item[4]}}%{{/if}}
         </td>
+        <td>
+          {{if $item[5]}}{{$item[5]}}%{{/if}}
+        </td>
+        <td>
+          {{if $item[6]}}{{$item[6]}}%{{/if}}
+        </td>
+        <td>
+          {{if $item[7]}}{{$item[7]}}%{{/if}}
+        </td>
+        <td>
+          {{if $item[8]}}{{$item[8]}}%{{/if}}
+        </td>
+        <td>
+          {{if $item[9]}}{{$item[9]}}%{{/if}}
+        </td>
 
       </tr>
     {{/foreach}}

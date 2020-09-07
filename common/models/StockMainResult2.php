@@ -1968,7 +1968,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $avgs = [];
-        foreach ([0, 1, 2, 3, 4] as $avg_k) {
+        foreach ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as $avg_k) {
             $column = array_column($data, $avg_k);
             $sum = array_sum($column);
             $co = count(array_filter($column));
@@ -2001,6 +2001,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             '2' => 0,
             '3' => 0,
             '4' => 0,
+            '5' => 0,
+            '6' => 0,
+            '7' => 0,
+            '8' => 0,
+            '9' => 0,
         ];
 
         // 获得卖点
