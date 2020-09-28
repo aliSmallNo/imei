@@ -1580,8 +1580,9 @@ class ApiController extends Controller
                     return self::renderAPI(129, '保存失败', $data);
                 }
             case "edit_main_rule2":
+                $r_name = trim(self::postParam("r_name"));
                 $data = [
-                    'r_name' => trim(self::postParam("r_name")),
+                    'r_name' => $r_name,
                     'r_status' => trim(self::postParam("r_status")),
                     'r_cat' => trim(self::postParam("r_cat")),
                     'r_stocks_gt' => trim(self::postParam("r_stocks_gt")),
@@ -1628,9 +1629,19 @@ class ApiController extends Controller
                         $data[$k] = floatval($v);
                     }
                 }
+
+                // 判断r_name 不能重复
+                $r_ids = StockMainRule2::find()->select('r_id')->where(['r_name' => $r_name])->asArray()->column();
+
                 if ($id) {
+                    if (!in_array($id, $r_ids)) {
+                        return self::renderAPI(129, '保存失败:买卖名称不能重复', $data);
+                    }
                     list($res) = StockMainRule2::edit($id, $data);
                 } else {
+                    if ($r_ids) {
+                        return self::renderAPI(129, '保存失败:买卖名称不能重复', $data);
+                    }
                     list($res) = StockMainRule2::add($data);
                 }
                 if ($res) {
