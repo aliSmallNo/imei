@@ -858,9 +858,7 @@ class StockController extends BaseController
                 switch ($cat) {
                     case 'order':
                         $redir = "stock_order";
-                        list($insertCount, $error) = StockOrder::add_by_excel(
-                            $filepath
-                        );
+                        list($insertCount, $error) = StockOrder::add_by_excel($filepath);
                         $insertCount = $insertCount."行数据 ";
                         break;
                     case 'action':
@@ -2336,12 +2334,10 @@ class StockController extends BaseController
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat($st_year, $et_year);
 
         // 追加 平均收益率 期望收益率
-        list($list, $rate_year_sum, $stat_rule_right_rate)
-            = StockMainResult2::cal_back($price_type, 0, 0);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, 0, 0);
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
 
-        list($list, $rate_year_sum, $stat_rule_right_rate)
-            = StockMainResult2::cal_back_r_new($price_type, 0, 0);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
         $tabs = [
@@ -2369,6 +2365,11 @@ class StockController extends BaseController
             if ($st_year == $v['st_year'] && $et_year == $v['et_year']) {
                 $tabs[$k]['cls'] = 'active';
             }
+        }
+
+        if (Admin::getAdminId() == 1002) {
+            print_r($list_buy);
+            exit;
         }
 
         return $this->renderPage("stock_main_result_stat2.tpl", [

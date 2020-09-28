@@ -1907,7 +1907,7 @@ class AppUtil
     }
 
     /**
-     * 获取数组中位数
+     * 获取 样本中位数
      *
      * @param $arr
      * @time 2020-09-07 PM
@@ -1920,6 +1920,48 @@ class AppUtil
         $mid = floor($totalNumbers / 2);
 
         return ($totalNumbers % 2) === 0 ? ($numbers[$mid - 1] + $numbers[$mid]) / 2 : $numbers[$mid];
+
+    }
+
+    /**
+     * 获取 样本置信度
+     *
+     * 置信度的计算过程 https://xw.qq.com/cmsid/20190926A0R38R00
+     *
+     * T.INV.2T函数参考 http://excel880.com/help/2010/content/hp10335700.htm
+     *
+     * @time 2020-09-09 PM
+     */
+    public static function get_confidence()
+    {
+
+    }
+
+    /**
+     * 获取 样本标准差
+     *
+     * 标准差算法参考 https://baike.baidu.com/item/%E6%A0%87%E5%87%86%E5%B7%AE
+     *
+     * @time 2020-09-09 PM
+     */
+    public static function get_stev($numbers)
+    {
+        $numbers = array_filter($numbers);
+        if (!$numbers) {
+            return 0;
+        }
+        $co = count($numbers);
+        $avg = array_sum($numbers) / $co;
+
+        $sum = 0;
+        foreach ($numbers as $number) {
+            $sum += pow($number - $avg, 2);
+        }
+
+        // 开根号 sqrt
+        // pow(2,3) => 2的3次方
+
+        return $co > 1 ? sqrt($sum / $co) : 0;
 
     }
 }
