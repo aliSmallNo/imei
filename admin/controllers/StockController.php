@@ -996,7 +996,6 @@ class StockController extends BaseController
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)
             ->chartTrend($date, $reset);
 
-//		print_r($trends);exit;
         return $this->renderPage(
             'stock_trend.tpl',
             [
@@ -1023,7 +1022,6 @@ class StockController extends BaseController
         $trends = TrendStockService::init(TrendStockService::CAT_TREND)
             ->chartTrend($date, $reset);
 
-//		print_r($trends);exit;
         return $this->renderPage(
             'stock_trend_new.tpl',
             [
@@ -1983,6 +1981,11 @@ class StockController extends BaseController
 
         $price_types = StockMainPrice::$types;
 
+        if (Admin::getAdminId() == 1002) {
+            print_r($list);
+            exit;
+        }
+
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -2611,8 +2614,6 @@ class StockController extends BaseController
 
         list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend($params);
 
-        // print_r($curr_day);exit;
-
         return $this->renderPage(
             "stock_curr_day_trend2.tpl",
             [
@@ -2656,8 +2657,6 @@ class StockController extends BaseController
         list($curr_day, $buys, $solds) = StockMainStat::curr_day_trend2(
             $params
         );
-
-        // print_r($curr_day);exit;
 
         return $this->renderPage(
             "stock_curr_day_trend.tpl",
@@ -2826,10 +2825,10 @@ class StockController extends BaseController
         Admin::staffOnly();
 
         list($buy_data, $sold_data) = StockMainResult2::result_stat0601();
-        if (Admin::getAdminId() == 1002) {
+//        if (Admin::getAdminId() == 1002) {
 //            print_r($buy_data);
 //            exit;
-        }
+//        }
 
         return $this->renderPage(
             "stock_main_result_stat0601.tpl",

@@ -518,10 +518,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
             $buy_co = $sold_co = $warn_co = 0;
             $buy_sum = $sold_sum = $warn_sum = 0;
+            $buy_rules_right_rate = $sold_rules_right_rate = $warn_rules_right_rate = [];
+
             foreach ($buy_rules as $rule_name) {
                 if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                     $buy_co++;
                     $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+
+                    // $data[$k1][$rule_name][$day]['times_yes_rate']
                 }
             }
             foreach ($sold_rules as $rule_name) {
@@ -1657,6 +1661,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $times_yes = $v3['times_yes'];
                     $times_no = $v3['times_no'];
                     $times_mid = $v3['times_mid'];
+                    // 正确率
                     $data[$k1][$rule_name][$day]['times_yes_rate'] = $times ? round($times_yes / $times, 4) * 100 : 0;
                     $data[$k1][$rule_name][$day]['times_no_rate'] = $times ? round($times_no / $times, 4) * 100 : 0;
                     $data[$k1][$rule_name][$day]['times_mid_rate'] = $times ? round($times_mid / $times, 4) * 100 : 0;
