@@ -131,7 +131,7 @@
         </td>
         <!-- 卖出正确率 -->
         <td>
-          {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=key}}
+          {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=day}}
             {{if $right_rate_item}}
               {{foreach from=$right_rate_item item=desc}}
                 {{$day}}日: {{$desc.rule_name}} 正确率:{{$desc.times_yes_rate}} <br>
