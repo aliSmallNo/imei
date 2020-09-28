@@ -97,8 +97,7 @@
           {{foreach from=$item.buy_rules_right_rate item=right_rate_item key=day}}
             {{if $right_rate_item}}
               {{foreach from=$right_rate_item item=desc}}
-                {{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%
-                <br>
+                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%</div>
               {{/foreach}}
             {{/if}}
           {{/foreach}}
@@ -130,8 +129,7 @@
           {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=day}}
             {{if $right_rate_item}}
               {{foreach from=$right_rate_item item=desc}}
-                {{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%
-                <br>
+                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%</div>
               {{/foreach}}
             {{/if}}
           {{/foreach}}
