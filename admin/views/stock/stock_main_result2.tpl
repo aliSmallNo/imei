@@ -104,8 +104,8 @@
         <td>
           {{foreach from=$item.buy_rules_right_rate item=right_rate_item key=day}}
             {{if $right_rate_item}}
-              {{foreach from=$right_rate_item item=rule_name}}
-                {{$day}}日: {{$rule_name}} 正确率:{{$right_rate_item}} <br>
+              {{foreach from=$right_rate_item item=desc}}
+                {{$day}}日: {{$desc.rule_name}} 正确率:{{$desc.times_yes_rate}} <br>
               {{/foreach}}
             {{/if}}
           {{/foreach}}
@@ -133,8 +133,8 @@
         <td>
           {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=key}}
             {{if $right_rate_item}}
-              {{foreach from=$right_rate_item item=rule_name}}
-                {{$day}}日: {{$rule_name}} 正确率:{{$right_rate_item}} <br>
+              {{foreach from=$right_rate_item item=desc}}
+                {{$day}}日: {{$desc.rule_name}} 正确率:{{$desc.times_yes_rate}} <br>
               {{/foreach}}
             {{/if}}
           {{/foreach}}
