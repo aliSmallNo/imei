@@ -498,27 +498,35 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
                 return $rules;
             };
-            $buy_rules = $add_rule($buy_rules, $r_buy5);
-            $buy_rules = $add_rule($buy_rules, $r_buy10);
-            $buy_rules = $add_rule($buy_rules, $r_buy20);
-            $buy_rules = $add_rule($buy_rules, $r_buy60);
-            $buy_rules = array_unique($buy_rules);
+            $buy_rules5 = $add_rule($buy_rules, $r_buy5);
+            $buy_rules10 = $add_rule($buy_rules, $r_buy10);
+            $buy_rules20 = $add_rule($buy_rules, $r_buy20);
+            $buy_rules60 = $add_rule($buy_rules, $r_buy60);
+            $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
+            $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
 
-            $sold_rules = $add_rule($sold_rules, $r_sold5);
-            $sold_rules = $add_rule($sold_rules, $r_sold10);
-            $sold_rules = $add_rule($sold_rules, $r_sold20);
-            $sold_rules = $add_rule($sold_rules, $r_sold60);
-            $sold_rules = array_unique($sold_rules);
+            $sold_rules5 = $add_rule($sold_rules, $r_sold5);
+            $sold_rules10 = $add_rule($sold_rules, $r_sold10);
+            $sold_rules20 = $add_rule($sold_rules, $r_sold20);
+            $sold_rules60 = $add_rule($sold_rules, $r_sold60);
+            $sold_rules = array_unique(array_merge($sold_rules5, $sold_rules10, $sold_rules20, $sold_rules60));
+            $sold_rules_day = [5 => $sold_rules5, 10 => $sold_rules10, 20 => $sold_rules20, 60 => $sold_rules60];
 
-            $warn_rules = $add_rule($warn_rules, $r_warn5);
-            $warn_rules = $add_rule($warn_rules, $r_warn10);
-            $warn_rules = $add_rule($warn_rules, $r_warn20);
-            $warn_rules = $add_rule($warn_rules, $r_warn60);
-            $warn_rules = array_unique($warn_rules);
+            $warn_rules5 = $add_rule($warn_rules, $r_warn5);
+            $warn_rules10 = $add_rule($warn_rules, $r_warn10);
+            $warn_rules20 = $add_rule($warn_rules, $r_warn20);
+            $warn_rules60 = $add_rule($warn_rules, $r_warn60);
+            $warn_rules = array_unique(array_merge($warn_rules5, $warn_rules10, $warn_rules20, $warn_rules60));
+            $warn_rules_day = [5 => $warn_rules5, 10 => $warn_rules10, 20 => $warn_rules20, 60 => $warn_rules60];
 
             $buy_co = $sold_co = $warn_co = 0;
             $buy_sum = $sold_sum = $warn_sum = 0;
-            $buy_rules_right_rate = $sold_rules_right_rate = $warn_rules_right_rate = [];
+            $buy_rules_right_rate = $sold_rules_right_rate = $warn_rules_right_rate = [
+                5 => [],
+                10 => [],
+                20 => [],
+                60 => [],
+            ];
 
             foreach ($buy_rules as $rule_name) {
                 if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
@@ -541,6 +549,29 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
 
+            foreach ($buy_rules_day as $day => $rule_item) {
+                foreach ($rule_item as $rule_name) {
+                    if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+                        $times_yes_rate = $list_buy[$list_buy_indexs[$rule_name]][$rule_name][$day]['times_yes_rate'];
+                        $buy_rules_right_rate[$day][] = [
+                            'rule_name' => $rule_name,
+                            'times_yes_rate' => $times_yes_rate,
+                        ];
+                    }
+                }
+            }
+            foreach ($sold_rules_day as $day => $rule_item) {
+                foreach ($rule_item as $rule_name) {
+                    if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
+                        $times_yes_rate = $list_sold[$list_sold_indexs[$rule_name]][$rule_name][$day]['times_yes_rate'];
+                        $sold_rules_right_rate[$day][] = [
+                            'rule_name' => $rule_name,
+                            'times_yes_rate' => $times_yes_rate,
+                        ];
+                    }
+                }
+            }
+
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
             $res[$k]['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
             $res[$k]['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
@@ -551,6 +582,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $res[$k]['sold_rules'] = $sold_rules;
             $res[$k]['warn_rules'] = $warn_rules;
 
+            $res[$k]['buy_rules_day'] = $buy_rules_day;
+            $res[$k]['sold_rules_day'] = $sold_rules_day;
+            $res[$k]['warn_rules_day'] = $warn_rules_day;
+            $res[$k]['buy_rules_right_rate'] = $buy_rules_right_rate;
+            $res[$k]['sold_rules_right_rate'] = $sold_rules_right_rate;
+            $res[$k]['warn_rules_right_rate'] = $warn_rules_right_rate;
         }
 
         $sql = "select count(1) as co
@@ -566,8 +603,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-18 PM
      */
-    public static function get_err_note_cls($res, $price_type, $list1, $list2)
-    {
+    public
+    static function get_err_note_cls(
+        $res,
+        $price_type,
+        $list1,
+        $list2
+    ) {
         $data1 = ArrayHelper::map($list1, 'buy_dt', 'rate');
         $data2 = ArrayHelper::map($list2, 'buy_dt', 'rate');
 
@@ -609,8 +651,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return $res;
     }
 
-    public static function get_avg_rate($list, $price_type, $list1, $list2)
-    {
+    public
+    static function get_avg_rate(
+        $list,
+        $price_type,
+        $list1,
+        $list2
+    ) {
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list1);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list2);
@@ -693,8 +740,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-11-27
      * @time 2020-03-01 PM modify
      */
-    public static function get_buy_sold_item($data, $cat = self::TAG_BUY)
-    {
+    public
+    static function get_buy_sold_item(
+        $data,
+        $cat = self::TAG_BUY
+    ) {
         switch ($cat) {
             case self::TAG_BUY:
                 $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20', 60 => 'r_buy60'];
@@ -725,7 +775,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-12-23 PM
      * @time 2020-03-01 PM modify
      */
-    public static function get_first_buys()
+    public
+    static function get_first_buys()
     {
         list($list) = self::items([], [], 1, 10000);
         $list = array_reverse($list);
@@ -754,7 +805,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-12-23 PM
      * @time 2020-03-01 PM modify
      */
-    public static function get_first_buys_r()
+    public
+    static function get_first_buys_r()
     {
         list($list) = self::items([], [], 1, 10000);
         $list = array_reverse($list);
@@ -808,8 +860,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
      */
-    public static function cal_back($price_type, $buy_times = 0, $stop_rate = 0)
-    {
+    public
+    static function cal_back(
+        $price_type,
+        $buy_times = 0,
+        $stop_rate = 0
+    ) {
         if ($buy_times) {
             $get_first_buys = self::get_first_buys();
             //print_r($get_first_buys);exit;
@@ -909,8 +965,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-01-09 PM
      * @time 2020-03-01 PM modify
      */
-    public static function change_color_diff_sold_dt($data)
-    {
+    public
+    static function change_color_diff_sold_dt(
+        $data
+    ) {
         $cls1 = 'sold_color_1';
         $cls2 = 'sold_color_2';
         $sold_dt = '';
@@ -949,8 +1007,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-02-24 PM
      * @time 2020-03-01 PM modify
      */
-    public static function N_times_buy_ret($data, $n = 1)
-    {
+    public
+    static function N_times_buy_ret(
+        $data,
+        $n = 1
+    ) {
         $tmp = [];
         foreach ($data as $k => $v) {
             $sold_dt = $v['sold_dt'];
@@ -986,8 +1047,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-02-06 PM
      * @time 2020-03-01 PM modify
      */
-    public static function continue_errors($data)
-    {
+    public
+    static function continue_errors(
+        $data
+    ) {
         // 收益率为负
         $errors = $errors_tmp = [];
         ArrayHelper::multisort($data, 'buy_dt', SORT_ASC);
@@ -1051,8 +1114,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-12-16 AM
      * @time 2020-03-01 PM modify
      */
-    public static function stat_rule_right_rate($data)
-    {
+    public
+    static function stat_rule_right_rate(
+        $data
+    ) {
         $rules = StockMainRule2::find()->where(['r_status' => StockMainRule2::ST_ACTIVE])->asArray()->orderBy('r_cat')->all();
         $ret = ArrayHelper::map($rules, 'r_name', 0);
         foreach ($ret as $k => $v) {
@@ -1148,8 +1213,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-10
      */
-    public static function pop_by_times($buy_times, $data)
-    {
+    public
+    static function pop_by_times(
+        $buy_times,
+        $data
+    ) {
         $data_all = [];
         foreach ($data as $v) {
             $year = date("Y", strtotime($v['sold_dt']));
@@ -1175,8 +1243,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-10
      */
-    public static function pop_by_times_item($buy_times, $data)
-    {
+    public
+    static function pop_by_times_item(
+        $buy_times,
+        $data
+    ) {
         $sold_cal = function ($curr_buy_dt, $data) {
             $co = 0;
             foreach ($data as $v) {
@@ -1214,8 +1285,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-12-10
      * @time 2020-03-01 PM modify
      */
-    public static function get_year_data($data)
-    {
+    public
+    static function get_year_data(
+        $data
+    ) {
         $rate_year_sum = [];
         foreach ($data as $v3) {
             $year = date("Y", strtotime($v3['sold_dt']));
@@ -1254,8 +1327,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
      */
-    public static function get_sold_point($buy_dt)
-    {
+    public
+    static function get_sold_point(
+        $buy_dt
+    ) {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where ".self::SOLD_WHERE_STR." and r_trans_on>:r_trans_on 
@@ -1270,8 +1345,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-11-29
      * @time 2020-03-01 PM modify
      */
-    public static function _get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate)
-    {
+    public
+    static function _get_sold_point(
+        $buy_dt,
+        $sold_dt,
+        $price_type,
+        $stop_rate
+    ) {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1303,8 +1383,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
      */
-    public static function get_sold_point_r($buy_dt)
-    {
+    public
+    static function get_sold_point_r(
+        $buy_dt
+    ) {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where ".self::BUY_WHERE_STR." and r_trans_on>:r_trans_on 
@@ -1318,8 +1400,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-03 AM
      */
-    public static function _get_sold_point_r($buy_dt, $sold_dt, $price_type, $stop_rate)
-    {
+    public
+    static function _get_sold_point_r(
+        $buy_dt,
+        $sold_dt,
+        $price_type,
+        $stop_rate
+    ) {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1350,8 +1437,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-01-08 AM
      * @time 2020-03-01 PM modify
      */
-    public static function _get_sold_point_r_new($buy_dt, $sold_dt, $price_type, $stop_rate)
-    {
+    public
+    static function _get_sold_point_r_new(
+        $buy_dt,
+        $sold_dt,
+        $price_type,
+        $stop_rate
+    ) {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1385,8 +1477,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-11-26
      * @time 2020-03-01 PM modify
      */
-    public static function get_high_low_point($buy_dt, $sold_dt, $price_type)
-    {
+    public
+    static function get_high_low_point(
+        $buy_dt,
+        $sold_dt,
+        $price_type
+    ) {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1422,8 +1518,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
      */
-    public static function cal_back_r_new($price_type, $buy_times, $stop_rate)
-    {
+    public
+    static function cal_back_r_new(
+        $price_type,
+        $buy_times,
+        $stop_rate
+    ) {
         if ($buy_times) {
             $get_first_buys = self::get_first_buys_r();
             //print_r($get_first_buys);exit;
@@ -1526,8 +1626,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-11-27
      * @time 2020-03-01 PM modify
      */
-    public static function result_stat($year1 = '', $year2 = '')
-    {
+    public
+    static function result_stat(
+        $year1 = '',
+        $year2 = ''
+    ) {
 
         $rules_buys = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
         $rules_solds = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
@@ -1549,8 +1652,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-01-10 AM modify
      * @time 2020-03-01 PM modify
      */
-    public static function result_stat_item($rules, $results)
-    {
+    public
+    static function result_stat_item(
+        $rules,
+        $results
+    ) {
         $data = [];
         foreach ($rules as $rule) {
             $item = [];
@@ -1662,9 +1768,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $times_no = $v3['times_no'];
                     $times_mid = $v3['times_mid'];
                     // 正确率
-                    $data[$k1][$rule_name][$day]['times_yes_rate'] = $times ? round($times_yes / $times, 4) * 100 : 0;
+                    $data[$k1][$rule_name][$day]['times_yes_rate'] = $times ? round($times_yes / $times,
+                            4) * 100 : 0;
                     $data[$k1][$rule_name][$day]['times_no_rate'] = $times ? round($times_no / $times, 4) * 100 : 0;
-                    $data[$k1][$rule_name][$day]['times_mid_rate'] = $times ? round($times_mid / $times, 4) * 100 : 0;
+                    $data[$k1][$rule_name][$day]['times_mid_rate'] = $times ? round($times_mid / $times,
+                            4) * 100 : 0;
                 }
             }
         }
@@ -1679,8 +1787,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-16 PM
      */
-    public static function append_avg_rate($list_buy, $list)
-    {
+    public
+    static function append_avg_rate(
+        $list_buy,
+        $list
+    ) {
         $list = array_column($list, null, 'buy_dt');
         $cal = function ($yes_dts) use ($list) {
             $co = 0;
@@ -1731,8 +1842,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function random_buy_rate($hold_max = 30)
-    {
+    public
+    static function random_buy_rate(
+        $hold_max = 30
+    ) {
         $price_type = StockMainPrice::TYPE_ETF_500;
 
         list($data) = static::cal_back($price_type);
@@ -1766,8 +1879,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function random_dts_from_month($month, $num, $hold_max)
-    {
+    public
+    static function random_dts_from_month(
+        $month,
+        $num,
+        $hold_max
+    ) {
         $sql = "select m_trans_on,m_etf_close from im_stock_main where DATE_FORMAT(m_trans_on,'%Y-%m')=:dt ";
         $res = AppUtil::db()->createCommand($sql, [':dt' => $month])->queryAll();
 
@@ -1799,8 +1916,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public static function get_random_sold_dt($buy_dt, $hold_max = 30)
-    {
+    public
+    static function get_random_sold_dt(
+        $buy_dt,
+        $hold_max = 30
+    ) {
         $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt order by m_trans_on asc limit $hold_max";
         $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt])->queryAll();
 
@@ -1825,8 +1945,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-09-07 PM
      */
-    public static function get_5day_after_rate_r($price_type, $where = '', $dt_type)
-    {
+    public
+    static function get_5day_after_rate_r(
+        $price_type,
+        $where = '',
+        $dt_type
+    ) {
         $conn = AppUtil::db();
         $sql = "select 
                 p_trans_on
@@ -1916,8 +2040,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-09-07 PM
      */
-    public static function get_5day_after_rate($price_type, $where = '', $dt_type)
-    {
+    public
+    static function get_5day_after_rate(
+        $price_type,
+        $where = '',
+        $dt_type
+    ) {
         $conn = AppUtil::db();
         $sql = "select 
                 p_trans_on
@@ -2008,8 +2136,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-12-02 PM
      * @time 2020-03-01 modify
      */
-    public static function get_5day_after_rate_item($buy_dt, $price_type, $conn, $flag = 1)
-    {
+    public
+    static function get_5day_after_rate_item(
+        $buy_dt,
+        $price_type,
+        $conn,
+        $flag = 1
+    ) {
         $conn = $conn ? $conn : AppUtil::db();
         $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 11";
         $res = $conn->createCommand($sql, [':dt' => $buy_dt])->queryAll();
@@ -2059,8 +2192,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-03-26 AM
      */
-    public static function sync_note($result)
-    {
+    public
+    static function sync_note(
+        $result
+    ) {
         $self = self::findOne(['r_trans_on' => $result->r_trans_on]);
         if ($self) {
             self::edit($self->r_id, ['r_note' => $result->r_note]);
@@ -2073,7 +2208,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-05-02 PM
      * @time 2020-09-07 PM
      */
-    public static function rule_right_rate()
+    public
+    static function rule_right_rate()
     {
         $sql = "select concat(r_sold5,r_sold10,r_sold20) as str,r_note from im_stock_main_result2 
                 where ".self::SOLD_WHERE_STR;
@@ -2184,7 +2320,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-01 PM
      */
-    public static function result_stat0601()
+    public
+    static function result_stat0601()
     {
         $start_dt = "2012-02-24";
         $trans_dates = array_reverse(StockMain::get_trans_dates());
@@ -2210,8 +2347,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-01 PM
      */
-    public static function result_stat0601_buy($trans_dates, $start_dt)
-    {
+    public
+    static function result_stat0601_buy(
+        $trans_dates,
+        $start_dt
+    ) {
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
@@ -2593,8 +2733,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-02 PM
      */
-    public static function result_stat0601_sold($trans_dates, $start_dt)
-    {
+    public
+    static function result_stat0601_sold(
+        $trans_dates,
+        $start_dt
+    ) {
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
@@ -2962,8 +3105,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * $dt string 卖点
      * @time 2020-09-04 PM
      */
-    public static function wether_first_buy_point($buy_dt)
-    {
+    public
+    static function wether_first_buy_point(
+        $buy_dt
+    ) {
         $sql = "select r.* from im_stock_main_result2 r
                 where ".self::SOLD_WHERE_STR." 
                 and r_trans_on<:r_trans_on 
@@ -2979,7 +3124,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                  and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 
-        $buy_points = AppUtil::db()->createCommand($sql, [':st' => $sold['r_trans_on'], ':et' => $buy_dt])->queryAll();
+        $buy_points = AppUtil::db()->createCommand($sql,
+            [':st' => $sold['r_trans_on'], ':et' => $buy_dt])->queryAll();
 
         if (count($buy_points) != 1) {
             return false;
@@ -2994,8 +3140,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * $dt string 买点
      * @time 2020-09-04 PM
      */
-    public static function wether_first_sold_point($sold_dt)
-    {
+    public
+    static function wether_first_sold_point(
+        $sold_dt
+    ) {
         $sql = "select r.* from im_stock_main_result2 r
                 where ".self::BUY_WHERE_STR." 
                 and r_trans_on<:r_trans_on 
