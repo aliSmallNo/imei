@@ -1981,10 +1981,10 @@ class StockController extends BaseController
 
         $price_types = StockMainPrice::$types;
 
-        if (Admin::getAdminId() == 1002) {
-            print_r($list);
-            exit;
-        }
+//        if (Admin::getAdminId() == 1002) {
+//            print_r($list);
+//            exit;
+//        }
 
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
@@ -2370,10 +2370,10 @@ class StockController extends BaseController
             }
         }
 
-        if (Admin::getAdminId() == 1002) {
-            print_r($list_buy);
-            exit;
-        }
+//        if (Admin::getAdminId() == 1002) {
+//            print_r($list_buy);
+//            exit;
+//        }
 
         return $this->renderPage("stock_main_result_stat2.tpl", [
                 'list_buy' => $list_buy,

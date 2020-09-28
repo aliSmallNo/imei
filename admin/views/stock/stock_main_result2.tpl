@@ -64,10 +64,11 @@
       <th>#</th>
       <th>交易日期</th>
       <th>{{$price_type_t}}</th>
-      <th class="col-sm-3">买入</th>
-      <th class="col-sm-3">卖出</th>
-      <th class="col-sm-3">预警</th>
-
+      <th class="col-sm-2">买入</th>
+      <th class="col-sm-2">买入<br>正确率</th>
+      <th class="col-sm-2">卖出</th>
+      <th class="col-sm-2">卖出<br>正确率</th>
+      <th class="col-sm-2">预警</th>
       <th>备注</th>
       <th>时间</th>
       <th>操作</th>
@@ -99,6 +100,16 @@
           {{if $item.buy_avg_rate}}
           <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
         </td>
+        <!-- 买入正确率 -->
+        <td>
+          {{foreach from=$item.buy_rules_right_rate item=right_rate_item key=day}}
+            {{if $right_rate_item}}
+              {{foreach from=$right_rate_item item=rule_name}}
+                {{$day}}日: {{$rule_name}} 正确率:{{$right_rate_item}} <br>
+              {{/foreach}}
+            {{/if}}
+          {{/foreach}}
+        </td>
         <!-- 卖出 -->
         <td class="bot_line">
           {{if $item.r_sold5}}
@@ -118,6 +129,17 @@
           <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}%</div>{{/if}}
 
         </td>
+        <!-- 卖出正确率 -->
+        <td>
+          {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=key}}
+            {{if $right_rate_item}}
+              {{foreach from=$right_rate_item item=rule_name}}
+                {{$day}}日: {{$rule_name}} 正确率:{{$right_rate_item}} <br>
+              {{/foreach}}
+            {{/if}}
+          {{/foreach}}
+        </td>
+
         <td class="bot_line">
           {{if $item.r_warn5}}
             <div>5日:{{$item.r_warn5}}</div>{{/if}}
