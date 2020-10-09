@@ -1996,7 +1996,7 @@ class StockController extends BaseController
             $arr2 = $v['sold_rules_right_rate'];
             $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
             $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
-            if (!$f1 && !$f2) {
+            if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
                 unset($list[$k]);
             }
         }
