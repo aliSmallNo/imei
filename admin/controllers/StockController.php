@@ -1990,6 +1990,17 @@ class StockController extends BaseController
 //            exit;
 //        }
 
+        // {{if $item.buy_rules_right_rate || $item.sold_rules_right_rate}}
+        foreach ($list as $k => $v) {
+            $arr1 = $v['buy_rules_right_rate'];
+            $arr2 = $v['sold_rules_right_rate'];
+            $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
+            $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
+            if (!$f1 && !$f2) {
+                unset($list[$k]);
+            }
+        }
+
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
