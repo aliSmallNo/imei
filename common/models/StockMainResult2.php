@@ -406,7 +406,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-03-01 PM
      */
-    public static function items($criteria, $params, $page, $pageSize = 1000)
+    public static function items($criteria, $params, $page, $pageSize = 1000, $right_rate_gt_val = 0)
     {
         $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
         $strCriteria = '';
@@ -553,10 +553,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 foreach ($rule_item as $rule_name) {
                     if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                         $times_yes_rate = $list_buy[$list_buy_indexs[$rule_name]][$rule_name][$day]['times_yes_rate'];
-                        $buy_rules_right_rate[$day][] = [
-                            'rule_name' => $rule_name,
-                            'times_yes_rate' => $times_yes_rate,
-                        ];
+                        if ($times_yes_rate >= $right_rate_gt_val) {
+                            $buy_rules_right_rate[$day][] = [
+                                'rule_name' => $rule_name,
+                                'times_yes_rate' => $times_yes_rate,
+                            ];
+                        }
                     }
                 }
             }
@@ -564,10 +566,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 foreach ($rule_item as $rule_name) {
                     if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
                         $times_yes_rate = $list_sold[$list_sold_indexs[$rule_name]][$rule_name][$day]['times_yes_rate'];
-                        $sold_rules_right_rate[$day][] = [
-                            'rule_name' => $rule_name,
-                            'times_yes_rate' => $times_yes_rate,
-                        ];
+                        if ($times_yes_rate >= $right_rate_gt_val) {
+                            $sold_rules_right_rate[$day][] = [
+                                'rule_name' => $rule_name,
+                                'times_yes_rate' => $times_yes_rate,
+                            ];
+                        }
                     }
                 }
             }

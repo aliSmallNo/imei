@@ -51,6 +51,13 @@
           <option value="{{$key}}" {{if $key==$price_type}}selected{{/if}}>{{$price_type_name}}</option>
         {{/foreach}}
       </select>
+
+      <select class="form-control" name="right_rate_gt_val">
+        <option value="">-=请选择正确率=-</option>
+        {{foreach from=$right_rate_gt_val_map item=$right_rate_gt_val_name key=key}}
+          <option value="{{$key}}" {{if $key==$right_rate_gt_val}}selected{{/if}}>{{$right_rate_gt_val_name}}</option>
+        {{/foreach}}
+      </select>
     </div>
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>
@@ -75,102 +82,104 @@
     <tbody>
 
     {{foreach from=$list item=item key=key}}
-      <tr>
-        <td>{{$key+1}}</td>
-        <td>{{$item.r_trans_on}}</td>
-        <td>{{$item.m_etf_close}}</td>
+      {{if $item.buy_rules_right_rate || $item.sold_rules_right_rate}}
+        <tr>
+          <td>{{$key+1}}</td>
+          <td>{{$item.r_trans_on}}</td>
+          <td>{{$item.m_etf_close}}</td>
 
-        <!-- 买入 -->
-        <td class="bot_line">
-          <div class="hidden">
-            {{if $item.r_buy5}}
-              <div>5日:{{$item.r_buy5}}</div>{{/if}}
-            {{if $item.r_buy10}}
-              <div>10日:{{$item.r_buy10}}</div>{{/if}}
-            {{if $item.r_buy20}}
-              <div>20日:{{$item.r_buy20}}</div>{{/if}}
-            {{if $item.r_buy60}}
-              <div>60日:{{$item.r_buy60}}</div>{{/if}}
-          </div>
+          <!-- 买入 -->
+          <td class="bot_line">
+            <div class="hidden">
+              {{if $item.r_buy5}}
+                <div>5日:{{$item.r_buy5}}</div>{{/if}}
+              {{if $item.r_buy10}}
+                <div>10日:{{$item.r_buy10}}</div>{{/if}}
+              {{if $item.r_buy20}}
+                <div>20日:{{$item.r_buy20}}</div>{{/if}}
+              {{if $item.r_buy60}}
+                <div>60日:{{$item.r_buy60}}</div>{{/if}}
+            </div>
 
-          <!-- 买入正确率 -->
-          {{foreach from=$item.buy_rules_right_rate item=right_rate_item key=day}}
-            {{if $right_rate_item}}
-              {{foreach from=$right_rate_item item=desc}}
-                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%</div>
-              {{/foreach}}
-            {{/if}}
-          {{/foreach}}
-          <br>
+            <!-- 买入正确率 -->
+            {{foreach from=$item.buy_rules_right_rate item=right_rate_item key=day}}
+              {{if $right_rate_item}}
+                {{foreach from=$right_rate_item item=desc}}
+                  <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%</div>
+                {{/foreach}}
+              {{/if}}
+            {{/foreach}}
+            <br>
 
-          {{if $item.buy_avg_right_rate}}
-            <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
-          {{if $item.buy_avg_right_rate_2p}}
-            <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
-          {{if $item.buy_avg_rate}}
-          <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
+            {{if $item.buy_avg_right_rate}}
+              <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
+            {{if $item.buy_avg_right_rate_2p}}
+              <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
+            {{if $item.buy_avg_rate}}
+            <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
 
-        </td>
+          </td>
 
-        <!-- 卖出 -->
-        <td class="bot_line">
-          <div class="hidden">
-            {{if $item.r_sold5}}
-              <div>5日:{{$item.r_sold5}}</div>{{/if}}
-            {{if $item.r_sold10}}
-              <div>10日:{{$item.r_sold10}}</div>{{/if}}
-            {{if $item.r_sold20}}
-              <div>20日:{{$item.r_sold20}}</div>{{/if}}
-            {{if $item.r_sold60}}
-              <div>60日:{{$item.r_sold60}}</div>{{/if}}
-          </div>
+          <!-- 卖出 -->
+          <td class="bot_line">
+            <div class="hidden">
+              {{if $item.r_sold5}}
+                <div>5日:{{$item.r_sold5}}</div>{{/if}}
+              {{if $item.r_sold10}}
+                <div>10日:{{$item.r_sold10}}</div>{{/if}}
+              {{if $item.r_sold20}}
+                <div>20日:{{$item.r_sold20}}</div>{{/if}}
+              {{if $item.r_sold60}}
+                <div>60日:{{$item.r_sold60}}</div>{{/if}}
+            </div>
 
-          <!-- 卖出正确率 -->
-          {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=day}}
-            {{if $right_rate_item}}
-              {{foreach from=$right_rate_item item=desc}}
-                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%</div>
-              {{/foreach}}
-            {{/if}}
-          {{/foreach}}
+            <!-- 卖出正确率 -->
+            {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=day}}
+              {{if $right_rate_item}}
+                {{foreach from=$right_rate_item item=desc}}
+                  <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}%</div>
+                {{/foreach}}
+              {{/if}}
+            {{/foreach}}
 
-          <br>
+            <br>
 
-          {{if $item.sold_avg_right_rate}}
-            <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
-          {{if $item.sold_avg_right_rate_2p}}
-            <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
-          {{if $item.sold_avg_rate}}
-          <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}%</div>{{/if}}
-        </td>
+            {{if $item.sold_avg_right_rate}}
+              <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
+            {{if $item.sold_avg_right_rate_2p}}
+              <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
+            {{if $item.sold_avg_rate}}
+            <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}%</div>{{/if}}
+          </td>
 
-        <td class="bot_line">
-          {{if $item.r_warn5}}
-            <div>5日:{{$item.r_warn5}}</div>{{/if}}
-          {{if $item.r_warn10}}
-            <div>10日:{{$item.r_warn10}}</div>{{/if}}
-          {{if $item.r_warn20}}
-            <div>20日:{{$item.r_warn20}}</div>{{/if}}
-          {{if $item.r_warn60}}
-            <div>60日:{{$item.r_warn60}}</div>{{/if}}
+          <td class="bot_line">
+            {{if $item.r_warn5}}
+              <div>5日:{{$item.r_warn5}}</div>{{/if}}
+            {{if $item.r_warn10}}
+              <div>10日:{{$item.r_warn10}}</div>{{/if}}
+            {{if $item.r_warn20}}
+              <div>20日:{{$item.r_warn20}}</div>{{/if}}
+            {{if $item.r_warn60}}
+              <div>60日:{{$item.r_warn60}}</div>{{/if}}
 
-          {{if $item.warn_avg_right_rate}}
-            <div class="avg_font">平均正确率{{$item.warn_avg_right_rate}}%</div>{{/if}}
-          {{if $item.warn_avg_right_rate_2p}}
-            <div class="avg_font">2P-1：{{$item.warn_avg_right_rate_2p}}%</div>{{/if}}
-          {{if $item.warn_avg_rate}}
-          <div class="avg_font" data-co="{{$item.warn_avg_rate_warn_co}}">平均收益率：{{$item.warn_avg_rate}}%</div>{{/if}}
-        </td>
+            {{if $item.warn_avg_right_rate}}
+              <div class="avg_font">平均正确率{{$item.warn_avg_right_rate}}%</div>{{/if}}
+            {{if $item.warn_avg_right_rate_2p}}
+              <div class="avg_font">2P-1：{{$item.warn_avg_right_rate_2p}}%</div>{{/if}}
+            {{if $item.warn_avg_rate}}
+            <div class="avg_font" data-co="{{$item.warn_avg_rate_warn_co}}">平均收益率：{{$item.warn_avg_rate}}%</div>{{/if}}
+          </td>
 
-        <td class="{{$item.cls}}">{{$item.r_note}}</td>
-        <td>
-          <div>{{$item.r_added_on}}</div>
-          <div>{{$item.r_update_on}}</div>
-        </td>
-        <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}" data-r_note="{{$item.r_note}}">
-          <a class="btnModify btn btn-xs btn-primary">修改</a>
-        </td>
-      </tr>
+          <td class="{{$item.cls}}">{{$item.r_note}}</td>
+          <td>
+            <div>{{$item.r_added_on}}</div>
+            <div>{{$item.r_update_on}}</div>
+          </td>
+          <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}" data-r_note="{{$item.r_note}}">
+            <a class="btnModify btn btn-xs btn-primary">修改</a>
+          </td>
+        </tr>
+      {{/if}}
     {{/foreach}}
     </tbody>
   </table>

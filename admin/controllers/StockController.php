@@ -1937,6 +1937,7 @@ class StockController extends BaseController
         $page = self::getParam("page", 1);
         $name = self::getParam("name", '');
         $cat = self::getParam("cat", '');
+        $right_rate_gt_val = self::getParam("right_rate_gt_val", 0);
         $price_type = self::getParam("price_type", StockMainPrice::TYPE_SH_CLOSE);
 
         $criteria = [];
@@ -1965,12 +1966,10 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000);
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val);
 
-        list($list1, $rate_year_sum1, $stat_rule_right_rate1)
-            = StockMainResult2::cal_back($price_type, 0, 0);
-        list($list2, $rate_year_sum2, $stat_rule_right_rate2)
-            = StockMainResult2::cal_back_r_new($price_type, 0, 0);
+        list($list1, $rate_year_sum1, $stat_rule_right_rate1) = StockMainResult2::cal_back($price_type, 0, 0);
+        list($list2, $rate_year_sum2, $stat_rule_right_rate2) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
 
         // 找出错误的 r_note
         $list = StockMainResult2::get_err_note_cls($list, $price_type, $list1, $list2);
@@ -1980,6 +1979,11 @@ class StockController extends BaseController
         $pagination = self::pagination($page, $count, 10000);
 
         $price_types = StockMainPrice::$types;
+        $right_rate_gt_val_map = [
+            60 => '高于60%',
+            70 => '高于70%',
+            80 => '高于80%',
+        ];
 
 //        if (Admin::getAdminId() == 1002) {
 //            print_r($list);
@@ -1996,6 +2000,7 @@ class StockController extends BaseController
                 'price_type' => $price_type,
                 'price_type_t' => $price_types[$price_type] ?? '',
                 'price_types' => $price_types,
+                'right_rate_gt_val_map' => $right_rate_gt_val_map,
             ]
         );
     }
