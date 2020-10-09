@@ -339,14 +339,19 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             return 2;
         }
 
-        // 不是第一买点
-        if ($buy_type && !self::wether_first_buy_point(date('Y-m-d'))) {
-            return 21;
+        if ($buy_type && $sold_type) {
+            // 有买点和卖点发送短信 不判断是不是第一买卖点 2020-10-09 PM
+        } else {
+            // 不是第一买点
+            if ($buy_type && !self::wether_first_buy_point(date('Y-m-d'))) {
+                return 21;
+            }
+            // 不是第一卖点
+            if ($sold_type && !self::wether_first_sold_point(date('Y-m-d'))) {
+                return 22;
+            }
         }
-        // 不是第一卖点
-        if ($sold_type && !self::wether_first_sold_point(date('Y-m-d'))) {
-            return 22;
-        }
+
 
         // 验证码 8开头是买入 7开头是卖出 9开头是同事存在买入卖出
         $prefix = '6';
