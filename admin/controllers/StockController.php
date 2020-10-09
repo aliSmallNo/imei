@@ -2012,6 +2012,7 @@ class StockController extends BaseController
                 'price_type_t' => $price_types[$price_type] ?? '',
                 'price_types' => $price_types,
                 'right_rate_gt_val_map' => $right_rate_gt_val_map,
+                'right_rate_gt_val' => $right_rate_gt_val,
             ]
         );
     }
