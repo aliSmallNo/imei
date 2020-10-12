@@ -51,7 +51,12 @@
         if (flag) {
             return false;
         }
-        flag = 1
+        flag = 1;
+        ch();
+    });
+
+    ch();
+    function ch() {
         $.post('/api/login', {
             tag: 'change_captcha',
         }, function (resp) {
@@ -60,11 +65,10 @@
                 $('#change_captcha').find("img").attr('src', resp.data.src)
             }
         }, 'json');
-
-    })
+    }
 
     // 清明节 页面调成灰色
-    var cls ='{{$qingming_cls}}';
+    var cls = '{{$qingming_cls}}';
     $(function () {
         $('html').addClass(cls);
     })
