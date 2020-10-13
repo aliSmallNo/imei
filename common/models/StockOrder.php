@@ -463,6 +463,7 @@ class StockOrder extends ActiveRecord
         foreach ($res as $k => $v) {
             $res[$k]['dt'] = date('Y-m-d', strtotime($v['oAddedOn']));
             $res[$k]['st_t'] = self::$stDict[$v['oStatus']];
+            $res[$k]['oRate'] = floatval($v['oRate']) * 100;
         }
 
         $sql = "select count(1) as co

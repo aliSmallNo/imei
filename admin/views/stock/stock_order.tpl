@@ -122,7 +122,7 @@
           </td>
           <td>
             收益：{{$item.oIncome}}<br>
-            收益率：{{$item.oRate*100}}%
+            收益率：{{$item.oRate}}%
           </td>
           <td>{{$item.oHoldDays}}</td>
         {{/if}}

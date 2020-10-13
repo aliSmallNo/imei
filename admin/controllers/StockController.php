@@ -554,14 +554,10 @@ class StockController extends BaseController
         }
 
 
-        list($list, $count, $bds) = StockOrder::items(
-            $criteria, $params, $page
-        );
+        list($list, $count, $bds) = StockOrder::items($criteria, $params, $page);
         $pagination = self::pagination($page, $count, 20);
 
-        return $this->renderPage(
-            "stock_order.tpl",
-            [
+        return $this->renderPage("stock_order.tpl", [
                 'getInfo' => $getInfo,
                 'pagination' => $pagination,
                 'list' => $list,
