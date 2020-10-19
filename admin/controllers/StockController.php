@@ -1995,6 +1995,14 @@ class StockController extends BaseController
             if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
                 unset($list[$k]);
             }
+
+            $list[$k]['f1'] = $list[$k]['f2'] = true;
+            if (!$f1) {
+                $list[$k]['f1'] = false;
+            }
+            if (!$f2) {
+                $list[$k]['f2'] = false;
+            }
         }
 
         return $this->renderPage("stock_main_result2.tpl", [

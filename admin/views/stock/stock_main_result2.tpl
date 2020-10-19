@@ -110,13 +110,14 @@
           {{/foreach}}
           <br>
 
-          {{if $item.buy_avg_right_rate}}
-            <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
-          {{if $item.buy_avg_right_rate_2p}}
-            <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
-          {{if $item.buy_avg_rate}}
-          <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
-
+          {{if $item.f1}}
+            {{if $item.buy_avg_right_rate}}
+              <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
+            {{if $item.buy_avg_right_rate_2p}}
+              <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
+            {{if $item.buy_avg_rate}}
+            <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
+          {{/if}}
         </td>
 
         <!-- 卖出 -->
@@ -143,12 +144,14 @@
 
           <br>
 
-          {{if $item.sold_avg_right_rate}}
-            <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
-          {{if $item.sold_avg_right_rate_2p}}
-            <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
-          {{if $item.sold_avg_rate}}
-          <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}%</div>{{/if}}
+          {{if $item.f2}}
+            {{if $item.sold_avg_right_rate}}
+              <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
+            {{if $item.sold_avg_right_rate_2p}}
+              <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
+            {{if $item.sold_avg_rate}}
+            <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}%</div>{{/if}}
+          {{/if}}
         </td>
 
         <td class="bot_line">
