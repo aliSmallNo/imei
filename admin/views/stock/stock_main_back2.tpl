@@ -48,6 +48,12 @@
       <input class="form-control" name="buy_times" placeholder="买入次数" type="text" value="{{$buy_times}}">
       <input class="form-control width240" name="stop_rate" placeholder="止损比例: 如-20% 则填写-20" type="text"
              value="{{$stop_rate}}">
+      <select class="form-control" name="right_rate_gt_val">
+        <option value="">-=请选择正确率=-</option>
+        {{foreach from=$right_rate_gt_val_map item=$right_rate_gt_val_name key=key}}
+          <option value="{{$key}}" {{if $key==$right_rate_gt_val}}selected{{/if}}>{{$right_rate_gt_val_name}}</option>
+        {{/foreach}}
+      </select>
 
     </div>
 

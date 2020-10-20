@@ -1975,11 +1975,6 @@ class StockController extends BaseController
         $pagination = self::pagination($page, $count, 10000);
 
         $price_types = StockMainPrice::$types;
-        $right_rate_gt_val_map = [
-            60 => '高于60%',
-            70 => '高于70%',
-            80 => '高于80%',
-        ];
 
 //        if (Admin::getAdminId() == 1002) {
 //            print_r($list);
@@ -2015,7 +2010,7 @@ class StockController extends BaseController
                 'price_type' => $price_type,
                 'price_type_t' => $price_types[$price_type] ?? '',
                 'price_types' => $price_types,
-                'right_rate_gt_val_map' => $right_rate_gt_val_map,
+                'right_rate_gt_val_map' => StockMainResult2::$right_rate_gt_val_map,
                 'right_rate_gt_val' => $right_rate_gt_val,
             ]
         );
@@ -2028,42 +2023,25 @@ class StockController extends BaseController
      */
     public function actionStock_main_back()
     {
-        $price_type = self::getParam(
-            "price_type", StockMainPrice::TYPE_ETF_500
-        );
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list(
-            $list, $rate_year_sum, $stat_rule_right_rate
-            )
-            = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
 
-        return $this->renderPage(
-            "stock_main_back.tpl",
-            [
-                'list' => StockMainResult::change_color_diff_sold_dt(
-                    $list
-                ),
+        return $this->renderPage("stock_main_back.tpl", [
+                'list' => StockMainResult::change_color_diff_sold_dt($list),
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
                 'buy_times' => $buy_times,
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'continue_errors' => StockMainResult::continue_errors(
-                    $list
-                ),
-                'N1_time_buy_ret' => StockMainResult::N_times_buy_ret(
-                    $list, 1
-                ),
-                'N2_time_buy_ret' => StockMainResult::N_times_buy_ret(
-                    $list, 2
-                ),
-                'N3_time_buy_ret' => StockMainResult::N_times_buy_ret(
-                    $list, 3
-                ),
+                'continue_errors' => StockMainResult::continue_errors($list),
+                'N1_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 1),
+                'N2_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 2),
+                'N3_time_buy_ret' => StockMainResult::N_times_buy_ret($list, 3),
             ]
         );
     }
@@ -2076,15 +2054,15 @@ class StockController extends BaseController
      */
     public function actionStock_main_back2()
     {
-        $price_type = self::getParam(
-            "price_type", StockMainPrice::TYPE_ETF_500
-        );
+        $price_type = self::getParam("price_type", StockMainPrice::TYPE_ETF_500);
         $buy_times = self::getParam("buy_times", 0);
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate)
-            = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate);
+        $right_rate_gt_val = self::getParam("right_rate_gt_val", 0);
+
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate,$right_rate_gt_val);
+
 
         return $this->renderPage("stock_main_back2.tpl", [
                 'list' => StockMainResult2::change_color_diff_sold_dt($list),
@@ -2094,6 +2072,7 @@ class StockController extends BaseController
                 'buy_times' => $buy_times,
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
+                'right_rate_gt_val_map' => StockMainResult2::$right_rate_gt_val_map,
                 'continue_errors' => StockMainResult2::continue_errors($list),
                 'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
                 'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),

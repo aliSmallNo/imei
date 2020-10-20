@@ -60,6 +60,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     const BUY_WHERE_STR = '(CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0)';
     const SOLD_WHERE_STR = '(CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0)';
 
+    static $right_rate_gt_val_map = [
+        60 => '高于60%',
+        70 => '高于70%',
+        80 => '高于80%',
+    ];
+
     public static function tableName()
     {
         return 'im_stock_main_result2';
@@ -869,21 +875,38 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
      */
-    public
-    static function cal_back(
-        $price_type,
-        $buy_times = 0,
-        $stop_rate = 0
-    ) {
+    public static function cal_back($price_type, $buy_times = 0, $stop_rate = 0, $right_rate_gt_val = 0)
+    {
         if ($buy_times) {
             $get_first_buys = self::get_first_buys();
             //print_r($get_first_buys);exit;
         }
 
-        $sql = "select p.*,r.* from im_stock_main_result2 r
+        /*$sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where ".self::BUY_WHERE_STR." order by r_trans_on asc";
-        $ret = AppUtil::db()->createCommand($sql)->queryAll();
+        $ret = AppUtil::db()->createCommand($sql)->queryAll();*/
+
+        // 2020-10-20 modify
+        list($list, $count) = StockMainResult2::items([], [], 1, 10000, $right_rate_gt_val);
+        foreach ($list as $k => $v) {
+            $arr1 = $v['buy_rules_right_rate'];
+            $arr2 = $v['sold_rules_right_rate'];
+            $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
+            $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
+            if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
+                unset($list[$k]);
+            }
+
+            $list[$k]['f1'] = $list[$k]['f2'] = true;
+            if (!$f1) {
+                $list[$k]['f1'] = false;
+            }
+            if (!$f2) {
+                $list[$k]['f2'] = false;
+            }
+        }
+        $ret = $list;
 
         $data = [];
         foreach ($ret as $buy) {
@@ -1851,10 +1874,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-17 PM
      */
-    public
-    static function random_buy_rate(
-        $hold_max = 30
-    ) {
+    public static function random_buy_rate($hold_max = 30)
+    {
         $price_type = StockMainPrice::TYPE_ETF_500;
 
         list($data) = static::cal_back($price_type);
