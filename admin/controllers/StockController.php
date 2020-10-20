@@ -2072,11 +2072,13 @@ class StockController extends BaseController
                 'buy_times' => $buy_times,
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'right_rate_gt_val_map' => StockMainResult2::$right_rate_gt_val_map,
                 'continue_errors' => StockMainResult2::continue_errors($list),
                 'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
                 'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),
                 'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 3),
+
+                'right_rate_gt_val_map' => StockMainResult2::$right_rate_gt_val_map,
+                'right_rate_gt_val' => $right_rate_gt_val,
             ]
         );
     }
