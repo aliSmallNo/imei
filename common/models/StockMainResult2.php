@@ -2048,8 +2048,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             //echo $avg_k.' = '.$co.'<br>';
             $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;
             $median[$avg_k] = AppUtil::get_median($column);
-            $max[$avg_k] = max($column);
-            $min[$avg_k] = min($column);
+            $max[$avg_k] = $column ? max($column) : '';
+            $min[$avg_k] = $column ? min($column) : '';
         }
 
         return [$data, $avgs, $median, $max, $min];
@@ -2153,8 +2153,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             //echo $avg_k.' = '.$co.'<br>';
             $avgs[$avg_k] = $co > 0 ? round($sum / $co, 3) : 0;// 均值
             $median[$avg_k] = AppUtil::get_median($column);
-            $max[$avg_k] = max($column);
-            $min[$avg_k] = min($column);
+            $max[$avg_k] = $column ? max($column) : '';
+            $min[$avg_k] = $column ? min($column) : '';
         }
 
         return [$data, $avgs, $median, $max, $min];

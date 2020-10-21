@@ -29,14 +29,21 @@ use yii\console\Controller;
 
 class CrontabController extends Controller
 {
-    // 30 */1 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/rank
-    // 6 */12 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/exp
-    // 8 1 */1 * *   /usr/local/php/bin/php /data/code/imei/yii crontab/refresh
-    // 1 */3 * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/pool
-    // */5 * * * *   /usr/local/php/bin/php /data/code/imei/yii crontab/alert
-
-    // 1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/try_phone
-    // */1 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/every_second
+//*/20 * * * * /data/code/queues.sh > /dev/null 2>&1 &
+//30 */1 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/rank
+//6 */12 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/exp
+//8 1 */1 * *  /usr/local/php/bin/php /data/code/imei/yii crontab/refresh
+//1 */3 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/pool
+//*/5 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/alert
+//1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/try_phone
+//
+//*/1 * * * * /usr/local/qcloud/stargate/admin/start.sh > /dev/null 2>&1 &
+//*/20 * * * * /usr/sbin/ntpdate ntpupdate.tencentyun.com >/dev/null &
+//
+//1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/yzuser
+//
+//*/30 * * * * /usr/local/php/bin/php /data/code/dsx/yii crontab/half_hour
+//*/1 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/every_second
 
     public function actionRefresh($openId = '')
     {
