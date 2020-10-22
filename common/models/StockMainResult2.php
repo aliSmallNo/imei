@@ -915,13 +915,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $ret = AppUtil::db()->createCommand($sql)->queryAll();
         }
 
-
         $data = [];
 //        if (Admin::getAdminId() == 1002) {
 //            print_r($ret);
 //            exit;
 //        }
         foreach ($ret as $buy) {
+            if (!isset($buy['r_trans_on'])) {
+                continue;
+            }
             $buy_dt = $buy['r_trans_on'];
 
             // 2019-12-23 add
