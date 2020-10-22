@@ -1843,13 +1843,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $co = 0;
             $sum = 0;
             foreach ($yes_dts as $yes_dt) {
-                if(isset($list[$yes_dt])){
+                if (isset($list[$yes_dt])) {
                     $co++;
                     $sum += $list[$yes_dt]['rate'];
                 }
             }
 
-            return sprintf('%.2f', $sum / $co);
+            return $co > 0 ? sprintf('%.2f', $sum / $co) : 0;
         };
         foreach ($list_buy as $k1 => $v1) {
             foreach ($v1 as $rule_name => $v2) {
