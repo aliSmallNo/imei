@@ -917,10 +917,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
 
         $data = [];
-        if (Admin::getAdminId() == 1002) {
-            print_r($ret);
-            exit;
-        }
+//        if (Admin::getAdminId() == 1002) {
+//            print_r($ret);
+//            exit;
+//        }
         foreach ($ret as $buy) {
             $buy_dt = $buy['r_trans_on'];
 
