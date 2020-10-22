@@ -888,25 +888,33 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $ret = AppUtil::db()->createCommand($sql)->queryAll();*/
 
         // 2020-10-20 modify
-        list($list, $count) = StockMainResult2::items([], [], 1, 10000, $right_rate_gt_val);
-        foreach ($list as $k => $v) {
-            $arr1 = $v['buy_rules_right_rate'];
-            $arr2 = $v['sold_rules_right_rate'];
-            $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
-            $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
-            if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
-                unset($list[$k]);
-            }
+        if ($right_rate_gt_val) {
+            list($list, $count) = StockMainResult2::items([], [], 1, 10000, $right_rate_gt_val);
+            foreach ($list as $k => $v) {
+                $arr1 = $v['buy_rules_right_rate'];
+                $arr2 = $v['sold_rules_right_rate'];
+                $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
+                $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
+                if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
+                    unset($list[$k]);
+                }
 
-            $list[$k]['f1'] = $list[$k]['f2'] = true;
-            if (!$f1) {
-                $list[$k]['f1'] = false;
+                $list[$k]['f1'] = $list[$k]['f2'] = true;
+                if (!$f1) {
+                    $list[$k]['f1'] = false;
+                }
+                if (!$f2) {
+                    $list[$k]['f2'] = false;
+                }
             }
-            if (!$f2) {
-                $list[$k]['f2'] = false;
-            }
+            $ret = $list;
+        } else {
+            $sql = "select p.*,r.* from im_stock_main_result2 r
+                left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
+                where ".self::BUY_WHERE_STR." order by r_trans_on asc";
+            $ret = AppUtil::db()->createCommand($sql)->queryAll();
         }
-        $ret = $list;
+
 
         $data = [];
         foreach ($ret as $buy) {
@@ -2070,8 +2078,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-09-07 PM
      */
-    public
-    static function get_5day_after_rate(
+    public static function get_5day_after_rate(
         $price_type,
         $where = '',
         $dt_type
