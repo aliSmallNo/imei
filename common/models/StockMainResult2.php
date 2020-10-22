@@ -1843,8 +1843,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $co = 0;
             $sum = 0;
             foreach ($yes_dts as $yes_dt) {
-                $co++;
-                $sum += $list[$yes_dt]['rate'];
+                if(isset($list[$yes_dt])){
+                    $co++;
+                    $sum += $list[$yes_dt]['rate'];
+                }
             }
 
             return sprintf('%.2f', $sum / $co);
