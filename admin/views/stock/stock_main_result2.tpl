@@ -84,7 +84,7 @@
     {{foreach from=$list item=item key=key}}
       <tr>
         <td>{{$key+1}}</td>
-        <td>{{$item.r_trans_on}}</td>
+        <td>{{isset($item['r_trans_on'])?$item.r_trans_on:''}}</td>
         <td>{{$item.m_etf_close}}</td>
 
         <!-- 买入 -->
