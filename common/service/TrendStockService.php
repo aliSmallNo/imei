@@ -207,6 +207,7 @@ class TrendStockService
         }*/
         if ($res) {
             $trend['sum_loan_total'] = 0;
+            $trend['loan_sum_total'] = 0;
             foreach ($res as $field => $num) {
                 $trend['sum_loan_' . $field] = intval($num);
                 $trend['sum_loan_total'] += intval($num);
