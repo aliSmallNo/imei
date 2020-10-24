@@ -1989,6 +1989,7 @@ class StockController extends BaseController
             $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
             if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
                 unset($list[$k]);
+                continue;
             }
 
             $list[$k]['f1'] = $list[$k]['f2'] = true;
