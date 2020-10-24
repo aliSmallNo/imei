@@ -2279,6 +2279,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $str_arr = array_unique(array_filter(explode(',', $v['str'])));
             $note = $v['r_note'];
             $co = count($str_arr);
+            if (!isset($buys[$co])) {
+                continue;
+            }
             switch ($note) {
                 case '对':
                 case '买对':
@@ -2315,6 +2318,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $str_arr = array_unique(array_filter(explode(',', $v['str'])));
             $note = $v['r_note'];
             $co = count($str_arr);
+            if (!isset($solds[$co])) {
+                continue;
+            }
             switch ($note) {
                 case '对':
                 case '卖对':
