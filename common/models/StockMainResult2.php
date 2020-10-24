@@ -2399,11 +2399,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-01 PM
      */
-    public
-    static function result_stat0601_buy(
-        $trans_dates,
-        $start_dt
-    ) {
+    public static function result_stat0601_buy($trans_dates, $start_dt) {
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
@@ -2785,11 +2781,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-02 PM
      */
-    public
-    static function result_stat0601_sold(
-        $trans_dates,
-        $start_dt
-    ) {
+    public static function result_stat0601_sold($trans_dates, $start_dt) {
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
@@ -2987,7 +2979,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
             // 3天3次
             if ($today_is_sold_dt && $tomorrow_is_sold_dt && $three_is_but_dt) {
-                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]]) && isset($list[$trans_dates[$k + 2]])) {
                     $list_today = $list[$trans_date];
                     $list_tomorrow = $list[$trans_dates[$k + 1]];
                     $list_three = $list[$trans_dates[$k + 2]];
@@ -3030,7 +3022,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
             // 4天3次，2020-08-19 PM
             if ($today_is_sold_dt && !$tomorrow_is_sold_dt && $three_is_but_dt && $four_is_sold_dt) {
-                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]]) && isset($list[$trans_dates[$k + 3]])) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]]) && isset($list[$trans_dates[$k + 3]])) {
                     $list_today = $list[$trans_date];
                     $list_three = $list[$trans_dates[$k + 1]];
                     $list_four = $list[$trans_dates[$k + 3]];
