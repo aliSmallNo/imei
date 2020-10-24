@@ -2000,6 +2000,8 @@ class StockController extends BaseController
             }
         }
 
+        print_r($list);exit;
+
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
