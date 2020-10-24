@@ -2000,6 +2000,7 @@ class StockController extends BaseController
             }
         }
 
+        echo count($list)."\n";
         print_r($list);exit;
 
         return $this->renderPage("stock_main_result2.tpl", [
