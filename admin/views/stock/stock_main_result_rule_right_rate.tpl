@@ -48,9 +48,9 @@
         {{foreach from=$buys item=item key=key}}
           <tr>
             <td>{{if $key<=6}}{{$key}}个{{else}}6个以上{{/if}}</td>
-            <td>{{$item.yes}}次 - {{sprintf('%.2f',$item.yes/$item.sum*100)}}%</td>
-            <td>{{$item.no}}次 - {{sprintf('%.2f',$item.no/$item.sum*100)}}%</td>
-            <td>{{$item.mid}}次 - {{sprintf('%.2f',$item.mid/$item.sum*100)}}%</td>
+            <td>{{$item.yes}}次 - {{if $item.sum>0}}{{sprintf('%.2f',$item.yes/$item.sum*100)}}{{else}}0{{/if}}%</td>
+            <td>{{$item.no}}次 - {{if $item.sum>0}}{{sprintf('%.2f',$item.no/$item.sum*100)}}{{else}}0{{/if}}%</td>
+            <td>{{$item.mid}}次 - {{if $item.sum>0}}{{sprintf('%.2f',$item.mid/$item.sum*100)}}{{else}}0{{/if}}%</td>
             <td>{{$item.sum}}次</td>
           </tr>
         {{/foreach}}
@@ -77,9 +77,9 @@
         {{foreach from=$solds item=item key=key}}
           <tr>
             <td>{{if $key<=6}}{{$key}}个{{else}}6个以上{{/if}}</td>
-            <td>{{$item.yes}}次 - {{sprintf('%.2f',$item.yes/$item.sum*100)}}%</td>
-            <td>{{$item.no}}次 - {{sprintf('%.2f',$item.no/$item.sum*100)}}%</td>
-            <td>{{$item.mid}}次 - {{sprintf('%.2f',$item.mid/$item.sum*100)}}%</td>
+            <td>{{$item.yes}}次 - {{if $item.sum>0}}{{sprintf('%.2f',$item.yes/$item.sum*100)}}{{else}}0{{/if}}%</td>
+            <td>{{$item.no}}次 - {{if $item.sum>0}}{{sprintf('%.2f',$item.no/$item.sum*100)}}{{else}}0{{/if}}%</td>
+            <td>{{$item.mid}}次 - {{if $item.sum>0}}{{sprintf('%.2f',$item.mid/$item.sum*100)}}{{else}}0{{/if}}%</td>
             <td>{{$item.sum}}次</td>
           </tr>
         {{/foreach}}
