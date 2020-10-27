@@ -850,8 +850,8 @@ class StockController extends BaseController
                 switch ($cat) {
                     case 'order':
                         $redir = "stock_order";
-                        //list($insertCount, $error) = StockOrder::add_by_excel($filepath);
-                        //$insertCount = $insertCount."行数据 ";
+                        list($insertCount, $error) = StockOrder::add_by_excel($filepath);
+                        $insertCount = $insertCount."行数据 ";
                         break;
                     case 'action':
                         list($insertCount, $error) = StockAction::add_by_excel($filepath);
