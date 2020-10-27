@@ -105,6 +105,7 @@ class StockOrder extends ActiveRecord
             LogStock::add([
                 'oCategory' => LogStock::CAT_ADD_STOCK_ORDER,
                 'oBefore' => $result,
+                'oAfter' => $filepath,
                 //'oUId' => Admin::getAdminId(),
             ]);
         } catch (\Exception $e) {

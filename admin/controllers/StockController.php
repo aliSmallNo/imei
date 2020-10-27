@@ -826,25 +826,21 @@ class StockController extends BaseController
                 }
                 // 记录表格数据
                 try {
-                    LogStock::add(
-                        [
-                            'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
-                            'oKey' => $cat,
-                            'oBefore' => $filepath,
-                            'oAfter' => $info,
-                            'oUId' => Admin::getAdminId(),
-                        ]
-                    );
+                    LogStock::add([
+                        'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
+                        'oKey' => $cat,
+                        'oBefore' => $filepath,
+                        'oAfter' => $info,
+                        'oUId' => Admin::getAdminId(),
+                    ]);
                 } catch (\Exception $e) {
-                    LogStock::add(
-                        [
-                            'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
-                            'oKey' => $cat,
-                            'oBefore' => $e->getMessage(),
-                            'oAfter' => $info,
-                            'oUId' => Admin::getAdminId(),
-                        ]
-                    );
+                    LogStock::add([
+                        'oCategory' => LogStock::CAT_ADD_STOCK_EXCEL,
+                        'oKey' => $cat,
+                        'oBefore' => $e->getMessage(),
+                        'oAfter' => $info,
+                        'oUId' => Admin::getAdminId(),
+                    ]);
                 }
             }
             if (!$filepath) {
@@ -854,13 +850,11 @@ class StockController extends BaseController
                 switch ($cat) {
                     case 'order':
                         $redir = "stock_order";
-                        list($insertCount, $error) = StockOrder::add_by_excel($filepath);
-                        $insertCount = $insertCount."行数据 ";
+                        //list($insertCount, $error) = StockOrder::add_by_excel($filepath);
+                        //$insertCount = $insertCount."行数据 ";
                         break;
                     case 'action':
-                        list($insertCount, $error) = StockAction::add_by_excel(
-                            $filepath
-                        );
+                        list($insertCount, $error) = StockAction::add_by_excel($filepath);
                         $redir = "stock_action";
                         $insertCount = $insertCount."行数据 ";
                         break;
@@ -874,10 +868,7 @@ class StockController extends BaseController
                         break;
                     case "add_clues":
                         $redir = "clients";
-                        list(
-                            $insertCount, $error
-                            )
-                            = CRMStockClient::add_by_excel($filepath);
+                        list($insertCount, $error) = CRMStockClient::add_by_excel($filepath);
                         break;
                     default:
                         $insertCount = 0;
@@ -2029,7 +2020,8 @@ class StockController extends BaseController
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back($price_type, $buy_times, $stop_rate);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult::cal_back($price_type, $buy_times,
+            $stop_rate);
 
         return $this->renderPage("stock_main_back.tpl", [
                 'list' => StockMainResult::change_color_diff_sold_dt($list),
@@ -2062,7 +2054,8 @@ class StockController extends BaseController
 
         $right_rate_gt_val = self::getParam("right_rate_gt_val", 0);
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate,$right_rate_gt_val);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, $buy_times,
+            $stop_rate, $right_rate_gt_val);
 
 
         return $this->renderPage("stock_main_back2.tpl", [

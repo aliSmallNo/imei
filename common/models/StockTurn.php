@@ -246,9 +246,7 @@ class StockTurn extends \yii\db\ActiveRecord
         }
 
         // 搜狐接口
-        list($status, $hqs, $stat) = self::get_stock_turnover(
-            $stockId, $dt1, $dt1
-        );
+        list($status, $hqs, $stat) = self::get_stock_turnover($stockId, $dt1, $dt1);
         if ($status == 0) {
             $data = self::process_data($hqs, $stockId);
             if ($data) {

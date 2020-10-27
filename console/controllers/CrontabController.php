@@ -15,7 +15,6 @@ use common\models\StockMain;
 use common\models\StockMainPb;
 use common\models\StockMainPbStat;
 use common\models\StockMainPrice;
-use common\models\StockMainResult;
 use common\models\StockMainResult2;
 use common\models\StockStat2;
 use common\models\StockTurn;
@@ -30,51 +29,18 @@ use yii\console\Controller;
 class CrontabController extends Controller
 {
 //*/20 * * * * /data/code/queues.sh > /dev/null 2>&1 &
-//30 */1 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/rank
-//6 */12 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/exp
-//8 1 */1 * *  /usr/local/php/bin/php /data/code/imei/yii crontab/refresh
-//1 */3 * * *  /usr/local/php/bin/php /data/code/imei/yii crontab/pool
-//*/5 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/alert
-//1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/try_phone
-//
+
+//6 */12 * * *  /usr/local/bin/php /data/code/imei/yii crontab/exp
+//1 */3 * * *  /usr/local/bin/php /data/code/imei/yii crontab/pool
+//30 */1 * * *  /usr/local/bin/php /data/code/imei/yii crontab/rank
+//*/1 * * * * /usr/local/bin/php /data/code/imei/yii crontab/every_second
+
 //*/1 * * * * /usr/local/qcloud/stargate/admin/start.sh > /dev/null 2>&1 &
 //*/20 * * * * /usr/sbin/ntpdate ntpupdate.tencentyun.com >/dev/null &
-//
-//1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/yzuser
-//
-//*/30 * * * * /usr/local/php/bin/php /data/code/dsx/yii crontab/half_hour
-//*/1 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/every_second
 
-    public function actionRefresh($openId = '')
-    {
-        // 120003, 131266, 131379, 134534
-        $conn = AppUtil::db();
 
-        //Rain: 星期天的时候重置一下
-        if (date('w') == 0) {
-            // $sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
-            $sql = 'truncate table im_hit';
-            $conn->createCommand($sql)->execute();
-        }
 
-        $ret = UserWechat::refreshWXInfo($openId, 0, $conn);
-        //var_dump($ret);
 
-        $serviceTrend = TrendService::init(TrendService::CAT_TREND);
-        $queryDate = date('Y-m-d', time() - 86400 * 2);
-        $serviceTrend->statTrend('day', $queryDate, true);
-        $serviceTrend->statTrend('week', $queryDate, true);
-        $serviceTrend->statTrend('month', $queryDate, true);
-
-        $queryDate = date('Y-m-d', time() - 86400);
-        $serviceTrend->statTrend('day', $queryDate, true);
-        $serviceTrend->statTrend('week', $queryDate, true);
-        $serviceTrend->statTrend('month', $queryDate, true);
-
-        $service = TrendService::init(TrendService::CAT_REUSE);
-        $service->reuseRoutine('week');
-        $service->reuseRoutine('month');
-    }
 
     public function actionExp()
     {
@@ -132,14 +98,6 @@ class CrontabController extends Controller
         } catch (\Exception $e) {
 
         }
-
-
-    }
-
-    public function actionRecycle()
-    {
-        // $ret = UserNet::recycleReward();
-        // var_dump($ret);
     }
 
     public function actionRank()
@@ -188,75 +146,6 @@ class CrontabController extends Controller
                 'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()]),
             ]);
         }
-
-    }
-
-    public function actionTry_phone()
-    {
-        /* if (date('H') % 4 == 0) {
-             TryPhone::phone_section_1();
-         }
-
-
-         if (date('H') % 4 != 0) {
-             TryPhone::phone_section_2();
-         }*/
-
-    }
-
-    public function actionAlert()
-    {
-
-        try {
-            // 发送短信
-            Log::send_sms_cycle();
-        } catch (\Exception $e) {
-
-        }
-
-        /*try {
-            // 更新代理IP
-            TryPhone::updateIPs();
-        } catch (\Exception $e) {
-
-        }*/
-
-        // 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
-        //  StockOrder::send_msg_on_stock_price();
-
-
-    }
-
-    public function actionYzuser()
-    {
-        // 停止任务 2019-04-09
-
-        // 更新有赞用户
-        //YzUser::UpdateUser();
-        //AppUtil::logByFile('exec 1 YzUser::UpdateUser() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
-
-        // 更新订单
-        //YzOrders::Update_order();
-        //AppUtil::logByFile('exec 2 YzOrders::Update_order() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
-
-        // 更新商品
-        //YzGoods::update_goods();
-        //AppUtil::logByFile('exec 3 YzGoods::update_goods() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
-
-        // 更新商家退款
-        //YzRefund::get_goods_by_se_time();
-        //AppUtil::logByFile('exec 4 YzRefund::get_goods_by_se_time() success', YouzanUtil::LOG_YOUZAN_EXEC, __FUNCTION__, __LINE__);
-
-    }
-
-
-    public function actionMassmsg()
-    {
-        if (time() > strtotime('2018-06-09 10:00:00')) {
-            return;
-        }
-//		AppUtil::logByFile('uid:' . 0 . ' === ' . ' cnt:' . 0, 'massmsg', __FUNCTION__, __LINE__);
-//		ChatMsg::massmsg();
 
     }
 
@@ -314,5 +203,94 @@ class CrontabController extends Controller
 
     }
 
+    /**
+     * 已暂停任务
+     *
+     * @time 2020-10-24
+     */
+    // */5 * * * * /usr/local/php/bin/php /data/code/imei/yii crontab/alert
+    public function actionAlert()
+    {
 
+        try {
+            // 发送短信
+            Log::send_sms_cycle();
+        } catch (\Exception $e) {
+
+        }
+
+        /*try {
+            // 更新代理IP
+            TryPhone::updateIPs();
+        } catch (\Exception $e) {
+
+        }*/
+
+        // 用户股票低于成本价7%时，自动发送短信提醒他补充保证金
+        //  StockOrder::send_msg_on_stock_price();
+
+
+    }
+
+    /**
+     * 已暂停任务
+     *
+     * @time 2020-10-24
+     */
+    // 1 */1 * * * /usr/local/php/bin/php /data/code/imei/yii crontab/try_phone
+    public function actionTry_phone()
+    {
+        /* if (date('H') % 4 == 0) {
+             TryPhone::phone_section_1();
+         }
+
+
+         if (date('H') % 4 != 0) {
+             TryPhone::phone_section_2();
+         }*/
+
+    }
+
+    /**
+     * 已暂停任务
+     *
+     * @time 2020-10-24
+     */
+    // 8 1 */1 * *  /usr/local/php/bin/php /data/code/imei/yii crontab/refresh
+    public function actionRefresh($openId = '')
+    {
+        // 120003, 131266, 131379, 134534
+        $conn = AppUtil::db();
+
+        //Rain: 星期天的时候重置一下
+        if (date('w') == 0) {
+            // $sql = 'UPDATE im_hit set hCount = ROUND(hCount/10) WHERE hCount>10 AND hId>0';
+            $sql = 'truncate table im_hit';
+            $conn->createCommand($sql)->execute();
+        }
+
+        $ret = UserWechat::refreshWXInfo($openId, 0, $conn);
+        //var_dump($ret);
+
+        $serviceTrend = TrendService::init(TrendService::CAT_TREND);
+        $queryDate = date('Y-m-d', time() - 86400 * 2);
+        $serviceTrend->statTrend('day', $queryDate, true);
+        $serviceTrend->statTrend('week', $queryDate, true);
+        $serviceTrend->statTrend('month', $queryDate, true);
+
+        $queryDate = date('Y-m-d', time() - 86400);
+        $serviceTrend->statTrend('day', $queryDate, true);
+        $serviceTrend->statTrend('week', $queryDate, true);
+        $serviceTrend->statTrend('month', $queryDate, true);
+
+        $service = TrendService::init(TrendService::CAT_REUSE);
+        $service->reuseRoutine('week');
+        $service->reuseRoutine('month');
+    }
+
+    // */20 * * * * /data/code/queues.sh > /dev/null 2>&1 &
+    public function actionSh(){
+
+
+    }
 }
