@@ -1750,6 +1750,7 @@ class ApiController extends Controller
             case "edit_main_result2":
                 $data = [
                     'r_note' => trim(self::postParam("r_note")),
+                    'r_cb' => trim(self::postParam("r_cb")),
                 ];
                 list($res, $model) = StockMainResult2::edit($id, $data);
                 if ($res) {

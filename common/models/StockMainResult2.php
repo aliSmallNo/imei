@@ -25,6 +25,7 @@ use yii\helpers\ArrayHelper;
  * @property string $r_warn60
  * @property string $r_trans_on
  * @property string $r_note
+ * @property string $r_cb
  * @property string $r_added_on
  * @property string $r_update_on
  */
@@ -89,6 +90,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             'r_warn60' => '60日预警',
             'r_trans_on' => '交易日期',
             'r_note' => '备注',
+            'r_cb' => '复盘心得',
             'r_added_on' => 'add时间',
             'r_update_on' => '修改时间',
         ];

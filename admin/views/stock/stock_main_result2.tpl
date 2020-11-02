@@ -177,7 +177,7 @@
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>
         </td>
-        <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}" data-r_note="{{$item.r_note}}">
+        <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}" data-r_note="{{$item.r_note}}" data-r_cb="{{$item.r_cb}}">
           <a class="btnModify btn btn-xs btn-primary">修改</a>
         </td>
       </tr>
@@ -218,6 +218,12 @@
         </select>
       </div>
     </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label">复盘心得:</label>
+      <div class="col-sm-7">
+        <textarea class="form-control r_cb" rows="3"></textarea>
+      </div>
+    </div>
   </div>
 </script>
 <script>
@@ -236,6 +242,7 @@
                 postData = {
                     tag: tag,
                     r_note: $.trim($('.r_note').val()),
+                    r_cb: $.trim($('.r_cb').val()),
                     id: self.attr("id")
                 };
                 console.log(postData);
@@ -272,6 +279,7 @@
         });
 
         $('.r_note').val(td.attr("data-r_note"));
+        $('.r_cb').val(td.attr("data-r_cb"));
         $('#modModal').modal('show');
     });
 
