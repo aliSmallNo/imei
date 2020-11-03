@@ -173,6 +173,7 @@
         </td>
 
         <td class="{{$item.cls}}">{{$item.r_note}}</td>
+        <td>{{$item.r_cb}}</td>
         <td>
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>
