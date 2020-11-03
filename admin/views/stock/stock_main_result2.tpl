@@ -75,6 +75,7 @@
       <th class="col-sm-3">卖出</th>
       <th class="col-sm-3">预警</th>
       <th>备注</th>
+      <th>复盘</th>
       <th>时间</th>
       <th>操作</th>
     </tr>
