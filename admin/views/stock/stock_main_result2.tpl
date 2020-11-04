@@ -77,7 +77,9 @@
       <th>备注</th>
       <th>复盘</th>
       <th>时间</th>
-      <th>操作</th>
+      {{if $is_stock_leader}}
+        <th>操作</th>
+      {{/if}}
     </tr>
     </thead>
     <tbody>
@@ -179,9 +181,11 @@
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>
         </td>
+        {{if $is_stock_leader}}
         <td data-id="{{$item.r_id}}" data-r_trans_on="{{$item.r_trans_on}}" data-r_note="{{$item.r_note}}" data-r_cb="{{$item.r_cb}}">
           <a class="btnModify btn btn-xs btn-primary">修改</a>
         </td>
+        {{/if}}
       </tr>
     {{/foreach}}
     </tbody>

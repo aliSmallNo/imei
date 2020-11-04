@@ -1836,11 +1836,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-16 PM
      */
-    public
-    static function append_avg_rate(
-        $list_buy,
-        $list
-    ) {
+    public static function append_avg_rate($list_buy, $list) {
         $list = array_column($list, null, 'buy_dt');
         $cal = function ($yes_dts) use ($list) {
             $co = 0;

@@ -17,7 +17,8 @@
   .rule_diff {
     color: red;
   }
-  .rule_id{
+
+  .rule_id {
     font-size: 10px;
     color: #777777;
   }
@@ -25,7 +26,9 @@
 <div class="row">
   <div class="col-sm-6">
     <h4>策略列表
-      <a class="add_rule btn btn-xs btn-primary">添加策略</a>
+      {{if $is_stock_leader}}
+        <a class="add_rule btn btn-xs btn-primary">添加策略</a>
+      {{/if}}
     </h4>
   </div>
 </div>
@@ -50,7 +53,7 @@
     <thead>
     <tr>
       <th class="col-sm-1">买卖名称
-      <br>策略ID
+        <br>策略ID
       </th>
       <th>状态</th>
       <th>类型</th>
@@ -82,7 +85,9 @@
       <th>DAY</th>
       <th>备注</th>
       <th>时间</th>
-      <th>操作</th>
+      {{if $is_stock_leader}}
+        <th>操作</th>
+      {{/if}}
     </tr>
     </thead>
     <tbody>
@@ -141,24 +146,26 @@
           <div>{{$item.r_added_on}}</div>
           <div>{{$item.r_update_on}}</div>
         </td>
-        <td data-id="{{$item.r_id}}" data-r_name="{{$item.r_name}}"
-            data-r_status="{{$item.r_status}}" data-r_cat="{{$item.r_cat}}"
-            data-r_stocks_gt="{{$item.r_stocks_gt}}" data-r_stocks_lt="{{$item.r_stocks_lt}}"
-            data-r_cus_gt="{{$item.r_cus_gt}}" data-r_cus_lt="{{$item.r_cus_lt}}"
-            data-r_turnover_gt="{{$item.r_turnover_gt}}" data-r_turnover_lt="{{$item.r_turnover_lt}}"
-            data-r_sh_turnover_gt="{{$item.r_sh_turnover_gt}}" data-r_sh_turnover_lt="{{$item.r_sh_turnover_lt}}"
-            data-r_diff_gt="{{$item.r_diff_gt}}" data-r_diff_lt="{{$item.r_diff_lt}}"
-            data-r_sh_close_avg_gt="{{$item.r_sh_close_avg_gt}}" data-r_sh_close_avg_lt="{{$item.r_sh_close_avg_lt}}"
-            data-r_sh_close_60avg_10avg_offset_gt="{{$item.r_sh_close_60avg_10avg_offset_gt}}"
-            data-r_sh_close_60avg_10avg_offset_lt="{{$item.r_sh_close_60avg_10avg_offset_lt}}"
-            data-r_sh_close_avg_change_rate_gt="{{$item.r_sh_close_avg_change_rate_gt}}"
-            data-r_sh_close_avg_change_rate_lt="{{$item.r_sh_close_avg_change_rate_lt}}"
-            data-r_date_gt="{{$item.r_date_gt}}" data-r_date_lt="{{$item.r_date_lt}}"
-            data-r_scat="{{$item.r_scat}}"
-            data-r_note="{{$item.r_note}}"
-        >
-          <a class="btnModify btn btn-xs btn-primary">修改策略</a>
-        </td>
+        {{if $is_stock_leader}}
+          <td data-id="{{$item.r_id}}" data-r_name="{{$item.r_name}}"
+              data-r_status="{{$item.r_status}}" data-r_cat="{{$item.r_cat}}"
+              data-r_stocks_gt="{{$item.r_stocks_gt}}" data-r_stocks_lt="{{$item.r_stocks_lt}}"
+              data-r_cus_gt="{{$item.r_cus_gt}}" data-r_cus_lt="{{$item.r_cus_lt}}"
+              data-r_turnover_gt="{{$item.r_turnover_gt}}" data-r_turnover_lt="{{$item.r_turnover_lt}}"
+              data-r_sh_turnover_gt="{{$item.r_sh_turnover_gt}}" data-r_sh_turnover_lt="{{$item.r_sh_turnover_lt}}"
+              data-r_diff_gt="{{$item.r_diff_gt}}" data-r_diff_lt="{{$item.r_diff_lt}}"
+              data-r_sh_close_avg_gt="{{$item.r_sh_close_avg_gt}}" data-r_sh_close_avg_lt="{{$item.r_sh_close_avg_lt}}"
+              data-r_sh_close_60avg_10avg_offset_gt="{{$item.r_sh_close_60avg_10avg_offset_gt}}"
+              data-r_sh_close_60avg_10avg_offset_lt="{{$item.r_sh_close_60avg_10avg_offset_lt}}"
+              data-r_sh_close_avg_change_rate_gt="{{$item.r_sh_close_avg_change_rate_gt}}"
+              data-r_sh_close_avg_change_rate_lt="{{$item.r_sh_close_avg_change_rate_lt}}"
+              data-r_date_gt="{{$item.r_date_gt}}" data-r_date_lt="{{$item.r_date_lt}}"
+              data-r_scat="{{$item.r_scat}}"
+              data-r_note="{{$item.r_note}}"
+          >
+            <a class="btnModify btn btn-xs btn-primary">修改策略</a>
+          </td>
+        {{/if}}
       </tr>
     {{/foreach}}
     </tbody>
