@@ -73,9 +73,9 @@
       <th>{{$price_type_t}}</th>
       <th class="col-sm-3">买入</th>
       <th class="col-sm-3">卖出</th>
-      <th class="col-sm-3">预警</th>
+      <th class="col-sm-2">预警</th>
       <th>备注</th>
-      <th>复盘</th>
+      <th class="col-sm-2">复盘</th>
       <th>时间</th>
       {{if $is_stock_leader}}
         <th>操作</th>
