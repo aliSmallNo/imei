@@ -1953,7 +1953,7 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val);
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val, $price_type);
 
         list($list1, $rate_year_sum1, $stat_rule_right_rate1) = StockMainResult2::cal_back($price_type, 0, 0);
         list($list2, $rate_year_sum2, $stat_rule_right_rate2) = StockMainResult2::cal_back_r_new($price_type, 0, 0);

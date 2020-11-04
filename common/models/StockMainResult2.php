@@ -419,8 +419,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-03-01 PM
      */
-    public static function items($criteria, $params, $page, $pageSize = 1000, $right_rate_gt_val = 0)
-    {
+    public static function items(
+        $criteria,
+        $params,
+        $page,
+        $pageSize = 1000,
+        $right_rate_gt_val = 0,
+        $price_type = StockMainPrice::TYPE_SH_CLOSE
+    ) {
         $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
         $strCriteria = '';
         if ($criteria) {
@@ -467,6 +473,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
+        // 追加 平均收益率 期望收益率
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, 0, 0);
+        $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
+        $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
         $list_buy_indexs_f = function ($list) {
             $indexs = [];
@@ -565,11 +576,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             foreach ($buy_rules_day as $day => $rule_item) {
                 foreach ($rule_item as $rule_name) {
                     if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
-                        $times_yes_rate = $list_buy[$list_buy_indexs[$rule_name]][$rule_name][$day]['times_yes_rate'];
+                        $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
+                        $times_yes_rate = $_item[$day]['times_yes_rate'];
+                        $append_hope_val = $_item['SUM']['append_hope']['val'];
                         if ($times_yes_rate >= $right_rate_gt_val) {
                             $buy_rules_right_rate[$day][] = [
                                 'rule_name' => $rule_name,
                                 'times_yes_rate' => $times_yes_rate,
+                                'append_hope_val' => $append_hope_val,
                             ];
                         }
                     }
@@ -578,11 +592,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             foreach ($sold_rules_day as $day => $rule_item) {
                 foreach ($rule_item as $rule_name) {
                     if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
-                        $times_yes_rate = $list_sold[$list_sold_indexs[$rule_name]][$rule_name][$day]['times_yes_rate'];
+                        $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
+                        $times_yes_rate = $_item[$day]['times_yes_rate'];
+                        $append_hope_val = $_item['SUM']['append_hope']['val'];
                         if ($times_yes_rate >= $right_rate_gt_val) {
                             $sold_rules_right_rate[$day][] = [
                                 'rule_name' => $rule_name,
                                 'times_yes_rate' => $times_yes_rate,
+                                'append_hope_val' => $append_hope_val,
                             ];
                         }
                     }
@@ -668,13 +685,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return $res;
     }
 
-    public
-    static function get_avg_rate(
-        $list,
-        $price_type,
-        $list1,
-        $list2
-    ) {
+    public static function get_avg_rate($list, $price_type, $list1, $list2)
+    {
         list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list1);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list2);
@@ -1836,7 +1848,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-16 PM
      */
-    public static function append_avg_rate($list_buy, $list) {
+    public static function append_avg_rate($list_buy, $list)
+    {
         $list = array_column($list, null, 'buy_dt');
         $cal = function ($yes_dts) use ($list) {
             $co = 0;
@@ -2397,7 +2410,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-01 PM
      */
-    public static function result_stat0601_buy($trans_dates, $start_dt) {
+    public static function result_stat0601_buy($trans_dates, $start_dt)
+    {
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
@@ -2779,7 +2793,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-02 PM
      */
-    public static function result_stat0601_sold($trans_dates, $start_dt) {
+    public static function result_stat0601_sold($trans_dates, $start_dt)
+    {
         // 策略回测里的数据
         list($list, $rate_year_sum, $stat_rule_right_rate) =
             StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
