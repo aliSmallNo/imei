@@ -177,7 +177,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $cat = $v['s_cat'];                                             // 5 10,20
 
             if ($flag) {
-                echo ',== dt '.$trans_on.' cat'.$cat.PHP_EOL;
+                echo ',== dt ' . $trans_on . ' cat' . $cat . PHP_EOL;
             }
             if (!isset($ret[$trans_on])) {
                 $ret[$trans_on] = [
@@ -201,18 +201,18 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             if ($cat) {
                 foreach ($buys as $buy) {
                     if (StockMainStat::get_rule_flag2($v, $buy, $offset_map)) {
-                        $ret[$trans_on]['r_buy'.$cat] .= ','.$buy['r_name'];
+                        $ret[$trans_on]['r_buy' . $cat] .= ',' . $buy['r_name'];
                     }
                 }
 
                 foreach ($solds as $sold) {
                     if (StockMainStat::get_rule_flag2($v, $sold, $offset_map)) {
-                        $ret[$trans_on]['r_sold'.$cat] .= ','.$sold['r_name'];
+                        $ret[$trans_on]['r_sold' . $cat] .= ',' . $sold['r_name'];
                     }
                 }
                 foreach ($warns as $warn) {
                     if (StockMainStat::get_rule_flag2($v, $warn, $offset_map)) {
-                        $ret[$trans_on]['r_warn'.$cat] .= ','.$warn['r_name'];
+                        $ret[$trans_on]['r_warn' . $cat] .= ',' . $warn['r_name'];
                     }
                 }
             }
@@ -297,17 +297,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
             foreach ($buys as $buy) {
                 if (StockMainStat::get_rule_flag2($v, $buy, $offset_map)) {
-                    $data['r_buy'.$cat] .= ','.$buy['r_name'];
+                    $data['r_buy' . $cat] .= ',' . $buy['r_name'];
                 }
             }
             foreach ($solds as $sold) {
                 if (StockMainStat::get_rule_flag2($v, $sold, $offset_map)) {
-                    $data['r_sold'.$cat] .= ','.$sold['r_name'];
+                    $data['r_sold' . $cat] .= ',' . $sold['r_name'];
                 }
             }
             foreach ($warns as $warn) {
                 if (StockMainStat::get_rule_flag2($v, $warn, $offset_map)) {
-                    $data['r_warn'.$cat] .= ','.$warn['r_name'];
+                    $data['r_warn' . $cat] .= ',' . $warn['r_name'];
                 }
             }
         }
@@ -329,8 +329,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $model1 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ST)[0];
         $model2 = StockMainConfig::get_items_by_cat(StockMainConfig::CAT_SMS_ET)[0];
 
-        $start = strtotime(date('Y-m-d '.$model1['c_content'].':00'));
-        $end = strtotime(date('Y-m-d '.$model2['c_content'].':05'));
+        $start = strtotime(date('Y-m-d ' . $model1['c_content'] . ':00'));
+        $end = strtotime(date('Y-m-d ' . $model2['c_content'] . ':05'));
         $curr = time();
         if ($curr < $start || $curr > $end) {
             return 0;
@@ -393,7 +393,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
 
             // 发送短信
-            $code = strval($prefix.mt_rand(1000, 9999).'8');
+            $code = strval($prefix . mt_rand(1000, 9999) . '8');
 
             $res = AppUtil::sendTXSMS([strval($phone)], AppUtil::SMS_NORMAL, ["params" => [$code, strval(10)]]);
             //$res = 'sys test';
@@ -407,8 +407,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'oAfter' => $res,
             ]);
 
-            @file_put_contents("/data/logs/imei/tencent_sms_".date("Y-m-d").".log",
-                date(" [Y-m-d H:i:s] ").$phone." - ".$code." >>>>>> ".$res.PHP_EOL,
+            @file_put_contents("/data/logs/imei/tencent_sms_" . date("Y-m-d") . ".log",
+                date(" [Y-m-d H:i:s] ") . $phone . " - " . $code . " >>>>>> " . $res . PHP_EOL,
                 FILE_APPEND);
         }
 
@@ -426,11 +426,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $pageSize = 1000,
         $right_rate_gt_val = 0,
         $price_type = StockMainPrice::TYPE_SH_CLOSE
-    ) {
-        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
+    )
+    {
+        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND '.implode(' AND ', $criteria);
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
 
         $sql = "select r.*,m_etf_close,p.*
@@ -643,7 +644,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $price_type,
         $list1,
         $list2
-    ) {
+    )
+    {
         $data1 = ArrayHelper::map($list1, 'buy_dt', 'rate');
         $data2 = ArrayHelper::map($list2, 'buy_dt', 'rate');
 
@@ -773,7 +775,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function get_buy_sold_item(
         $data,
         $cat = self::TAG_BUY
-    ) {
+    )
+    {
         switch ($cat) {
             case self::TAG_BUY:
                 $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20', 60 => 'r_buy60'];
@@ -813,8 +816,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'].$v['r_buy10'].$v['r_buy20'];
-            $sold = $v['r_sold5'].$v['r_sold10'].$v['r_sold20'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
             if ($buy && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -843,8 +846,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'].$v['r_buy10'].$v['r_buy20'];
-            $sold = $v['r_sold5'].$v['r_sold10'].$v['r_sold20'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
             if ($sold && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -926,7 +929,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         } else {
             $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where ".self::BUY_WHERE_STR." order by r_trans_on asc";
+                where " . self::BUY_WHERE_STR . " order by r_trans_on asc";
             $ret = AppUtil::db()->createCommand($sql)->queryAll();
         }
 
@@ -1029,7 +1032,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function change_color_diff_sold_dt(
         $data
-    ) {
+    )
+    {
         $cls1 = 'sold_color_1';
         $cls2 = 'sold_color_2';
         $sold_dt = '';
@@ -1072,7 +1076,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function N_times_buy_ret(
         $data,
         $n = 1
-    ) {
+    )
+    {
         $tmp = [];
         foreach ($data as $k => $v) {
             $sold_dt = $v['sold_dt'];
@@ -1111,7 +1116,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function continue_errors(
         $data
-    ) {
+    )
+    {
         // 收益率为负
         $errors = $errors_tmp = [];
         ArrayHelper::multisort($data, 'buy_dt', SORT_ASC);
@@ -1178,7 +1184,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function stat_rule_right_rate(
         $data
-    ) {
+    )
+    {
         $rules = StockMainRule2::find()->where(['r_status' => StockMainRule2::ST_ACTIVE])->asArray()->orderBy('r_cat')->all();
         $ret = ArrayHelper::map($rules, 'r_name', 0);
         foreach ($ret as $k => $v) {
@@ -1216,17 +1223,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_rule_names = trim($buy_rule_names, ',');
                     if (strpos($buy_rule_names, ',') === false) {
                         if ($rate > 0) {
-                            $ret[$buy_rule_names]['yes'.$buy_day_cat]++;
+                            $ret[$buy_rule_names]['yes' . $buy_day_cat]++;
                         } else {
-                            $ret[$buy_rule_names]['no'.$buy_day_cat]++;
+                            $ret[$buy_rule_names]['no' . $buy_day_cat]++;
                         }
                         $ret[$buy_rule_names]['sum_rate'] += $rate;
                     } else {
                         foreach (explode(',', $buy_rule_names) as $buy_rule_name) {
                             if ($rate > 0) {
-                                $ret[$buy_rule_name]['yes'.$buy_day_cat]++;
+                                $ret[$buy_rule_name]['yes' . $buy_day_cat]++;
                             } else {
-                                $ret[$buy_rule_name]['no'.$buy_day_cat]++;
+                                $ret[$buy_rule_name]['no' . $buy_day_cat]++;
                             }
                             $ret[$buy_rule_name]['sum_rate'] += $rate;
                         }
@@ -1278,7 +1285,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function pop_by_times(
         $buy_times,
         $data
-    ) {
+    )
+    {
         $data_all = [];
         foreach ($data as $v) {
             $year = date("Y", strtotime($v['sold_dt']));
@@ -1308,7 +1316,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function pop_by_times_item(
         $buy_times,
         $data
-    ) {
+    )
+    {
         $sold_cal = function ($curr_buy_dt, $data) {
             $co = 0;
             foreach ($data as $v) {
@@ -1349,7 +1358,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function get_year_data(
         $data
-    ) {
+    )
+    {
         $rate_year_sum = [];
         foreach ($data as $v3) {
             $year = date("Y", strtotime($v3['sold_dt']));
@@ -1374,7 +1384,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $success_times = $v['success_times'];
             $sum_times = $success_times + $v['fail_times'];
             $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? (round($success_times / $sum_times,
-                        3) * 100).'%' : 0;
+                        3) * 100) . '%' : 0;
             $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
         }
 
@@ -1391,10 +1401,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function get_sold_point(
         $buy_dt
-    ) {
+    )
+    {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where ".self::SOLD_WHERE_STR." and r_trans_on>:r_trans_on 
+                where " . self::SOLD_WHERE_STR . " and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
 
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
@@ -1412,7 +1423,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_dt,
         $price_type,
         $stop_rate
-    ) {
+    )
+    {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1447,10 +1459,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function get_sold_point_r(
         $buy_dt
-    ) {
+    )
+    {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where ".self::BUY_WHERE_STR." and r_trans_on>:r_trans_on 
+                where " . self::BUY_WHERE_STR . " and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
 
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
@@ -1467,7 +1480,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_dt,
         $price_type,
         $stop_rate
-    ) {
+    )
+    {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1504,7 +1518,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_dt,
         $price_type,
         $stop_rate
-    ) {
+    )
+    {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1543,7 +1558,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $buy_dt,
         $sold_dt,
         $price_type
-    ) {
+    )
+    {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
                 where r_trans_on BETWEEN :buy_dt and :sold_dt 
@@ -1584,14 +1600,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $price_type,
         $buy_times,
         $stop_rate
-    ) {
+    )
+    {
         if ($buy_times) {
             $get_first_buys = self::get_first_buys_r();
             //print_r($get_first_buys);exit;
         }
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where  ".self::SOLD_WHERE_STR;
+                where  " . self::SOLD_WHERE_STR;
         $ret = AppUtil::db()->createCommand($sql)->queryAll();
 
         $data = [];
@@ -1691,13 +1708,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function result_stat(
         $year1 = '',
         $year2 = ''
-    ) {
+    )
+    {
 
         $rules_buys = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
         $rules_solds = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
         $rules_warns = StockMainRule2::get_rules(StockMainRule2::CAT_WARN);
 
-        $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1.'-01-01', $year2.'-12-31'] : [];
+        $where = $year1 && $year2 ? ['between', 'r_trans_on', $year1 . '-01-01', $year2 . '-12-31'] : [];
         $results = self::find()->where($where)->asArray()->all();
 
         $list_buy = self::result_stat_item($rules_buys, $results);
@@ -1717,7 +1735,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function result_stat_item(
         $rules,
         $results
-    ) {
+    )
+    {
         $data = [];
         foreach ($rules as $rule) {
             $item = [];
@@ -1812,7 +1831,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                                  StockMainRule2::CAT_SOLD => 'r_sold',
                                  StockMainRule2::CAT_WARN => 'r_warn',
                              ] as $_rule_cat => $field) {
-                        if (strpos($result[$field.$day], $rule_name) !== false && $rule_cat == $_rule_cat) {
+                        if (strpos($result[$field . $day], $rule_name) !== false && $rule_cat == $_rule_cat) {
                             $item = $count($item, $result, $day, $rule_name, $rule_cat);
                         }
                     }
@@ -1898,19 +1917,51 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     }
 
     /**
-     * 买入，就是把所有买入策略的正确率和平均收益率收集起来统计
+     * 买入，就是把所有买入策略的正确率和期望收益率收集起来统计
      *
      * @time 2020-11-9
      */
-    public static function stat_rate($list)
+    public static function stat_rate($list, $flag)
     {
         $data = [];
         foreach ($list as $v1) {
             foreach ($v1 as $rule_name => $v2) {
+                // 正确率
+                $right_rate = $v2['SUM']['append_avg']['yes_avg_rate'];
+                // 期望收益率
+                $hope_rate = $v2['SUM']['append_hope']['val'];
 
+                $item = [
+                    'right_rate' => $right_rate,
+                    'hope_rate' => $hope_rate,
+                ];
+                $data[] = $item;
             }
-
         }
+        $flag_t = $flag == 1 ? '买入' : '卖出';
+
+        $result[] = array_merge([$flag_t . '正确率'], self::get_max_min_dedian_avg(ArrayHelper::getColumn($data, 'right_rate')));
+        $result[] = array_merge([$flag_t . '期望收益率'], self::get_max_min_dedian_avg(ArrayHelper::getColumn($data, 'hope_rate')));
+
+        return $result;
+    }
+
+    /**
+     * 获取 最大值 最小值 中位数 平均值
+     *
+     * @time 2020-11-9
+     */
+    public static function get_max_min_dedian_avg($column)
+    {
+        $sum = array_sum($column);
+        $co = count(array_filter($column));
+
+        $avg = $co > 0 ? round($sum / $co, 3) : 0;
+        $median = AppUtil::get_median($column);
+        $max = $column ? max($column) : '';
+        $min = $column ? min($column) : '';
+
+        return [$max, $min, $median, $avg];
     }
 
     /**
@@ -1958,7 +2009,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $month,
         $num,
         $hold_max
-    ) {
+    )
+    {
         $sql = "select m_trans_on,m_etf_close from im_stock_main where DATE_FORMAT(m_trans_on,'%Y-%m')=:dt ";
         $res = AppUtil::db()->createCommand($sql, [':dt' => $month])->queryAll();
 
@@ -1994,7 +2046,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function get_random_sold_dt(
         $buy_dt,
         $hold_max = 30
-    ) {
+    )
+    {
         $sql = "select m_trans_on,m_etf_close from im_stock_main where m_trans_on>:dt order by m_trans_on asc limit $hold_max";
         $res = AppUtil::db()->createCommand($sql, [':dt' => $buy_dt])->queryAll();
 
@@ -2024,13 +2077,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $price_type,
         $where = '',
         $dt_type
-    ) {
+    )
+    {
         $conn = AppUtil::db();
         $sql = "select 
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and ".self::SOLD_WHERE_STR." 
+                where p_trans_on > '2000-01-01' and " . self::SOLD_WHERE_STR . " 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -2061,7 +2115,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $data = [];
         $r_trans_on_str = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            $r_trans_on_str .= ",'".$buy_dt."'";
+            $r_trans_on_str .= ",'" . $buy_dt . "'";
         }
         $r_trans_on_str = trim($r_trans_on_str, ',');
 
@@ -2118,13 +2172,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $price_type,
         $where = '',
         $dt_type
-    ) {
+    )
+    {
         $conn = AppUtil::db();
         $sql = "select 
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and ".self::BUY_WHERE_STR." 
+                where p_trans_on > '2000-01-01' and " . self::BUY_WHERE_STR . " 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -2164,7 +2219,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $r_trans_on_str = '';
         foreach ($buy_sold_dts as $buy_dt => $sold_dt) {
-            $r_trans_on_str .= ",'".$buy_dt."'";
+            $r_trans_on_str .= ",'" . $buy_dt . "'";
         }
         $r_trans_on_str = trim($r_trans_on_str, ',');
 
@@ -2215,7 +2270,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $price_type,
         $conn,
         $flag = 1
-    ) {
+    )
+    {
         $conn = $conn ? $conn : AppUtil::db();
         $sql = "select * from im_stock_main_price where p_trans_on >= :dt order by p_trans_on asc limit 11";
         $res = $conn->createCommand($sql, [':dt' => $buy_dt])->queryAll();
@@ -2268,7 +2324,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function sync_note(
         $result
-    ) {
+    )
+    {
         $self = self::findOne(['r_trans_on' => $result->r_trans_on]);
         if ($self) {
             self::edit($self->r_id, ['r_note' => $result->r_note]);
@@ -2285,11 +2342,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static function rule_right_rate()
     {
         $sql = "select concat(r_sold5,r_sold10,r_sold20) as str,r_note from im_stock_main_result2 
-                where ".self::SOLD_WHERE_STR;
+                where " . self::SOLD_WHERE_STR;
         $sold_results = AppUtil::db()->createCommand($sql)->queryAll();
 
         $sql = "select concat(r_buy5,r_buy10,r_buy20) as str,r_note  from im_stock_main_result2 
-                where ".self::BUY_WHERE_STR;
+                where " . self::BUY_WHERE_STR;
         $buy_results = AppUtil::db()->createCommand($sql)->queryAll();
 
         $buys = $solds = [
@@ -3181,9 +3238,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function wether_first_buy_point(
         $buy_dt
-    ) {
+    )
+    {
         $sql = "select r.* from im_stock_main_result2 r
-                where ".self::SOLD_WHERE_STR." 
+                where " . self::SOLD_WHERE_STR . " 
                 and r_trans_on<:r_trans_on 
                 order by r_trans_on desc limit 1 ";
 
@@ -3193,7 +3251,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $sql = "select r.* from im_stock_main_result2 r
-                where ".self::BUY_WHERE_STR."
+                where " . self::BUY_WHERE_STR . "
                  and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 
@@ -3216,16 +3274,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public
     static function wether_first_sold_point(
         $sold_dt
-    ) {
+    )
+    {
         $sql = "select r.* from im_stock_main_result2 r
-                where ".self::BUY_WHERE_STR." 
+                where " . self::BUY_WHERE_STR . " 
                 and r_trans_on<:r_trans_on 
                 order by r_trans_on desc limit 1 ";
         // 卖点获取最近的买点
         $buy_point = AppUtil::db()->createCommand($sql, [':r_trans_on' => $sold_dt])->queryOne();
 
         $sql = "select r.* from im_stock_main_result2 r
-                where ".self::SOLD_WHERE_STR."
+                where " . self::SOLD_WHERE_STR . "
                  and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 

@@ -1953,7 +1953,8 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val, $price_type);
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val,
+            $price_type);
 
         list($list1, $rate_year_sum1, $stat_rule_right_rate1) = StockMainResult2::cal_back($price_type, 0, 0);
         list($list2, $rate_year_sum2, $stat_rule_right_rate2) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
@@ -2339,9 +2340,14 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
-        if(Admin::getAdminId()==1002){
+        /*if(Admin::getAdminId()==1002){
             print_r($list_buy);exit;
-        }
+        }*/
+
+        $list_buy_stat_rate = StockMainResult2::stat_rate($list_buy);
+        $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold);
+        $list_stat_rate = array_merge($list_buy_stat_rate, $list_sold_stat_rate);
+
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
             [
@@ -2383,6 +2389,7 @@ class StockController extends BaseController
                 'price_type' => $price_type,
                 //'st_year' => $st_year,
                 //'et_year' => $et_year,
+                'list_stat_rate' => $list_stat_rate,
             ]
         );
     }
