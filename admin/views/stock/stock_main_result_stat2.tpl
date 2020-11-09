@@ -39,7 +39,7 @@
         <span class="space"></span>
     </form>
 </div>
-<div class="row">
+<div class="row" style="margin-bottom: 10px">
     <ul class="nav nav-tabs">
         {{foreach from=$tabs key=key item=tab}}
             <li class="ng-scope {{$tab.cls}}">
@@ -54,6 +54,9 @@
     <div class="col-sm-12">
         <table class="table table-striped table-bordered">
             <thead>
+            <tr style="background: #0000c8">
+                <th colspan="5">策略统计表(正确率、收益率)</th>
+            </tr>
             <tr>
                 <th></th>
                 <th>最大值</th>
