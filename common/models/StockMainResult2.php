@@ -1898,6 +1898,22 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     }
 
     /**
+     * 买入，就是把所有买入策略的正确率和平均收益率收集起来统计
+     *
+     * @time 2020-11-9
+     */
+    public static function stat_rate($list)
+    {
+        $data = [];
+        foreach ($list as $v1) {
+            foreach ($v1 as $rule_name => $v2) {
+
+            }
+
+        }
+    }
+
+    /**
      * 随机买入计算收益率
      *
      * @time 2019-12-17 PM
