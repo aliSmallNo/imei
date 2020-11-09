@@ -1927,7 +1927,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         foreach ($list as $v1) {
             foreach ($v1 as $rule_name => $v2) {
                 // 正确率
-                $right_rate = $v2['SUM']['append_avg']['yes_avg_rate'];
+                $right_rate = $v2['SUM']['times_yes_rate'];
                 // 期望收益率
                 $hope_rate = $v2['SUM']['append_hope']['val'];
 
