@@ -2344,8 +2344,8 @@ class StockController extends BaseController
             print_r($list_buy);exit;
         }*/
 
-        $list_buy_stat_rate = StockMainResult2::stat_rate($list_buy);
-        $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold);
+        $list_buy_stat_rate = StockMainResult2::stat_rate($list_buy,1);
+        $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold,2);
         $list_stat_rate = array_merge($list_buy_stat_rate, $list_sold_stat_rate);
 
         $tabs = [
