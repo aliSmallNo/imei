@@ -54,8 +54,8 @@
     <div class="col-sm-12">
         <table class="table table-striped table-bordered">
             <thead>
-            <tr style="background: #0000c8">
-                <th colspan="5">策略统计表(正确率、收益率)</th>
+            <tr style="background: #8b8bf5;color: #fff;">
+                <th colspan="5" style="text-align: center;font-size: 15px;">策略统计表(正确率、收益率)</th>
             </tr>
             <tr>
                 <th></th>
