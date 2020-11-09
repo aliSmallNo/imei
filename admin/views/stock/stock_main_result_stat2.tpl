@@ -65,7 +65,7 @@
             <tbody>
             {{foreach from=$list_stat_rate item=item key=key}}
                 <tr>
-                    <td>{{$item[0]}}%</td>
+                    <td>{{$item[0]}}</td>
                     <td>{{$item[1]}}%</td>
                     <td>{{$item[2]}}%</td>
                     <td>{{$item[3]}}%</td>
