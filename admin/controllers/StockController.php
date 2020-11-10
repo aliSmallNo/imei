@@ -2346,6 +2346,7 @@ class StockController extends BaseController
         $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold);
         $_list_stat_rate = array_merge($list_buy_stat_rate, $list_sold_stat_rate);
 
+        // 横竖坐标颠倒
         $list_stat_rate = [
             array_merge(['平均数'], ArrayHelper::getColumn($_list_stat_rate, 3)),
             array_merge(['中位数'], ArrayHelper::getColumn($_list_stat_rate, 2)),

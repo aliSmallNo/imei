@@ -1904,7 +1904,9 @@ class FooController extends Controller
 
     public function actionZp()
     {
-
+        echo date('Y-m-d H:i:s').PHP_EOL;
+        StockMain::update_curr_day();
+        echo date('Y-m-d H:i:s').PHP_EOL;
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
