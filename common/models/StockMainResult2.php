@@ -1939,8 +1939,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        $right_rate_column = array_filter(ArrayHelper::getColumn($data, 'right_rate'));
-        $hope_rate_column = array_filter(ArrayHelper::getColumn($data, 'hope_rate'));
+        $right_rate_column = array_filter(ArrayHelper::getColumn($data, 'right_rate'), 'floatval');
+        $hope_rate_column = array_filter(ArrayHelper::getColumn($data, 'hope_rate'), 'floatval');
         $result[] = self::get_max_min_dedian_avg($right_rate_column);
         $result[] = self::get_max_min_dedian_avg($hope_rate_column);
 
