@@ -68,6 +68,8 @@ class RedisUtil
 	const KEY_PROXY_IPS = "proxy_ips";
 	const KEY_LOGIN_CODE = "login_code";
 
+	const KEY_STOCK_MAIN_NOON_FORECAST = "stock_main_noon_forecast";
+
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
 		self::KEY_CITIES => 86400,
@@ -111,6 +113,8 @@ class RedisUtil
 		self::KEY_YOUZAN_USER_ORDERS_STAT => 60 * 30,
 		self::KEY_PROXY_IPS => 60 * 10,
 		self::KEY_LOGIN_CODE => 60 * 10,
+
+		self::KEY_STOCK_MAIN_NOON_FORECAST => 3600 * 24,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';

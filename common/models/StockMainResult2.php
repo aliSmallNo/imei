@@ -1595,12 +1595,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
      */
-    public
-    static function cal_back_r_new(
-        $price_type,
-        $buy_times,
-        $stop_rate
-    )
+    public static function cal_back_r_new($price_type, $buy_times, $stop_rate)
     {
         if ($buy_times) {
             $get_first_buys = self::get_first_buys_r();
@@ -1704,11 +1699,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-11-27
      * @time 2020-03-01 PM modify
      */
-    public
-    static function result_stat(
-        $year1 = '',
-        $year2 = ''
-    )
+    public static function result_stat($year1 = '', $year2 = '')
     {
 
         $rules_buys = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
@@ -1731,48 +1722,62 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2020-01-10 AM modify
      * @time 2020-03-01 PM modify
      */
-    public
-    static function result_stat_item(
-        $rules,
-        $results
-    )
+    public static function result_stat_item($rules, $results)
     {
         $data = [];
         foreach ($rules as $rule) {
             $item = [];
             $rule_name = $rule['r_name'];
             $rule_cat = $rule['r_cat'];
-            // $rule_name = $rule['r_id'];
+            $rule_id = $rule['r_id'];
             $item[$rule_name] = [
+                'rule_name' => $rule_name,
+                'rule_cat' => $rule_cat,
+                'rule_id' => $rule_id,
                 5 => [
                     'times' => 0,
                     'times_yes' => 0,
                     'times_no' => 0,
                     'times_mid' => 0,
+                    'yes_dts' => [],
+                    'no_dts' => [],
+                    'mid_dts' => [],
                 ],
                 10 => [
                     'times' => 0,
                     'times_yes' => 0,
                     'times_no' => 0,
                     'times_mid' => 0,
+                    'yes_dts' => [],
+                    'no_dts' => [],
+                    'mid_dts' => [],
                 ],
                 20 => [
                     'times' => 0,
                     'times_yes' => 0,
                     'times_no' => 0,
                     'times_mid' => 0,
+                    'yes_dts' => [],
+                    'no_dts' => [],
+                    'mid_dts' => [],
                 ],
                 60 => [
                     'times' => 0,
                     'times_yes' => 0,
                     'times_no' => 0,
                     'times_mid' => 0,
+                    'yes_dts' => [],
+                    'no_dts' => [],
+                    'mid_dts' => [],
                 ],
                 'SUM' => [
                     'times' => 0,
                     'times_yes' => 0,
                     'times_no' => 0,
                     'times_mid' => 0,
+                    'yes_dts' => [],
+                    'no_dts' => [],
+                    'mid_dts' => [],
                 ],
             ];
             $count = function ($item, $result, $day, $rule_name, $rule_cat) {
@@ -1848,11 +1853,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $times_no = $v3['times_no'];
                     $times_mid = $v3['times_mid'];
                     // 正确率
-                    $data[$k1][$rule_name][$day]['times_yes_rate'] = $times ? round($times_yes / $times,
-                            4) * 100 : 0;
+                    $data[$k1][$rule_name][$day]['times_yes_rate'] = $times ? round($times_yes / $times, 4) * 100 : 0;
                     $data[$k1][$rule_name][$day]['times_no_rate'] = $times ? round($times_no / $times, 4) * 100 : 0;
-                    $data[$k1][$rule_name][$day]['times_mid_rate'] = $times ? round($times_mid / $times,
-                            4) * 100 : 0;
+                    $data[$k1][$rule_name][$day]['times_mid_rate'] = $times ? round($times_mid / $times, 4) * 100 : 0;
                 }
             }
         }

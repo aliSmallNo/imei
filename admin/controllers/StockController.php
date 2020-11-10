@@ -41,6 +41,7 @@ use common\utils\AppUtil;
 use common\utils\ExcelUtil;
 use common\utils\FileCache;
 use common\utils\ImageUtil;
+use common\utils\RedisUtil;
 use common\utils\TryPhone;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -217,9 +218,7 @@ class StockController extends BaseController
         }
 
 
-        list($items, $count) = CRMStockClient::clients(
-            $criteria, $params, $sort, $page, $perSize
-        );
+        list($items, $count) = CRMStockClient::clients($criteria, $params, $sort, $page, $perSize);
 
         $alertMsg = "";
         if ($alert) {
@@ -2335,12 +2334,13 @@ class StockController extends BaseController
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, 0, 0);
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
 
+        // 追加 平均收益率 期望收益率
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
-        /*if(Admin::getAdminId()==1002){
+        if(Admin::getAdminId()==1002){
             print_r($list_buy);exit;
-        }*/
+        }
 
         $list_buy_stat_rate = StockMainResult2::stat_rate($list_buy);
         $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold);
@@ -2842,9 +2842,7 @@ class StockController extends BaseController
 //            exit;
 //        }
 
-        return $this->renderPage(
-            "stock_main_result_stat0601.tpl",
-            [
+        return $this->renderPage("stock_main_result_stat0601.tpl", [
                 'buy_data' => $buy_data,
                 'sold_data' => $sold_data,
             ]
@@ -2895,16 +2893,25 @@ class StockController extends BaseController
         $sz_turnover = $sz_turnover / $turnover_rate;
         $sum_turnover = $sum_turnover / $turnover_rate;
 
+        $sh_turnover_rise = $sh_turnover * $rise;
+        $sh_close_rise = $sh_close * $rise;
+        $sz_turnover_rise = $sz_turnover * $rise;
+
+        $sh_turnover_fall = $sh_turnover * $fall;
+        $sh_close_fall = $sh_close * $fall;
+        $sz_turnover_fall = $sz_turnover * $fall;
+
         $data = [
             // 涨
             [
                 'name' => '涨幅1%',
-                'sh_close' => $sh_close * $rise,
-                'sh_turnover' => $sh_turnover * $rise,
-                'sz_turnover' => $sz_turnover * $rise,
+                'sh_close' => $sh_close_rise,
+                'sh_turnover' => $sh_turnover_rise,
+                'sz_turnover' => $sz_turnover_rise,
                 'sum_turnover' => $sum_turnover * $rise,
                 'sold_rules' => '',
                 'buy_rules' => '',
+                'result' => '',
             ],
             [
                 'name' => '持平情况',
@@ -2914,18 +2921,43 @@ class StockController extends BaseController
                 'sum_turnover' => $sum_turnover,
                 'sold_rules' => '',
                 'buy_rules' => '',
+                'result' => '',
             ],
             // 跌
             [
                 'name' => '跌幅-1%',
-                'sh_close' => $sh_close * $fall,
-                'sh_turnover' => $sh_turnover * $fall,
-                'sz_turnover' => $sz_turnover * $fall,
+                'sh_close' => $sh_close_fall,
+                'sh_turnover' => $sh_turnover_fall,
+                'sz_turnover' => $sz_turnover_fall,
                 'sum_turnover' => $sum_turnover * $fall,
                 'sold_rules' => '',
                 'buy_rules' => '',
+                'result' => '',
             ],
         ];
+        $stf_turnover = 0;
+        $stf_close = 0;
+        $sz_close = 0;
+        $trans_on = date('Y-m-d');
+
+        $H = date("H");
+        $m = date("i");
+        if (StockMain::is_trans_date() && in_array($H, [12])) {
+            // 涨
+            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
+            $data[0]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+            // 跌
+            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
+            $data[2]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+            StockMain::update_curr_day();
+
+            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->setCache($data);
+        } else {
+            $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
+            $data = json_decode($data, 1);
+        }
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
                 'list' => $data,
