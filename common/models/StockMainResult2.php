@@ -1921,7 +1921,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-11-9
      */
-    public static function stat_rate($list, $flag)
+    public static function stat_rate($list)
     {
         $data = [];
         foreach ($list as $v1) {
@@ -1938,10 +1938,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $data[] = $item;
             }
         }
-        $flag_t = $flag == 1 ? '买入' : '卖出';
 
-        $result[] = array_merge([$flag_t . '正确率'], self::get_max_min_dedian_avg(ArrayHelper::getColumn($data, 'right_rate')));
-        $result[] = array_merge([$flag_t . '期望收益率'], self::get_max_min_dedian_avg(ArrayHelper::getColumn($data, 'hope_rate')));
+        $right_rate_column = array_filter(ArrayHelper::getColumn($data, 'right_rate'));
+        $hope_rate_column = array_filter(ArrayHelper::getColumn($data, 'hope_rate'));
+        $result[] = self::get_max_min_dedian_avg($right_rate_column);
+        $result[] = self::get_max_min_dedian_avg($hope_rate_column);
 
         return $result;
     }

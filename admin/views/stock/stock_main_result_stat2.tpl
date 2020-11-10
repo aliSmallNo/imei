@@ -59,10 +59,10 @@
             </tr>
             <tr>
                 <th></th>
-                <th>最大值</th>
-                <th>最小值</th>
-                <th>中位数</th>
-                <th>平均值</th>
+                <th>买入-正确率</th>
+                <th>买入-收益率</th>
+                <th>卖出-正确率</th>
+                <th>卖出-收益率</th>
             </tr>
             </thead>
             <tbody>

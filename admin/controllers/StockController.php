@@ -1844,9 +1844,7 @@ class StockController extends BaseController
             $params[':cat'] = $cat;
         }
 
-        list($list, $count) = StockMainRule2::items(
-            $criteria, $params, $page, 100
-        );
+        list($list, $count) = StockMainRule2::items($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
         return $this->renderPage("stock_main_rule2.tpl", [
@@ -2344,9 +2342,16 @@ class StockController extends BaseController
             print_r($list_buy);exit;
         }*/
 
-        $list_buy_stat_rate = StockMainResult2::stat_rate($list_buy, 1);
-        $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold, 2);
-        $list_stat_rate = array_merge($list_buy_stat_rate, $list_sold_stat_rate);
+        $list_buy_stat_rate = StockMainResult2::stat_rate($list_buy);
+        $list_sold_stat_rate = StockMainResult2::stat_rate($list_sold);
+        $_list_stat_rate = array_merge($list_buy_stat_rate, $list_sold_stat_rate);
+
+        $list_stat_rate = [
+            array_merge(['平均数'], ArrayHelper::getColumn($_list_stat_rate, 3)),
+            array_merge(['中位数'], ArrayHelper::getColumn($_list_stat_rate, 2)),
+            array_merge(['最大值'], ArrayHelper::getColumn($_list_stat_rate, 0)),
+            array_merge(['最小值'], ArrayHelper::getColumn($_list_stat_rate, 1)),
+        ];
 
         $tabs = [
             ['name' => '策略结果列表', 'st_year' => '', 'et_year' => '', 'cls' => ''],
@@ -2867,28 +2872,62 @@ class StockController extends BaseController
         Admin::staffOnly();
 
         // 上个交易日数据
-        $stock_main = StockMain::find()->where(['<', 'm_trans_on', date('Y-m-d')])->limit(1)->asArray()->one();
+        $stock_main_yeastoday = StockMain::find()->where(['<', 'm_trans_on', date('Y-m-d')])->limit(1)->asArray()->one();
+        // 今天
+        $stock_main_today = StockMain::find()->where(['m_trans_on' => date('Y-m-d')])->limit(1)->asArray()->one();
         // 涨跌幅假设	上证指数	上证交易额	深圳交易额	合计交易额	买入信号假设	卖出信号假设
-        // 上证指数
-        $sh_close = $stock_main['m_sh_close'];
-        // 上证交易额
-        $sh_turnover = $stock_main['m_sh_turnover'];
-        // 深圳交易额
-        $sz_turnover = $stock_main['m_sz_turnover'];
-        // 合计交易额
-        $sum_turnover = $stock_main['m_sum_turnover'];
+        // 上证指数 上个交易日
+        $sh_close = $stock_main_yeastoday['m_sh_close'];
+        // 上证交易额 今天
+        $sh_turnover = $stock_main_today ? $stock_main_today['m_sh_turnover'] : 0;
+        // 深圳交易额 今天
+        $sz_turnover = $stock_main_today ? $stock_main_today['m_sz_turnover'] : 0;
+        // 合计交易额 今天
+        $sum_turnover = $stock_main_today ? $stock_main_today['m_sum_turnover'] : 0;
+
+        $change = 0.01;
+        $rise = 1 * (1 + $change);
+        $fall = 1 * (1 - $change);
+
+        $turnover_rate = 0.6;
+        $sh_turnover = $sh_turnover / $turnover_rate;
+        $sz_turnover = $sz_turnover / $turnover_rate;
+        $sum_turnover = $sum_turnover / $turnover_rate;
 
         $data = [
+            // 涨
             [
+                'name' => '涨幅1%',
+                'sh_close' => $sh_close * $rise,
+                'sh_turnover' => $sh_turnover * $rise,
+                'sz_turnover' => $sz_turnover * $rise,
+                'sum_turnover' => $sum_turnover * $rise,
+                'sold_rules' => '',
+                'buy_rules' => '',
+            ],
+            [
+                'name' => '持平情况',
                 'sh_close' => $sh_close,
                 'sh_turnover' => $sh_turnover,
                 'sz_turnover' => $sz_turnover,
                 'sum_turnover' => $sum_turnover,
+                'sold_rules' => '',
+                'buy_rules' => '',
+            ],
+            // 跌
+            [
+                'name' => '跌幅-1%',
+                'sh_close' => $sh_close * $fall,
+                'sh_turnover' => $sh_turnover * $fall,
+                'sz_turnover' => $sz_turnover * $fall,
+                'sum_turnover' => $sum_turnover * $fall,
+                'sold_rules' => '',
+                'buy_rules' => '',
             ],
         ];
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
-
+                'list' => $data,
             ]
         );
     }
