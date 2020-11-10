@@ -1731,9 +1731,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $rule_cat = $rule['r_cat'];
             $rule_id = $rule['r_id'];
             $item[$rule_name] = [
-                'rule_name' => $rule_name,
-                'rule_cat' => $rule_cat,
-                'rule_id' => $rule_id,
                 5 => [
                     'times' => 0,
                     'times_yes' => 0,
