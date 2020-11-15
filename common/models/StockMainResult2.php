@@ -503,6 +503,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         // 追加 平均收益率 期望收益率
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, 0, 0);
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+        // 追加 平均收益率 期望收益率
+        $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
@@ -688,7 +690,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        foreach ($warn_rules_day as $day => $rule_item) {
+        /*foreach ($warn_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
                 if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
                     $_item = $list_warn[$list_warn_indexs[$rule_name]][$rule_name];
@@ -704,7 +706,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                 }
             }
-        }
+        }*/
 
         // 计算平均收益率-buy 2020-11-15 PM
         $buy_avg_rate_buy_co = 0;
@@ -738,7 +740,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $warn_avg_rate = 0;
         $warn_rate_sum = 0;
         $warn_avg_rate_warn_co = 0;
-        if ($warn_rules_right_rate) {
+        /*if ($warn_rules_right_rate) {
             foreach ($warn_rules_right_rate as $day => $_item) {
                 foreach ($_item as $item) {
                     $warn_rate_sum += $item['append_hope_val'];
@@ -746,7 +748,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
             $warn_avg_rate = $warn_avg_rate_warn_co > 0 ? sprintf('%.2f', $warn_rate_sum / $warn_avg_rate_warn_co) : 0;
-        }
+        }*/
 
 
         return [$buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,

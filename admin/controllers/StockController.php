@@ -1958,7 +1958,7 @@ class StockController extends BaseController
         // 找出错误的 r_note
         $list = StockMainResult2::get_err_note_cls($list, $price_type, $list1, $list2);
         // 计算平均收益率
-        // $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
+         $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
 
         $pagination = self::pagination($page, $count, 10000);
 
@@ -2332,10 +2332,14 @@ class StockController extends BaseController
         // 追加 平均收益率 期望收益率
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, 0, 0);
         $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+        // 追加 平均收益率 期望收益率
+        $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
 
         // 追加 平均收益率 期望收益率
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
+
+
 
         /*if(Admin::getAdminId()==1002){
             print_r($list_buy);exit;
