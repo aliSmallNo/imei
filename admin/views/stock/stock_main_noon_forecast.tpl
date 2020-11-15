@@ -22,7 +22,6 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-
             <th class="col-sm-1">
                 涨跌幅假设
             </th>
@@ -34,11 +33,9 @@
 
             <th>买入信号假设</th>
             <th>卖出信号假设</th>
-
         </tr>
         </thead>
         <tbody>
-
         {{foreach from=$list item=item}}
             <tr>
                 <td >{{$item.name}}</td>

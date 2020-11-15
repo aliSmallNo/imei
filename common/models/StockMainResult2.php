@@ -415,18 +415,53 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return 100;
     }
 
+    public static function rules_to_arr($rule_str)
+    {
+        $rules = [];
+
+        if ($rule_str) {
+            if (strpos($rule_str, ',') !== false) {
+                $rule_str_arr = explode(',', $rule_str);
+                foreach ($rule_str_arr as $item) {
+                    $rules[] = $item;
+                }
+            } else {
+                $rules[] = $rule_str;
+            }
+        }
+
+        return $rules;
+    }
+
+    public static function rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60)
+    {
+        $buy_rules5 = self::rules_to_arr($r_buy5);
+        $buy_rules10 = self::rules_to_arr($r_buy10);
+        $buy_rules20 = self::rules_to_arr($r_buy20);
+        $buy_rules60 = self::rules_to_arr($r_buy60);
+
+        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
+        $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
+
+        return [$buy_rules, $buy_rules_day];
+    }
+
+    public static function rule_stat_index($list)
+    {
+        $indexs = [];
+        foreach ($list as $k11 => $v11) {
+            foreach ($v11 as $_r_name => $v12) {
+                $indexs[$k11] = $_r_name;
+            }
+        }
+        return array_flip($indexs);
+    }
+
     /**
      *
      * @time 2020-03-01 PM
      */
-    public static function items(
-        $criteria,
-        $params,
-        $page,
-        $pageSize = 1000,
-        $right_rate_gt_val = 0,
-        $price_type = StockMainPrice::TYPE_SH_CLOSE
-    )
+    public static function items($criteria, $params, $page, $pageSize = 1000, $right_rate_gt_val = 0, $price_type = StockMainPrice::TYPE_SH_CLOSE)
     {
         $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
         $strCriteria = '';
@@ -447,18 +482,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
             foreach ($v as $f => $v1) {
                 if (in_array($f, [
-                    'r_buy5',
-                    'r_buy10',
-                    'r_buy20',
-                    'r_buy60',
-                    'r_sold5',
-                    'r_sold10',
-                    'r_sold20',
-                    'r_sold60',
-                    'r_warn5',
-                    'r_warn10',
-                    'r_warn20',
-                    'r_warn60',
+                    'r_buy5', 'r_buy10', 'r_buy20', 'r_buy60',
+                    'r_sold5', 'r_sold10', 'r_sold20', 'r_sold60',
+                    'r_warn5', 'r_warn10', 'r_warn20', 'r_warn60',
                 ])) {
                     $res[$k][$f] = trim($res[$k][$f], ',');
                 }
@@ -480,132 +506,29 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
-        $list_buy_indexs_f = function ($list) {
+        /*$list_buy_indexs_f = function ($list) {
             $indexs = [];
             foreach ($list as $k11 => $v11) {
                 foreach ($v11 as $_r_name => $v12) {
                     $indexs[$k11] = $_r_name;
                 }
             }
-
             return array_flip($indexs);
         };
         $list_buy_indexs = $list_buy_indexs_f($list_buy);
         $list_sold_indexs = $list_buy_indexs_f($list_sold);
-        $list_warn_indexs = $list_buy_indexs_f($list_warn);
+        $list_warn_indexs = $list_buy_indexs_f($list_warn);*/
+
+        $list_buy_indexs = self::rule_stat_index($list_buy);
+        $list_sold_indexs = self::rule_stat_index($list_sold);
+        $list_warn_indexs = self::rule_stat_index($list_warn);
 
         foreach ($res as $k => $v) {
-            $r_buy5 = $v['r_buy5'];
-            $r_buy10 = $v['r_buy10'];
-            $r_buy20 = $v['r_buy20'];
-            $r_buy60 = $v['r_buy60'];
-            $r_sold5 = $v['r_sold5'];
-            $r_sold10 = $v['r_sold10'];
-            $r_sold20 = $v['r_sold20'];
-            $r_sold60 = $v['r_sold60'];
-            $r_warn5 = $v['r_warn5'];
-            $r_warn10 = $v['r_warn10'];
-            $r_warn20 = $v['r_warn20'];
-            $r_warn60 = $v['r_warn60'];
-
-            $buy_rules = $sold_rules = $warn_rules = [];
-            $add_rule = function ($rules, $rule_str) {
-                if ($rule_str) {
-                    if (strpos($rule_str, ',') !== false) {
-                        $rule_str_arr = explode(',', $rule_str);
-                        foreach ($rule_str_arr as $item) {
-                            $rules[] = $item;
-                        }
-                    } else {
-                        $rules[] = $rule_str;
-                    }
-                }
-
-                return $rules;
-            };
-            $buy_rules5 = $add_rule($buy_rules, $r_buy5);
-            $buy_rules10 = $add_rule($buy_rules, $r_buy10);
-            $buy_rules20 = $add_rule($buy_rules, $r_buy20);
-            $buy_rules60 = $add_rule($buy_rules, $r_buy60);
-            $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
-            $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
-
-            $sold_rules5 = $add_rule($sold_rules, $r_sold5);
-            $sold_rules10 = $add_rule($sold_rules, $r_sold10);
-            $sold_rules20 = $add_rule($sold_rules, $r_sold20);
-            $sold_rules60 = $add_rule($sold_rules, $r_sold60);
-            $sold_rules = array_unique(array_merge($sold_rules5, $sold_rules10, $sold_rules20, $sold_rules60));
-            $sold_rules_day = [5 => $sold_rules5, 10 => $sold_rules10, 20 => $sold_rules20, 60 => $sold_rules60];
-
-            $warn_rules5 = $add_rule($warn_rules, $r_warn5);
-            $warn_rules10 = $add_rule($warn_rules, $r_warn10);
-            $warn_rules20 = $add_rule($warn_rules, $r_warn20);
-            $warn_rules60 = $add_rule($warn_rules, $r_warn60);
-            $warn_rules = array_unique(array_merge($warn_rules5, $warn_rules10, $warn_rules20, $warn_rules60));
-            $warn_rules_day = [5 => $warn_rules5, 10 => $warn_rules10, 20 => $warn_rules20, 60 => $warn_rules60];
-
-            $buy_co = $sold_co = $warn_co = 0;
-            $buy_sum = $sold_sum = $warn_sum = 0;
-            $buy_rules_right_rate = $sold_rules_right_rate = $warn_rules_right_rate = [
-                5 => [],
-                10 => [],
-                20 => [],
-                60 => [],
-            ];
-
-            foreach ($buy_rules as $rule_name) {
-                if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
-                    $buy_co++;
-                    $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
-
-                    // $data[$k1][$rule_name][$day]['times_yes_rate']
-                }
-            }
-            foreach ($sold_rules as $rule_name) {
-                if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
-                    $sold_co++;
-                    $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
-                }
-            }
-            foreach ($warn_rules as $rule_name) {
-                if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
-                    $warn_co++;
-                    $warn_sum += $list_warn[$list_warn_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
-                }
-            }
-
-            foreach ($buy_rules_day as $day => $rule_item) {
-                foreach ($rule_item as $rule_name) {
-                    if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
-                        $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
-                        $times_yes_rate = $_item[$day]['times_yes_rate'];
-                        $append_hope_val = $_item['SUM']['append_hope']['val'];
-                        if ($times_yes_rate >= $right_rate_gt_val) {
-                            $buy_rules_right_rate[$day][] = [
-                                'rule_name' => $rule_name,
-                                'times_yes_rate' => $times_yes_rate,
-                                'append_hope_val' => $append_hope_val,
-                            ];
-                        }
-                    }
-                }
-            }
-            foreach ($sold_rules_day as $day => $rule_item) {
-                foreach ($rule_item as $rule_name) {
-                    if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
-                        $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
-                        $times_yes_rate = $_item[$day]['times_yes_rate'];
-                        $append_hope_val = $_item['SUM']['append_hope']['val'];
-                        if ($times_yes_rate >= $right_rate_gt_val) {
-                            $sold_rules_right_rate[$day][] = [
-                                'rule_name' => $rule_name,
-                                'times_yes_rate' => $times_yes_rate,
-                                'append_hope_val' => $append_hope_val,
-                            ];
-                        }
-                    }
-                }
-            }
+            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+                $buy_rules, $sold_rules, $warn_rules,
+                $buy_rules_day, $sold_rules_day, $warn_rules_day,
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate) =
+                self::cal_one_item($v, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, $right_rate_gt_val);
 
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
             $res[$k]['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
@@ -631,6 +554,126 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $count = AppUtil::db()->createCommand($sql)->bindValues($params)->queryScalar();
 
         return [array_values($res), $count];
+    }
+
+    public static function cal_one_item($v, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, $right_rate_gt_val)
+    {
+        $r_buy5 = $v['r_buy5'];
+        $r_buy10 = $v['r_buy10'];
+        $r_buy20 = $v['r_buy20'];
+        $r_buy60 = $v['r_buy60'];
+        $r_sold5 = $v['r_sold5'];
+        $r_sold10 = $v['r_sold10'];
+        $r_sold20 = $v['r_sold20'];
+        $r_sold60 = $v['r_sold60'];
+        $r_warn5 = $v['r_warn5'];
+        $r_warn10 = $v['r_warn10'];
+        $r_warn20 = $v['r_warn20'];
+        $r_warn60 = $v['r_warn60'];
+
+        /*$buy_rules = $sold_rules = $warn_rules = [];
+        $add_rule = function ($rules, $rule_str) {
+            if ($rule_str) {
+                if (strpos($rule_str, ',') !== false) {
+                    $rule_str_arr = explode(',', $rule_str);
+                    foreach ($rule_str_arr as $item) {
+                        $rules[] = $item;
+                    }
+                } else {
+                    $rules[] = $rule_str;
+                }
+            }
+
+            return $rules;
+        };
+        $buy_rules5 = $add_rule($buy_rules, $r_buy5);
+        $buy_rules10 = $add_rule($buy_rules, $r_buy10);
+        $buy_rules20 = $add_rule($buy_rules, $r_buy20);
+        $buy_rules60 = $add_rule($buy_rules, $r_buy60);
+        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
+        $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
+
+        $sold_rules5 = $add_rule($sold_rules, $r_sold5);
+        $sold_rules10 = $add_rule($sold_rules, $r_sold10);
+        $sold_rules20 = $add_rule($sold_rules, $r_sold20);
+        $sold_rules60 = $add_rule($sold_rules, $r_sold60);
+        $sold_rules = array_unique(array_merge($sold_rules5, $sold_rules10, $sold_rules20, $sold_rules60));
+        $sold_rules_day = [5 => $sold_rules5, 10 => $sold_rules10, 20 => $sold_rules20, 60 => $sold_rules60];
+
+        $warn_rules5 = $add_rule($warn_rules, $r_warn5);
+        $warn_rules10 = $add_rule($warn_rules, $r_warn10);
+        $warn_rules20 = $add_rule($warn_rules, $r_warn20);
+        $warn_rules60 = $add_rule($warn_rules, $r_warn60);
+        $warn_rules = array_unique(array_merge($warn_rules5, $warn_rules10, $warn_rules20, $warn_rules60));
+        $warn_rules_day = [5 => $warn_rules5, 10 => $warn_rules10, 20 => $warn_rules20, 60 => $warn_rules60];*/
+
+        list($buy_rules, $buy_rules_day) = self::rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60);
+        list($sold_rules, $sold_rules_day) = self::rules_to_arr_all($r_sold5, $r_sold10, $r_sold20, $r_sold60);
+        list($warn_rules, $warn_rules_day) = self::rules_to_arr_all($r_warn5, $r_warn10, $r_warn20, $r_warn60);
+
+        $buy_co = $sold_co = $warn_co = 0;
+        $buy_sum = $sold_sum = $warn_sum = 0;
+        $buy_rules_right_rate = $sold_rules_right_rate = $warn_rules_right_rate = [
+            5 => [],
+            10 => [],
+            20 => [],
+            60 => [],
+        ];
+
+        foreach ($buy_rules as $rule_name) {
+            if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+                $buy_co++;
+                $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+
+                // $data[$k1][$rule_name][$day]['times_yes_rate']
+            }
+        }
+        foreach ($sold_rules as $rule_name) {
+            if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
+                $sold_co++;
+                $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+            }
+        }
+        foreach ($warn_rules as $rule_name) {
+            if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
+                $warn_co++;
+                $warn_sum += $list_warn[$list_warn_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+            }
+        }
+
+        foreach ($buy_rules_day as $day => $rule_item) {
+            foreach ($rule_item as $rule_name) {
+                if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+                    $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
+                    $times_yes_rate = $_item[$day]['times_yes_rate'];
+                    $append_hope_val = $_item['SUM']['append_hope']['val'];
+                    if ($times_yes_rate >= $right_rate_gt_val) {
+                        $buy_rules_right_rate[$day][] = [
+                            'rule_name' => $rule_name,
+                            'times_yes_rate' => $times_yes_rate,
+                            'append_hope_val' => $append_hope_val,
+                        ];
+                    }
+                }
+            }
+        }
+        foreach ($sold_rules_day as $day => $rule_item) {
+            foreach ($rule_item as $rule_name) {
+                if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
+                    $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
+                    $times_yes_rate = $_item[$day]['times_yes_rate'];
+                    $append_hope_val = $_item['SUM']['append_hope']['val'];
+                    if ($times_yes_rate >= $right_rate_gt_val) {
+                        $sold_rules_right_rate[$day][] = [
+                            'rule_name' => $rule_name,
+                            'times_yes_rate' => $times_yes_rate,
+                            'append_hope_val' => $append_hope_val,
+                        ];
+                    }
+                }
+            }
+        }
+        return [$buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum, $buy_rules, $sold_rules, $warn_rules, $buy_rules_day, $sold_rules_day, $warn_rules_day, $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate];
     }
 
     /**

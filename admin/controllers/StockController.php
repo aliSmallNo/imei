@@ -1950,8 +1950,7 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val,
-            $price_type);
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val, $price_type);
 
         list($list1, $rate_year_sum1, $stat_rule_right_rate1) = StockMainResult2::cal_back($price_type, 0, 0);
         list($list2, $rate_year_sum2, $stat_rule_right_rate2) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
@@ -2943,9 +2942,26 @@ class StockController extends BaseController
         $H = date("H");
         $m = date("i");
         if (StockMain::is_trans_date() && in_array($H, [12])) {
+            list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
+            // 追加 平均收益率 期望收益率
+            list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
+            $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+            list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
+            $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
+
             // 涨
             StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
-            $data[0]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+            $data[0]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+            $list_buy_indexs = StockMainResult2::rule_stat_index($list_buy);
+            $list_sold_indexs = StockMainResult2::rule_stat_index($list_sold);
+            $list_warn_indexs = StockMainResult2::rule_stat_index($list_warn);
+
+            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+                $buy_rules, $sold_rules, $warn_rules,
+                $buy_rules_day, $sold_rules_day, $warn_rules_day,
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate) =
+                StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
 
             // 跌
             StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
