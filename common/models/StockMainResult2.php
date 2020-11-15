@@ -528,7 +528,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $buy_rules, $sold_rules, $warn_rules,
                 $buy_rules_day, $sold_rules_day, $warn_rules_day,
                 $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co,$warn_avg_rate,$warn_avg_rate_warn_co) =
+                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co, $warn_avg_rate, $warn_avg_rate_warn_co) =
                 self::cal_one_item($v, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, $right_rate_gt_val);
 
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
@@ -688,7 +688,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        foreach ($warn_rules_day as $day => $rule_item){
+        foreach ($warn_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
                 if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
                     $_item = $list_warn[$list_warn_indexs[$rule_name]][$rule_name];
@@ -711,9 +711,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $buy_avg_rate = 0;
         $buy_rate_sum = 0;
         if ($buy_rules_right_rate) {
-            foreach ($buy_rules_right_rate as $day => $item) {
-                $buy_rate_sum += $item['append_hope_val'];
-                $buy_avg_rate_buy_co++;
+            foreach ($buy_rules_right_rate as $day => $_item) {
+                foreach ($_item as $item) {
+                    $buy_rate_sum += $item['append_hope_val'];
+                    $buy_avg_rate_buy_co++;
+                }
             }
             $buy_avg_rate = $buy_avg_rate_buy_co > 0 ? sprintf('%.2f', $buy_rate_sum / $buy_avg_rate_buy_co) : 0;
         }
@@ -723,9 +725,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_rate_sum = 0;
         $sold_avg_rate_sold_co = 0;
         if ($sold_rules_right_rate) {
-            foreach ($sold_rules_right_rate as $day => $item) {
-                $sold_rate_sum += $item['append_hope_val'];
-                $sold_avg_rate_sold_co++;
+            foreach ($sold_rules_right_rate as $day => $_item) {
+                foreach ($_item as $item) {
+                    $sold_rate_sum += $item['append_hope_val'];
+                    $sold_avg_rate_sold_co++;
+                }
             }
             $sold_avg_rate = $sold_avg_rate_sold_co > 0 ? sprintf('%.2f', $sold_rate_sum / $sold_avg_rate_sold_co) : 0;
         }
@@ -735,9 +739,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $warn_rate_sum = 0;
         $warn_avg_rate_warn_co = 0;
         if ($warn_rules_right_rate) {
-            foreach ($warn_rules_right_rate as $day => $item) {
-                $warn_rate_sum += $item['append_hope_val'];
-                $warn_avg_rate_warn_co++;
+            foreach ($warn_rules_right_rate as $day => $_item) {
+                foreach ($_item as $item) {
+                    $warn_rate_sum += $item['append_hope_val'];
+                    $warn_avg_rate_warn_co++;
+                }
             }
             $warn_avg_rate = $warn_avg_rate_warn_co > 0 ? sprintf('%.2f', $warn_rate_sum / $warn_avg_rate_warn_co) : 0;
         }
@@ -746,7 +752,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return [$buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
             $buy_rules, $sold_rules, $warn_rules, $buy_rules_day, $sold_rules_day, $warn_rules_day,
             $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-            $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co,$warn_avg_rate,$warn_avg_rate_warn_co
+            $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co, $warn_avg_rate, $warn_avg_rate_warn_co
         ];
     }
 
