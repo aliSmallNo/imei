@@ -527,7 +527,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
                 $buy_rules, $sold_rules, $warn_rules,
                 $buy_rules_day, $sold_rules_day, $warn_rules_day,
-                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate) =
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co,$warn_avg_rate,$warn_avg_rate_warn_co) =
                 self::cal_one_item($v, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, $right_rate_gt_val);
 
             $res[$k]['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
@@ -546,6 +547,16 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $res[$k]['buy_rules_right_rate'] = $buy_rules_right_rate;
             $res[$k]['sold_rules_right_rate'] = $sold_rules_right_rate;
             $res[$k]['warn_rules_right_rate'] = $warn_rules_right_rate;
+
+            // 平均收益率
+            $res[$k]['buy_avg_rate'] = $buy_avg_rate;
+            $res[$k]['buy_avg_rate_buy_co'] = $buy_avg_rate_buy_co;
+            $res[$k]['sold_avg_rate'] = $sold_avg_rate;
+            $res[$k]['sold_avg_rate_sold_co'] = $sold_avg_rate_sold_co;
+            $res[$k]['warn_avg_rate'] = $warn_avg_rate;
+            $res[$k]['warn_avg_rate_warn_co'] = $warn_avg_rate_warn_co;
+
+            //
         }
 
         $sql = "select count(1) as co
@@ -648,6 +659,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
+                        // 买入策略
                         $buy_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
@@ -657,6 +669,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
         }
+
         foreach ($sold_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
                 if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
@@ -664,6 +677,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
+                        // 卖出策略
                         $sold_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
@@ -673,7 +687,67 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
         }
-        return [$buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum, $buy_rules, $sold_rules, $warn_rules, $buy_rules_day, $sold_rules_day, $warn_rules_day, $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate];
+
+        foreach ($warn_rules_day as $day => $rule_item){
+            foreach ($rule_item as $rule_name) {
+                if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
+                    $_item = $list_warn[$list_warn_indexs[$rule_name]][$rule_name];
+                    $times_yes_rate = $_item[$day]['times_yes_rate'];
+                    $append_hope_val = $_item['SUM']['append_hope']['val'];
+                    if ($times_yes_rate >= $right_rate_gt_val) {
+                        // 警告策略
+                        $warn_rules_right_rate[$day][] = [
+                            'rule_name' => $rule_name,
+                            'times_yes_rate' => $times_yes_rate,
+                            'append_hope_val' => $append_hope_val,
+                        ];
+                    }
+                }
+            }
+        }
+
+        // 计算平均收益率-buy 2020-11-15 PM
+        $buy_avg_rate_buy_co = 0;
+        $buy_avg_rate = 0;
+        $buy_rate_sum = 0;
+        if ($buy_rules_right_rate) {
+            foreach ($buy_rules_right_rate as $day => $item) {
+                $buy_rate_sum += $item['append_hope_val'];
+                $buy_avg_rate_buy_co++;
+            }
+            $buy_avg_rate = $buy_avg_rate_buy_co > 0 ? sprintf('%.2f', $buy_rate_sum / $buy_avg_rate_buy_co) : 0;
+        }
+
+        // 计算平均收益率-sold 2020-11-15 PM
+        $sold_avg_rate = 0;
+        $sold_rate_sum = 0;
+        $sold_avg_rate_sold_co = 0;
+        if ($sold_rules_right_rate) {
+            foreach ($sold_rules_right_rate as $day => $item) {
+                $sold_rate_sum += $item['append_hope_val'];
+                $sold_avg_rate_sold_co++;
+            }
+            $sold_avg_rate = $sold_avg_rate_sold_co > 0 ? sprintf('%.2f', $sold_rate_sum / $sold_avg_rate_sold_co) : 0;
+        }
+
+        // 计算平均收益率-warn 2020-11-15 PM
+        $warn_avg_rate = 0;
+        $warn_rate_sum = 0;
+        $warn_avg_rate_warn_co = 0;
+        if ($warn_rules_right_rate) {
+            foreach ($warn_rules_right_rate as $day => $item) {
+                $warn_rate_sum += $item['append_hope_val'];
+                $warn_avg_rate_warn_co++;
+            }
+            $warn_avg_rate = $warn_avg_rate_warn_co > 0 ? sprintf('%.2f', $warn_rate_sum / $warn_avg_rate_warn_co) : 0;
+        }
+
+
+        return [$buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+            $buy_rules, $sold_rules, $warn_rules, $buy_rules_day, $sold_rules_day, $warn_rules_day,
+            $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+            $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co,$warn_avg_rate,$warn_avg_rate_warn_co
+        ];
     }
 
     /**
@@ -681,8 +755,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-18 PM
      */
-    public
-    static function get_err_note_cls(
+    public static function get_err_note_cls(
         $res,
         $price_type,
         $list1,

@@ -1958,7 +1958,7 @@ class StockController extends BaseController
         // 找出错误的 r_note
         $list = StockMainResult2::get_err_note_cls($list, $price_type, $list1, $list2);
         // 计算平均收益率
-        $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
+        // $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
 
         $pagination = self::pagination($page, $count, 10000);
 
@@ -2962,6 +2962,14 @@ class StockController extends BaseController
                 $buy_rules_day, $sold_rules_day, $warn_rules_day,
                 $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate) =
                 StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
+
+            $data[0]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
+            $data[0]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+            $data[0]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+
+            $data[0]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
+            $data[0]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+            $data[0]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
 
             // 跌
             StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
