@@ -1958,7 +1958,7 @@ class StockController extends BaseController
         // 找出错误的 r_note
         $list = StockMainResult2::get_err_note_cls($list, $price_type, $list1, $list2);
         // 计算平均收益率
-         $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
+        $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
 
         $pagination = self::pagination($page, $count, 10000);
 
@@ -2338,7 +2338,6 @@ class StockController extends BaseController
         // 追加 平均收益率 期望收益率
         list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
         $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
-
 
 
         /*if(Admin::getAdminId()==1002){
@@ -2873,139 +2872,7 @@ class StockController extends BaseController
     {
         Admin::staffOnly();
 
-        // 上个交易日数据
-        $stock_main_yeastoday = StockMain::find()->where(['<', 'm_trans_on', date('Y-m-d')])->limit(1)->asArray()->one();
-        // 今天
-        $stock_main_today = StockMain::find()->where(['m_trans_on' => date('Y-m-d')])->limit(1)->asArray()->one();
-        // 涨跌幅假设	上证指数	上证交易额	深圳交易额	合计交易额	买入信号假设	卖出信号假设
-        // 上证指数 上个交易日
-        $sh_close = $stock_main_yeastoday['m_sh_close'];
-        // 上证交易额 今天
-        $sh_turnover = $stock_main_today ? $stock_main_today['m_sh_turnover'] : 0;
-        // 深圳交易额 今天
-        $sz_turnover = $stock_main_today ? $stock_main_today['m_sz_turnover'] : 0;
-        // 合计交易额 今天
-        $sum_turnover = $stock_main_today ? $stock_main_today['m_sum_turnover'] : 0;
-
-        $change = 0.01;
-        $rise = 1 * (1 + $change);
-        $fall = 1 * (1 - $change);
-
-        $turnover_rate = 0.6;
-        $sh_turnover = $sh_turnover / $turnover_rate;
-        $sz_turnover = $sz_turnover / $turnover_rate;
-        $sum_turnover = $sum_turnover / $turnover_rate;
-
-        $sh_turnover_rise = $sh_turnover * $rise;
-        $sh_close_rise = $sh_close * $rise;
-        $sz_turnover_rise = $sz_turnover * $rise;
-
-        $sh_turnover_fall = $sh_turnover * $fall;
-        $sh_close_fall = $sh_close * $fall;
-        $sz_turnover_fall = $sz_turnover * $fall;
-
-        $data = [
-            // 涨
-            [
-                'name' => '涨幅1%',
-                'sh_close' => $sh_close_rise,
-                'sh_turnover' => $sh_turnover_rise,
-                'sz_turnover' => $sz_turnover_rise,
-                'sum_turnover' => $sum_turnover * $rise,
-                'sold_rules' => '',
-                'buy_rules' => '',
-                'result' => '',
-            ],
-            [
-                'name' => '持平情况',
-                'sh_close' => $sh_close,
-                'sh_turnover' => $sh_turnover,
-                'sz_turnover' => $sz_turnover,
-                'sum_turnover' => $sum_turnover,
-                'sold_rules' => '',
-                'buy_rules' => '',
-                'result' => '',
-            ],
-            // 跌
-            [
-                'name' => '跌幅-1%',
-                'sh_close' => $sh_close_fall,
-                'sh_turnover' => $sh_turnover_fall,
-                'sz_turnover' => $sz_turnover_fall,
-                'sum_turnover' => $sum_turnover * $fall,
-                'sold_rules' => '',
-                'buy_rules' => '',
-                'result' => '',
-            ],
-        ];
-        $stf_turnover = 0;
-        $stf_close = 0;
-        $sz_close = 0;
-        $trans_on = date('Y-m-d');
-
-        $H = date("H");
-        $m = date("i");
-        if (StockMain::is_trans_date() && in_array($H, [12])) {
-            list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
-            // 追加 平均收益率 期望收益率
-            list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
-            $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
-            list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
-            $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
-
-            // 涨
-            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
-            $data[0]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-
-            $list_buy_indexs = StockMainResult2::rule_stat_index($list_buy);
-            $list_sold_indexs = StockMainResult2::rule_stat_index($list_sold);
-            $list_warn_indexs = StockMainResult2::rule_stat_index($list_warn);
-
-            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
-                $buy_rules, $sold_rules, $warn_rules,
-                $buy_rules_day, $sold_rules_day, $warn_rules_day,
-                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
-                StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
-
-            $data[0]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
-            $data[0]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-            $data[0]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
-            $data[0]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
-
-            $data[0]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
-            $data[0]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-            $data[0]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-            $data[0]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
-
-            // 跌
-            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
-            $data[2]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-
-            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
-                $buy_rules, $sold_rules, $warn_rules,
-                $buy_rules_day, $sold_rules_day, $warn_rules_day,
-                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
-                StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
-
-            $data[2]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
-            $data[2]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-            $data[2]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
-            $data[2]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
-
-            $data[2]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
-            $data[2]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-            $data[2]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-            $data[2]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
-
-            StockMain::update_curr_day();
-
-            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->setCache($data);
-        } else {
-            $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
-            $data = json_decode($data, 1);
-        }
+        $data = StockMainResult2::stock_main_noon_forecast();
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
                 'list' => $data,

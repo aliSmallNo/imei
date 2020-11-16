@@ -39,9 +39,6 @@ class CrontabController extends Controller
 //*/20 * * * * /usr/sbin/ntpdate ntpupdate.tencentyun.com >/dev/null &
 
 
-
-
-
     public function actionExp()
     {
         try {
@@ -50,8 +47,6 @@ class CrontabController extends Controller
         } catch (\Exception $e) {
 
         }
-
-        // UserTag::calcExp();
 
         try {
             // 更新统计数据 /stock/trend
@@ -103,25 +98,11 @@ class CrontabController extends Controller
     public function actionRank()
     {
         try {
-            if (date('H' == "04")) {
-
-            }
             // 更新用户表的 用户最后操作时间
             StockUser::update_last_opt();
         } catch (\Exception $e) {
 
         }
-
-        /*try {
-            TryPhone::put_logs_to_db('_' . date('Ymd', time() - 86400));
-//            TryPhone::put_logs_to_db(TryPhone::CAT_QIANCHENGCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_QIANCHENGCL);
-//            TryPhone::put_logs_to_db(TryPhone::CAT_SHUNFAPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_SHUNFAPZ);
-//            TryPhone::put_logs_to_db(TryPhone::CAT_WOLUNCL . '_' . date('Ymd', time() - 86400), TryPhone::CAT_WOLUNCL);
-//            TryPhone::put_logs_to_db(TryPhone::CAT_YIHAOPZ . '_' . date('Ymd', time() - 86400), TryPhone::CAT_YIHAOPZ);
-//            TryPhone::put_logs_to_db(TryPhone::CAT_XIJINFA . '_' . date('Ymd', time() - 86400), TryPhone::CAT_XIJINFA);
-        } catch (\Exception $e) {
-            Log::add(['oCategory' => Log::CAT_PHONE_SECTION_YES, 'oUId' => '1000', 'oAfter' => AppUtil::json_decode($e)]);
-        }*/
 
 
         try {
@@ -142,6 +123,21 @@ class CrontabController extends Controller
         } catch (\Exception $e) {
             Log::add([
                 'oCategory' => Log::CAT_STOCK_MENU_UPDATE,
+                'oBefore' => 'err1',
+                'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()]),
+            ]);
+        }
+
+        try {
+            // 中午预测 每天中午12:30 跑一次 2020-11-16
+            if (in_array(date('H'), ['12'])) {
+                Log::add(['oCategory' => Log::CAT_STOCK_NOON_UPDATE, 'oBefore' => 'out']);
+                $data = StockMainResult2::stock_main_noon_forecast();
+                Log::add(['oCategory' => Log::CAT_STOCK_NOON_UPDATE, 'oBefore' => $data]);
+            }
+        } catch (\Exception $e) {
+            Log::add([
+                'oCategory' => Log::CAT_STOCK_NOON_UPDATE,
                 'oBefore' => 'err1',
                 'oAfter' => AppUtil::json_encode([$e->getMessage(), $e->getLine()]),
             ]);
@@ -289,7 +285,8 @@ class CrontabController extends Controller
     }
 
     // */20 * * * * /data/code/queues.sh > /dev/null 2>&1 &
-    public function actionSh(){
+    public function actionSh()
+    {
 
 
     }
