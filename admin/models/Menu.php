@@ -85,11 +85,11 @@ class Menu
     public static function getForkId($searchUrl)
     {
         $menus = self::menus();
-        $needle = trim($searchUrl.'?', '/');
+        $needle = trim($searchUrl . '?', '/');
         foreach ($menus as $menu) {
             $forkId = $menu['id'];
             foreach ($menu['items'] as $item) {
-                $url = trim($item['url'].'?', '/');
+                $url = trim($item['url'] . '?', '/');
                 if (strpos($url, $needle) === 0) {
                     return $forkId;
                 }
@@ -447,6 +447,13 @@ class Menu
                         "revise" => 1,
                         "level" => 827,
                     ],
+                    [
+                        "name" => "中午预测",
+                        "url" => "/stock/stock_main_noon_forecast",
+                        "revise" => 1,
+                        "level" => 827,
+                    ],
+
                 ],
             ],
             [
@@ -454,7 +461,7 @@ class Menu
                 "id" => "stock_pb_info",
                 "icon" => "fa-users",
                 "staff" => 1,
-                'items'=>[
+                'items' => [
                     [
                         "name" => "市净率",
                         "url" => "/stock/stock_main_pb",
