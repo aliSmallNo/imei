@@ -2964,20 +2964,40 @@ class StockController extends BaseController
             list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
                 $buy_rules, $sold_rules, $warn_rules,
                 $buy_rules_day, $sold_rules_day, $warn_rules_day,
-                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate) =
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
                 StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
 
             $data[0]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
             $data[0]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
             $data[0]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+            $data[0]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
 
             $data[0]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
             $data[0]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
             $data[0]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+            $data[0]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
 
             // 跌
             StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
             $data[2]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+                $buy_rules, $sold_rules, $warn_rules,
+                $buy_rules_day, $sold_rules_day, $warn_rules_day,
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
+                StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
+
+            $data[2]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
+            $data[2]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+            $data[2]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+            $data[2]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
+
+            $data[2]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
+            $data[2]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+            $data[2]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+            $data[2]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
 
             StockMain::update_curr_day();
 

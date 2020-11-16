@@ -931,8 +931,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-12-23 PM
      * @time 2020-03-01 PM modify
      */
-    public
-    static function get_first_buys()
+    public static function get_first_buys()
     {
         list($list) = self::items([], [], 1, 10000);
         $list = array_reverse($list);
@@ -940,8 +939,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'];
-            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20']. $v['r_buy60'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20']. $v['r_sold60'];
             if ($buy && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
