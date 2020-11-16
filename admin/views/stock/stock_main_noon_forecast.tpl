@@ -44,7 +44,7 @@
                 <td >{{$item.sz_turnover}}</td>
                 <td >{{$item.sum_turnover}}</td>
                 <td>
-                    {{if $key==0 || $k==2}}
+                    {{if $key==0 || $key==2}}
                         <!-- 买入正确率 -->
                         {{foreach from=$item.buy_rules.buy_rules_right_rate item=right_rate_item key=day}}
                             {{if $right_rate_item}}
@@ -64,7 +64,7 @@
                     {{/if}}
                 </td>
                 <td >
-                    {{if $key==0 || $k==2}}
+                    {{if $key==0 || $key==2}}
                         <!-- 卖出正确率 -->
                         {{foreach from=$item.sold_rules.sold_rules_right_rate item=right_rate_item key=day}}
                             {{if $right_rate_item}}
