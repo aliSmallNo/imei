@@ -46,7 +46,7 @@
                 <td>
                     {{if $key==0 || $k==2}}
                         <!-- 买入正确率 -->
-                        {{foreach from=$item.buy_rules_right_rate item=right_rate_item key=day}}
+                        {{foreach from=$item.buy_rules.buy_rules_right_rate item=right_rate_item key=day}}
                             {{if $right_rate_item}}
                                 {{foreach from=$right_rate_item item=desc}}
                                     <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}% {{$desc.append_hope_val}}%</div>
@@ -54,19 +54,19 @@
                             {{/if}}
                         {{/foreach}}
                         <br>
-                        {{if $item.buy_avg_right_rate}}
-                            <div class="avg_font">平均正确率：{{$item.buy_avg_right_rate}}%</div>{{/if}}
-                        {{if $item.buy_avg_right_rate_2p}}
-                            <div class="avg_font">2P-1：{{$item.buy_avg_right_rate_2p}}%</div>{{/if}}
-                        {{if $item.buy_avg_rate}}
-                        <div class="avg_font" data-co="{{$item.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_avg_rate}}%</div>{{/if}}
+                        {{if $item.buy_rules.buy_avg_right_rate}}
+                            <div class="avg_font">平均正确率：{{$item.buy_rules.buy_avg_right_rate}}%</div>{{/if}}
+                        {{if $item.buy_rules.buy_avg_right_rate_2p}}
+                            <div class="avg_font">2P-1：{{$item.buy_rules.buy_avg_right_rate_2p}}%</div>{{/if}}
+                        {{if $item.buy_rules.buy_avg_rate}}
+                        <div class="avg_font" data-co="{{$item.buy_rules.buy_avg_rate_buy_co}}">平均收益率：{{$item.buy_rules.buy_avg_rate}}%</div>{{/if}}
                     {{else}}
                     {{/if}}
                 </td>
                 <td >
                     {{if $key==0 || $k==2}}
                         <!-- 卖出正确率 -->
-                        {{foreach from=$item.sold_rules_right_rate item=right_rate_item key=day}}
+                        {{foreach from=$item.sold_rules.sold_rules_right_rate item=right_rate_item key=day}}
                             {{if $right_rate_item}}
                                 {{foreach from=$right_rate_item item=desc}}
                                     <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}% {{$desc.append_hope_val}}%</div>
@@ -74,12 +74,12 @@
                             {{/if}}
                         {{/foreach}}
                         <br>
-                        {{if $item.sold_avg_right_rate}}
-                            <div class="avg_font">平均正确率{{$item.sold_avg_right_rate}}%</div>{{/if}}
-                        {{if $item.sold_avg_right_rate_2p}}
-                            <div class="avg_font">2P-1：{{$item.sold_avg_right_rate_2p}}%</div>{{/if}}
-                        {{if $item.sold_avg_rate}}
-                        <div class="avg_font" data-co="{{$item.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_avg_rate}}%</div>{{/if}}
+                        {{if $item.sold_rules.sold_avg_right_rate}}
+                            <div class="avg_font">平均正确率{{$item.sold_rules.sold_avg_right_rate}}%</div>{{/if}}
+                        {{if $item.sold_rules.sold_avg_right_rate_2p}}
+                            <div class="avg_font">2P-1：{{$item.sold_rules.sold_avg_right_rate_2p}}%</div>{{/if}}
+                        {{if $item.sold_rules.sold_avg_rate}}
+                        <div class="avg_font" data-co="{{$item.sold_rules.sold_avg_rate_sold_co}}">平均收益率：{{$item.sold_rules.sold_avg_rate}}%</div>{{/if}}
                     {{else}}
                     {{/if}}
                 </td>
