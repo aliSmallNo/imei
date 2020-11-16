@@ -3463,9 +3463,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sh_turnover' => $sh_turnover_rise,
                 'sz_turnover' => $sz_turnover_rise,
                 'sum_turnover' => $sum_turnover * $rise,
-                'sold_rules' => '',
-                'buy_rules' => '',
-                'result' => '',
+                'sold_rules' => [],
+                'buy_rules' => [],
+                'result' => [],
             ],
             [
                 'name' => '持平情况',
@@ -3473,9 +3473,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sh_turnover' => $sh_turnover,
                 'sz_turnover' => $sz_turnover,
                 'sum_turnover' => $sum_turnover,
-                'sold_rules' => '',
-                'buy_rules' => '',
-                'result' => '',
+                'sold_rules' => [],
+                'buy_rules' => [],
+                'result' => [],
             ],
             // 跌
             [
@@ -3484,9 +3484,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sh_turnover' => $sh_turnover_fall,
                 'sz_turnover' => $sz_turnover_fall,
                 'sum_turnover' => $sum_turnover * $fall,
-                'sold_rules' => '',
-                'buy_rules' => '',
-                'result' => '',
+                'sold_rules' => [],
+                'buy_rules' => [],
+                'result' => [],
             ],
         ];
         $stf_turnover = 0;
