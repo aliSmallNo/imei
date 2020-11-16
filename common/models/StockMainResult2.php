@@ -3460,9 +3460,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             [
                 'name' => '涨幅1%',
                 'sh_close' => $sh_close_rise,
-                'sh_turnover' => $sh_turnover_rise,
-                'sz_turnover' => $sz_turnover_rise,
-                'sum_turnover' => $sum_turnover * $rise,
+                'sh_turnover' => sprintf('%.2f', $sh_turnover_rise),
+                'sz_turnover' => sprintf('%.2f', $sz_turnover_rise),
+                'sum_turnover' => sprintf('%.2f', $sum_turnover * $rise),
                 'sold_rules' => [],
                 'buy_rules' => [],
                 'result' => [],
@@ -3470,9 +3470,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             [
                 'name' => '持平情况',
                 'sh_close' => $sh_close,
-                'sh_turnover' => $sh_turnover,
-                'sz_turnover' => $sz_turnover,
-                'sum_turnover' => $sum_turnover,
+                'sh_turnover' => sprintf('%.2f', $sh_turnover),
+                'sz_turnover' => sprintf('%.2f', $sz_turnover),
+                'sum_turnover' => sprintf('%.2f', $sum_turnover),
                 'sold_rules' => [],
                 'buy_rules' => [],
                 'result' => [],
@@ -3481,9 +3481,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             [
                 'name' => '跌幅-1%',
                 'sh_close' => $sh_close_fall,
-                'sh_turnover' => $sh_turnover_fall,
-                'sz_turnover' => $sz_turnover_fall,
-                'sum_turnover' => $sum_turnover * $fall,
+                'sh_turnover' => sprintf('%.2f', $sh_turnover_fall),
+                'sz_turnover' => sprintf('%.2f', $sz_turnover_fall),
+                'sum_turnover' => sprintf('%.2f', $sum_turnover * $fall),
                 'sold_rules' => [],
                 'buy_rules' => [],
                 'result' => [],
@@ -3497,8 +3497,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $stime = strtotime(date('Y-m-d 11:30:00'));
         $etime = strtotime(date('Y-m-d 13:00:00'));
 
-        if (StockMain::is_trans_date() ) {
-        //if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
+        if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
             list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
             // 追加 平均收益率 期望收益率
             list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
