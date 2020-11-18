@@ -1950,7 +1950,7 @@ class StockController extends BaseController
             $criteria[] = $cStr[$cat];
         }
 
-        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val, $price_type);
+        list($list, $count) = StockMainResult2::items($criteria, $params, $page, 10000, $right_rate_gt_val, $price_type, true);
 
         list($list1, $rate_year_sum1, $stat_rule_right_rate1) = StockMainResult2::cal_back($price_type, 0, 0);
         list($list2, $rate_year_sum2, $stat_rule_right_rate2) = StockMainResult2::cal_back_r_new($price_type, 0, 0);
@@ -2139,31 +2139,20 @@ class StockController extends BaseController
         $stop_rate = self::getParam("stop_rate", 0);
         $stop_rate = trim($stop_rate, '%');
 
-        list($list, $rate_year_sum, $stat_rule_right_rate)
-            = StockMainResult2::cal_back_r_new($price_type, $buy_times, $stop_rate);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new($price_type, $buy_times, $stop_rate);
 
         return $this->renderPage("stock_main_back_r2.tpl", [
-                'list' => StockMainResult2::change_color_diff_sold_dt(
-                    $list
-                ),
+                'list' => StockMainResult2::change_color_diff_sold_dt($list),
                 'rate_year_sum' => $rate_year_sum,
                 'price_types' => StockMainPrice::$types,
                 'price_type' => $price_type,
                 'buy_times' => $buy_times,
                 'stop_rate' => $stop_rate,
                 'stat_rule_right_rate' => $stat_rule_right_rate,
-                'continue_errors' => StockMainResult2::continue_errors(
-                    $list
-                ),
-                'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret(
-                    $list, 1
-                ),
-                'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret(
-                    $list, 2
-                ),
-                'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret(
-                    $list, 3
-                ),
+                'continue_errors' => StockMainResult2::continue_errors($list),
+                'N1_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 1),
+                'N2_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 2),
+                'N3_time_buy_ret' => StockMainResult2::N_times_buy_ret($list, 3),
             ]
         );
     }
