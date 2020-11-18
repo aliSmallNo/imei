@@ -1065,7 +1065,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         } else {
             $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where " . self::BUY_WHERE_STR2 . " order by r_trans_on asc";
+                where " . self::BUY_WHERE_STR . " order by r_trans_on asc";
             $ret = AppUtil::db()->createCommand($sql)->queryAll();
         }
 
