@@ -1065,7 +1065,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         } else {
             $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where " . self::BUY_WHERE_STR2 . " order by r_trans_on asc";
+                where " . self::BUY_WHERE_STR . " order by r_trans_on asc";
             $ret = AppUtil::db()->createCommand($sql)->queryAll();
         }
 
@@ -1590,7 +1590,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where " . self::BUY_WHERE_STR2 . " and r_trans_on>:r_trans_on 
+                where " . self::BUY_WHERE_STR . " and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
 
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
@@ -2281,7 +2281,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 p_trans_on
                 from im_stock_main_price p
                 join im_stock_main_result2 r on p.p_trans_on=r.r_trans_on
-                where p_trans_on > '2000-01-01' and " . self::BUY_WHERE_STR2 . " 
+                where p_trans_on > '2000-01-01' and " . self::BUY_WHERE_STR . " 
                 order by p_trans_on asc";
         $dts = ArrayHelper::getColumn($conn->createCommand($sql)->queryAll(), 'p_trans_on');
 
@@ -2441,7 +2441,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_results = AppUtil::db()->createCommand($sql)->queryAll();
 
         $sql = "select concat(r_buy5,r_buy10,r_buy20) as str,r_note  from im_stock_main_result2 
-                where " . self::BUY_WHERE_STR2;
+                where " . self::BUY_WHERE_STR;
         $buy_results = AppUtil::db()->createCommand($sql)->queryAll();
 
         $buys = $solds = [
@@ -2586,7 +2586,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $list = array_column($list, null, 'buy_dt');
 
         // 所有 买入日期
-        $criteria[] = self::BUY_WHERE_STR2;
+        $criteria[] = self::BUY_WHERE_STR;
         //list($results, $count) = StockMainResult2::items([], [], 1, 10000);
         list($results, $count) = StockMainResult2::items($criteria, [], 1, 10000);
         $results = array_column($results, null, 'r_trans_on');
@@ -3343,7 +3343,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $sql = "select r.* from im_stock_main_result2 r
-                where " . self::BUY_WHERE_STR2 . "
+                where " . self::BUY_WHERE_STR . "
                  and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 
@@ -3366,7 +3366,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public static function wether_first_sold_point($sold_dt)
     {
         $sql = "select r.* from im_stock_main_result2 r
-                where " . self::BUY_WHERE_STR2 . " 
+                where " . self::BUY_WHERE_STR . " 
                 and r_trans_on<:r_trans_on 
                 order by r_trans_on desc limit 1 ";
         // 卖点获取最近的买点
