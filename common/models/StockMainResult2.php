@@ -61,7 +61,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
     const BUY_WHERE_STR = '(CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0)';
     // 此条策略结果 同时有买和卖，你在回测里面，都当做卖处理。 2020-11-18
-    const BUY_WHERE_STR2 = '(CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) and (CHAR_LENGTH(r_sold5)=0 and CHAR_LENGTH(r_sold10)=0 and CHAR_LENGTH(r_sold20)=0 and CHAR_LENGTH(r_sold60)=0))';
+    const BUY_WHERE_STR2 = '((CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) and (CHAR_LENGTH(r_sold5)=0 and CHAR_LENGTH(r_sold10)=0 and CHAR_LENGTH(r_sold20)=0 and CHAR_LENGTH(r_sold60)=0))';
     const SOLD_WHERE_STR = '(CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0)';
 
     static $right_rate_gt_val_map = [
@@ -1065,7 +1065,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         } else {
             $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where " . self::BUY_WHERE_STR . " order by r_trans_on asc";
+                where " . self::BUY_WHERE_STR2 . " order by r_trans_on asc";
             $ret = AppUtil::db()->createCommand($sql)->queryAll();
         }
 
