@@ -3395,7 +3395,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     public static function stock_main_noon_forecast()
     {
         // 上个交易日数据
-        $stock_main_yeastoday = StockMain::find()->where(['<', 'm_trans_on', date('Y-m-d')])->limit(1)->asArray()->one();
+        $stock_main_yeastoday = StockMain::find()
+            ->where("m_trans_on BETWEEN '2020-01-01' and '" . date('Y-m-d', time() - 86400) . "'")
+            ->orderBy('m_trans_on desc')
+            ->limit(1)->asArray()->one();
         // 今天
         $stock_main_today = StockMain::find()->where(['m_trans_on' => date('Y-m-d')])->limit(1)->asArray()->one();
         // 涨跌幅假设	上证指数	上证交易额	深圳交易额	合计交易额	买入信号假设	卖出信号假设
