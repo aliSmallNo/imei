@@ -1904,11 +1904,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        $stock_main_yeastoday = StockMain::find()
-            ->where("m_trans_on BETWEEN '2020-01-01' and '" . date('Y-m-d', time() - 86400) . "'")
-            ->orderBy('m_trans_on desc')
-            ->limit(1)->asArray()->one();
-        print_r($stock_main_yeastoday);
+
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);

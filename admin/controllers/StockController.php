@@ -2051,8 +2051,7 @@ class StockController extends BaseController
 
         $right_rate_gt_val = self::getParam("right_rate_gt_val", 0);
 
-        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, $buy_times,
-            $stop_rate, $right_rate_gt_val);
+        list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back($price_type, $buy_times, $stop_rate, $right_rate_gt_val);
 
 
         return $this->renderPage("stock_main_back2.tpl", [
