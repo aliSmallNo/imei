@@ -1590,7 +1590,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
-                where " . self::BUY_WHERE_STR . " and r_trans_on>:r_trans_on 
+                where " . self::BUY_WHERE_STR2 . " and r_trans_on>:r_trans_on 
                 order by r_trans_on asc limit 1 ";
 
         return AppUtil::db()->createCommand($sql, [':r_trans_on' => $buy_dt])->queryOne();
