@@ -1920,9 +1920,8 @@ class AppUtil
         $numbers = array_filter($numbers);
         sort($numbers);
 
-        if (Admin::getAdminId() == 1002) {
-            print_r($numbers);
-            exit;
+        if (!$numbers) {
+            return 0;
         }
         $totalNumbers = count($numbers);
         $mid = floor($totalNumbers / 2);
