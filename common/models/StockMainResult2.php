@@ -3420,13 +3420,21 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sz_turnover = $sz_turnover / $turnover_rate;
         $sum_turnover = $sum_turnover / $turnover_rate;
 
-        $sh_turnover_rise = $sh_turnover * $rise;
+        // 涨幅1%、跌幅1%【上证交易额】【深圳交易额】改成和持平的一样 2020-11-19 PM
+        //$sh_turnover_rise = $sh_turnover * $rise;
+        $sh_turnover_rise = $sh_turnover;
         $sh_close_rise = $sh_close * $rise;
-        $sz_turnover_rise = $sz_turnover * $rise;
+        // 涨幅1%、跌幅1%【上证交易额】【深圳交易额】改成和持平的一样 2020-11-19 PM
+        //$sz_turnover_rise = $sz_turnover * $rise;
+        $sz_turnover_rise = $sz_turnover;
 
-        $sh_turnover_fall = $sh_turnover * $fall;
+        // 涨幅1%、跌幅1%【上证交易额】【深圳交易额】改成和持平的一样 2020-11-19 PM
+        //$sh_turnover_fall = $sh_turnover * $fall;
+        $sh_turnover_fall = $sh_turnover;
         $sh_close_fall = $sh_close * $fall;
-        $sz_turnover_fall = $sz_turnover * $fall;
+        // 涨幅1%、跌幅1%【上证交易额】【深圳交易额】改成和持平的一样 2020-11-19 PM
+        //$sz_turnover_fall = $sz_turnover * $fall;
+        $sz_turnover_fall = $sz_turnover;
 
         $data = [
             // 涨
