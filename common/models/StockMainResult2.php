@@ -446,6 +446,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
         $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
 
+        $buy_rules = array_filter($buy_rules);
+
         return [$buy_rules, $buy_rules_day];
     }
 
@@ -660,22 +662,22 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         } catch (\Exception $e) {
             if (Admin::getAdminId() == 1002) {
 
-                print_r([$buy_rules,$list_buy, $list_buy_indexs]);
+                print_r([$buy_rules, $list_buy, $list_buy_indexs]);
 
                 exit;
             }
         }
 
-       /* if ($buy_rules) {
-            foreach ($buy_rules as $rule_name) {
-                if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
-                    $buy_co++;
-                    $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+        /* if ($buy_rules) {
+             foreach ($buy_rules as $rule_name) {
+                 if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+                     $buy_co++;
+                     $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
 
-                    // $data[$k1][$rule_name][$day]['times_yes_rate']
-                }
-            }
-        }*/
+                     // $data[$k1][$rule_name][$day]['times_yes_rate']
+                 }
+             }
+         }*/
 
         if ($sold_rules) {
             foreach ($sold_rules as $rule_name) {
