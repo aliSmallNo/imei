@@ -646,24 +646,32 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             60 => [],
         ];
 
-        foreach ($buy_rules as $rule_name) {
-            if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
-                $buy_co++;
-                $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+        if ($buy_rules) {
+            foreach ($buy_rules as $rule_name) {
+                if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+                    $buy_co++;
+                    $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
 
-                // $data[$k1][$rule_name][$day]['times_yes_rate']
+                    // $data[$k1][$rule_name][$day]['times_yes_rate']
+                }
             }
         }
-        foreach ($sold_rules as $rule_name) {
-            if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
-                $sold_co++;
-                $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+
+        if ($sold_rules) {
+            foreach ($sold_rules as $rule_name) {
+                if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
+                    $sold_co++;
+                    $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+                }
             }
         }
-        foreach ($warn_rules as $rule_name) {
-            if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
-                $warn_co++;
-                $warn_sum += $list_warn[$list_warn_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+
+        if ($warn_rules) {
+            foreach ($warn_rules as $rule_name) {
+                if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
+                    $warn_co++;
+                    $warn_sum += $list_warn[$list_warn_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
+                }
             }
         }
 
@@ -3569,8 +3577,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         } catch (\Exception $e) {
             $trans->rollBack();
             if (Admin::getAdminId() == 1002) {
-                echo $k;
-                print_r([$list_buy, $list_buy_indexs]);
+                echo $k;exit;
+                //print_r([$list_buy, $list_buy_indexs]);
             }
         }
 
