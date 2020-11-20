@@ -3443,7 +3443,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sh_close' => $sh_close_rise,
                 'sh_turnover' => sprintf('%.2f', $sh_turnover_rise),
                 'sz_turnover' => sprintf('%.2f', $sz_turnover_rise),
-                'sum_turnover' => sprintf('%.2f', $sum_turnover * $rise),
+                'sum_turnover' => sprintf('%.2f', $sum_turnover),
                 'sold_rules' => [],
                 'buy_rules' => [],
                 'result' => [],
@@ -3464,7 +3464,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sh_close' => $sh_close_fall,
                 'sh_turnover' => sprintf('%.2f', $sh_turnover_fall),
                 'sz_turnover' => sprintf('%.2f', $sz_turnover_fall),
-                'sum_turnover' => sprintf('%.2f', $sum_turnover * $fall),
+                'sum_turnover' => sprintf('%.2f', $sum_turnover),
                 'sold_rules' => [],
                 'buy_rules' => [],
                 'result' => [],
@@ -3486,13 +3486,35 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
             $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
-            // 涨
-            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
-            $data[0]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-
             $list_buy_indexs = StockMainResult2::rule_stat_index($list_buy);
             $list_sold_indexs = StockMainResult2::rule_stat_index($list_sold);
             $list_warn_indexs = StockMainResult2::rule_stat_index($list_warn);
+
+            foreach ($data as $k => $v) {
+                StockMain::pre_insert($stf_turnover, $stf_close, $v['sh_turnover'], $v['sh_close'], $v['sz_turnover'], $sz_close, $trans_on);
+                $data[$k]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+                list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+                    $buy_rules, $sold_rules, $warn_rules,
+                    $buy_rules_day, $sold_rules_day, $warn_rules_day,
+                    $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+                    $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
+                    StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
+
+                $data[$k]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
+                $data[$k]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+                $data[$k]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+                $data[$k]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
+
+                $data[$k]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
+                $data[$k]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+                $data[$k]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+                $data[$k]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
+            }
+
+            /*// 涨
+            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
+            $data[0]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
 
             list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
                 $buy_rules, $sold_rules, $warn_rules,
@@ -3530,7 +3552,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $data[2]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
             $data[2]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
             $data[2]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-            $data[2]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
+            $data[2]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;*/
 
             StockMain::update_curr_day();
 
