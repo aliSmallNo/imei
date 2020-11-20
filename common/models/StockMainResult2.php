@@ -3485,8 +3485,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $trans = AppUtil::db()->beginTransaction();
 
-        //if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
-        if (StockMain::is_trans_date() || 1) {
+        if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
+//        if (StockMain::is_trans_date() || 1) {
             list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
             // 追加 平均收益率 期望收益率
             list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
