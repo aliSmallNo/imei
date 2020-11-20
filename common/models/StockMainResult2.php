@@ -3518,11 +3518,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $data[$k]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
                 $data[$k]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
                 $data[$k]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
+                $data[$k]['buy_rules']['buy_avg_rate_buy_co'] = $buy_avg_rate_buy_co;
 
                 $data[$k]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
                 $data[$k]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
                 $data[$k]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
                 $data[$k]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
+                $data[$k]['sold_rules']['sold_avg_rate_sold_co'] = $sold_avg_rate_sold_co;
             }
 
             /*// 涨
