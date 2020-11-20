@@ -3487,45 +3487,23 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $etime = strtotime(date('Y-m-d 13:00:00'));
 
         $trans = AppUtil::db()->beginTransaction();
-        try {
-            //if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
-            if (StockMain::is_trans_date() || 1) {
-                list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
-                // 追加 平均收益率 期望收益率
-                list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
-                $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
-                list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
-                $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
-                $list_buy_indexs = StockMainResult2::rule_stat_index($list_buy);
-                $list_sold_indexs = StockMainResult2::rule_stat_index($list_sold);
-                $list_warn_indexs = StockMainResult2::rule_stat_index($list_warn);
+        //if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
+        if (StockMain::is_trans_date() || 1) {
+            list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
+            // 追加 平均收益率 期望收益率
+            list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
+            $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
+            list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
+            $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
 
-                foreach ($data as $k => $v) {
-                    StockMain::pre_insert($stf_turnover, $stf_close, $v['sh_turnover'], $v['sh_close'], $v['sz_turnover'], $sz_close, $trans_on);
-                    $data[$k]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => $trans_on])->asArray()->one();
+            $list_buy_indexs = StockMainResult2::rule_stat_index($list_buy);
+            $list_sold_indexs = StockMainResult2::rule_stat_index($list_sold);
+            $list_warn_indexs = StockMainResult2::rule_stat_index($list_warn);
 
-                    list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
-                        $buy_rules, $sold_rules, $warn_rules,
-                        $buy_rules_day, $sold_rules_day, $warn_rules_day,
-                        $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-                        $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
-                        StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
-
-                    $data[$k]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
-                    $data[$k]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-                    $data[$k]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
-                    $data[$k]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
-
-                    $data[$k]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
-                    $data[$k]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-                    $data[$k]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-                    $data[$k]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
-                }
-
-                /*// 涨
-                StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
-                $data[0]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+            foreach ($data as $k => $v) {
+                StockMain::pre_insert($stf_turnover, $stf_close, $v['sh_turnover'], $v['sh_close'], $v['sz_turnover'], $sz_close, $trans_on);
+                $data[$k]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => $trans_on])->asArray()->one();
 
                 list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
                     $buy_rules, $sold_rules, $warn_rules,
@@ -3534,54 +3512,68 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
                     StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
 
-                $data[0]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
-                $data[0]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-                $data[0]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
-                $data[0]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
+                $data[$k]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
+                $data[$k]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+                $data[$k]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+                $data[$k]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
 
-                $data[0]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
-                $data[0]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-                $data[0]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-                $data[0]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
-
-                // 跌
-                StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
-                $data[2]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
-
-                list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
-                    $buy_rules, $sold_rules, $warn_rules,
-                    $buy_rules_day, $sold_rules_day, $warn_rules_day,
-                    $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-                    $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
-                    StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
-
-                $data[2]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
-                $data[2]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
-                $data[2]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
-                $data[2]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
-
-                $data[2]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
-                $data[2]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
-                $data[2]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
-                $data[2]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;*/
-
-                StockMain::update_curr_day();
-
-                RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->setCache($data);
-            } else {
-                $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
-                $data = json_decode($data, 1);
+                $data[$k]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
+                $data[$k]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+                $data[$k]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+                $data[$k]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
             }
 
-            $trans->commit();
-        } catch (\Exception $e) {
-            $trans->rollBack();
-            if (Admin::getAdminId() == 1002) {
-                echo $k;exit;
-                //print_r([$list_buy, $list_buy_indexs]);
-            }
+            /*// 涨
+            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_rise, $sh_close_rise, $sz_turnover_rise, $sz_close, $trans_on);
+            $data[0]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+                $buy_rules, $sold_rules, $warn_rules,
+                $buy_rules_day, $sold_rules_day, $warn_rules_day,
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
+                StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
+
+            $data[0]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
+            $data[0]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+            $data[0]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+            $data[0]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
+
+            $data[0]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
+            $data[0]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+            $data[0]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+            $data[0]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
+
+            // 跌
+            StockMain::pre_insert($stf_turnover, $stf_close, $sh_turnover_fall, $sh_close_fall, $sz_turnover_fall, $sz_close, $trans_on);
+            $data[2]['result'] = StockMainResult2::find()->where(['r_trans_on' => date('Y-m-d')])->asArray()->one();
+
+            list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
+                $buy_rules, $sold_rules, $warn_rules,
+                $buy_rules_day, $sold_rules_day, $warn_rules_day,
+                $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
+                $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
+                StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
+
+            $data[2]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
+            $data[2]['buy_rules']['buy_avg_right_rate'] = $buy_co > 0 ? sprintf('%.2f', $buy_sum / $buy_co) : 0;
+            $data[2]['buy_rules']['buy_avg_right_rate_2p'] = $buy_co > 0 ? (2 * sprintf('%.2f', $buy_sum / $buy_co) - 100) : 0;
+            $data[2]['buy_rules']['buy_avg_rate'] = $buy_avg_rate;
+
+            $data[2]['sold_rules']['sold_rules_right_rate'] = $sold_rules_right_rate;
+            $data[2]['sold_rules']['sold_avg_right_rate'] = $sold_co > 0 ? sprintf('%.2f', $sold_sum / $sold_co) : 0;
+            $data[2]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
+            $data[2]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;*/
+
+            StockMain::update_curr_day();
+
+            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->setCache($data);
+        } else {
+            $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
+            $data = json_decode($data, 1);
         }
 
+        $trans->commit();
 
         return $data;
     }
