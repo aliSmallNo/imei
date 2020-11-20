@@ -433,6 +433,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
+        $rules = array_filter($rules);
+
         return $rules;
     }
 
@@ -445,8 +447,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
         $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
-
-        //$buy_rules = array_filter($buy_rules);
 
         return [$buy_rules, $buy_rules_day];
     }
@@ -3502,10 +3502,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 StockMain::pre_insert($stf_turnover, $stf_close, $v['sh_turnover'], $v['sh_close'], $v['sz_turnover'], $sz_close, $trans_on);
                 $data[$k]['result'] = $result = StockMainResult2::find()->where(['r_trans_on' => $trans_on])->asArray()->one();
 
-                if (Admin::getAdminId() == 1002) {
+                /*if (Admin::getAdminId() == 1002) {
                     print_r([$result, $list_buy, $list_buy_indexs]);
                     exit;
-                }
+                }*/
 
                 list($buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
                     $buy_rules, $sold_rules, $warn_rules,
