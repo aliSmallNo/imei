@@ -3455,7 +3455,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             ],
             [
                 'name' => '持平情况',
-                'sh_close' => $sh_close,
+                // 2020-11-27 PM
+                'sh_close' => sprintf('%.2f', $sh_close * (1 + 0.0001)),
                 'sh_turnover' => sprintf('%.2f', $sh_turnover),
                 'sz_turnover' => sprintf('%.2f', $sz_turnover),
                 'sum_turnover' => sprintf('%.2f', $sum_turnover),
