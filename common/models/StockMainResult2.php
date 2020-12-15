@@ -677,12 +677,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                     $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
+                    $times_no_rate = $_item['SUM']['times_no_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 买入策略
                         $buy_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
+                            'times_no_rate' => $times_no_rate,
                             'append_hope_val' => $append_hope_val,
                         ];
                     }
@@ -695,12 +697,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
                     $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
+                    $times_no_rate = $_item['SUM']['times_no_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 卖出策略
                         $sold_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
+                            'times_no_rate' => $times_no_rate,
                             'append_hope_val' => $append_hope_val,
                         ];
                     }
@@ -3349,17 +3353,80 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $sql = "select r.* from im_stock_main_result2 r
                 where " . self::BUY_WHERE_STR2 . "
-                 and r_trans_on BETWEEN :st and :et 
+                and r_trans_on BETWEEN :st and :et 
                 order by r_trans_on asc ";
 
-        $buy_points = AppUtil::db()->createCommand($sql,
-            [':st' => $sold['r_trans_on'], ':et' => $buy_dt])->queryAll();
+        $buy_points = AppUtil::db()->createCommand($sql, [':st' => $sold['r_trans_on'], ':et' => $buy_dt])->queryAll();
 
         if (count($buy_points) != 1) {
             return false;
         }
 
         return true;
+    }
+
+    public static function cal_20201127()
+    {
+        $sql1 = "select r.* from im_stock_main_result2 r
+                where " . self::BUY_WHERE_STR2 . "
+                order by r_trans_on desc ";
+        // 所有买点
+        $d1 = AppUtil::db()->createCommand($sql1)->queryAll();
+
+        // 卖出信号错误，计算下一次买入信号的正确率
+        $arr1 = [
+            'right_co' => 0,// 正确数
+            'wrong_co' => 0,// 错误数
+            'mid_co' => 0,  // 中性数
+            'sum' => 0,
+        ];
+        // 卖出信号中性，计算下一次买入信号的正确率
+        $arr2 = [
+            'right_co' => 0,// 正确数
+            'wrong_co' => 0,// 错误数
+            'mid_co' => 0,  // 中性数
+            'sum' => 0,
+        ];
+
+        foreach ($d1 as $k => $v) {
+            $buy_dt = $v['r_trans_on'];
+            $buy_note = $v['r_note'];
+            $res = self::wether_first_buy_point($buy_dt);
+            if ($res) {
+                $sql2 = "select r.* from im_stock_main_result2 r
+                where " . self::SOLD_WHERE_STR . "
+                and r_trans_on BETWEEN :st and :et 
+                order by r_trans_on desc limit 1 ";
+                // 上一个卖点
+                $d2 = AppUtil::db()->createCommand($sql2, [':st' => '2012-01-01', ':et' => $buy_dt])->queryOne();
+                if (!$d2) {
+                    continue;
+                }
+                $sold_note = $d2['r_note'];
+                if ($sold_note == self::NOTE_WRONG) {
+                    $arr1['sum']++;
+                    if ($buy_note == self::NOTE_RIGHT) $arr1['right_co']++;
+                    if ($buy_note == self::NOTE_WRONG) $arr1['wrong_co']++;
+                    if ($buy_note == self::NOTE_MID) $arr1['mid_co']++;
+                }
+                if ($sold_note == self::NOTE_MID) {
+                    $arr2['sum']++;
+
+                    if ($buy_note == self::NOTE_RIGHT) $arr2['right_co']++;
+                    if ($buy_note == self::NOTE_WRONG) $arr2['wrong_co']++;
+                    if ($buy_note == self::NOTE_MID) $arr2['mid_co']++;
+                }
+            }
+        }
+
+        echo "卖出信号错误，计算下一次买入信号的正确率 " . $arr1['right_co'] . '/' . $arr1['sum'] . '=' . $arr1['right_co'] / $arr1['sum'] . PHP_EOL;
+        echo "卖出信号错误，计算下一次买入信号的错误率 " . $arr1['wrong_co'] . '/' . $arr1['sum'] . '=' . $arr1['wrong_co'] / $arr1['sum'] . PHP_EOL;
+        echo "卖出信号错误，计算下一次买入信号的中性率 " . $arr1['mid_co'] . '/' . $arr1['sum'] . '=' . $arr1['mid_co'] / $arr1['sum'] . PHP_EOL;
+
+        echo "卖出信号中性，计算下一次买入信号的正确率 " . $arr2['right_co'] . '/' . $arr2['sum'] . '=' . $arr2['right_co'] / $arr2['sum'] . PHP_EOL;
+        echo "卖出信号中性，计算下一次买入信号的错误率 " . $arr2['wrong_co'] . '/' . $arr2['sum'] . '=' . $arr2['wrong_co'] / $arr2['sum'] . PHP_EOL;
+        echo "卖出信号中性，计算下一次买入信号的中性率 " . $arr2['mid_co'] . '/' . $arr2['sum'] . '=' . $arr2['mid_co'] / $arr2['sum'] . PHP_EOL;
+
     }
 
     /**

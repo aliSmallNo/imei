@@ -1905,15 +1905,7 @@ class FooController extends Controller
     public function actionZp()
     {
 
-        $r_buy5 = ',买Z5-5,买Z6-5';
-        $r_buy10 = ',买Z5-10,买Z6-10';
-        $r_buy20 = ',买Z2-WX-CD-20,买Z5-20,买Z6-20';
-        $r_buy60 = ',买Z5-60,买Z2-60,买Z6-60';
-
-        list($buy_rules, $buy_rules_day) = StockMainResult2::rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60);
-        var_dump($buy_rules);
-        print_r($buy_rules_day);
-
+        StockMainResult2::cal_20201127();
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);
