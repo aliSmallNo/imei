@@ -677,14 +677,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                     $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
-                    $times_no_rate = $_item['SUM']['times_no_rate'];
+                    $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 买入策略
                         $buy_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
-                            'times_no_rate' => $times_no_rate,
+                            'no_avg_rate' => $no_avg_rate,
                             'append_hope_val' => $append_hope_val,
                         ];
                     }
@@ -697,14 +697,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
                     $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
-                    $times_no_rate = $_item['SUM']['times_no_rate'];
+                    $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 卖出策略
                         $sold_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
-                            'times_no_rate' => $times_no_rate,
+                            'no_avg_rate' => $no_avg_rate,
                             'append_hope_val' => $append_hope_val,
                         ];
                     }
