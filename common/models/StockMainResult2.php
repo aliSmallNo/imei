@@ -1162,7 +1162,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $stat_rule_right_rate = self::stat_rule_right_rate($data);
 
         // 统计年度收益
-        $rate_year_sum = self::get_year_data($data);
+        $rate_year_sum = self::get_year_data($data, $price_type);
 
         return [$data, $rate_year_sum, $stat_rule_right_rate];
 
@@ -1499,11 +1499,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-10
      * @time 2020-03-01 PM modify
+     * @time 2020-12-21 PM modify
      */
-    public
-    static function get_year_data(
-        $data
-    )
+    public static function get_year_data($data, $price_type = StockMainPrice::TYPE_SH_CLOSE)
     {
         $rate_year_sum = [];
         foreach ($data as $v3) {
@@ -1528,9 +1526,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $sum_rate = $v['sum_rate'];
             $success_times = $v['success_times'];
             $sum_times = $success_times + $v['fail_times'];
-            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? (round($success_times / $sum_times,
-                        3) * 100) . '%' : 0;
+            $rate_year_sum[$k]['success_rate'] = $sum_times > 0 ? (round($success_times / $sum_times, 3) * 100) . '%' : 0;
             $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
+
+            //
+            if ($price_type == StockMainPrice::TYPE_ETF_500) {
+                $rate_year_sum[$k]['p500etf_rate'] = StockMainPrice::get_this_year_rate($k);
+            } else {
+                $rate_year_sum[$k]['p500etf_rate'] = 0;
+            }
         }
 
         return $rate_year_sum;

@@ -79,6 +79,28 @@ class StockMainPrice extends \yii\db\ActiveRecord
         return [$res, $entity];
     }
 
+    /**
+     * 本年ETF收益率
+     *
+     * 本年ETF收益率，计算方式为：
+     * 1.如选中500ETF
+     * 2.那么如2019年，（2019年12月31日500ETF收盘价-2018年12月31日500ETF收盘价）/2018年12月31日500ETF收盘价
+     *
+     * @time 2020-12-21
+     */
+    public static function get_this_year_rate($year)
+    {
+        $sql = "select p_etf500 from im_stock_main_price where  DATE_FORMAT(p_trans_on, '%Y')=:year order by p_trans_on desc limit 1";
+        $price1 = AppUtil::db()->createCommand($sql, [':year' => $year])->queryScalar();
+        $price2 = AppUtil::db()->createCommand($sql, [':year' => intval($year) - 1])->queryScalar();
+
+        if ($price1 && $price2) {
+            return $price2 > 0 ? sprintf('%.4f', ($price1 - $price2) / $price2) * 100 : 0;
+        } else {
+            return 0;
+        }
+    }
+
     const TYPE_ETF_50 = 'p_etf50';
     const TYPE_ETF_300 = 'p_etf300';
     const TYPE_ETF_500 = 'p_etf500';
@@ -125,7 +147,7 @@ class StockMainPrice extends \yii\db\ActiveRecord
     {
         return false;
         foreach (self::$ic_futures2 as $dt => $ic_price) {
-            echo $dt.PHP_EOL;
+            echo $dt . PHP_EOL;
             self::add([
                 //'p_etf500' => StockMain::$etf500_data[$dt] ?? 0,
                 //'p_etf300' => $etf300_price,
@@ -4678,6 +4700,6 @@ class StockMainPrice extends \yii\db\ActiveRecord
         '2020/02/04' => 4927.2,
         '2020/02/05' => 5064.4,
         '2020/02/06' => 5250.4,
-        '2020/02/07'=>5300.4,
+        '2020/02/07' => 5300.4,
     ];
 }

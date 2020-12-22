@@ -74,6 +74,7 @@
       <th>失败次数</th>
       <th>成功率</th>
       <th>平均收益率</th>
+      <th>本年ETF收益率</th>
     </tr>
     </thead>
     {{foreach from=$rate_year_sum item=item key=year}}
@@ -84,6 +85,7 @@
         <td>{{$item.fail_times}}</td>
         <td>{{$item.success_rate}}</td>
         <td>{{$item.avg_rate}}%</td>
+        <td>{{$item.p500etf_rate}}%</td>
       </tr>
     {{/foreach}}
   </table>
