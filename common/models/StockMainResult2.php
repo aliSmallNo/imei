@@ -3468,7 +3468,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-11-15 PM
      */
-    public static function stock_main_noon_forecast()
+    public static function stock_main_noon_forecast($ver = 61)
     {
         // 上个交易日数据
         $stock_main_yeastoday = StockMain::find()
@@ -3491,7 +3491,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $rise = 1 * (1 + $change);
         $fall = 1 * (1 - $change);
 
-        $turnover_rate = 0.61;
+        //$turnover_rate = 0.61;
+        if ($ver == 60) {
+            $turnover_rate = 0.60;
+        }
+        if ($ver == 61) {
+            $turnover_rate = 0.61;
+        }
+
         $sh_turnover = $sh_turnover / $turnover_rate;
         $sz_turnover = $sz_turnover / $turnover_rate;
         $sum_turnover = $sum_turnover / $turnover_rate;
@@ -3643,10 +3650,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
             StockMain::update_curr_day();
 
-            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->setCache($data);
+            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver)->setCache($data);
         } else {
-            $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
-            $data = json_decode($data, 1);
+            if ($ver == 61) {
+                $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
+                RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver)->setCache($data);
+            }
+            $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver)->getCache();
+
+            $data = $data ? json_decode($data, 1) : [];
         }
 
         $trans->commit();
