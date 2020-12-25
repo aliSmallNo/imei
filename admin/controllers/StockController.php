@@ -2861,7 +2861,7 @@ class StockController extends BaseController
         Admin::staffOnly();
 
         $data = StockMainResult2::stock_main_noon_forecast();
-        $data_60 = StockMainResult2::stock_main_noon_forecast(61);
+        $data_60 = StockMainResult2::stock_main_noon_forecast(60);
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
                 'list' => $data,

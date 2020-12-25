@@ -3652,10 +3652,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
             RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver)->setCache($data);
         } else {
-            if ($ver == 61) {
-                $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST)->getCache();
-                RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver)->setCache($data);
-            }
             $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver)->getCache();
 
             $data = $data ? json_decode($data, 1) : [];
