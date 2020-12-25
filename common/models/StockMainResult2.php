@@ -1530,8 +1530,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
 
             //
-            if ($price_type == StockMainPrice::TYPE_ETF_500) {
-                $rate_year_sum[$k]['p500etf_rate'] = StockMainPrice::get_this_year_rate($k);
+            if (in_array($price_type, [StockMainPrice::TYPE_ETF_500, StockMainPrice::TYPE_ETF_300, StockMainPrice::TYPE_ETF_50])) {
+                $rate_year_sum[$k]['p500etf_rate'] = StockMainPrice::get_this_year_rate($k,$price_type);
             } else {
                 $rate_year_sum[$k]['p500etf_rate'] = 0;
             }

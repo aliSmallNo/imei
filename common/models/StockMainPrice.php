@@ -88,9 +88,10 @@ class StockMainPrice extends \yii\db\ActiveRecord
      *
      * @time 2020-12-21
      */
-    public static function get_this_year_rate($year)
+    public static function get_this_year_rate($year, $price_type)
     {
-        $sql = "select p_etf500 from im_stock_main_price where  DATE_FORMAT(p_trans_on, '%Y')=:year order by p_trans_on desc limit 1";
+
+        $sql = "select {$price_type} from im_stock_main_price where  DATE_FORMAT(p_trans_on, '%Y')=:year order by p_trans_on desc limit 1";
         $price1 = AppUtil::db()->createCommand($sql, [':year' => $year])->queryScalar();
         $price2 = AppUtil::db()->createCommand($sql, [':year' => intval($year) - 1])->queryScalar();
 

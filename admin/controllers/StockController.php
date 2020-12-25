@@ -2861,6 +2861,7 @@ class StockController extends BaseController
         Admin::staffOnly();
 
         $data = StockMainResult2::stock_main_noon_forecast();
+        // 加上一个 0.6 版本 2020-12-25
         $data_60 = StockMainResult2::stock_main_noon_forecast(60);
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
