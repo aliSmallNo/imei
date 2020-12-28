@@ -1083,7 +1083,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 //            print_r($ret);
 //            exit;
 //        }
-        foreach ($ret as $buy) {
+
+        /*foreach ($ret as $buy) {
             if (!isset($buy['r_trans_on'])) {
                 continue;
             }
@@ -1151,18 +1152,97 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             ];
             $data[] = $item;
         }
-        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
+        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);*/
 
-        // 去掉大于买入次数的买点
-        if (intval($buy_times) > 0) {
-            //$data = self::pop_by_times($buy_times, $data);
-        }
+        $cal_ret = function ($ret, $price_type, $buy_times, $stop_rate) {
+            foreach ($ret as $buy) {
+                if (!isset($buy['r_trans_on'])) {
+                    continue;
+                }
+                $buy_dt = $buy['r_trans_on'];
+
+                // 2019-12-23 add
+                if ($buy_times) {
+                    if (isset($get_first_buys[$buy_dt])) {
+                        $has_buy_times = 1;
+                    }
+                    if ($has_buy_times > $buy_times) {
+                        continue;
+                    }
+                    $has_buy_times++;
+                }
+
+                $sold = self::get_sold_point($buy_dt);
+                if (!$sold) {
+                    continue;
+                }
+                $sold_dt = $sold['r_trans_on'];
+
+                $buy_type = self::get_buy_sold_item($buy, self::TAG_BUY);
+                $buy_price = $buy[$price_type];
+
+                $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                $sold_price = $sold[$price_type];
+                $rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;
+                $rule_rate = $rate;
+                $set_rate = 0;
+                $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+
+                // 低于止损比例 获取新的卖点
+                //if ($stop_rate && $rate < $stop_rate) {
+                if ($stop_rate) {
+                    $sold = self::_get_sold_point($buy_dt, $sold_dt, $price_type, $stop_rate);
+                    if ($sold) {
+                        $sold_dt = $sold['r_trans_on'];
+                        $sold_type = self::get_buy_sold_item($sold, self::TAG_SOLD);
+                        $sold_price = $sold[$price_type];
+                        $set_rate = $buy_price != 0 ? round(($sold_price - $buy_price) / $buy_price, 4) * 100 : 0;;
+                        $rate = $stop_rate;;
+                        $hold_days = ceil((strtotime($sold_dt) - strtotime($buy_dt)) / 86400);
+                    }
+                }
+
+                // 找最高 最低卖点 及平均收益率
+                list($rate_avg, $high, $low) = self::get_high_low_point($buy_dt, $sold_dt, $price_type);
+
+                $item = [
+                    'buy_dt' => $buy_dt,            // 买入日期
+                    'buy_price' => $buy_price,      // 买入日期 价格
+                    'buy_type' => $buy_type,        //  买入类型
+                    'sold_dt' => $sold_dt,          //  卖出日期
+                    'sold_price' => $sold_price,    //  卖出日期 价格
+                    'sold_type' => $sold_type,      //  卖出类型
+                    'hold_days' => $hold_days,      //  持有天数
+                    'rate' => $rate,                //  收益率
+                    'rule_rate' => $rule_rate,
+                    'set_rate' => $set_rate,
+                    'rate_avg' => $rate_avg,        // 平均收益率
+                    'high' => $high,                // 最高卖点
+                    'low' => $low,                  // 最低卖点
+                    'back_dir' => self::BACK_DIR_1, // 正常回测
+                ];
+                $data[] = $item;
+            }
+            ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
+
+            return $data;
+        };
+
+        $data = $cal_ret($ret, $price_type, $buy_times, $stop_rate);
 
         // 回测表中加一个“正确率” 2019-12-12 PM
         $stat_rule_right_rate = self::stat_rule_right_rate($data);
 
         // 统计年度收益
         $rate_year_sum = self::get_year_data($data, $price_type);
+        if ($buy_times > 1) {
+            $data = $cal_ret($ret, $price_type, 1, $stop_rate);
+            $rate_year_sum2 = self::get_year_data($data, $price_type);
+            foreach ($rate_year_sum as $year => $v) {
+                // 输入2次或3次时，α还是“第一次买入总收益—本年ETF收益率”
+                $rate_year_sum[$year]['ALPHA'] = sprintf('%.2f', $rate_year_sum2[$year]['sum_rate'] - $rate_year_sum2[$k]['etf_rate']);
+            }
+        }
 
         return [$data, $rate_year_sum, $stat_rule_right_rate];
 
