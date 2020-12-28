@@ -1039,6 +1039,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      */
     public static function cal_back($price_type, $buy_times = 0, $stop_rate = 0, $right_rate_gt_val = 0)
     {
+        $get_first_buys = [];
         if ($buy_times) {
             $get_first_buys = self::get_first_buys();
             //print_r($get_first_buys);exit;
