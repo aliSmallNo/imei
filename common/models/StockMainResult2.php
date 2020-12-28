@@ -1084,7 +1084,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 //            exit;
 //        }
 
-        foreach ($ret as $buy) {
+        /*foreach ($ret as $buy) {
             if (!isset($buy['r_trans_on'])) {
                 continue;
             }
@@ -1152,9 +1152,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             ];
             $data[] = $item;
         }
-        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);
+        ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);*/
 
-        /*$cal_ret = function ($ret, $price_type, $buy_times, $stop_rate) {
+        $cal_ret = function ($ret, $get_first_buys, $price_type, $buy_times, $stop_rate) {
             foreach ($ret as $buy) {
                 if (!isset($buy['r_trans_on'])) {
                     continue;
@@ -1228,7 +1228,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             return $data;
         };
 
-        $data = $cal_ret($ret, $price_type, $buy_times, $stop_rate);*/
+        $data = $cal_ret($ret, $get_first_buys, $price_type, $buy_times, $stop_rate);
 
         // 回测表中加一个“正确率” 2019-12-12 PM
         $stat_rule_right_rate = self::stat_rule_right_rate($data);
@@ -1236,7 +1236,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         // 统计年度收益
         $rate_year_sum = self::get_year_data($data, $price_type);
         /*if ($buy_times > 1) {
-            $data = $cal_ret($ret, $price_type, 1, $stop_rate);
+            $data = $cal_ret($ret, $get_first_buys, $price_type, 1, $stop_rate);
             $rate_year_sum2 = self::get_year_data($data, $price_type);
             foreach ($rate_year_sum as $year => $v) {
                 // 输入2次或3次时，α还是“第一次买入总收益—本年ETF收益率”
