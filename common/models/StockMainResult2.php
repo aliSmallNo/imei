@@ -1530,7 +1530,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $rate_year_sum[$k]['avg_rate'] = $sum_times > 0 ? round($sum_rate / $sum_times, 2) : 0;
 
             //
-            if (in_array($price_type, [StockMainPrice::TYPE_ETF_500, StockMainPrice::TYPE_ETF_300, StockMainPrice::TYPE_ETF_50])) {
+            if (in_array($price_type, [
+                StockMainPrice::TYPE_SH_CLOSE,
+                StockMainPrice::TYPE_ETF_500,
+                StockMainPrice::TYPE_ETF_300,
+                StockMainPrice::TYPE_ETF_50])) {
                 $etf_rate = StockMainPrice::get_this_year_rate($k, $price_type);
                 $rate_year_sum[$k]['etf_rate'] = $etf_rate;
                 // α=一次买入总收益—本年ETF收益率
