@@ -1236,14 +1236,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         // 统计年度收益
         $rate_year_sum = self::get_year_data($data, $price_type);
-        /*if ($buy_times > 1) {
+        if ($buy_times > 1) {
             $data = $cal_ret($ret, $get_first_buys, $price_type, 1, $stop_rate);
             $rate_year_sum2 = self::get_year_data($data, $price_type);
             foreach ($rate_year_sum as $year => $v) {
                 // 输入2次或3次时，α还是“第一次买入总收益—本年ETF收益率”
-                $rate_year_sum[$year]['ALPHA'] = sprintf('%.2f', $rate_year_sum2[$year]['sum_rate'] - $rate_year_sum2[$k]['etf_rate']);
+                $rate_year_sum[$year]['ALPHA'] = sprintf('%.2f', $rate_year_sum2[$year]['sum_rate'] - $rate_year_sum2[$year]['etf_rate']);
             }
-        }*/
+        }
 
         return [$data, $rate_year_sum, $stat_rule_right_rate];
 
