@@ -88,7 +88,7 @@
       <tr>
         <td>{{$key+1}}</td>
         <td>{{$item.r_trans_on}}</td>
-        <td>{{$item.m_etf_close}}</td>
+        <td>{{$item.curr_stock_price}}</td>
 
         <!-- 买入 -->
         <td class="bot_line">

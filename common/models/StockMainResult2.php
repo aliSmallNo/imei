@@ -485,6 +485,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         //echo AppUtil::db()->createCommand($sql)->bindValues($params)->getRawSql();exit;
 
         foreach ($res as $k => $v) {
+            $res[$k]['curr_stock_price'] = isset($v[$price_type]) && $v[$price_type] ? $v[$price_type] : $v['m_etf_close'];
             foreach ($v as $f => $v1) {
                 if (in_array($f, [
                     'r_buy5', 'r_buy10', 'r_buy20', 'r_buy60',
