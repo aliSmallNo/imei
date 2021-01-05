@@ -2863,12 +2863,12 @@ class StockController extends BaseController
         $data = StockMainResult2::stock_main_noon_forecast();
         // 加上一个 0.6 版本 2020-12-25
         $data_60 = StockMainResult2::stock_main_noon_forecast(60);
-        $data_59 = StockMainResult2::stock_main_noon_forecast(59);
+        $data_62 = StockMainResult2::stock_main_noon_forecast(62);
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
                 'list' => $data,
                 'list2' => $data_60,
-                'list3' => $data_59,
+                'list3' => $data_62,
             ]
         );
     }

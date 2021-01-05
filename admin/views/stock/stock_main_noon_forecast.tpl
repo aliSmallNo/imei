@@ -21,7 +21,7 @@
 <div class="row">
     <table class="table table-striped table-bordered">
         <thead>
-        <tr><th colspan="7">0.59</th></tr>
+        <tr><th colspan="7">0.62</th></tr>
         <tr>
             <th class="col-sm-1">
                 涨跌幅假设

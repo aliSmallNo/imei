@@ -3583,15 +3583,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $fall = 1 * (1 - $change);
 
         //$turnover_rate = 0.61;
-        if ($ver == 60) {
-            $turnover_rate = 0.60;
-        }
-        if ($ver == 61) {
-            $turnover_rate = 0.61;
-        }
-        if ($ver == 59) {
-            $turnover_rate = 0.59;
-        }
+        $turnover_rate = $ver / 100;
 
         $sh_turnover = $sh_turnover / $turnover_rate;
         $sz_turnover = $sz_turnover / $turnover_rate;
