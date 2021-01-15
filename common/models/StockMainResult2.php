@@ -679,6 +679,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
                     $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
+                    $yes_avg_rate = $_item['SUM']['append_avg']['yes_avg_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 买入策略
@@ -686,6 +687,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
                             'no_avg_rate' => $no_avg_rate,
+                            'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
                         ];
                     }
@@ -699,6 +701,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
                     $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
+                    $yes_avg_rate = $_item['SUM']['append_avg']['yes_avg_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 卖出策略
@@ -706,6 +709,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
                             'no_avg_rate' => $no_avg_rate,
+                            'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
                         ];
                     }
