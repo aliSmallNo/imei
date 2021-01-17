@@ -130,7 +130,7 @@ class RedisUtil
 	/**
 	 * @return \yii\redis\Connection
 	 */
-    public static function redis()
+	protected static function redis()
 	{
 		return Yii::$app->redis;
 	}
@@ -161,6 +161,7 @@ class RedisUtil
 			case self::KEY_USER_WALLET:
 			case self::KEY_USER_IMAGE:
 			case self::KEY_USER_EXP:
+			case self::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				return $redis->hget(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey);
