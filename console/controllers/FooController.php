@@ -1904,13 +1904,12 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        //$redis = Yii::$app->redis;
-        $redis = RedisUtil::redis();
+        /*$redis = RedisUtil::redis();
 
         print_r($redis->del( 'imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));
         StockMainResult2::batch_cache_5day_after_rate_vals();
         print_r($redis->hkeys( 'imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));
-        print_r($redis->hvals('imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));
+        print_r($redis->hvals('imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));*/
 
 
 

@@ -71,8 +71,14 @@
       <th>#</th>
       <th>交易日期</th>
       <th>{{$price_type_t}}</th>
-      <th class="col-sm-3">买入</th>
-      <th class="col-sm-3">卖出</th>
+      <th class="col-sm-3">买入
+          <br>
+          正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错
+      </th>
+      <th class="col-sm-3">卖出
+          <br>
+          正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错
+      </th>
       <th class="col-sm-2">预警</th>
       <th>备注</th>
       <th class="col-sm-2">复盘</th>
