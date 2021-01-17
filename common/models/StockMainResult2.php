@@ -2388,7 +2388,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         foreach (array_merge($rules1, $rules2) as $rule) {
             $rule_name = $rule['r_name'];
             // echo $rule_name . PHP_EOL;
-            foreach (self::$note0601_dict as $note) {
+            foreach (self::$note0601_dict as $note => $note_t) {
                 $is_go_short = 0;
                 $price_type = StockMainPrice::TYPE_SH_CLOSE;
                 $dt_type = 0;

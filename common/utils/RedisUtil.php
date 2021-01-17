@@ -130,7 +130,7 @@ class RedisUtil
 	/**
 	 * @return \yii\redis\Connection
 	 */
-	protected static function redis()
+    public static function redis()
 	{
 		return Yii::$app->redis;
 	}

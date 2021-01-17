@@ -18,7 +18,7 @@ class RedisController extends BaseController
     public function init()
     {
         parent::init();
-        //echo "error page";exit;
+        echo "error page";exit;
         $this->redis = Yii::$app->redis;
     }
 
