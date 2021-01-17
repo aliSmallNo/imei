@@ -1904,7 +1904,7 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMainResult2::batch_cache_5day_after_rate_vals();
+
 
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);

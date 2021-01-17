@@ -60,6 +60,12 @@ class CrontabController extends Controller
     public function actionPool()
     {
         try {
+            StockMainResult2::batch_cache_5day_after_rate_vals();
+        } catch (\Exception $e) {
+
+        }
+
+        try {
             // 配资crm客户6工作日无跟进则转移到公海
             if (date("H") == '21') {
                 CRMStockClient::auto_client_2_sea();

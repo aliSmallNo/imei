@@ -689,8 +689,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
-//                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
-//                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
@@ -713,8 +713,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
-//                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
-//                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
@@ -2376,6 +2376,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static $rate_next1day_dict = [0 => '-=请选择=-', 1 => '后一天收益率>=0', 2 => '后一天收益率<0'];
     static $note0601_dict = [0 => '全部', 1 => '对', 9 => '错'];
 
+    /**
+     *
+     * @time 2021-1-17
+     */
     public static function batch_cache_5day_after_rate_vals()
     {
         $rules1 = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
@@ -2383,7 +2387,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         foreach (array_merge($rules1, $rules2) as $rule) {
             $rule_name = $rule['r_name'];
-            echo $rule_name . PHP_EOL;
+            // echo $rule_name . PHP_EOL;
             foreach (self::$note0601_dict as $note) {
                 $is_go_short = 0;
                 $price_type = StockMainPrice::TYPE_SH_CLOSE;
