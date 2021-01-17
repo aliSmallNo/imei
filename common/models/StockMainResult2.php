@@ -2376,6 +2376,27 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     static $rate_next1day_dict = [0 => '-=请选择=-', 1 => '后一天收益率>=0', 2 => '后一天收益率<0'];
     static $note0601_dict = [0 => '全部', 1 => '对', 9 => '错'];
 
+    public static function batch_cache_5day_after_rate_vals()
+    {
+        $rules1 = StockMainRule2::get_rules(StockMainRule2::CAT_BUY);
+        $rules2 = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
+
+        foreach (array_merge($rules1, $rules2) as $rule) {
+            $rule_name = $rule['name'];
+            echo $rule_name . PHP_EOL;
+            foreach (self::$note0601_dict as $note) {
+                $is_go_short = 0;
+                $price_type = StockMainPrice::TYPE_SH_CLOSE;
+                $dt_type = 0;
+                $rate_next1day = 0;
+                list($list, $avgs, $median, $max, $min)
+                    = self::get_5day_after_rate_data($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name);
+                $median_index0 = $median[0];
+                RedisUtil::init(RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN, $is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)->setCache($median_index0);
+            }
+        }
+    }
+
     /**
      * D1中位值-对 get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
      * D1中位值-错 get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
@@ -2384,10 +2405,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      */
     public static function get_5day_after_rate_vals($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)
     {
-        list($list, $avgs, $median, $max, $min)
-            = self::get_5day_after_rate_data($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name);
+        $median_index0 = RedisUtil::init(RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN, $is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)->getCache();
 
-        return $median[0];
+        return $median_index0;
     }
 
     /**

@@ -69,6 +69,7 @@ class RedisUtil
 	const KEY_LOGIN_CODE = "login_code";
 
 	const KEY_STOCK_MAIN_NOON_FORECAST = "stock_main_noon_forecast";
+	const KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN = "stock_rate_5day_after2_median";
 
 	static $CacheDuration = [
 		self::KEY_PROVINCES => 86400,
@@ -115,6 +116,7 @@ class RedisUtil
 		self::KEY_LOGIN_CODE => 60 * 10,
 
 		self::KEY_STOCK_MAIN_NOON_FORECAST => 3600 * 24,
+		self::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN => 3600 * 24,
 	];
 
 	private static $SequenceKey = self::FIXED_PREFIX . ':seq';
@@ -185,6 +187,7 @@ class RedisUtil
 			case self::KEY_USER_WALLET:
 			case self::KEY_USER_IMAGE:
 			case self::KEY_USER_EXP:
+			case self::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN:
 				array_shift($keys);
 				$redisKey = implode(self::$Glue, $keys);
 				$redis->hset(self::FIXED_PREFIX . self::$Glue . $mainKey, $redisKey, $val);
