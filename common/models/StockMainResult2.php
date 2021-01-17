@@ -2382,6 +2382,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $rules2 = StockMainRule2::get_rules(StockMainRule2::CAT_SOLD);
 
         foreach (array_merge($rules1, $rules2) as $rule) {
+            var_dump($rule);exit;
             $rule_name = $rule['name'];
             echo $rule_name . PHP_EOL;
             foreach (self::$note0601_dict as $note) {
