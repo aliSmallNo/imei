@@ -689,8 +689,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
-                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
-                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+//                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+//                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
@@ -713,8 +713,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
-                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
-                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+//                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+//                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
