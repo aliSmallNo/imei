@@ -689,6 +689,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
+                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
@@ -711,6 +713,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
+                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
@@ -2365,6 +2369,72 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         return [$data, $avgs, $median, $max, $min];
+    }
+
+    static $dt_types = [1 => '第一次信号', 0 => '全部'];
+    static $tabs = [0 => '买点出现后5天的收益率', 1 => '买点出现后5天的【做空】收益率'];// $is_go_short
+    static $rate_next1day_dict = [0 => '-=请选择=-', 1 => '后一天收益率>=0', 2 => '后一天收益率<0'];
+    static $note0601_dict = [0 => '全部', 1 => '对', 9 => '错'];
+
+    /**
+     * D1中位值-对 get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
+     * D1中位值-错 get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
+     *
+     * @time 2021-1-17
+     */
+    public static function get_5day_after_rate_vals($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)
+    {
+        list($list, $avgs, $median, $max, $min)
+            = self::get_5day_after_rate_data($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name);
+
+        return $median[0];
+    }
+
+    /**
+     *
+     * @time 2021-1-17
+     */
+    public static function get_5day_after_rate_data($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)
+    {
+        $where = "";
+        if ($is_go_short) {
+            if ($note == 9) {
+                $where .= "  and (r_note='对' or r_note='卖对')  ";
+            }
+            if ($note == 1) {
+                $where .= "  and (r_note='错' or r_note='买对')  ";
+            }
+            if ($rule_name) {
+                $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%' or r_sold60 like '%$rule_name%')";
+            }
+            list($list, $avgs, $median, $max, $min) = StockMainResult2::get_5day_after_rate_r($price_type, $where, $dt_type);
+        } else {
+            if ($note == 1) {
+                $where .= "  and (r_note='对' or r_note='买对')  ";
+            }
+            if ($note == 9) {
+                $where .= "  and (r_note='错' or r_note='卖对')  ";
+            }
+            if ($rule_name) {
+                $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%' or r_buy60 like '%$rule_name%')";
+            }
+            list($list, $avgs, $median, $max, $min) = StockMainResult2::get_5day_after_rate($price_type, $where, $dt_type);
+        }
+
+        foreach ($list as $k => $v) {
+            if ($rate_next1day == 1 && $v[0] < 0) {
+                unset($list[$k]);
+            }
+            if ($rate_next1day == 2 && $v[0] >= 0) {
+                unset($list[$k]);
+            }
+        }
+
+        usort($list, function ($a, $b) {
+            return strtotime($a['dt']) < strtotime($b['dt']);
+        });
+
+        return [$list, $avgs, $median, $max, $min];
     }
 
     /**
