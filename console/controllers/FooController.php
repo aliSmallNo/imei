@@ -1904,6 +1904,9 @@ class FooController extends Controller
 
     public function actionZp()
     {
+        $redis = RedisUtil::redis();
+        print_r($redis->hKeys(RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));  //Array ( [0] => cat [1] => dog )
+
 
 
         exit;
