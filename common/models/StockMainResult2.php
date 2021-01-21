@@ -713,8 +713,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                             'no_avg_rate' => $no_avg_rate,
                             'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
-                            'd1_median0_yes' => self::get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
-                            'd1_median0_no' => self::get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_yes' => self::get_5day_after_rate_vals(1, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_no' => self::get_5day_after_rate_vals(1, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
@@ -2388,22 +2388,28 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         foreach (array_merge($rules1, $rules2) as $rule) {
             $rule_name = $rule['r_name'];
             // echo $rule_name . PHP_EOL;
-            foreach (self::$note0601_dict as $note => $note_t) {
-                $is_go_short = 0;
-                $price_type = StockMainPrice::TYPE_SH_CLOSE;
-                $dt_type = 0;
-                $rate_next1day = 0;
-                list($list, $avgs, $median, $max, $min)
-                    = self::get_5day_after_rate_data($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name);
-                $median_index0 = $median[0];
-                RedisUtil::init(RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN, $is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)->setCache($median_index0);
+            foreach (self::$tabs as $is_go_short => $is_go_short_t) {
+                foreach (self::$note0601_dict as $note => $note_t) {
+                    $price_type = StockMainPrice::TYPE_SH_CLOSE;
+                    $dt_type = 0;
+                    $rate_next1day = 0;
+                    list($list, $avgs, $median, $max, $min)
+                        = self::get_5day_after_rate_data($is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name);
+                    $median_index0 = $median[0];
+                    RedisUtil::init(RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN, $is_go_short, $note, $price_type, $dt_type, $rate_next1day, $rule_name)->setCache($median_index0);
+                }
             }
         }
     }
 
     /**
+     * 买
      * D1中位值-对 get_5day_after_rate_vals(0, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
      * D1中位值-错 get_5day_after_rate_vals(0, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
+     *
+     * 卖
+     * D1中位值-错 get_5day_after_rate_vals(1, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
+     * D1中位值-错 get_5day_after_rate_vals(1, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name)
      *
      * @time 2021-1-17
      */
@@ -2422,10 +2428,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
     {
         $where = "";
         if ($is_go_short) {
-            if ($note == 9) {
+            /*if ($note == 9) {
                 $where .= "  and (r_note='对' or r_note='卖对')  ";
             }
             if ($note == 1) {
+                $where .= "  and (r_note='错' or r_note='买对')  ";
+            }*/
+            // 2021-1-21 modify
+            if ($note == 1) {
+                $where .= "  and (r_note='对' or r_note='卖对')  ";
+            }
+            if ($note == 9) {
                 $where .= "  and (r_note='错' or r_note='买对')  ";
             }
             if ($rule_name) {
