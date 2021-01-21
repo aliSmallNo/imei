@@ -2488,6 +2488,7 @@ class StockController extends BaseController
                 'dt_type' => $dt_type,
                 'rate_next1day' => $rate_next1day,
                 'price_type' => $price_type,
+                'rule_name' => $rule_name,
             ]
         );
     }

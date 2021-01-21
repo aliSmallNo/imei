@@ -51,7 +51,7 @@
         {{/foreach}}
       </select>
 
-      <input class="form-control" name="rule_name" placeholder="策略名称"/>
+      <input class="form-control" name="rule_name" placeholder="策略名称" value="{{$rule_name}}"/>
     </div>
     <button class="btn btn-primary">查询</button>
     <span class="space"></span>
