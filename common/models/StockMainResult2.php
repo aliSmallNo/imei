@@ -3460,7 +3460,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
                     if ($note_yes_flag3) {
                         $buy_data[432]['yes']++;
-                        $buy_data[43]['items']['yes'][] = $trans_date3;
+                        $buy_data[432]['items']['yes'][] = $trans_date3;
                     }
                     if ($note_no_flag3) {
                         $buy_data[432]['no']++;
