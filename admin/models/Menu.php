@@ -451,6 +451,12 @@ class Menu
                         "level" => 827,
                     ],
                     [
+                        "name" => "多天多次统计2",
+                        "url" => "/stock/stock_main_result_stat0601_new",
+                        "revise" => 1,
+                        "level" => 827,
+                    ],
+                    [
                         "name" => "中午预测",
                         "url" => "/stock/stock_main_noon_forecast",
                         "revise" => 1,
