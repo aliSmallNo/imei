@@ -2786,6 +2786,23 @@ class StockController extends BaseController
         );
     }
 
+    public function actionStock_main_result_stat0601_new()
+    {
+        Admin::staffOnly();
+
+        list($buy_data, $sold_data) = StockMainResult2::result_stat0601_new();
+//        if (Admin::getAdminId() == 1002) {
+//            print_r($buy_data);
+//            exit;
+//        }
+
+        return $this->renderPage("stock_main_result_stat0601_new.tpl", [
+                'buy_data' => $buy_data,
+                'sold_data' => $sold_data,
+            ]
+        );
+    }
+
     /**
      * 功能需求：
      * 1.中午11:40时，根据上午数据做出下午结果预测

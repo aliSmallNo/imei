@@ -2766,14 +2766,24 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-06-01 PM
      */
-    public
-    static function result_stat0601()
+    public static function result_stat0601()
     {
         $start_dt = "2012-02-24";
         $trans_dates = array_reverse(StockMain::get_trans_dates());
 
         $buy_data = self::result_stat0601_buy($trans_dates, $start_dt);
         $sold_data = self::result_stat0601_sold($trans_dates, $start_dt);
+
+        return [$buy_data, $sold_data];
+    }
+
+    public static function result_stat0601_new()
+    {
+        $start_dt = "2012-02-24";
+        $trans_dates = array_reverse(StockMain::get_trans_dates());
+
+        $buy_data = self::result_stat0601_buy2($trans_dates, $start_dt);
+        $sold_data = self::result_stat0601_sold2($trans_dates, $start_dt);
 
         return [$buy_data, $sold_data];
     }
@@ -3163,6 +3173,484 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return $buy_data;
     }
 
+    public static function result_stat0601_buy2($trans_dates, $start_dt)
+    {
+        // 策略回测里的数据
+        list($list, $rate_year_sum, $stat_rule_right_rate) =
+            StockMainResult2::cal_back(StockMainPrice::TYPE_ETF_500, 0, 0);
+        $list = array_column($list, null, 'buy_dt');
+
+        // 所有 买入日期
+        $criteria[] = self::BUY_WHERE_STR2;
+        //list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        list($results, $count) = StockMainResult2::items($criteria, [], 1, 10000);
+        $results = array_column($results, null, 'r_trans_on');
+
+        $buy_data_pre = [
+            221 => '2天2次-第1次',
+            222 => '2天2次-第2次',
+            321 => '3天2次-第1次',
+            322 => '3天2次-第2次',
+            331 => '3天3次-第1次',
+            332 => '3天3次-第2次',
+            421 => '4天2次-第1次',
+            422 => '4天2次-第2次',
+            431 => '4天3次-第1次',
+            432 => '4天3次-第2次',
+            521 => '5天2次-第1次',
+            522 => '5天2次-第2次',
+            531 => '5天3次-第1次',
+            532 => '5天3次-第2次',
+            621 => '6天2次-第1次',
+            622 => '6天2次-第2次',
+            631 => '6天3次-第1次',
+            632 => '6天3次-第2次',
+        ];
+        $buy_data = [];
+        foreach ($buy_data_pre as $data_key => $data_name) {
+            $buy_data[$data_key] = [
+                'name' => $data_name,
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => [],
+            ];
+        }
+
+        foreach ($trans_dates as $k => $trans_date) {
+            if (strtotime($start_dt) > strtotime($trans_date)) {
+                continue;
+            }
+            if (!isset($results[$trans_date]['r_note'])) {
+                continue;
+            }
+            $note = $results[$trans_date]['r_note'];
+            $note2 = isset($results[$trans_dates[$k + 1]]) ? $results[$trans_dates[$k + 1]]['r_note'] : '';
+            $note3 = isset($results[$trans_dates[$k + 2]]) ? $results[$trans_dates[$k + 2]]['r_note'] : '';
+            $note4 = isset($results[$trans_dates[$k + 3]]) ? $results[$trans_dates[$k + 3]]['r_note'] : '';
+            $note5 = isset($results[$trans_dates[$k + 4]]) ? $results[$trans_dates[$k + 4]]['r_note'] : '';
+            $note6 = isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
+
+            $today_is_but_dt = isset($results[$trans_date]);// 今天是否是 买入日期
+            $tomorrow_is_but_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 买入日期
+            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 买入日期
+            $four_is_but_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 买入日期
+            $five_is_but_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 买入日期
+            $six_is_but_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 买入日期
+
+            $note_yes_flag = $note && in_array($note, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag = $note && in_array($note, [self::NOTE_MID]);
+
+            $note_yes_flag2 = $note2 && in_array($note2, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag2 = $note2 && in_array($note2, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag2 = $note2 && in_array($note2, [self::NOTE_MID]);
+
+            $note_yes_flag3 = $note3 && in_array($note3, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag3 = $note3 && in_array($note3, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag3 = $note3 && in_array($note3, [self::NOTE_MID]);
+
+            $note_yes_flag4 = $note4 && in_array($note4, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag4 = $note4 && in_array($note4, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag4 = $note4 && in_array($note4, [self::NOTE_MID]);
+
+            $note_yes_flag5 = $note5 && in_array($note5, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag5 = $note5 && in_array($note5, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag5 = $note5 && in_array($note5, [self::NOTE_MID]);
+
+            $note_yes_flag6 = $note6 && in_array($note6, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag6 = $note6 && in_array($note6, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag6 = $note6 && in_array($note6, [self::NOTE_MID]);
+
+            $trans_date2 = isset($list[$trans_dates[$k + 1]]) ? $list[$trans_dates[$k + 1]] : '';
+            $trans_date3 = isset($list[$trans_dates[$k + 2]]) ? $list[$trans_dates[$k + 2]] : '';
+            $trans_date4 = isset($list[$trans_dates[$k + 3]]) ? $list[$trans_dates[$k + 3]] : '';
+            $trans_date5 = isset($list[$trans_dates[$k + 4]]) ? $list[$trans_dates[$k + 4]] : '';
+            $trans_date6 = isset($list[$trans_dates[$k + 5]]) ? $list[$trans_dates[$k + 5]] : '';
+
+            // 2天2次
+            if ($today_is_but_dt && $tomorrow_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]])) {
+                    $list_today = $list[$trans_date];
+                    $list_tomorrow = $list[$trans_dates[$k + 1]];
+
+                    if ($note_yes_flag) {
+                        $buy_data[221]['yes']++;
+                        $buy_data[221]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[221]['no']++;
+                        $buy_data[221]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[221]['mid']++;
+                        $buy_data[221]['items']['mid'][] = $trans_date;
+                    }
+//                    $buy_data[221]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
+//                    $buy_data[221]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
+                    $buy_data[221]['rate_sum'] += $list_today['rate'];
+                    $buy_data[221]['rule_co_sum'] += count($list_today['buy_type']);
+
+                    if ($note_yes_flag2) {
+                        $buy_data[222]['yes']++;
+                        $buy_data[222]['items']['yes'][] = $trans_date2;
+                    }
+                    if ($note_no_flag2) {
+                        $buy_data[222]['no']++;
+                        $buy_data[222]['items']['no'][] = $trans_date2;
+                    }
+                    if ($note_mid_flag2) {
+                        $buy_data[222]['mid']++;
+                        $buy_data[222]['items']['mid'][] = $trans_date2;
+                    }
+                    $buy_data[222]['rate_sum'] += $list_tomorrow['rate'];
+                    $buy_data[222]['rule_co_sum'] += count($list_tomorrow['buy_type']);
+
+                }
+            }
+            // 3天2次
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && $three_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
+                    $list_today = $list[$trans_date];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    if ($note_yes_flag) {
+                        $buy_data[321]['yes']++;
+                        $buy_data[321]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[321]['no']++;
+                        $buy_data[321]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[321]['mid']++;
+                        $buy_data[321]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[32]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
+                    //$buy_data[32]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
+                    $buy_data[321]['rate_sum'] += $list_today['rate'];
+                    $buy_data[321]['rule_co_sum'] += count($list_today['buy_type']);
+
+
+                    if ($note_yes_flag3) {
+                        $buy_data[322]['yes']++;
+                        $buy_data[322]['items']['yes'][] = $trans_date3;
+                    }
+                    if ($note_no_flag3) {
+                        $buy_data[322]['no']++;
+                        $buy_data[322]['items']['no'][] = $trans_date3;
+                    }
+                    if ($note_mid_flag3) {
+                        $buy_data[322]['mid']++;
+                        $buy_data[322]['items']['mid'][] = $trans_date3;
+                    }
+                    $buy_data[322]['rate_sum'] += $list_three['rate'];
+                    $buy_data[322]['rule_co_sum'] += count($list_three['buy_type']);
+
+                }
+            }
+            // 3天3次
+            if ($today_is_but_dt && $tomorrow_is_but_dt && $three_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]]) && isset($list[$trans_dates[$k + 2]])) {
+                    $list_today = $list[$trans_date];
+                    $list_tomorrow = $list[$trans_dates[$k + 1]];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    if ($note_yes_flag) {
+                        $buy_data[331]['yes']++;
+                        $buy_data[331]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[331]['no']++;
+                        $buy_data[331]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[331]['mid']++;
+                        $buy_data[331]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[331]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate'] + $list_three['rate']);
+                    //$buy_data[331]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']) + count($list_three['buy_type']));
+                    $buy_data[331]['rate_sum'] += ($list_today['rate']);
+                    $buy_data[331]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag2) {
+                        $buy_data[332]['yes']++;
+                        $buy_data[332]['items']['yes'][] = $trans_date2;
+                    }
+                    if ($note_no_flag2) {
+                        $buy_data[332]['no']++;
+                        $buy_data[332]['items']['no'][] = $trans_date2;
+                    }
+                    if ($note_mid_flag2) {
+                        $buy_data[332]['mid']++;
+                        $buy_data[332]['items']['mid'][] = $trans_date2;
+                    }
+                    $buy_data[332]['rate_sum'] += $list_tomorrow['rate'];
+                    $buy_data[332]['rule_co_sum'] += count($list_tomorrow['buy_type']);
+                }
+            }
+            // 4天2次
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && $four_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]])) {
+                    $list_today = $list[$trans_date];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    if ($note_yes_flag) {
+                        $buy_data[421]['yes']++;
+                        $buy_data[421]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[421]['no']++;
+                        $buy_data[421]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[421]['mid']++;
+                        $buy_data[421]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[421]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
+                    //$buy_data[421]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
+                    $buy_data[421]['rate_sum'] += ($list_today['rate']);
+                    $buy_data[421]['rule_co_sum'] += (count($list_today['buy_type']));
+
+                    if ($note_yes_flag4) {
+                        $buy_data[422]['yes']++;
+                        $buy_data[422]['items']['yes'][] = $trans_date4;
+                    }
+                    if ($note_no_flag4) {
+                        $buy_data[422]['no']++;
+                        $buy_data[422]['items']['no'][] = $trans_date4;
+                    }
+                    if ($note_mid_flag4) {
+                        $buy_data[422]['mid']++;
+                        $buy_data[422]['items']['mid'][] = $trans_date4;
+                    }
+                    $buy_data[422]['rate_sum'] += ($list_four['rate']);
+                    $buy_data[422]['rule_co_sum'] += (count($list_four['buy_type']));
+
+                }
+            }
+            // 4天3次，2020-08-17 PM
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && $three_is_but_dt && $four_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]]) && isset($list[$trans_dates[$k + 3]])) {
+                    $list_today = $list[$trans_date];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    if ($note_yes_flag) {
+                        $buy_data[431]['yes']++;
+                        $buy_data[431]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[431]['no']++;
+                        $buy_data[431]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[431]['mid']++;
+                        $buy_data[431]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[43]['rate_sum'] += ($list_today['rate'] + $list_three['rate'] + $list_four['rate']);
+                    //$buy_data[43]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']) + count($list_four['buy_type']));
+                    $buy_data[431]['rate_sum'] += ($list_today['rate']);
+                    $buy_data[431]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag3) {
+                        $buy_data[432]['yes']++;
+                        $buy_data[43]['items']['yes'][] = $trans_date3;
+                    }
+                    if ($note_no_flag3) {
+                        $buy_data[432]['no']++;
+                        $buy_data[432]['items']['no'][] = $trans_date3;
+                    }
+                    if ($note_mid_flag3) {
+                        $buy_data[432]['mid']++;
+                        $buy_data[432]['items']['mid'][] = $trans_date3;
+                    }
+                    $buy_data[432]['rate_sum'] += $list_three['rate'];
+                    $buy_data[432]['rule_co_sum'] += count($list_three['buy_type']);
+                }
+            }
+            // 5天2次
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && $five_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $buy_data[52]['yes']++;
+                        $buy_data[52]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[52]['no']++;
+                        $buy_data[52]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[52]['mid']++;
+                        $buy_data[52]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[521]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
+                    //$buy_data[521]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
+                    $buy_data[521]['rate_sum'] += ($list_today['rate']);
+                    $buy_data[521]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag5) {
+                        $buy_data[522]['yes']++;
+                        $buy_data[522]['items']['yes'][] = $trans_date5;
+                    }
+                    if ($note_no_flag5) {
+                        $buy_data[522]['no']++;
+                        $buy_data[522]['items']['no'][] = $trans_date5;
+                    }
+                    if ($note_mid_flag5) {
+                        $buy_data[522]['mid']++;
+                        $buy_data[522]['items']['mid'][] = $trans_date5;
+                    }
+                    $buy_data[522]['rate_sum'] += $list_five['rate'];
+                    $buy_data[522]['rule_co_sum'] += count($list_five['buy_type']);
+                }
+            }
+            // 5天3次，2020-08-17 PM
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && $four_is_but_dt && $five_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $buy_data[531]['yes']++;
+                        $buy_data[531]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[531]['no']++;
+                        $buy_data[531]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[531]['mid']++;
+                        $buy_data[531]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[531]['rate_sum'] += ($list_today['rate'] + $list_four['rate'] + $list_five['rate']);
+                    //$buy_data[531]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']) + count($list_five['buy_type']));
+                    $buy_data[531]['rate_sum'] += ($list_today['rate']);
+                    $buy_data[531]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag4) {
+                        $buy_data[532]['yes']++;
+                        $buy_data[532]['items']['yes'][] = $trans_date4;
+                    }
+                    if ($note_no_flag4) {
+                        $buy_data[532]['no']++;
+                        $buy_data[532]['items']['no'][] = $trans_date4;
+                    }
+                    if ($note_mid_flag4) {
+                        $buy_data[532]['mid']++;
+                        $buy_data[532]['items']['mid'][] = $trans_date4;
+                    }
+                    $buy_data[532]['rate_sum'] += $list_four['rate'];
+                    $buy_data[532]['rule_co_sum'] += count($list_four['buy_type']);
+
+                }
+            }
+            // 6天2次
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && !$five_is_but_dt && $six_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $buy_data[621]['yes']++;
+                        $buy_data[621]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[621]['no']++;
+                        $buy_data[621]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[621]['mid']++;
+                        $buy_data[621]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[621]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
+                    //$buy_data[621]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
+                    $buy_data[621]['rate_sum'] += ($list_today['rate']);
+                    $buy_data[621]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag6) {
+                        $buy_data[622]['yes']++;
+                        $buy_data[622]['items']['yes'][] = $trans_date6;
+                    }
+                    if ($note_no_flag6) {
+                        $buy_data[622]['no']++;
+                        $buy_data[622]['items']['no'][] = $trans_date6;
+                    }
+                    if ($note_mid_flag6) {
+                        $buy_data[622]['mid']++;
+                        $buy_data[622]['items']['mid'][] = $trans_date6;
+                    }
+                    $buy_data[622]['rate_sum'] += ($list_six['rate']);
+                    $buy_data[622]['rule_co_sum'] += (count($list_six['buy_type']));
+
+                }
+
+            }
+            // 6天3次 2020-08-17 PM
+            if ($today_is_but_dt && !$tomorrow_is_but_dt && !$three_is_but_dt && !$four_is_but_dt && $five_is_but_dt && $six_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $buy_data[631]['yes']++;
+                        $buy_data[631]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $buy_data[631]['no']++;
+                        $buy_data[631]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $buy_data[631]['mid']++;
+                        $buy_data[631]['items']['mid'][] = $trans_date;
+                    }
+                    //$buy_data[631]['rate_sum'] += ($list_today['rate'] + $list_five['rate'] + $list_six['rate']);
+                    //$buy_data[631]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']) + count($list_six['buy_type']));
+                    $buy_data[631]['rate_sum'] += $list_today['rate'];
+                    $buy_data[631]['rule_co_sum'] += count($list_today['buy_type']);
+
+
+                    if ($note_yes_flag5) {
+                        $buy_data[632]['yes']++;
+                        $buy_data[632]['items']['yes'][] = $trans_date5;
+                    }
+                    if ($note_no_flag5) {
+                        $buy_data[632]['no']++;
+                        $buy_data[632]['items']['no'][] = $trans_date5;
+                    }
+                    if ($note_mid_flag5) {
+                        $buy_data[632]['mid']++;
+                        $buy_data[632]['items']['mid'][] = $trans_date5;
+                    }
+                    $buy_data[632]['rate_sum'] += $list_five['rate'];
+                    $buy_data[632]['rule_co_sum'] += count($list_five['buy_type']);
+                }
+            }
+        }
+        foreach ($buy_data as $type => $item) {
+            $co = $item['yes'] + $item['no'] + $item['mid'];
+
+            $buy_data[$type]['yes_rate'] = $co ? sprintf('%.2f', $item['yes'] / $co) : 0;
+            $buy_data[$type]['no_rate'] = $co ? sprintf('%.2f', $item['no'] / $co) : 0;
+            $buy_data[$type]['mid_rate'] = $co ? sprintf('%.2f', $item['mid'] / $co) : 0;
+
+            $buy_data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
+            $buy_data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
+        }
+
+        return $buy_data;
+
+    }
+
     /**
      * 卖出策略 对 错 中性 平均收益率 平均策略数量
      * 2天2次
@@ -3522,6 +4010,478 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                     $sold_data[63]['rate_sum'] += ($list_today['rate'] + $list_five['rate'] + $list_six['rate']);
                     $sold_data[63]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']) + count($list_six['buy_type']));
+                }
+            }
+        }
+        foreach ($sold_data as $type => $item) {
+            $co = $item['yes'] + $item['no'] + $item['mid'];
+
+            $sold_data[$type]['yes_rate'] = $co ? sprintf('%.2f', $item['yes'] / $co) : 0;
+            $sold_data[$type]['no_rate'] = $co ? sprintf('%.2f', $item['no'] / $co) : 0;
+            $sold_data[$type]['mid_rate'] = $co ? sprintf('%.2f', $item['mid'] / $co) : 0;
+
+            $sold_data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
+            $sold_data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
+        }
+
+        return $sold_data;
+    }
+
+    public static function result_stat0601_sold2($trans_dates, $start_dt)
+    {
+        // 策略回测里的数据
+        list($list, $rate_year_sum, $stat_rule_right_rate) =
+            StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_ETF_500, 0, 0);
+        $list = array_column($list, null, 'buy_dt');
+
+        // 所有 买入日期
+        $criteria[] = self::SOLD_WHERE_STR;
+        //list($results, $count) = StockMainResult2::items([], [], 1, 10000);
+        list($results, $count) = StockMainResult2::items($criteria, [], 1, 10000);
+        $results = array_column($results, null, 'r_trans_on');
+
+        $buy_data_pre = [
+            221 => '2天2次-第1次',
+            222 => '2天2次-第2次',
+            321 => '3天2次-第1次',
+            322 => '3天2次-第2次',
+            331 => '3天3次-第1次',
+            332 => '3天3次-第2次',
+            421 => '4天2次-第1次',
+            422 => '4天2次-第2次',
+            431 => '4天3次-第1次',
+            432 => '4天3次-第2次',
+            521 => '5天2次-第1次',
+            522 => '5天2次-第2次',
+            531 => '5天3次-第1次',
+            532 => '5天3次-第2次',
+            621 => '6天2次-第1次',
+            622 => '6天2次-第2次',
+            631 => '6天3次-第1次',
+            632 => '6天3次-第2次',
+        ];
+        $sold_data = [];
+        foreach ($buy_data_pre as $data_key => $data_name) {
+            $buy_data[$data_key] = [
+                'name' => $data_name,
+                'yes' => 0,
+                'no' => 0,
+                'mid' => '0',
+                'yes_rate' => 0,
+                'no_rate' => 0,
+                'mid_rate' => 0,
+                'rate_avg' => 0,
+                'rule_co_avg' => 0,
+                'rate_sum' => 0,
+                'rule_co_sum' => 0,
+                'items' => [],
+            ];
+        }
+
+        foreach ($trans_dates as $k => $trans_date) {
+            if (strtotime($start_dt) > strtotime($trans_date)) {
+                continue;
+            }
+            if (!isset($results[$trans_date]['r_note'])) {
+                continue;
+            }
+            $note = $results[$trans_date]['r_note'];
+            $note2 = isset($results[$trans_dates[$k + 1]]) ? $results[$trans_dates[$k + 1]]['r_note'] : '';
+            $note3 = isset($results[$trans_dates[$k + 2]]) ? $results[$trans_dates[$k + 2]]['r_note'] : '';
+            $note4 = isset($results[$trans_dates[$k + 3]]) ? $results[$trans_dates[$k + 3]]['r_note'] : '';
+            $note5 = isset($results[$trans_dates[$k + 4]]) ? $results[$trans_dates[$k + 4]]['r_note'] : '';
+            $note6 = isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
+
+            $today_is_sold_dt = isset($results[$trans_date]);// 今天是否是 买入日期
+            $tomorrow_is_sold_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 卖出 日期
+            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 卖出 日期
+            $four_is_sold_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 卖出 日期
+            $five_is_sold_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 卖出 日期
+            $six_is_sold_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 卖出 日期
+
+            $note_yes_flag = $note && in_array($note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
+            $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
+            $note_mid_flag = $note && in_array($note, [self::NOTE_MID]);
+
+            $note_yes_flag2 = $note2 && in_array($note2, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag2 = $note2 && in_array($note2, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag2 = $note2 && in_array($note2, [self::NOTE_MID]);
+
+            $note_yes_flag3 = $note3 && in_array($note3, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag3 = $note3 && in_array($note3, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag3 = $note3 && in_array($note3, [self::NOTE_MID]);
+
+            $note_yes_flag4 = $note4 && in_array($note4, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag4 = $note4 && in_array($note4, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag4 = $note4 && in_array($note4, [self::NOTE_MID]);
+
+            $note_yes_flag5 = $note5 && in_array($note5, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag5 = $note5 && in_array($note5, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag5 = $note5 && in_array($note5, [self::NOTE_MID]);
+
+            $note_yes_flag6 = $note6 && in_array($note6, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
+            $note_no_flag6 = $note6 && in_array($note6, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
+            $note_mid_flag6 = $note6 && in_array($note6, [self::NOTE_MID]);
+
+            $trans_date2 = isset($list[$trans_dates[$k + 1]]) ? $list[$trans_dates[$k + 1]] : '';
+            $trans_date3 = isset($list[$trans_dates[$k + 2]]) ? $list[$trans_dates[$k + 2]] : '';
+            $trans_date4 = isset($list[$trans_dates[$k + 3]]) ? $list[$trans_dates[$k + 3]] : '';
+            $trans_date5 = isset($list[$trans_dates[$k + 4]]) ? $list[$trans_dates[$k + 4]] : '';
+            $trans_date6 = isset($list[$trans_dates[$k + 5]]) ? $list[$trans_dates[$k + 5]] : '';
+
+            // 2天2次
+            if ($today_is_sold_dt && $tomorrow_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]])) {
+                    $list_today = $list[$trans_date];
+                    $list_tomorrow = $list[$trans_dates[$k + 1]];
+                    if ($note_yes_flag) {
+                        $sold_data[221]['yes']++;
+                        $sold_data[221]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[221]['no']++;
+                        $sold_data[221]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[221]['mid']++;
+                        $sold_data[221]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[221]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate']);
+                    //$sold_data[221]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']));
+                    $sold_data[221]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[221]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag2) {
+                        $sold_data[222]['yes']++;
+                        $sold_data[222]['items']['yes'][] = $trans_date2;
+                    }
+                    if ($note_no_flag2) {
+                        $sold_data[222]['no']++;
+                        $sold_data[222]['items']['no'][] = $trans_date2;
+                    }
+                    if ($note_mid_flag2) {
+                        $sold_data[222]['mid']++;
+                        $sold_data[222]['items']['mid'][] = $trans_date2;
+                    }
+                    $sold_data[222]['rate_sum'] += $list_tomorrow['rate'];
+                    $sold_data[222]['rule_co_sum'] += count($list_tomorrow['buy_type']);
+                }
+            }
+            // 3天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && $three_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 2]])) {
+                    $list_today = $list[$trans_date];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    if ($note_yes_flag) {
+                        $sold_data[321]['yes']++;
+                        $sold_data[321]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[321]['no']++;
+                        $sold_data[321]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[321]['mid']++;
+                        $sold_data[321]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[321]['rate_sum'] += ($list_today['rate'] + $list_three['rate']);
+                    //$sold_data[321]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']));
+                    $sold_data[321]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[321]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag3) {
+                        $sold_data[322]['yes']++;
+                        $sold_data[322]['items']['yes'][] = $trans_date3;
+                    }
+                    if ($note_no_flag3) {
+                        $sold_data[322]['no']++;
+                        $sold_data[322]['items']['no'][] = $trans_date3;
+                    }
+                    if ($note_mid_flag3) {
+                        $sold_data[322]['mid']++;
+                        $sold_data[322]['items']['mid'][] = $trans_date3;
+                    }
+                    $sold_data[322]['rate_sum'] += ($list_three['rate']);
+                    $sold_data[322]['rule_co_sum'] += (count($list_three['buy_type']));
+                }
+            }
+            // 3天3次
+            if ($today_is_sold_dt && $tomorrow_is_sold_dt && $three_is_but_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]]) && isset($list[$trans_dates[$k + 2]])) {
+                    $list_today = $list[$trans_date];
+                    $list_tomorrow = $list[$trans_dates[$k + 1]];
+                    $list_three = $list[$trans_dates[$k + 2]];
+                    if ($note_yes_flag) {
+                        $sold_data[331]['yes']++;
+                        $sold_data[331]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[331]['no']++;
+                        $sold_data[331]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[331]['mid']++;
+                        $sold_data[331]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[331]['rate_sum'] += ($list_today['rate'] + $list_tomorrow['rate'] + $list_three['rate']);
+                    //$sold_data[331]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_tomorrow['buy_type']) + count($list_three['buy_type']));
+                    $sold_data[331]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[331]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag2) {
+                        $sold_data[332]['yes']++;
+                        $sold_data[332]['items']['yes'][] = $trans_date2;
+                    }
+                    if ($note_no_flag2) {
+                        $sold_data[332]['no']++;
+                        $sold_data[332]['items']['no'][] = $trans_date2;
+                    }
+                    if ($note_mid_flag2) {
+                        $sold_data[332]['mid']++;
+                        $sold_data[332]['items']['mid'][] = $trans_date2;
+                    }
+                    $sold_data[332]['rate_sum'] += $list_tomorrow['rate'];
+                    $sold_data[332]['rule_co_sum'] += count($list_tomorrow['buy_type']);
+                }
+            }
+            // 4天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && $four_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]])) {
+                    $list_today = $list[$trans_date];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    if ($note_yes_flag) {
+                        $sold_data[421]['yes']++;
+                        $sold_data[421]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[421]['no']++;
+                        $sold_data[421]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[421]['mid']++;
+                        $sold_data[421]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[421]['rate_sum'] += ($list_today['rate'] + $list_four['rate']);
+                    //$sold_data[421]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']));
+                    $sold_data[421]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[421]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag4) {
+                        $sold_data[422]['yes']++;
+                        $sold_data[422]['items']['yes'][] = $trans_date4;
+                    }
+                    if ($note_no_flag4) {
+                        $sold_data[422]['no']++;
+                        $sold_data[422]['items']['no'][] = $trans_date4;
+                    }
+                    if ($note_mid_flag4) {
+                        $sold_data[422]['mid']++;
+                        $sold_data[422]['items']['mid'][] = $trans_date4;
+                    }
+                    $sold_data[422]['rate_sum'] += ($list_four['rate']);
+                    $sold_data[422]['rule_co_sum'] += (count($list_four['buy_type']));
+                }
+            }
+            // 4天3次，2020-08-19 PM
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && $three_is_but_dt && $four_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 1]]) && isset($list[$trans_dates[$k + 3]])) {
+                    $list_today = $list[$trans_date];
+                    $list_three = $list[$trans_dates[$k + 1]];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    if ($note_yes_flag) {
+                        $sold_data[431]['yes']++;
+                        $sold_data[431]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[431]['no']++;
+                        $sold_data[431]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[431]['mid']++;
+                        $sold_data[431]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[431]['rate_sum'] += ($list_today['rate'] + $list_three['rate'] + $list_four['rate']);
+                    //$sold_data[431]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_three['buy_type']) + count($list_four['buy_type']));
+                    $sold_data[431]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[431]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag3) {
+                        $sold_data[432]['yes']++;
+                        $sold_data[432]['items']['yes'][] = $trans_date3;
+                    }
+                    if ($note_no_flag3) {
+                        $sold_data[432]['no']++;
+                        $sold_data[432]['items']['no'][] = $trans_date3;
+                    }
+                    if ($note_mid_flag3) {
+                        $sold_data[432]['mid']++;
+                        $sold_data[432]['items']['mid'][] = $trans_date3;
+                    }
+                    $sold_data[432]['rate_sum'] += $list_three['rate'];
+                    $sold_data[432]['rule_co_sum'] += count($list_three['buy_type']);
+                }
+            }
+            // 5天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && !$four_is_sold_dt && $five_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $sold_data[521]['yes']++;
+                        $sold_data[521]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[521]['no']++;
+                        $sold_data[521]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[521]['mid']++;
+                        $sold_data[521]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[521]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
+                    //$sold_data[521]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
+                    $sold_data[521]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[521]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag5) {
+                        $sold_data[522]['yes']++;
+                        $sold_data[522]['items']['yes'][] = $trans_date5;
+                    }
+                    if ($note_no_flag5) {
+                        $sold_data[522]['no']++;
+                        $sold_data[522]['items']['no'][] = $trans_date5;
+                    }
+                    if ($note_mid_flag5) {
+                        $sold_data[522]['mid']++;
+                        $sold_data[522]['items']['mid'][] = $trans_date5;
+                    }
+                    $sold_data[522]['rate_sum'] += ($list_five['rate']);
+                    $sold_data[522]['rule_co_sum'] += (count($list_five['buy_type']));
+                }
+            }
+            // 5天3次，2020-08-19 PM
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && $four_is_sold_dt && $five_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 3]]) && isset($list[$trans_dates[$k + 4]])) {
+                    $list_today = $list[$trans_date];
+                    $list_four = $list[$trans_dates[$k + 3]];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    if ($note_yes_flag) {
+                        $sold_data[531]['yes']++;
+                        $sold_data[531]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[531]['no']++;
+                        $sold_data[531]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[531]['mid']++;
+                        $sold_data[531]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[531]['rate_sum'] += ($list_today['rate'] + $list_four['rate'] + $list_five['rate']);
+                    //$sold_data[531]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_four['buy_type']) + count($list_five['buy_type']));
+                    $sold_data[531]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[531]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag4) {
+                        $sold_data[532]['yes']++;
+                        $sold_data[532]['items']['yes'][] = $trans_date4;
+                    }
+                    if ($note_no_flag4) {
+                        $sold_data[532]['no']++;
+                        $sold_data[532]['items']['no'][] = $trans_date4;
+                    }
+                    if ($note_mid_flag4) {
+                        $sold_data[532]['mid']++;
+                        $sold_data[532]['items']['mid'][] = $trans_date4;
+                    }
+                    $sold_data[532]['rate_sum'] += ($list_four['rate']);
+                    $sold_data[532]['rule_co_sum'] += (count($list_four['buy_type']));
+                }
+            }
+            // 6天2次
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && !$four_is_sold_dt && !$five_is_sold_dt && $six_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $sold_data[621]['yes']++;
+                        $sold_data[621]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[621]['no']++;
+                        $sold_data[621]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[621]['mid']++;
+                        $sold_data[621]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[621]['rate_sum'] += ($list_today['rate'] + $list_six['rate']);
+                    //$sold_data[621]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_six['buy_type']));
+                    $sold_data[621]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[621]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag6) {
+                        $sold_data[622]['yes']++;
+                        $sold_data[622]['items']['yes'][] = $trans_date6;
+                    }
+                    if ($note_no_flag6) {
+                        $sold_data[622]['no']++;
+                        $sold_data[622]['items']['no'][] = $trans_date6;
+                    }
+                    if ($note_mid_flag6) {
+                        $sold_data[622]['mid']++;
+                        $sold_data[622]['items']['mid'][] = $trans_date6;
+                    }
+                    $sold_data[622]['rate_sum'] += ($list_six['rate']);
+                    $sold_data[622]['rule_co_sum'] += (count($list_six['buy_type']));
+                }
+            }
+            // 6天3次 2020-08-19 PM
+            if ($today_is_sold_dt && !$tomorrow_is_sold_dt && !$three_is_but_dt && !$four_is_sold_dt && $five_is_sold_dt && $six_is_sold_dt) {
+                if (isset($list[$trans_date]) && isset($list[$trans_dates[$k + 4]]) && isset($list[$trans_dates[$k + 5]])) {
+                    $list_today = $list[$trans_date];
+                    $list_five = $list[$trans_dates[$k + 4]];
+                    $list_six = $list[$trans_dates[$k + 5]];
+                    if ($note_yes_flag) {
+                        $sold_data[631]['yes']++;
+                        $sold_data[631]['items']['yes'][] = $trans_date;
+                    }
+                    if ($note_no_flag) {
+                        $sold_data[631]['no']++;
+                        $sold_data[631]['items']['no'][] = $trans_date;
+                    }
+                    if ($note_mid_flag) {
+                        $sold_data[631]['mid']++;
+                        $sold_data[631]['items']['mid'][] = $trans_date;
+                    }
+                    //$sold_data[631]['rate_sum'] += ($list_today['rate'] + $list_five['rate'] + $list_six['rate']);
+                    //$sold_data[631]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']) + count($list_six['buy_type']));
+                    $sold_data[631]['rate_sum'] += ($list_today['rate']);
+                    $sold_data[631]['rule_co_sum'] += (count($list_today['buy_type']));
+
+
+                    if ($note_yes_flag5) {
+                        $sold_data[632]['yes']++;
+                        $sold_data[632]['items']['yes'][] = $trans_date5;
+                    }
+                    if ($note_no_flag5) {
+                        $sold_data[632]['no']++;
+                        $sold_data[632]['items']['no'][] = $trans_date5;
+                    }
+                    if ($note_mid_flag5) {
+                        $sold_data[632]['mid']++;
+                        $sold_data[632]['items']['mid'][] = $trans_date5;
+                    }
+                    $sold_data[632]['rate_sum'] += ($list_five['rate']);
+                    $sold_data[632]['rule_co_sum'] += (count($list_five['buy_type']));
                 }
             }
         }
