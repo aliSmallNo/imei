@@ -3269,11 +3269,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $note_no_flag6 = $note6 && in_array($note6, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
             $note_mid_flag6 = $note6 && in_array($note6, [self::NOTE_MID]);
 
-            $trans_date2 = isset($list[$trans_dates[$k + 1]]) ? $list[$trans_dates[$k + 1]] : '';
-            $trans_date3 = isset($list[$trans_dates[$k + 2]]) ? $list[$trans_dates[$k + 2]] : '';
-            $trans_date4 = isset($list[$trans_dates[$k + 3]]) ? $list[$trans_dates[$k + 3]] : '';
-            $trans_date5 = isset($list[$trans_dates[$k + 4]]) ? $list[$trans_dates[$k + 4]] : '';
-            $trans_date6 = isset($list[$trans_dates[$k + 5]]) ? $list[$trans_dates[$k + 5]] : '';
+            $trans_date2 = isset($trans_dates[$k + 1]) ? $trans_dates[$k + 1] : '';
+            $trans_date3 = isset($trans_dates[$k + 2]) ? $trans_dates[$k + 2] : '';
+            $trans_date4 = isset($trans_dates[$k + 3]) ? $trans_dates[$k + 3] : '';
+            $trans_date5 = isset($trans_dates[$k + 4]) ? $trans_dates[$k + 4] : '';
+            $trans_date6 = isset($trans_dates[$k + 5]) ? $trans_dates[$k + 5] : '';
 
             // 2天2次
             if ($today_is_but_dt && $tomorrow_is_but_dt) {
@@ -4124,11 +4124,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $note_no_flag6 = $note6 && in_array($note6, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
             $note_mid_flag6 = $note6 && in_array($note6, [self::NOTE_MID]);
 
-            $trans_date2 = isset($list[$trans_dates[$k + 1]]) ? $list[$trans_dates[$k + 1]] : '';
-            $trans_date3 = isset($list[$trans_dates[$k + 2]]) ? $list[$trans_dates[$k + 2]] : '';
-            $trans_date4 = isset($list[$trans_dates[$k + 3]]) ? $list[$trans_dates[$k + 3]] : '';
-            $trans_date5 = isset($list[$trans_dates[$k + 4]]) ? $list[$trans_dates[$k + 4]] : '';
-            $trans_date6 = isset($list[$trans_dates[$k + 5]]) ? $list[$trans_dates[$k + 5]] : '';
+            $trans_date2 = isset($trans_dates[$k + 1]) ? $trans_dates[$k + 1] : '';
+            $trans_date3 = isset($trans_dates[$k + 2]) ? $trans_dates[$k + 2] : '';
+            $trans_date4 = isset($trans_dates[$k + 3]) ? $trans_dates[$k + 3] : '';
+            $trans_date5 = isset($trans_dates[$k + 4]) ? $trans_dates[$k + 4] : '';
+            $trans_date6 = isset($trans_dates[$k + 5]) ? $trans_dates[$k + 5] : '';
 
             // 2天2次
             if ($today_is_sold_dt && $tomorrow_is_sold_dt) {

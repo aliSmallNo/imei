@@ -2791,10 +2791,10 @@ class StockController extends BaseController
         Admin::staffOnly();
 
         list($buy_data, $sold_data) = StockMainResult2::result_stat0601_new();
-        if (Admin::getAdminId() == 1002) {
+        /*if (Admin::getAdminId() == 1002) {
             print_r($buy_data);
             exit;
-        }
+        }*/
 
         return $this->renderPage("stock_main_result_stat0601_new.tpl", [
                 'buy_data' => $buy_data,
