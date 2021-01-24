@@ -3647,7 +3647,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $buy_data[$type]['rate_avg'] = $co ? sprintf('%.2f', $item['rate_sum'] / $co) : 0;
             $buy_data[$type]['rule_co_avg'] = $co ? sprintf('%.2f', $item['rule_co_sum'] / $co) : 0;
         }
-        exit;
 
         return $buy_data;
 
