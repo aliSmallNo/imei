@@ -2792,7 +2792,7 @@ class StockController extends BaseController
 
         list($buy_data, $sold_data) = StockMainResult2::result_stat0601_new();
         if (Admin::getAdminId() == 1002) {
-            print_r($buy_data[221]);
+            print_r($buy_data);
             exit;
         }
 
