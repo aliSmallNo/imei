@@ -3649,7 +3649,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         } catch (\Exception $e) {
             var_dump($type);
-            print_r($buy_data);
+            print_r($item);
             exit;
         }
 
