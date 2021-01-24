@@ -3480,16 +3480,16 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $list_today = $list[$trans_date];
                     $list_five = $list[$trans_dates[$k + 4]];
                     if ($note_yes_flag) {
-                        $buy_data[52]['yes']++;
-                        $buy_data[52]['items']['yes'][] = $trans_date;
+                        $buy_data[521]['yes']++;
+                        $buy_data[521]['items']['yes'][] = $trans_date;
                     }
                     if ($note_no_flag) {
-                        $buy_data[52]['no']++;
-                        $buy_data[52]['items']['no'][] = $trans_date;
+                        $buy_data[521]['no']++;
+                        $buy_data[521]['items']['no'][] = $trans_date;
                     }
                     if ($note_mid_flag) {
-                        $buy_data[52]['mid']++;
-                        $buy_data[52]['items']['mid'][] = $trans_date;
+                        $buy_data[521]['mid']++;
+                        $buy_data[521]['items']['mid'][] = $trans_date;
                     }
                     //$buy_data[521]['rate_sum'] += ($list_today['rate'] + $list_five['rate']);
                     //$buy_data[521]['rule_co_sum'] += (count($list_today['buy_type']) + count($list_five['buy_type']));
