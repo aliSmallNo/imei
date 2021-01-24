@@ -3638,7 +3638,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         foreach ($buy_data as $type => $item) {
-            if (!isset($item['yes']) || $item['no'] || $item['mid']) {
+            if (!isset($item['yes']) || !isset($item['no']) || !isset($item['mid'])) {
                 echo $type . "<br>";
                 print_r($item);
                 break;
