@@ -3232,18 +3232,18 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 continue;
             }
             $note = $results[$trans_date]['r_note'];
-            $note2 = isset($results[$trans_dates[$k + 1]]) ? $results[$trans_dates[$k + 1]]['r_note'] : '';
-            $note3 = isset($results[$trans_dates[$k + 2]]) ? $results[$trans_dates[$k + 2]]['r_note'] : '';
-            $note4 = isset($results[$trans_dates[$k + 3]]) ? $results[$trans_dates[$k + 3]]['r_note'] : '';
-            $note5 = isset($results[$trans_dates[$k + 4]]) ? $results[$trans_dates[$k + 4]]['r_note'] : '';
-            $note6 = isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
+            $note2 = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]) ? $results[$trans_dates[$k + 1]]['r_note'] : '';
+            $note3 = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]) ? $results[$trans_dates[$k + 2]]['r_note'] : '';
+            $note4 = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]) ? $results[$trans_dates[$k + 3]]['r_note'] : '';
+            $note5 = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]) ? $results[$trans_dates[$k + 4]]['r_note'] : '';
+            $note6 = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
 
             $today_is_but_dt = isset($results[$trans_date]);// 今天是否是 买入日期
-            $tomorrow_is_but_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 买入日期
-            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 买入日期
-            $four_is_but_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 买入日期
-            $five_is_but_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 买入日期
-            $six_is_but_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 买入日期
+            $tomorrow_is_but_dt = isset($trans_dates[$k + 1]) && isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 买入日期
+            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 买入日期
+            $four_is_but_dt = isset($trans_dates[$k + 3]) && isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 买入日期
+            $five_is_but_dt = isset($trans_dates[$k + 4]) && isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 买入日期
+            $six_is_but_dt = isset($trans_dates[$k + 5]) && isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 买入日期
 
             $note_yes_flag = $note && in_array($note, [self::NOTE_RIGHT, self::NOTE_BUY_RIGHT]);
             $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_SOLD_RIGHT]);
@@ -4094,18 +4094,18 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 continue;
             }
             $note = $results[$trans_date]['r_note'];
-            $note2 = isset($results[$trans_dates[$k + 1]]) ? $results[$trans_dates[$k + 1]]['r_note'] : '';
-            $note3 = isset($results[$trans_dates[$k + 2]]) ? $results[$trans_dates[$k + 2]]['r_note'] : '';
-            $note4 = isset($results[$trans_dates[$k + 3]]) ? $results[$trans_dates[$k + 3]]['r_note'] : '';
-            $note5 = isset($results[$trans_dates[$k + 4]]) ? $results[$trans_dates[$k + 4]]['r_note'] : '';
-            $note6 = isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
+            $note2 = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]) ? $results[$trans_dates[$k + 1]]['r_note'] : '';
+            $note3 = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]) ? $results[$trans_dates[$k + 2]]['r_note'] : '';
+            $note4 = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]) ? $results[$trans_dates[$k + 3]]['r_note'] : '';
+            $note5 = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]) ? $results[$trans_dates[$k + 4]]['r_note'] : '';
+            $note6 = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
 
             $today_is_sold_dt = isset($results[$trans_date]);// 今天是否是 买入日期
-            $tomorrow_is_sold_dt = isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 卖出 日期
-            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 卖出 日期
-            $four_is_sold_dt = isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 卖出 日期
-            $five_is_sold_dt = isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 卖出 日期
-            $six_is_sold_dt = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 卖出 日期
+            $tomorrow_is_sold_dt = isset($trans_dates[$k + 1]) &&  isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 卖出 日期
+            $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 卖出 日期
+            $four_is_sold_dt = isset($trans_dates[$k + 3]) && isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 卖出 日期
+            $five_is_sold_dt = isset($trans_dates[$k + 4]) && isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 卖出 日期
+            $six_is_sold_dt = isset($trans_dates[$k + 5]) && isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]);// 第6天是否是 卖出 日期
 
             $note_yes_flag = $note && in_array($note, [self::NOTE_SOLD_RIGHT, self::NOTE_RIGHT]);
             $note_no_flag = $note && in_array($note, [self::NOTE_WRONG, self::NOTE_BUY_RIGHT]);
