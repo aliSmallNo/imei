@@ -4539,7 +4539,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $sql = "SELECT r_trans_on from im_stock_main_result2 
                 where $buy_str
-                and r_trans_on between  and :trans_date order by r_trans_on asc";
+                and r_trans_on between :sold_date  and :trans_date order by r_trans_on asc";
         $buy_dates = AppUtil::db()->createCommand($sql, [
             ':sold_date' => $sold_date,
             ':trans_date' => $trans_date,
@@ -4581,7 +4581,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $sql = "SELECT r_trans_on from im_stock_main_result2 
                 where $sold_str
-                and r_trans_on between  and :trans_date order by r_trans_on asc";
+                and r_trans_on between :sold_date and :trans_date order by r_trans_on asc";
         $buy_dates = AppUtil::db()->createCommand($sql, [
             ':sold_date' => $sold_date,
             ':trans_date' => $trans_date,
