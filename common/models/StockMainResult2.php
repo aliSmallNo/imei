@@ -4533,6 +4533,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_date = AppUtil::db()->createCommand($sql, [
             ':trans_date' => $trans_date,
         ])->queryScalar();
+        if (!$sold_date) {
+            return 0;
+        }
 
         $sql = "SELECT r_trans_on from im_stock_main_result2 
                 where $buy_str
@@ -4572,6 +4575,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_date = AppUtil::db()->createCommand($sql, [
             ':trans_date' => $trans_date,
         ])->queryScalar();
+        if (!$sold_date) {
+            return 0;
+        }
 
         $sql = "SELECT r_trans_on from im_stock_main_result2 
                 where $sold_str
