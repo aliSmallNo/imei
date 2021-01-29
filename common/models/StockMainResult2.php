@@ -4101,7 +4101,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $note6 = isset($trans_dates[$k + 5]) && isset($results[$trans_dates[$k + 5]]) ? $results[$trans_dates[$k + 5]]['r_note'] : '';
 
             $today_is_sold_dt = isset($results[$trans_date]);// 今天是否是 买入日期
-            $tomorrow_is_sold_dt = isset($trans_dates[$k + 1]) &&  isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 卖出 日期
+            $tomorrow_is_sold_dt = isset($trans_dates[$k + 1]) && isset($trans_dates[$k + 1]) && isset($results[$trans_dates[$k + 1]]);// 明天是否是 卖出 日期
             $three_is_but_dt = isset($trans_dates[$k + 2]) && isset($trans_dates[$k + 2]) && isset($results[$trans_dates[$k + 2]]);// 后天是否是 卖出 日期
             $four_is_sold_dt = isset($trans_dates[$k + 3]) && isset($trans_dates[$k + 3]) && isset($results[$trans_dates[$k + 3]]);// 大后天是否是 卖出 日期
             $five_is_sold_dt = isset($trans_dates[$k + 4]) && isset($trans_dates[$k + 4]) && isset($results[$trans_dates[$k + 4]]);// 第5天是否是 卖出 日期
@@ -4525,7 +4525,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             return '-';
         }
         $sold_str = self::SOLD_WHERE_STR;
-        $buy_str = self::SOLD_WHERE_STR;
+        $buy_str = self::BUY_WHERE_STR;
         $sql = "SELECT r_trans_on from im_stock_main_result2 
             where $sold_str 
             and r_trans_on between '2012-01-01' and :trans_date order by r_trans_on desc limit 1";
@@ -4533,8 +4533,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $sold_date = AppUtil::db()->createCommand($sql, [
             ':trans_date' => $trans_date,
         ])->queryScalar();
+
         if (!$sold_date) {
-            return 0;
+            return '--';
         }
 
         $sql = "SELECT r_trans_on from im_stock_main_result2 
@@ -4544,15 +4545,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             ':sold_date' => $sold_date,
             ':trans_date' => $trans_date,
         ])->queryAll();
+
         $buy_dates = ArrayHelper::getColumn($buy_dates, 'r_trans_on');
 
         foreach ($buy_dates as $k => $buy_date) {
+            //echo $buy_date . '==' . $trans_date . PHP_EOL;
             if ($buy_date == $trans_date) {
                 return $k + 1;
             }
         }
 
-        return 0;
+        return '~';
     }
 
     /**
@@ -4567,7 +4570,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         $sold_str = self::SOLD_WHERE_STR;
-        $buy_str = self::SOLD_WHERE_STR;
+        $buy_str = self::BUY_WHERE_STR;
         $sql = "SELECT r_trans_on from im_stock_main_result2 
             where $buy_str 
             and r_trans_on between '2012-01-01' and :trans_date order by r_trans_on desc limit 1";
@@ -4576,7 +4579,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             ':trans_date' => $trans_date,
         ])->queryScalar();
         if (!$sold_date) {
-            return 0;
+            return '--';
         }
 
         $sql = "SELECT r_trans_on from im_stock_main_result2 
@@ -4594,7 +4597,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        return 0;
+        return '~';
     }
 
     /**
