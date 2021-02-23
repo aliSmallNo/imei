@@ -104,7 +104,7 @@ class StockMainStat extends \yii\db\ActiveRecord
      */
     public static function init_main_stat_data()
     {
-        //return false;
+        return false;
 
         $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on desc';
         $dts = AppUtil::db()->createCommand($sql)->queryAll();
@@ -126,7 +126,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         self::CAT_DAY_60 => '60日',
         self::CAT_DAY_120 => '120日',
     ];
-    static $cats_map = [
+    /*static $cats_map = [
         self::CAT_DAY_5 => '5日',
         self::CAT_DAY_10 => '10日',
         self::CAT_DAY_20 => '20日',
@@ -141,9 +141,9 @@ class StockMainStat extends \yii\db\ActiveRecord
         '5,10,60' => '5日,10日,60日',
         '10,20,60' => '10日,20日,60日',
         '5,10,20,60' => '5日,10日,20日,60日',
-    ];
+    ];*/
 
-    static $cats_map2 = [
+    static $cats_map = [
         self::CAT_DAY_5 => '5日',
         self::CAT_DAY_10 => '10日',
         self::CAT_DAY_20 => '20日',

@@ -158,6 +158,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-02-28 PM
      * @time 2020-02-29 PM modify
+     * @time 2021-02-23 PM modify
      */
     public static function reset($flag = 0)
     {
@@ -189,14 +190,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     'r_buy10' => '',
                     'r_buy20' => '',
                     'r_buy60' => '',
+                    'r_buy120' => '',
                     'r_sold5' => '',
                     'r_sold10' => '',
                     'r_sold20' => '',
                     'r_sold60' => '',
+                    'r_sold120' => '',
                     'r_warn5' => '',
                     'r_warn10' => '',
                     'r_warn20' => '',
                     'r_warn60' => '',
+                    'r_warn120' => '',
                     'r_note' => '',
                 ];
             }
@@ -227,14 +231,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'r_buy10' => $v['r_buy10'],
                 'r_buy20' => $v['r_buy20'],
                 'r_buy60' => $v['r_buy60'],
+                'r_buy120' => $v['r_buy120'],
                 'r_sold5' => $v['r_sold5'],
                 'r_sold10' => $v['r_sold10'],
                 'r_sold20' => $v['r_sold20'],
                 'r_sold60' => $v['r_sold60'],
+                'r_sold120' => $v['r_sold120'],
                 'r_warn5' => $v['r_warn5'],
                 'r_warn10' => $v['r_warn10'],
                 'r_warn20' => $v['r_warn20'],
                 'r_warn60' => $v['r_warn60'],
+                'r_warn120' => $v['r_warn120'],
                 'r_trans_on' => $v['r_trans_on'],
             ]);
         }
@@ -258,6 +265,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-02-28 PM
      * @time 2020-02-29 PM modify
+     * @time 2021-02-23 PM modify
      */
     public static function cal_one($trans_on = '')
     {
@@ -275,14 +283,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             'r_buy10' => '',
             'r_buy20' => '',
             'r_buy60' => '',
+            'r_buy120' => '',
             'r_sold5' => '',
             'r_sold10' => '',
             'r_sold20' => '',
             'r_sold60' => '',
+            'r_sold120' => '',
             'r_warn5' => '',
             'r_warn10' => '',
             'r_warn20' => '',
             'r_warn60' => '',
+            'r_warn120' => '',
         ];
         if (!$res) {
             return $data;

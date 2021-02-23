@@ -1904,15 +1904,8 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        /*$redis = RedisUtil::redis();
 
-        print_r($redis->del( 'imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));
-        StockMainResult2::batch_cache_5day_after_rate_vals();
-        print_r($redis->hkeys( 'imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));
-        print_r($redis->hvals('imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));*/
-
-
-        StockMainStat::init_main_stat_data();
+        //StockMainStat::init_main_stat_data();
 
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
