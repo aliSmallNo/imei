@@ -1912,7 +1912,7 @@ class FooController extends Controller
         print_r($redis->hvals('imei:' .RedisUtil::KEY_STOCK_RATE_5DAY_AFTER2_MEDIAN));*/
 
 
-        echo StockMainResult2::get_the_buy_times('2020-12-30');
+        StockMainStat::init_main_stat_data();
 
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);

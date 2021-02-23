@@ -1773,14 +1773,10 @@ class StockController extends BaseController
             $params[':dt'] = $dt;
         }
 
-        list($list, $count) = StockMainStat::items2(
-            $criteria, $params, $page, 100
-        );
+        list($list, $count) = StockMainStat::items2($criteria, $params, $page, 100);
         $pagination = self::pagination($page, $count, 100);
 
-        return $this->renderPage(
-            "stock_main2.tpl",
-            [
+        return $this->renderPage("stock_main2.tpl", [
                 'cat' => $cat,
                 'dt' => $dt,
                 'pagination' => $pagination,

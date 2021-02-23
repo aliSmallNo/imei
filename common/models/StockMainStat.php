@@ -104,9 +104,9 @@ class StockMainStat extends \yii\db\ActiveRecord
      */
     public static function init_main_stat_data()
     {
-        return false;
+        //return false;
 
-        $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on asc';
+        $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on desc';
         $dts = AppUtil::db()->createCommand($sql)->queryAll();
         foreach (array_column($dts, 'm_trans_on') as $dt) {
             echo $dt.PHP_EOL;
@@ -118,11 +118,13 @@ class StockMainStat extends \yii\db\ActiveRecord
     const CAT_DAY_10 = 10;
     const CAT_DAY_20 = 20;
     const CAT_DAY_60 = 60;
+    const CAT_DAY_120 = 120;
     static $cats = [
         self::CAT_DAY_5 => '5日',
         self::CAT_DAY_10 => '10日',
         self::CAT_DAY_20 => '20日',
         self::CAT_DAY_60 => '60日',
+        self::CAT_DAY_120 => '120日',
     ];
     static $cats_map = [
         self::CAT_DAY_5 => '5日',
@@ -141,6 +143,33 @@ class StockMainStat extends \yii\db\ActiveRecord
         '5,10,20,60' => '5日,10日,20日,60日',
     ];
 
+    static $cats_map2 = [
+        self::CAT_DAY_5 => '5日',
+        self::CAT_DAY_10 => '10日',
+        self::CAT_DAY_20 => '20日',
+        self::CAT_DAY_60 => '60日',
+        self::CAT_DAY_120 => '120日',
+        '5,10' => '5日,10日',
+        '5,20' => '5日,20日',
+        '5,60' => '5日,60日',
+        '5,120' => '5日,120日',
+        '10,20' => '10日,20日',
+        '10,60' => '10日,60日',
+        '10,120' => '10日,120日',
+        '20,60' => '20日,60日',
+        '20,120' => '20日,120日',
+        '5,10,20' => '5日,10日,20日',
+        '5,10,60' => '5日,10日,60日',
+        '5,10,120' => '5日,10日,120日',
+        '10,20,60' => '10日,20日,60日',
+        '10,20,120' => '10日,20日,120日',
+        '20,60,120' => '20日,60日,120日',
+        '5,10,20,60' => '5日,10日,20日,60日',
+        '5,10,20,120' => '5日,10日,20日,120日',
+        '10,20,60,120' => '10日,20日,6日,120日',
+        '5,10,20,60,120' => '5日,10日,20日,6日,120日',
+    ];
+
     /**
      * 按日期计算 统计数据
      *
@@ -152,21 +181,23 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         //echo $trans_on.PHP_EOL;
 
-        $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 61';
+        $sql = 'select * from im_stock_main where m_trans_on <= :m_trans_on order by m_trans_on desc limit 121';
         $data = AppUtil::db()->createCommand($sql, [':m_trans_on' => $trans_on])->queryAll();
 
         $curr = array_slice($data, 0, 1)[0];
-        $data = array_slice($data, 1, 60);
+        $data = array_slice($data, 1, 120);
 
         $data_5 = array_slice($data, 0, 5);
         $data_10 = array_slice($data, 0, 10);
         $data_20 = array_slice($data, 0, 20);
-        $data_60 = $data;
+        $data_60 = array_slice($data, 0, 60);
+        $data_120 = $data;
 
         self::pre_insert($trans_on, $data_5, $curr, self::CAT_DAY_5);
         self::pre_insert($trans_on, $data_10, $curr, self::CAT_DAY_10);
         self::pre_insert($trans_on, $data_20, $curr, self::CAT_DAY_20);
         self::pre_insert($trans_on, $data_60, $curr, self::CAT_DAY_60);
+        self::pre_insert($trans_on, $data_120, $curr, self::CAT_DAY_120);
 
     }
 

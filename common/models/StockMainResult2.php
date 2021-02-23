@@ -2434,6 +2434,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             if ($note == 1) {
                 $where .= "  and (r_note='错' or r_note='买对')  ";
             }*/
+            // 这是卖空的：'对': '卖对'+'对';  '错':'错'+'买对'; '中性':'中性';
             // 2021-1-21 modify
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='卖对')  ";
@@ -2446,6 +2447,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
             list($list, $avgs, $median, $max, $min) = StockMainResult2::get_5day_after_rate_r($price_type, $where, $dt_type);
         } else {
+            // 这是正常的：'对':'买对'+'对';'错':'错'+'卖对';'中性':'中性';
             if ($note == 1) {
                 $where .= "  and (r_note='对' or r_note='买对')  ";
             }
