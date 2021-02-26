@@ -661,7 +661,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         ];
 
         foreach ($buy_rules as $rule_name) {
-            if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+            if (isset($list_buy_indexs[$rule_name]) && isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                 $buy_co++;
                 $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
 
@@ -671,14 +671,14 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
 
         foreach ($sold_rules as $rule_name) {
-            if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
+            if (isset($list_sold_indexs[$rule_name]) && isset($list_sold[$list_sold_indexs[$rule_name]])) {
                 $sold_co++;
                 $sold_sum += $list_sold[$list_sold_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
             }
         }
 
         foreach ($warn_rules as $rule_name) {
-            if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
+            if (isset($list_warn_indexs[$rule_name]) && isset($list_warn[$list_warn_indexs[$rule_name]])) {
                 $warn_co++;
                 $warn_sum += $list_warn[$list_warn_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
             }
