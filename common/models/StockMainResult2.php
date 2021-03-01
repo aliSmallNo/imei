@@ -4861,7 +4861,10 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     $buy_rules, $sold_rules, $warn_rules,
                     $buy_rules_day, $sold_rules_day, $warn_rules_day,
                     $buy_rules_right_rate, $sold_rules_right_rate, $warn_rules_right_rate,
-                    $buy_avg_rate, $buy_avg_rate_buy_co, $sold_avg_rate, $sold_avg_rate_sold_co) =
+                    $buy_avg_rate, $buy_avg_rate_buy_co,
+                    $sold_avg_rate, $sold_avg_rate_sold_co,
+                    $warn_avg_rate, $warn_avg_rate_warn_co,
+                    ) =
                     StockMainResult2::cal_one_item($result, $list_buy, $list_buy_indexs, $list_sold, $list_sold_indexs, $list_warn, $list_warn_indexs, 0);
 
                 $data[$k]['buy_rules']['buy_rules_right_rate'] = $buy_rules_right_rate;
@@ -4875,6 +4878,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $data[$k]['sold_rules']['sold_avg_right_rate_2p'] = $sold_co > 0 ? (2 * sprintf('%.2f', $sold_sum / $sold_co) - 100) : 0;
                 $data[$k]['sold_rules']['sold_avg_rate'] = $sold_avg_rate;
                 $data[$k]['sold_rules']['sold_avg_rate_sold_co'] = $sold_avg_rate_sold_co;
+
+                $data[$k]['warn_rules']['warn_rules_right_rate'] = $warn_rules_right_rate;
+                $data[$k]['warn_rules']['warn_avg_right_rate'] = $warn_co > 0 ? sprintf('%.2f', $warn_sum / $warn_co) : 0;
+                $data[$k]['warn_rules']['warn_avg_right_rate_2p'] = $warn_co > 0 ? (2 * sprintf('%.2f', $warn_sum / $warn_co) - 100) : 0;
+                $data[$k]['warn_rules']['warn_avg_rate'] = $warn_avg_rate;
+                $data[$k]['warn_rules']['warn_avg_rate_warn_co'] = $warn_avg_rate_warn_co;
             }
 
             /*// 涨

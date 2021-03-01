@@ -32,8 +32,9 @@
             <th>深圳交易额</th>
             <th>合计交易额</th>
 
-            <th>买入信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
-            <th>卖出信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">买入信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">卖出信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">警告信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
         </tr>
         </thead>
         <tbody>
@@ -85,6 +86,26 @@
                         平均收益率：{{$item.sold_rules.sold_avg_rate}}%</div>{{/if}}
 
                 </td>
+                <td>
+                    <!-- 警告 -->
+                    {{foreach from=$item.warn_rules.warn_rules_right_rate item=right_rate_item key=day}}
+                        {{if $right_rate_item}}
+                            {{foreach from=$right_rate_item item=desc}}
+                                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}% {{$desc.append_hope_val}}
+                                    %, {{$desc.no_avg_rate}}%, {{$desc.yes_avg_rate}}%, {{$desc.d1_median0_yes}}%, {{$desc.d1_median0_no}}%
+                                </div>
+                            {{/foreach}}
+                        {{/if}}
+                    {{/foreach}}
+                    <br>
+                    {{if $item.warn_rules.warn_avg_right_rate}}
+                        <div class="avg_font">平均正确率{{$item.warn_rules.warn_avg_right_rate}}%</div>{{/if}}
+                    {{if $item.warn_rules.warn_avg_right_rate_2p}}
+                        <div class="avg_font">2P-1：{{$item.warn_rules.warn_avg_right_rate_2p}}%</div>{{/if}}
+                    {{if $item.warn_rules.warn_avg_rate}}
+                    <div class="avg_font" data-co="{{$item.warn_rules.warn_avg_rate_warn_co}}">
+                        平均收益率：{{$item.warn_rules.warn_avg_rate}}%</div>{{/if}}
+                </td>
             </tr>
         {{/foreach}}
         </tbody>
@@ -102,12 +123,9 @@
             <th>深圳交易额</th>
             <th>合计交易额</th>
 
-            <th>买入信号假设
-            <br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错
-            </th>
-            <th>卖出信号假设
-                <br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错
-            </th>
+            <th class="col-sm-2">买入信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">卖出信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">警告信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
         </tr>
         </thead>
         <tbody>
@@ -159,6 +177,26 @@
                         平均收益率：{{$item.sold_rules.sold_avg_rate}}%</div>{{/if}}
 
                 </td>
+                <td>
+                    <!-- 警告 -->
+                    {{foreach from=$item.warn_rules.warn_rules_right_rate item=right_rate_item key=day}}
+                        {{if $right_rate_item}}
+                            {{foreach from=$right_rate_item item=desc}}
+                                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}% {{$desc.append_hope_val}}
+                                    %, {{$desc.no_avg_rate}}%, {{$desc.yes_avg_rate}}%, {{$desc.d1_median0_yes}}%, {{$desc.d1_median0_no}}%
+                                </div>
+                            {{/foreach}}
+                        {{/if}}
+                    {{/foreach}}
+                    <br>
+                    {{if $item.warn_rules.warn_avg_right_rate}}
+                        <div class="avg_font">平均正确率{{$item.warn_rules.warn_avg_right_rate}}%</div>{{/if}}
+                    {{if $item.warn_rules.warn_avg_right_rate_2p}}
+                        <div class="avg_font">2P-1：{{$item.warn_rules.warn_avg_right_rate_2p}}%</div>{{/if}}
+                    {{if $item.warn_rules.warn_avg_rate}}
+                    <div class="avg_font" data-co="{{$item.warn_rules.warn_avg_rate_warn_co}}">
+                        平均收益率：{{$item.warn_rules.warn_avg_rate}}%</div>{{/if}}
+                </td>
             </tr>
         {{/foreach}}
         </tbody>
@@ -176,8 +214,9 @@
             <th>深圳交易额</th>
             <th>合计交易额</th>
 
-            <th>买入信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
-            <th>卖出信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">买入信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">卖出信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
+            <th class="col-sm-2">警告信号假设<br>正确率,期望收益率,收益率-错,收益率-对,D1中位值-对,D1中位值-错</th>
         </tr>
         </thead>
         <tbody>
@@ -228,6 +267,26 @@
                     <div class="avg_font" data-co="{{$item.sold_rules.sold_avg_rate_sold_co}}">
                         平均收益率：{{$item.sold_rules.sold_avg_rate}}%</div>{{/if}}
 
+                </td>
+                <td>
+                    <!-- 警告 -->
+                    {{foreach from=$item.warn_rules.warn_rules_right_rate item=right_rate_item key=day}}
+                        {{if $right_rate_item}}
+                            {{foreach from=$right_rate_item item=desc}}
+                                <div>{{$day}}日: {{$desc.rule_name}} {{$desc.times_yes_rate}}% {{$desc.append_hope_val}}
+                                    %, {{$desc.no_avg_rate}}%, {{$desc.yes_avg_rate}}%, {{$desc.d1_median0_yes}}%, {{$desc.d1_median0_no}}%
+                                </div>
+                            {{/foreach}}
+                        {{/if}}
+                    {{/foreach}}
+                    <br>
+                    {{if $item.warn_rules.warn_avg_right_rate}}
+                        <div class="avg_font">平均正确率{{$item.warn_rules.warn_avg_right_rate}}%</div>{{/if}}
+                    {{if $item.warn_rules.warn_avg_right_rate_2p}}
+                        <div class="avg_font">2P-1：{{$item.warn_rules.warn_avg_right_rate_2p}}%</div>{{/if}}
+                    {{if $item.warn_rules.warn_avg_rate}}
+                    <div class="avg_font" data-co="{{$item.warn_rules.warn_avg_rate_warn_co}}">
+                        平均收益率：{{$item.warn_rules.warn_avg_rate}}%</div>{{/if}}
                 </td>
             </tr>
         {{/foreach}}

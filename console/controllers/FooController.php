@@ -1904,7 +1904,6 @@ class FooController extends Controller
 
     public function actionZp()
     {
-        StockMainResult2::batch_cache_5day_after_rate_vals();
         //StockMainStat::init_main_stat_data();
 
         exit;

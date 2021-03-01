@@ -1932,6 +1932,7 @@ class StockController extends BaseController
                 10 => ' (r.r_buy10 like :name or r.r_sold10 like :name or r.r_warn10 like :name) ',
                 20 => ' (r.r_buy20 like :name or r.r_sold20 like :name or r.r_warn20 like :name) ',
                 60 => ' (r.r_buy60 like :name or r.r_sold60 like :name or r.r_warn60 like :name) ',
+                120 => ' (r.r_buy120 like :name or r.r_sold120 like :name or r.r_warn120 like :name) ',
             ];
             $criteria[] = isset($nStr[$cat]) ? $nStr[$cat] : $nStr[0];
             $params[':name'] = "%$name%";
@@ -1942,6 +1943,7 @@ class StockController extends BaseController
                 10 => ' (CHAR_LENGTH(r.r_buy10)>0 or CHAR_LENGTH(r.r_sold10)>0 or CHAR_LENGTH(r.r_warn10)>0) ',
                 20 => ' (CHAR_LENGTH(r.r_buy20)>0 or CHAR_LENGTH(r.r_sold20)>0 or CHAR_LENGTH(r.r_warn20)>0) ',
                 60 => ' (CHAR_LENGTH(r.r_buy60)>0 or CHAR_LENGTH(r.r_sold60)>0 or CHAR_LENGTH(r.r_warn60)>0) ',
+                120 => ' (CHAR_LENGTH(r.r_buy120)>0 or CHAR_LENGTH(r.r_sold120)>0 or CHAR_LENGTH(r.r_warn120)>0) ',
             ];
             $criteria[] = $cStr[$cat];
         }
