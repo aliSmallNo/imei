@@ -2006,6 +2006,15 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     'no_dts' => [],
                     'mid_dts' => [],
                 ],
+                120 => [
+                    'times' => 0,
+                    'times_yes' => 0,
+                    'times_no' => 0,
+                    'times_mid' => 0,
+                    'yes_dts' => [],
+                    'no_dts' => [],
+                    'mid_dts' => [],
+                ],
                 'SUM' => [
                     'times' => 0,
                     'times_yes' => 0,
