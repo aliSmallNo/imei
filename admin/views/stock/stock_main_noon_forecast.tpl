@@ -21,11 +21,9 @@
 <div class="row">
     <table class="table table-striped table-bordered">
         <thead>
-        <tr><th colspan="7">0.60</th></tr>
+        <tr><th colspan="8">0.60</th></tr>
         <tr>
-            <th class="col-sm-1">
-                涨跌幅假设
-            </th>
+            <th class="col-sm-1">涨跌幅假设</th>
             <th>上证指数</th>
             <th>上证交易额</th>
 
@@ -112,7 +110,7 @@
     </table>
     <table class="table table-striped table-bordered">
         <thead>
-        <tr><th colspan="7">0.61</th></tr>
+        <tr><th colspan="8">0.61</th></tr>
         <tr>
             <th class="col-sm-1">
                 涨跌幅假设
@@ -203,11 +201,9 @@
     </table>
     <table class="table table-striped table-bordered">
         <thead>
-        <tr><th colspan="7">0.62</th></tr>
+        <tr><th colspan="8">0.62</th></tr>
         <tr>
-            <th class="col-sm-1">
-                涨跌幅假设
-            </th>
+            <th class="col-sm-1">涨跌幅假设</th>
             <th>上证指数</th>
             <th>上证交易额</th>
 

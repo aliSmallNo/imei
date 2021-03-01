@@ -59,10 +59,11 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         self::BACK_DIR_2 => '做空回测',
     ];
 
-    const BUY_WHERE_STR = '(CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0)';
+    const BUY_WHERE_STR = '(CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0 or CHAR_LENGTH(r_buy120)>0)';
     // 此条策略结果 同时有买和卖，你在回测里面，都当做卖处理。 2020-11-18
-    const BUY_WHERE_STR2 = '((CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0) and (CHAR_LENGTH(r_sold5)=0 and CHAR_LENGTH(r_sold10)=0 and CHAR_LENGTH(r_sold20)=0 and CHAR_LENGTH(r_sold60)=0))';
-    const SOLD_WHERE_STR = '(CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0)';
+    const BUY_WHERE_STR2 = '((CHAR_LENGTH(r_buy5)>0 or CHAR_LENGTH(r_buy10)>0 or CHAR_LENGTH(r_buy20)>0 or CHAR_LENGTH(r_buy60)>0 or CHAR_LENGTH(r_buy120)>0) 
+    and (CHAR_LENGTH(r_sold5)=0 and CHAR_LENGTH(r_sold10)=0 and CHAR_LENGTH(r_sold20)=0 and CHAR_LENGTH(r_sold60)=0 and CHAR_LENGTH(r_sold120)=0))';
+    const SOLD_WHERE_STR = '(CHAR_LENGTH(r_sold5)>0 or CHAR_LENGTH(r_sold10)>0 or CHAR_LENGTH(r_sold20)>0 or CHAR_LENGTH(r_sold60)>0 or CHAR_LENGTH(r_sold120)>0)';
 
     static $right_rate_gt_val_map = [
         60 => '高于60%',
@@ -449,12 +450,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         return $rules;
     }
 
-    public static function rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60)
+    public static function rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60, $r_buy120)
     {
         $buy_rules5 = self::rules_to_arr($r_buy5);
         $buy_rules10 = self::rules_to_arr($r_buy10);
         $buy_rules20 = self::rules_to_arr($r_buy20);
         $buy_rules60 = self::rules_to_arr($r_buy60);
+        $buy_rules120 = self::rules_to_arr($r_buy120);
 
         $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
         $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
@@ -499,29 +501,30 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $res[$k]['curr_stock_price'] = isset($v[$price_type]) && $v[$price_type] ? $v[$price_type] : $v['m_etf_close'];
             foreach ($v as $f => $v1) {
                 if (in_array($f, [
-                    'r_buy5', 'r_buy10', 'r_buy20', 'r_buy60',
-                    'r_sold5', 'r_sold10', 'r_sold20', 'r_sold60',
-                    'r_warn5', 'r_warn10', 'r_warn20', 'r_warn60',
+                    'r_buy5', 'r_buy10', 'r_buy20', 'r_buy60', 'r_buy120',
+                    'r_sold5', 'r_sold10', 'r_sold20', 'r_sold60', 'r_sold120',
+                    'r_warn5', 'r_warn10', 'r_warn20', 'r_warn60', 'r_warn120',
                 ])) {
                     $res[$k][$f] = trim($res[$k][$f], ',');
                 }
             }
             $r_trans_on = $v['r_trans_on'];
             if ($r_trans_on != date('Y-m-d')
-                && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20'] && !$v['r_buy60']
-                && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20'] && !$v['r_sold60']
-                && !$v['r_warn5'] && !$v['r_warn10'] && !$v['r_warn20'] && !$v['r_warn60']
+                && !$v['r_buy5'] && !$v['r_buy10'] && !$v['r_buy20'] && !$v['r_buy60'] && !$v['r_buy120']
+                && !$v['r_sold5'] && !$v['r_sold10'] && !$v['r_sold20'] && !$v['r_sold60'] && !$v['r_sold120']
+                && !$v['r_warn5'] && !$v['r_warn10'] && !$v['r_warn20'] && !$v['r_warn60'] && !$v['r_warn120']
             ) {
                 unset($res[$k]);
             }
             // 此条策略结果 同时有买和卖，你在回测里面，都当做卖处理。 2020-11-18
             if (!$show_all) {
-                if (($v['r_buy5'] || $v['r_buy10'] || $v['r_buy20'] || $v['r_buy60'])
-                    && ($v['r_sold5'] || $v['r_sold10'] || $v['r_sold20'] && $v['r_sold60'])) {
+                if (($v['r_buy5'] || $v['r_buy10'] || $v['r_buy20'] || $v['r_buy60'] || $v['r_buy120'])
+                    && ($v['r_sold5'] || $v['r_sold10'] || $v['r_sold20'] && $v['r_sold60'] && $v['r_sold120'])) {
                     $res[$k]['r_buy5'] = "";
                     $res[$k]['r_buy10'] = "";
                     $res[$k]['r_buy20'] = "";
                     $res[$k]['r_buy60'] = "";
+                    $res[$k]['r_buy120'] = "";
                 }
             }
         }
@@ -602,14 +605,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $r_buy10 = $v['r_buy10'];
         $r_buy20 = $v['r_buy20'];
         $r_buy60 = $v['r_buy60'];
+        $r_buy120 = $v['r_buy120'];
         $r_sold5 = $v['r_sold5'];
         $r_sold10 = $v['r_sold10'];
         $r_sold20 = $v['r_sold20'];
         $r_sold60 = $v['r_sold60'];
+        $r_sold120 = $v['r_sold120'];
         $r_warn5 = $v['r_warn5'];
         $r_warn10 = $v['r_warn10'];
         $r_warn20 = $v['r_warn20'];
         $r_warn60 = $v['r_warn60'];
+        $r_warn120 = $v['r_warn120'];
 
         /*$buy_rules = $sold_rules = $warn_rules = [];
         $add_rule = function ($rules, $rule_str) {
@@ -647,9 +653,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $warn_rules = array_unique(array_merge($warn_rules5, $warn_rules10, $warn_rules20, $warn_rules60));
         $warn_rules_day = [5 => $warn_rules5, 10 => $warn_rules10, 20 => $warn_rules20, 60 => $warn_rules60];*/
 
-        list($buy_rules, $buy_rules_day) = self::rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60);
-        list($sold_rules, $sold_rules_day) = self::rules_to_arr_all($r_sold5, $r_sold10, $r_sold20, $r_sold60);
-        list($warn_rules, $warn_rules_day) = self::rules_to_arr_all($r_warn5, $r_warn10, $r_warn20, $r_warn60);
+        list($buy_rules, $buy_rules_day) = self::rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60, $r_buy120);
+        list($sold_rules, $sold_rules_day) = self::rules_to_arr_all($r_sold5, $r_sold10, $r_sold20, $r_sold60, $r_sold120);
+        list($warn_rules, $warn_rules_day) = self::rules_to_arr_all($r_warn5, $r_warn10, $r_warn20, $r_warn60, $r_warn120);
 
         $buy_co = $sold_co = $warn_co = 0;
         $buy_sum = $sold_sum = $warn_sum = 0;
@@ -2060,7 +2066,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 return $item;
             };
             foreach ($results as $result) {
-                foreach ([5, 10, 20, 60] as $day) {
+                foreach ([5, 10, 20, 60, 120] as $day) {
                     foreach ([
                                  StockMainRule2::CAT_BUY => 'r_buy',
                                  StockMainRule2::CAT_SOLD => 'r_sold',
