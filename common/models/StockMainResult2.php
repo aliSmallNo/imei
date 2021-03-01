@@ -459,7 +459,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $buy_rules120 = self::rules_to_arr($r_buy120);
 
         $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
-        $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
+        $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60, 120 => $buy_rules120];
 
         return [$buy_rules, $buy_rules_day];
     }
@@ -942,19 +942,16 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-11-27
      * @time 2020-03-01 PM modify
+     * @time 2021-03-01
      */
-    public
-    static function get_buy_sold_item(
-        $data,
-        $cat = self::TAG_BUY
-    )
+    public static function get_buy_sold_item($data, $cat = self::TAG_BUY)
     {
         switch ($cat) {
             case self::TAG_BUY:
-                $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20', 60 => 'r_buy60'];
+                $arr = [5 => 'r_buy5', 10 => 'r_buy10', 20 => 'r_buy20', 60 => 'r_buy60', 120 => 'r_buy120'];
                 break;
             case self::TAG_SOLD:
-                $arr = [5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20', 60 => 'r_sold60'];
+                $arr = [5 => 'r_sold5', 10 => 'r_sold10', 20 => 'r_sold20', 60 => 'r_sold60', 120 => 'r_sold120'];
                 break;
             default:
                 $arr = [];
@@ -1662,11 +1659,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      * @time 2019-11-26
      * @time 2020-03-01 PM modify
      * @time 2020-09-07 PM modify
+     * @time 2021-03-01
      */
-    public
-    static function get_sold_point(
-        $buy_dt
-    )
+    public static function get_sold_point($buy_dt)
     {
         $sql = "select p.*,r.* from im_stock_main_result2 r
                 left join im_stock_main_price p on r.r_trans_on=p.p_trans_on
