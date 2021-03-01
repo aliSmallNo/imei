@@ -1184,6 +1184,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     continue;
                 }
                 $buy_dt = $buy['r_trans_on'];
+                //if($buy_dt!='2020-02-10')continue;
 
                 // 2019-12-23 add
                 if ($buy_times) {
@@ -1429,11 +1430,9 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-16 AM
      * @time 2020-03-01 PM modify
+     * @time 2021-03-01
      */
-    public
-    static function stat_rule_right_rate(
-        $data
-    )
+    public static function stat_rule_right_rate($data)
     {
         $rules = StockMainRule2::find()->where(['r_status' => StockMainRule2::ST_ACTIVE])->asArray()->orderBy('r_cat')->all();
         $ret = ArrayHelper::map($rules, 'r_name', 0);
@@ -1443,10 +1442,12 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'yes10' => 0,
                 'yes20' => 0,
                 'yes60' => 0,
+                'yes120' => 0,
                 'no5' => 0,
                 'no10' => 0,
                 'no20' => 0,
                 'no60' => 0,
+                'no120' => 0,
                 'sum' => 0,
                 'sum_rate' => 0,
             ];
@@ -1530,11 +1531,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2019-12-10
      */
-    public
-    static function pop_by_times(
-        $buy_times,
-        $data
-    )
+    public static function pop_by_times($buy_times, $data)
     {
         $data_all = [];
         foreach ($data as $v) {
