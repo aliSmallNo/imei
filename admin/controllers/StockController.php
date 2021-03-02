@@ -1925,9 +1925,9 @@ class StockController extends BaseController
 
         if ($name) {
             $nStr = [
-                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name or r.r_buy60 like :name
-            or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name or r.r_sold60 like :name
-            or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name or r.r_warn60 like :name) ',
+                0 => ' (r.r_buy5 like :name or r.r_buy10 like :name or r.r_buy20 like :name or r.r_buy60 like :name or r.r_buy120 like :name
+            or r.r_sold5 like :name or r.r_sold10 like :name or r.r_sold20 like :name or r.r_sold60 like :name or r.r_sold120 like :name
+            or r.r_warn5 like :name or r.r_warn10 like :name or r.r_warn20 like :name or r.r_warn60 like :name or r.r_warn120 like :name) ',
                 5 => ' (r.r_buy5 like :name or r.r_sold5 like :name or r.r_warn5 like :name ) ',
                 10 => ' (r.r_buy10 like :name or r.r_sold10 like :name or r.r_warn10 like :name) ',
                 20 => ' (r.r_buy20 like :name or r.r_sold20 like :name or r.r_warn20 like :name) ',
