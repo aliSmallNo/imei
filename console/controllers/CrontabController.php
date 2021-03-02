@@ -136,9 +136,15 @@ class CrontabController extends Controller
 
         try {
             // 中午预测 每天中午12:30 跑一次 2020-11-16
+            // 中午预测 每天中午12:30 跑一次 2021-3-2 modify
             if (in_array(date('H'), ['12'])) {
                 Log::add(['oCategory' => Log::CAT_STOCK_NOON_UPDATE, 'oBefore' => 'out']);
-                $data = StockMainResult2::stock_main_noon_forecast();
+                foreach (StockMainResult2::$noon_changes as $change => $change_t) {
+                    foreach (StockMainResult2::$ver_map as $ver) {
+                        $data = StockMainResult2::stock_main_noon_forecast($ver, $change);
+                    }
+                }
+
                 Log::add(['oCategory' => Log::CAT_STOCK_NOON_UPDATE, 'oBefore' => $data]);
             }
         } catch (\Exception $e) {

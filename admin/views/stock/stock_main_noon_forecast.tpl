@@ -15,8 +15,20 @@
         </h4>
     </div>
 </div>
-
-
+<div class="row-divider"></div>
+<div class="row">
+    <form action="/stock/stock_main_noon_forecast" method="get" class="form-inline">
+        <div class="form-group">
+            <select class="form-control" name="change">
+                {{foreach from=$noon_changes item=item key=key}}
+                    <option value="{{$key}}" {{if $key==$change}}selected{{/if}}>{{$item}}</option>
+                {{/foreach}}
+            </select>
+        </div>
+        <button class="btn btn-primary">查询</button>
+        <span class="space"></span>
+    </form>
+</div>
 <div class="row-divider"></div>
 <div class="row">
     <table class="table table-striped table-bordered">

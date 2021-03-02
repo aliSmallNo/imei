@@ -2821,16 +2821,19 @@ class StockController extends BaseController
     public function actionStock_main_noon_forecast()
     {
         Admin::staffOnly();
+        $change = self::getParam("change", StockMainResult2::CHANGE_1);
 
-        $data = StockMainResult2::stock_main_noon_forecast();
+        $data = StockMainResult2::stock_main_noon_forecast(StockMainResult2::VER_61, $change);
         // 加上一个 0.6 版本 2020-12-25
-        $data_60 = StockMainResult2::stock_main_noon_forecast(60);
-        $data_62 = StockMainResult2::stock_main_noon_forecast(62);
+        $data_60 = StockMainResult2::stock_main_noon_forecast(StockMainResult2::VER_60, $change);
+        $data_62 = StockMainResult2::stock_main_noon_forecast(StockMainResult2::VER_62, $change);
 
         return $this->renderPage("stock_main_noon_forecast.tpl", [
                 'list' => $data,
                 'list2' => $data_60,
                 'list3' => $data_62,
+                'noon_changes' => StockMainResult2::$noon_changes,
+                'change' => $change,
             ]
         );
     }
