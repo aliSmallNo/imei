@@ -1957,7 +1957,6 @@ class StockController extends BaseController
         $list = StockMainResult2::get_err_note_cls($list, $price_type, $list1, $list2);
         // 计算平均收益率
         $list = StockMainResult2::get_avg_rate($list, $price_type, $list1, $list2);
-
         $pagination = self::pagination($page, $count, 10000);
 
         $price_types = StockMainPrice::$types;
@@ -1971,8 +1970,8 @@ class StockController extends BaseController
         foreach ($list as $k => $v) {
             $arr1 = $v['buy_rules_right_rate'];
             $arr2 = $v['sold_rules_right_rate'];
-            $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
-            $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
+            $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60], $arr1[120]);
+            $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60], $arr2[120]);
             if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
                 unset($list[$k]);
                 continue;
@@ -1987,6 +1986,7 @@ class StockController extends BaseController
             }
         }
 
+        //echo count($list);exit;
         return $this->renderPage("stock_main_result2.tpl", [
                 'pagination' => $pagination,
                 'list' => $list,
@@ -2802,7 +2802,7 @@ class StockController extends BaseController
     }
 
     /**
-     * 功能需求：
+     * 功能需求：
      * 1.中午11:40时，根据上午数据做出下午结果预测
      * 2.作用是在中午时能知道，下午大概会出现什么信号
      *

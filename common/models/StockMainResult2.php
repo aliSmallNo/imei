@@ -664,6 +664,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             10 => [],
             20 => [],
             60 => [],
+            120 => [],
         ];
 
         foreach ($buy_rules as $rule_name) {
