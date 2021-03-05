@@ -16,14 +16,17 @@ use yii\helpers\ArrayHelper;
  * @property string $r_buy10
  * @property string $r_buy20
  * @property string $r_buy60
+ * @property string $r_buy120
  * @property string $r_sold5
  * @property string $r_sold10
  * @property string $r_sold20
  * @property string $r_sold60
+ * @property string $r_sold120
  * @property string $r_warn5
  * @property string $r_warn10
  * @property string $r_warn20
  * @property string $r_warn60
+ * @property string $r_warn120
  * @property string $r_trans_on
  * @property string $r_note
  * @property string $r_cb
@@ -84,14 +87,17 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             'r_buy10' => '10日买入',
             'r_buy20' => '20日买入',
             'r_buy60' => '60日买入',
+            'r_buy120' => '120日买入',
             'r_sold5' => '5日卖出',
             'r_sold10' => '10日卖出',
             'r_sold20' => '20日卖出',
             'r_sold60' => '60日卖出',
+            'r_sold120' => '120日卖出',
             'r_warn5' => '5日预警',
             'r_warn10' => '10日预警',
             'r_warn20' => '20日预警',
             'r_warn60' => '60日预警',
+            'r_warn120' => '120日预警',
             'r_trans_on' => '交易日期',
             'r_note' => '备注',
             'r_cb' => '复盘心得',
@@ -985,8 +991,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'] . $v['r_buy60'];
-            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'] . $v['r_sold60'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'] . $v['r_buy60']. $v['r_buy120'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'] . $v['r_sold60']. $v['r_sold120'];
             if ($buy && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -2462,7 +2468,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $where .= "  and (r_note='错' or r_note='买对')  ";
             }
             if ($rule_name) {
-                $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%' or r_sold60 like '%$rule_name%')";
+                $where .= "and (r_sold5 like '%$rule_name%' or r_sold10 like '%$rule_name%' or r_sold20 like '%$rule_name%' or r_sold60 like '%$rule_name%' or r_sold120 like '%$rule_name%')";
             }
             list($list, $avgs, $median, $max, $min) = StockMainResult2::get_5day_after_rate_r($price_type, $where, $dt_type);
         } else {
@@ -2474,7 +2480,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 $where .= "  and (r_note='错' or r_note='卖对')  ";
             }
             if ($rule_name) {
-                $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%' or r_buy60 like '%$rule_name%')";
+                $where .= "and (r_buy5 like '%$rule_name%' or r_buy10 like '%$rule_name%' or r_buy20 like '%$rule_name%' or r_buy60 like '%$rule_name%' or r_buy120 like '%$rule_name%')";
             }
             list($list, $avgs, $median, $max, $min) = StockMainResult2::get_5day_after_rate($price_type, $where, $dt_type);
         }
