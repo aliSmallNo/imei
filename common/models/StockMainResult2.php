@@ -991,8 +991,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $first_buys = [];
         $add_flag = 1;
         foreach ($list as $v) {
-            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'] . $v['r_buy60']. $v['r_buy120'];
-            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'] . $v['r_sold60']. $v['r_sold120'];
+            $buy = $v['r_buy5'] . $v['r_buy10'] . $v['r_buy20'] . $v['r_buy60'] . $v['r_buy120'];
+            $sold = $v['r_sold5'] . $v['r_sold10'] . $v['r_sold20'] . $v['r_sold60'] . $v['r_sold120'];
             if ($buy && $add_flag) {
                 $first_buys[] = $v;
                 $add_flag = 0;
@@ -1086,8 +1086,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             foreach ($list as $k => $v) {
                 $arr1 = $v['buy_rules_right_rate'];
                 $arr2 = $v['sold_rules_right_rate'];
-                $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60]);
-                $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60]);
+                $f1 = array_merge($arr1[5], $arr1[10], $arr1[20], $arr1[60], $arr1[120]);
+                $f2 = array_merge($arr2[5], $arr2[10], $arr2[20], $arr2[60], $arr2[120]);
                 if (!$f1 && !$f2 && $v['r_trans_on'] != date('Y-m-d')) {
                     unset($list[$k]);
                     continue;
@@ -1186,6 +1186,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         ArrayHelper::multisort($data, 'buy_dt', SORT_DESC);*/
 
         $cal_ret = function ($ret, $get_first_buys, $price_type, $buy_times, $stop_rate) {
+            $has_buy_times = 0;
             foreach ($ret as $buy) {
                 if (!isset($buy['r_trans_on'])) {
                     continue;
