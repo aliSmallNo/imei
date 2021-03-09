@@ -745,7 +745,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         }
 
         // 2021-3-8 edit
-        foreach ($warn_rules_day as $day => $rule_item) {
+        /*foreach ($warn_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
                 if (isset($list_warn_indexs[$rule_name]) && isset($list_warn[$list_warn_indexs[$rule_name]])) {
                     $_item = $list_warn[$list_warn_indexs[$rule_name]][$rule_name];
@@ -767,13 +767,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                 }
             }
-        }
+        }*/
 
         // 计算平均收益率-buy 2020-11-15 PM
         $buy_avg_rate_buy_co = 0;
         $buy_avg_rate = 0;
         $buy_rate_sum = 0;
-        if ($buy_rules_right_rate) {
+        /*if ($buy_rules_right_rate) {
             foreach ($buy_rules_right_rate as $day => $_item) {
                 foreach ($_item as $item) {
                     $buy_rate_sum += $item['append_hope_val'];
@@ -781,7 +781,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
             $buy_avg_rate = $buy_avg_rate_buy_co > 0 ? sprintf('%.2f', $buy_rate_sum / $buy_avg_rate_buy_co) : 0;
-        }
+        }*/
 
         // 计算平均收益率-sold 2020-11-15 PM
         $sold_avg_rate = 0;
