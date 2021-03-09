@@ -1906,6 +1906,12 @@ class FooController extends Controller
     {
         //StockMainStat::init_main_stat_data();
 
+        foreach (StockMainResult2::$noon_changes as $change => $change_t) {
+            foreach (StockMainResult2::$ver_map as $ver) {
+                $data = StockMainResult2::stock_main_noon_forecast($ver, $change,true);
+            }
+        }
+
         exit;
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-22 00:00:00']);
 //        StockOrder::deleteAll(['oAddedOn' => '2020-04-24 00:00:00']);

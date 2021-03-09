@@ -464,7 +464,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $buy_rules60 = self::rules_to_arr($r_buy60);
         $buy_rules120 = self::rules_to_arr($r_buy120);
 
-        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60,$buy_rules120));
+        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60, $buy_rules120));
         $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60, 120 => $buy_rules120];
 
         return [$buy_rules, $buy_rules_day];
@@ -4746,7 +4746,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
      *
      * @time 2020-11-15 PM
      */
-    public static function stock_main_noon_forecast($ver, $change)
+    public static function stock_main_noon_forecast($ver, $change, $reset = false)
     {
         // 上个交易日数据
         $stock_main_yeastoday = StockMain::find()
@@ -4839,7 +4839,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $trans = AppUtil::db()->beginTransaction();
 
-        if (StockMain::is_trans_date() && time() > $stime && time() < $etime || Admin::getAdminId() == 1002) {
+        if ((StockMain::is_trans_date() && time() > $stime && time() < $etime) || $reset) {
 //        if (StockMain::is_trans_date() || 1) {
             list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
             // 追加 平均收益率 期望收益率
@@ -4894,7 +4894,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
             StockMain::update_curr_day();
 
-            // RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver, $change)->setCache($data);
+            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver, $change)->setCache($data);
         } else {
             $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver, $change)->getCache();
 
