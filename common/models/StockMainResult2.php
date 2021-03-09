@@ -801,7 +801,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $warn_avg_rate = 0;
         $warn_rate_sum = 0;
         $warn_avg_rate_warn_co = 0;
-        /*if ($warn_rules_right_rate) {
+        // 2021-3-9 edit
+        if ($warn_rules_right_rate) {
             foreach ($warn_rules_right_rate as $day => $_item) {
                 foreach ($_item as $item) {
                     $warn_rate_sum += $item['append_hope_val'];
@@ -809,7 +810,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
             $warn_avg_rate = $warn_avg_rate_warn_co > 0 ? sprintf('%.2f', $warn_rate_sum / $warn_avg_rate_warn_co) : 0;
-        }*/
+        }
 
 
         return [$buy_co, $buy_sum, $sold_co, $sold_sum, $warn_co, $warn_sum,
