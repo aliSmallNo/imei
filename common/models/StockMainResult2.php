@@ -623,42 +623,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $r_warn60 = $v['r_warn60'];
         $r_warn120 = $v['r_warn120'];
 
-        /*$buy_rules = $sold_rules = $warn_rules = [];
-        $add_rule = function ($rules, $rule_str) {
-            if ($rule_str) {
-                if (strpos($rule_str, ',') !== false) {
-                    $rule_str_arr = explode(',', $rule_str);
-                    foreach ($rule_str_arr as $item) {
-                        $rules[] = $item;
-                    }
-                } else {
-                    $rules[] = $rule_str;
-                }
-            }
-
-            return $rules;
-        };
-        $buy_rules5 = $add_rule($buy_rules, $r_buy5);
-        $buy_rules10 = $add_rule($buy_rules, $r_buy10);
-        $buy_rules20 = $add_rule($buy_rules, $r_buy20);
-        $buy_rules60 = $add_rule($buy_rules, $r_buy60);
-        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
-        $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60];
-
-        $sold_rules5 = $add_rule($sold_rules, $r_sold5);
-        $sold_rules10 = $add_rule($sold_rules, $r_sold10);
-        $sold_rules20 = $add_rule($sold_rules, $r_sold20);
-        $sold_rules60 = $add_rule($sold_rules, $r_sold60);
-        $sold_rules = array_unique(array_merge($sold_rules5, $sold_rules10, $sold_rules20, $sold_rules60));
-        $sold_rules_day = [5 => $sold_rules5, 10 => $sold_rules10, 20 => $sold_rules20, 60 => $sold_rules60];
-
-        $warn_rules5 = $add_rule($warn_rules, $r_warn5);
-        $warn_rules10 = $add_rule($warn_rules, $r_warn10);
-        $warn_rules20 = $add_rule($warn_rules, $r_warn20);
-        $warn_rules60 = $add_rule($warn_rules, $r_warn60);
-        $warn_rules = array_unique(array_merge($warn_rules5, $warn_rules10, $warn_rules20, $warn_rules60));
-        $warn_rules_day = [5 => $warn_rules5, 10 => $warn_rules10, 20 => $warn_rules20, 60 => $warn_rules60];*/
-
         list($buy_rules, $buy_rules_day) = self::rules_to_arr_all($r_buy5, $r_buy10, $r_buy20, $r_buy60, $r_buy120);
         list($sold_rules, $sold_rules_day) = self::rules_to_arr_all($r_sold5, $r_sold10, $r_sold20, $r_sold60, $r_sold120);
         list($warn_rules, $warn_rules_day) = self::rules_to_arr_all($r_warn5, $r_warn10, $r_warn20, $r_warn60, $r_warn120);
@@ -677,8 +641,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             if (isset($list_buy_indexs[$rule_name]) && isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
                 $buy_co++;
                 $buy_sum += $list_buy[$list_buy_indexs[$rule_name]][$rule_name]['SUM']['times_yes_rate'];
-
-                // $data[$k1][$rule_name][$day]['times_yes_rate']
             }
         }
 
@@ -744,8 +706,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        // 2021-3-8 edit
-        /*foreach ($warn_rules_day as $day => $rule_item) {
+        // 2021-3-9 edit
+        foreach ($warn_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
                 if (isset($list_warn_indexs[$rule_name]) && isset($list_warn[$list_warn_indexs[$rule_name]])) {
                     $_item = $list_warn[$list_warn_indexs[$rule_name]][$rule_name];
@@ -767,13 +729,13 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                     }
                 }
             }
-        }*/
+        }
 
         // 计算平均收益率-buy 2020-11-15 PM
         $buy_avg_rate_buy_co = 0;
         $buy_avg_rate = 0;
         $buy_rate_sum = 0;
-        /*if ($buy_rules_right_rate) {
+        if ($buy_rules_right_rate) {
             foreach ($buy_rules_right_rate as $day => $_item) {
                 foreach ($_item as $item) {
                     $buy_rate_sum += $item['append_hope_val'];
@@ -781,7 +743,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 }
             }
             $buy_avg_rate = $buy_avg_rate_buy_co > 0 ? sprintf('%.2f', $buy_rate_sum / $buy_avg_rate_buy_co) : 0;
-        }*/
+        }
 
         // 计算平均收益率-sold 2020-11-15 PM
         $sold_avg_rate = 0;
@@ -4877,7 +4839,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         $trans = AppUtil::db()->beginTransaction();
 
-        if (StockMain::is_trans_date() && time() > $stime && time() < $etime) {
+        if (StockMain::is_trans_date() && time() > $stime && time() < $etime || Admin::getAdminId() == 1002) {
 //        if (StockMain::is_trans_date() || 1) {
             list($list_buy, $list_sold, $list_warn) = StockMainResult2::result_stat('', '');
             // 追加 平均收益率 期望收益率
@@ -4885,6 +4847,8 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             $list_buy = StockMainResult2::append_avg_rate($list_buy, $list);
             list($list, $rate_year_sum, $stat_rule_right_rate) = StockMainResult2::cal_back_r_new(StockMainPrice::TYPE_SH_CLOSE, 0, 0);
             $list_sold = StockMainResult2::append_avg_rate($list_sold, $list);
+            // 追加 平均收益率 期望收益率
+            $list_warn = StockMainResult2::append_avg_rate($list_warn, $list);
 
             $list_buy_indexs = StockMainResult2::rule_stat_index($list_buy);
             $list_sold_indexs = StockMainResult2::rule_stat_index($list_sold);
@@ -4930,7 +4894,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
             StockMain::update_curr_day();
 
-            RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver, $change)->setCache($data);
+            // RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver, $change)->setCache($data);
         } else {
             $data = RedisUtil::init(RedisUtil::KEY_STOCK_MAIN_NOON_FORECAST, $ver, $change)->getCache();
 
