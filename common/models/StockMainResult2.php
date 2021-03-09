@@ -464,7 +464,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
         $buy_rules60 = self::rules_to_arr($r_buy60);
         $buy_rules120 = self::rules_to_arr($r_buy120);
 
-        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60));
+        $buy_rules = array_unique(array_merge($buy_rules5, $buy_rules10, $buy_rules20, $buy_rules60,$buy_rules120));
         $buy_rules_day = [5 => $buy_rules5, 10 => $buy_rules10, 20 => $buy_rules20, 60 => $buy_rules60, 120 => $buy_rules120];
 
         return [$buy_rules, $buy_rules_day];
@@ -682,7 +682,6 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-
         foreach ($sold_rules as $rule_name) {
             if (isset($list_sold_indexs[$rule_name]) && isset($list_sold[$list_sold_indexs[$rule_name]])) {
                 $sold_co++;
@@ -745,23 +744,30 @@ class StockMainResult2 extends \yii\db\ActiveRecord
             }
         }
 
-        /*foreach ($warn_rules_day as $day => $rule_item) {
+        // 2021-3-8 edit
+        foreach ($warn_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
-                if (isset($list_warn[$list_warn_indexs[$rule_name]])) {
+                if (isset($list_warn_indexs[$rule_name]) && isset($list_warn[$list_warn_indexs[$rule_name]])) {
                     $_item = $list_warn[$list_warn_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
+                    $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
+                    $yes_avg_rate = $_item['SUM']['append_avg']['yes_avg_rate'];
                     $append_hope_val = $_item['SUM']['append_hope']['val'];
                     if ($times_yes_rate >= $right_rate_gt_val) {
                         // 警告策略
                         $warn_rules_right_rate[$day][] = [
                             'rule_name' => $rule_name,
                             'times_yes_rate' => $times_yes_rate,
+                            'no_avg_rate' => $no_avg_rate,
+                            'yes_avg_rate' => $yes_avg_rate,
                             'append_hope_val' => $append_hope_val,
+                            'd1_median0_yes' => self::get_5day_after_rate_vals(1, 1, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
+                            'd1_median0_no' => self::get_5day_after_rate_vals(1, 9, StockMainPrice::TYPE_SH_CLOSE, 0, 0, $rule_name),
                         ];
                     }
                 }
             }
-        }*/
+        }
 
         // 计算平均收益率-buy 2020-11-15 PM
         $buy_avg_rate_buy_co = 0;
@@ -4832,6 +4838,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sum_turnover' => sprintf('%.2f', $sum_turnover),
                 'sold_rules' => [],
                 'buy_rules' => [],
+                'warn_rules' => [],
                 'result' => [],
             ],
             [
@@ -4843,6 +4850,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sum_turnover' => sprintf('%.2f', $sum_turnover),
                 'sold_rules' => [],
                 'buy_rules' => [],
+                'warn_rules' => [],
                 'result' => [],
             ],
             // 跌
@@ -4854,6 +4862,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
                 'sum_turnover' => sprintf('%.2f', $sum_turnover),
                 'sold_rules' => [],
                 'buy_rules' => [],
+                'warn_rules' => [],
                 'result' => [],
             ],
         ];
