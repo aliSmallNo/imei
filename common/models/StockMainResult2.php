@@ -660,7 +660,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         foreach ($buy_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
-                if (isset($list_buy[$list_buy_indexs[$rule_name]][$rule_name])) {
+                if (isset($list_buy_indexs[$rule_name]) && isset($list_buy[$list_buy_indexs[$rule_name]])) {
                     $_item = $list_buy[$list_buy_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
                     $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
@@ -684,7 +684,7 @@ class StockMainResult2 extends \yii\db\ActiveRecord
 
         foreach ($sold_rules_day as $day => $rule_item) {
             foreach ($rule_item as $rule_name) {
-                if (isset($list_sold[$list_sold_indexs[$rule_name]])) {
+                if (isset($list_sold_indexs[$rule_name]) && isset($list_sold[$list_sold_indexs[$rule_name]])) {
                     $_item = $list_sold[$list_sold_indexs[$rule_name]][$rule_name];
                     $times_yes_rate = $_item[$day]['times_yes_rate'];
                     $no_avg_rate = $_item['SUM']['append_avg']['no_avg_rate'];
