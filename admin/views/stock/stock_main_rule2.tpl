@@ -142,6 +142,7 @@
                         >{{$item.r_sh_close_60avg_10avg_offset_gt}}</div>
                     <div class="{{$item.r_sh_close_60avg_10avg_offset_lt_cls}}">
                         <{{$item.r_sh_close_60avg_10avg_offset_lt}}</div>
+                    <div>{{$item.r_sh_close_60avg_10avg_offset_choose_t}}</div>
                 </td>
                 <!-- 上证指数均值/上证涨跌 比例 -->
                 <td>
@@ -173,6 +174,7 @@
                         data-r_sh_close_avg_lt="{{$item.r_sh_close_avg_lt}}"
                         data-r_sh_close_60avg_10avg_offset_gt="{{$item.r_sh_close_60avg_10avg_offset_gt}}"
                         data-r_sh_close_60avg_10avg_offset_lt="{{$item.r_sh_close_60avg_10avg_offset_lt}}"
+                        data-r_sh_close_60avg_10avg_offset_choose="{{$item.r_sh_close_60avg_10avg_offset_choose}}"
                         data-r_sh_close_avg_change_rate_gt="{{$item.r_sh_close_avg_change_rate_gt}}"
                         data-r_sh_close_avg_change_rate_lt="{{$item.r_sh_close_avg_change_rate_lt}}"
                         data-r_date_gt="{{$item.r_date_gt}}" data-r_date_lt="{{$item.r_date_lt}}"
@@ -321,6 +323,16 @@
                 <input type="text" class="form-control r_sh_close_60avg_10avg_offset_lt">
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">上证指数60日均值与10日均值选择 ’且‘ 与 ’或‘</label>
+            <div class="col-sm-7">
+                <select class="form-control r_sh_close_60avg_10avg_offset_choose">
+                    {{foreach from=$r_sh_close_60avg_10avg_offset_choose_dict item=item key=key}}
+                        <option value="{{$key}}">{{$item}}</option>
+                    {{/foreach}}
+                </select>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-4 control-label">上证指数均值/上证涨跌 比例 大于: <p class="form_tip">填 999 则忽略此条件</p></label>
@@ -410,6 +422,7 @@
                     r_sh_close_avg_lt: $.trim($('.r_sh_close_avg_lt').val()),
                     r_sh_close_60avg_10avg_offset_gt: $.trim($('.r_sh_close_60avg_10avg_offset_gt').val()),
                     r_sh_close_60avg_10avg_offset_lt: $.trim($('.r_sh_close_60avg_10avg_offset_lt').val()),
+                    r_sh_close_60avg_10avg_offset_choose: $.trim($('.r_sh_close_60avg_10avg_offset_choose').val()),
                     r_sh_close_avg_change_rate_gt: $.trim($('.r_sh_close_avg_change_rate_gt').val()),
                     r_sh_close_avg_change_rate_lt: $.trim($('.r_sh_close_avg_change_rate_lt').val()),
                     r_date_gt: $.trim($('.r_date_gt').val()),
@@ -471,6 +484,7 @@
         $('.r_sh_close_avg_lt').val(td.attr("data-r_sh_close_avg_lt"))
         $('.r_sh_close_60avg_10avg_offset_gt').val(td.attr("data-r_sh_close_60avg_10avg_offset_gt"))
         $('.r_sh_close_60avg_10avg_offset_lt').val(td.attr("data-r_sh_close_60avg_10avg_offset_lt"))
+        $('.r_sh_close_60avg_10avg_offset_choose').val(td.attr("data-r_sh_close_60avg_10avg_offset_choose"))
         $('.r_sh_close_avg_change_rate_gt').val(td.attr("data-r_sh_close_avg_change_rate_gt"))
         $('.r_sh_close_avg_change_rate_lt').val(td.attr("data-r_sh_close_avg_change_rate_lt"))
         $('.r_date_gt').val(td.attr("data-r_date_gt"))

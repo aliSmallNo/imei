@@ -109,7 +109,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         $sql = 'select DISTINCT m_trans_on from im_stock_main order by m_trans_on desc';
         $dts = AppUtil::db()->createCommand($sql)->queryAll();
         foreach (array_column($dts, 'm_trans_on') as $dt) {
-            echo $dt.PHP_EOL;
+            echo $dt . PHP_EOL;
             self::cal($dt);
         }
     }
@@ -258,10 +258,10 @@ class StockMainStat extends \yii\db\ActiveRecord
 
     public static function items($criteria, $params, $page, $pageSize = 20)
     {
-        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
+        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND '.implode(' AND ', $criteria);
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
 
         $sql = "select m.*,s.*
@@ -310,10 +310,10 @@ class StockMainStat extends \yii\db\ActiveRecord
      */
     public static function items2($criteria, $params, $page, $pageSize = 20)
     {
-        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
+        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND '.implode(' AND ', $criteria);
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
 
         $sql = "select m.*,s.*
@@ -420,19 +420,19 @@ class StockMainStat extends \yii\db\ActiveRecord
 
         return [
             'diff_m_etf_close' => round($diff_m_etf_close, 3),
-            'diff_m_etf_close_rate' => $diff_m_etf_close_rate.'%',
+            'diff_m_etf_close_rate' => $diff_m_etf_close_rate . '%',
 
             'diff_m_sh_close' => round($diff_m_sh_close, 3),
-            'diff_m_sh_close_rate' => (round($diff_m_sh_close / $last_day_m_sh_close, 4) * 100).'%',
+            'diff_m_sh_close_rate' => (round($diff_m_sh_close / $last_day_m_sh_close, 4) * 100) . '%',
 
             'diff_m_sh_turnover' => round($diff_m_sh_turnover, 3),
-            'diff_m_sh_turnover_rate' => (round($diff_m_sh_turnover / $last_day_m_sh_turnover, 4) * 100).'%',
+            'diff_m_sh_turnover_rate' => (round($diff_m_sh_turnover / $last_day_m_sh_turnover, 4) * 100) . '%',
 
             'diff_m_sz_turnover' => round($diff_m_sz_turnover, 3),
-            'diff_m_sz_turnover_rate' => (round($diff_m_sz_turnover / $last_day_m_sz_turnover, 4) * 100).'%',
+            'diff_m_sz_turnover_rate' => (round($diff_m_sz_turnover / $last_day_m_sz_turnover, 4) * 100) . '%',
 
             'diff_m_sum_turnover' => round($diff_m_sum_turnover, 3),
-            'diff_m_sum_turnover_rate' => (round($diff_m_sum_turnover / $last_day_m_sum_turnover, 4) * 100).'%',
+            'diff_m_sum_turnover_rate' => (round($diff_m_sum_turnover / $last_day_m_sum_turnover, 4) * 100) . '%',
 
         ];
     }
@@ -491,7 +491,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             if ($r_scat == 0) {
                 $r_scat = "5,10,20";
             }
-            $r_scat = $r_scat.',';
+            $r_scat = $r_scat . ',';
             $r_scat_arr = array_filter(explode(',', $r_scat));
 
             $m_sh_close = $sh_close_avg = $sh_turnover = $sum_turnover = $cus_rate_avgs = $s_sh_changes = [];
@@ -722,7 +722,7 @@ class StockMainStat extends \yii\db\ActiveRecord
             if ($r_scat == 0) {
                 $r_scat = "5,10,20";
             }
-            $r_scat = $r_scat.',';
+            $r_scat = $r_scat . ',';
             $r_scat_arr = array_filter(explode(',', $r_scat));
 
             $m_sh_close = $sh_close_avg = $sh_turnover = $sum_turnover = $cus_rate_avgs = $s_sh_changes = $diff = [];
@@ -998,6 +998,8 @@ class StockMainStat extends \yii\db\ActiveRecord
         if (intval($rule['r_sh_close_60avg_10avg_offset_lt']) != self::IGNORE_VAL && $sh_close_60avg_10avg_offset != self::IGNORE_VAL) {
             $flag17 = $sh_close_60avg_10avg_offset < $rule['r_sh_close_60avg_10avg_offset_lt'];
         }
+        $r_sh_close_60avg_10avg_offset_choose = $rule['r_sh_close_60avg_10avg_offset_choose'];
+        $flag16_flag17 = $r_sh_close_60avg_10avg_offset_choose == StockMainRule2::AVG_10_60_AND ? ($flag16 && $flag17) : ($flag16 || $flag17);
 
         $s_sh_close_change_rate = $stat['s_sh_close_change_rate'];
         // 上证指数均值/上证涨跌 比例 大于
@@ -1015,7 +1017,7 @@ class StockMainStat extends \yii\db\ActiveRecord
         }
 
         if ($flag1 && $flag2 && $flag3 && $flag4 && $flag5 && $flag6 && $flag7 && $flag8
-            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15 && $flag16 && $flag17
+            && $flag9 && $flag10 && $flag11 && $flag12 && $flag13 && $flag14 && $flag15 && $flag16_flag17
             && $flag30 && $flag31) {
             $flag = true;
         }

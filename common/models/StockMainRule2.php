@@ -60,6 +60,11 @@ class StockMainRule2 extends \yii\db\ActiveRecord
             'r_sh_close_60avg_10avg_offset_gt' => '差值 上证指数60日均值-上证指数10日均值 大于',
             'r_sh_close_60avg_10avg_offset_lt' => '差值 上证指数60日均值-上证指数10日均值 小于',
 
+            // r_sh_close_60avg_10avg_offset_gt  r_sh_close_60avg_10avg_offset_lt 这两个条件的 且与或的 选择，默认是且
+            //1.不勾选是，默认是“并”，即2个都满足才行
+            //2.勾选后，是“或”，只要满足其中一个就可以。满足60-10日，这2个选项中，任何一个就可以。
+            'r_sh_close_60avg_10avg_offset_choose' => '上证指数60日均值与10日均值选择 ’且‘ 与 ’或‘',
+
             'r_sh_close_avg_change_rate_gt' => '上证指数均值/上证涨跌 比例 大于',
             'r_sh_close_avg_change_rate_lt' => '上证指数均值/上证涨跌 比例 小于',
 
@@ -89,6 +94,13 @@ class StockMainRule2 extends \yii\db\ActiveRecord
     ];
 
     const CAT_MAIN_RULE = 'main_rule2';
+
+    const AVG_10_60_AND = 1;
+    const AVG_10_60_OR = 3;
+    static $r_sh_close_60avg_10avg_offset_choose_dict = [
+        self::AVG_10_60_AND => '且',
+        self::AVG_10_60_OR => '或',
+    ];
 
     public static function add($values = [])
     {
@@ -162,10 +174,10 @@ class StockMainRule2 extends \yii\db\ActiveRecord
 
     public static function items($criteria, $params, $page, $pageSize = 20)
     {
-        $limit = " limit ".($page - 1) * $pageSize.",".$pageSize;
+        $limit = " limit " . ($page - 1) * $pageSize . "," . $pageSize;
         $strCriteria = '';
         if ($criteria) {
-            $strCriteria = ' AND '.implode(' AND ', $criteria);
+            $strCriteria = ' AND ' . implode(' AND ', $criteria);
         }
 
         $sql = "select r.*
@@ -178,6 +190,7 @@ class StockMainRule2 extends \yii\db\ActiveRecord
         foreach ($res as $k => $v) {
             $res[$k]['r_status_t'] = self::$stDict[$v['r_status']] ?? '';
             $res[$k]['r_cat_t'] = self::$cats[$v['r_cat']] ?? '';
+            $res[$k]['r_sh_close_60avg_10avg_offset_choose_t'] = self::$r_sh_close_60avg_10avg_offset_choose_dict[$v['r_sh_close_60avg_10avg_offset_choose']] ?? '';
         }
         $sql = "select count(1) as co
 				from im_stock_main_rule2 as r
@@ -219,11 +232,11 @@ class StockMainRule2 extends \yii\db\ActiveRecord
             $r_name = $rule['r_name'];
             $old = StockMainRule::findOne(['r_name' => $r_name, 'r_status' => StockMainRule::ST_ACTIVE]);
             foreach ($fields as $field) {
-                $rules[$k][$field.'_cls'] = '';
+                $rules[$k][$field . '_cls'] = '';
                 if ($old && $old->$field != $rule[$field]) {
                     //echo $r_name.' =old:'.$old->$field.' new:'.$rule[$field]."\n";
                     //$rules[$k][$field.'_old'] = $old->$field;
-                    $rules[$k][$field.'_cls'] = 'rule_diff';
+                    $rules[$k][$field . '_cls'] = 'rule_diff';
                 }
             }
         }

@@ -1599,6 +1599,7 @@ class ApiController extends Controller
                     'r_sh_close_avg_lt' => trim(self::postParam("r_sh_close_avg_lt")),
                     'r_sh_close_60avg_10avg_offset_gt' => trim(self::postParam("r_sh_close_60avg_10avg_offset_gt")),
                     'r_sh_close_60avg_10avg_offset_lt' => trim(self::postParam("r_sh_close_60avg_10avg_offset_lt")),
+                    'r_sh_close_60avg_10avg_offset_choose' => trim(self::postParam("r_sh_close_60avg_10avg_offset_choose")),
                     'r_sh_close_avg_change_rate_gt' => trim(self::postParam("r_sh_close_avg_change_rate_gt")),
                     'r_sh_close_avg_change_rate_lt' => trim(self::postParam("r_sh_close_avg_change_rate_lt")),
                     'r_date_gt' => trim(self::postParam("r_date_gt")),
@@ -1623,6 +1624,7 @@ class ApiController extends Controller
                             'r_sh_close_avg_lt',
                             'r_sh_close_60avg_10avg_offset_gt',
                             'r_sh_close_60avg_10avg_offset_lt',
+                            'r_sh_close_60avg_10avg_offset_choose',
                             'r_sh_close_avg_change_rate_gt',
                             'r_sh_close_avg_change_rate_lt',
                         ])) {
@@ -1645,6 +1647,7 @@ class ApiController extends Controller
                     list($res) = StockMainRule2::add($data);
                 }
                 if ($res) {
+                    //StockMainResult2::reset();
                     return self::renderAPI(0, "保存成功！", $data);
                 } else {
                     return self::renderAPI(129, '保存失败', $data);

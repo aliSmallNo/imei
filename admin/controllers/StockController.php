@@ -1849,6 +1849,7 @@ class StockController extends BaseController
             'sts' => StockMainRule::$stDict,
             'cat' => $cat,
             'scat' => StockMainStat::$cats_map,
+            'r_sh_close_60avg_10avg_offset_choose_dict' => StockMainRule2::$r_sh_close_60avg_10avg_offset_choose_dict,
         ]);
     }
 
